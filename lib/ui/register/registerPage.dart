@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:yeni_okul/ui/login/UserRole.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yeni_okul/util/HexColor.dart';
+import 'package:yeni_okul/util/SimpleStream.dart';
+import 'package:yeni_okul/util/YOColors.dart';
+import 'package:yeni_okul/widgets/PrimaryButton.dart';
 import 'package:yeni_okul/widgets/YOText.dart';
+import 'package:yeni_okul/widgets/YoCheckbox.dart';
 import 'package:yeni_okul/widgets/YoHexText.dart';
 import 'package:flutter_text_box/flutter_text_box.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key, required this.userRole});
-
-  final UserRole userRole;
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -17,26 +19,16 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   UserRole? userRole;
+  bool privacyPolicy = false;
+  SimpleStream<bool> checkStream = SimpleStream<bool>();
+
+  bool get check => checkStream.current ?? false;
+
   @override
   Widget build(BuildContext context) {
-   final map  = ModalRoute.of(context)!.settings.arguments as Map<String,UserRole> ;
-
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromARGB(100, 141, 153, 202),
-              Color.fromARGB(100, 141, 153, 202),
-              Color.fromARGB(90, 141, 153, 202),
-              Color.fromARGB(53, 141, 153, 202),
-              Color.fromARGB(34, 141, 153, 202),
-              Color.fromARGB(0, 141, 153, 202),
-            ],
-          ),
-        ),
+      backgroundColor: color4,
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -45,82 +37,198 @@ class _RegisterPageState extends State<RegisterPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 0.0, top: 32, right: 0, bottom: 0),
-                child: IconButton(
-                  color: HexColor("#1A1348"),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  iconSize: 32,
-                  alignment: Alignment.centerLeft,
-                  icon: const Icon(
-                    Icons.arrow_back,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                    left: 0.0, top: 16, right: 0, bottom: 0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      color: color1,
+                      padding: EdgeInsets.zero,
+                      iconSize: 26,
+                      alignment: Alignment.centerLeft,
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    YoText(
+                      text: "Kayıt Ol",
+                      size: 18,
+                      fontWeight: FontWeight.bold,
+                      color: color1,
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(
                 height: 16,
               ),
-               YoHexText(
-                text: "${map.values.first.label} Üyeliği Oluştur",
-                size: 20,
-                fontWeight: FontWeight.bold,
-                color: "#1A1348",
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              const YoHexText(
+              YoText(
                 text:
-                    "Lütfen hesap oluşturmak istediğin mail adresini gir ve devam tuşuna bas.",
-                size: 14,
+                    "Hemen Kayıt olarak eşsiz deneyimimize katılabilirsin . Loem ipsum dolar ko sit amet ko",
+                size: 12,
                 fontWeight: FontWeight.w500,
-                color: "#1A1348",
+                textAlign: TextAlign.start,
+                color: color2,
               ),
-              const SizedBox(height: 16),
-              const SizedBox(
-                height: 16,
-              ),
-              const YoHexText(
-                text:
-                    "Lütfen hesap oluşturmak istediğin mail adresini gir ve devam tuşuna bas.",
-                size: 14,
-                fontWeight: FontWeight.w500,
-                color: "#1A1348",
-              ),
-              const SizedBox(height: 50),
-              TextBoxLabel(
-                label: 'E-mail',
-                hint: 'E-mailinizi girin',
-                errorText: 'Bu alan zorunludur!',
-                onSaved: (String value) {},
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: HexColor("#1A1348"),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 18),
-                      textStyle: GoogleFonts.montserrat(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  cursorColor: color1,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    hintText: 'Ad',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: color2.withAlpha(75),
+                      fontWeight: FontWeight.w400,
                     ),
-                    onPressed: () {},
-                    child: const YoText(
-                      text: "Devam Et",
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )),
+                    labelStyle:
+                        TextStyle(color: color1, fontWeight: FontWeight.bold),
+                    focusColor: color2,
+                    focusedBorder: const UnderlineInputBorder(),
+                  ),
+                ),
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  cursorColor: color1,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    hintText: 'Soyad',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: color2.withAlpha(75),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelStyle:
+                        TextStyle(color: color1, fontWeight: FontWeight.bold),
+                    focusColor: color2,
+                    focusedBorder: const UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  cursorColor: color1,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    hintText: 'Email',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: color2.withAlpha(75),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelStyle:
+                        TextStyle(color: color1, fontWeight: FontWeight.bold),
+                    focusColor: color2,
+                    focusedBorder: const UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  cursorColor: color1,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    hintText: 'Telefon No',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: color2.withAlpha(75),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelStyle:
+                        TextStyle(color: color1, fontWeight: FontWeight.bold),
+                    focusColor: color2,
+                    focusedBorder: const UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  cursorColor: color1,
+                  onChanged: (value) {},
+                  decoration: InputDecoration(
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    hintText: 'Şifre',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: color2.withAlpha(75),
+                      fontWeight: FontWeight.w400,
+                    ),
+                    labelStyle:
+                        TextStyle(color: color1, fontWeight: FontWeight.bold),
+                    focusColor: color2,
+                    focusedBorder: const UnderlineInputBorder(),
+                  ),
+                ),
+              ),
+              ListTileTheme(
+                horizontalTitleGap: 0.0,
+                child: CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  tristate: false,
+                  activeColor: color5,
+                  side: BorderSide(width: 1, color: color5),
+                  title: const YoText(
+                    text:
+                        "By signing up you agree to our Terms & Conditions and Privacy Policy",
+                    textAlign: TextAlign.start,
+                  ),
+
+                  checkColor: Colors.white,
+
+                  value: privacyPolicy,
+                  onChanged: (newValue) {
+                    setState(() {
+                      privacyPolicy = newValue!;
+                    });
+                  },
+                  controlAffinity:
+                      ListTileControlAffinity.leading, //  <-- leading Checkbox
+                ),
+              ),
+              ListTileTheme(
+                horizontalTitleGap: 0.0,
+                child: CheckboxListTile(
+                  contentPadding: EdgeInsets.zero,
+                  tristate: false,
+                  activeColor: color5,
+                  side: BorderSide(width: 1, color: color5),
+                  title: const YoText(
+                    text:
+                        "By signing up you agree to our Terms & Conditions and Privacy Policy",
+                    textAlign: TextAlign.start,
+                  ),
+                  checkColor: Colors.white,
+                  value: checkStream.current ?? false,
+                  onChanged: (newValue) {
+                    setState(() {
+                      checkStream.update(newValue ?? false);
+                    });
+                  },
+                  controlAffinity:
+                      ListTileControlAffinity.leading, //  <-- leading Checkbox
+                ),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              PrimaryButton(text: "Kayıt Ol", onPress: () {})
             ],
           ),
         ),

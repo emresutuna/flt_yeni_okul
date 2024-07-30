@@ -2,15 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yeni_okul/ui/company/model/CompanyModel.dart';
 import 'package:yeni_okul/ui/course/model/CourseModel.dart';
-import 'package:yeni_okul/widgets/YOButton.dart';
-import 'package:yeni_okul/widgets/YOCardView.dart';
-import 'package:yeni_okul/widgets/YellowBox.dart';
-
-import '../../util/HexColor.dart';
+import 'package:yeni_okul/widgets/CourseListItem.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/SearchBar.dart';
-import '../../widgets/YOAppBar.dart';
 import '../../widgets/YOText.dart';
 
 class CourseListPage extends StatefulWidget {
@@ -77,131 +72,79 @@ class _CourseListPageState extends State<CourseListPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> key = GlobalKey();
-
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: YOAppBar(
-        enableBackButton: true,
-        drawerKey: key,
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
-          top: false,
-          child: Container(
-            padding: const EdgeInsets.only(top: 90),
-            decoration: gradient,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 8),
+              child: Row(
+                children: [
+                  InkWell(
+                    child: const Icon(Icons.arrow_back_ios),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text(
+                    "Dersler",
+                    style: styleBlack16Bold,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 24),
+              child: Text(
+                "Lorem ipsum dolar sit amet",
+                style: styleBlack12Bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Row(
               children: [
-                const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.0,
-                        top: 8,
-                      ),
-                      child: YoText(
-                        text: "Dersler",
-                        size: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 5,
-                        child: YoSearchBar(onQueryChanged: onQueryChanged)),
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(
-                        onTap: () {
-                          showCompanyFilterBottomSheet(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          margin: const EdgeInsets.only(left: 0, right: 16),
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    HexColor("#F2AF47"),
-                                    HexColor("#FFDDA8")
-                                  ])),
-                          child: Image.asset(
-                            "assets/ic_filter.png",
-                            fit: BoxFit.contain,
-                          ),
+                Expanded(
+                    flex: 5,
+                    child: YoSearchBar(onQueryChanged: onQueryChanged)),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      showCompanyFilterBottomSheet(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.only(left: 0, right: 16),
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: color6),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Image.asset(
+                          "assets/ic_filter.png",
+                          fit: BoxFit.contain,
                         ),
                       ),
-                    )
-                  ],
-                ),
-                Expanded(
-                    child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: 4,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: YellowCard(
-                          child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: YoText(
-                                    size: 14,
-                                    fontWeight: FontWeight.bold,
-                                    textAlign: TextAlign.start,
-                                    text:
-                                        "Köklü Sayılar,Köklü SayılarKöklü Sayılar,Köklü SayılarKöklü Sayılar,Köklü Sayılar",
-                                    hasEllipsize: true,
-                                  )),
-                              Expanded(
-                                  flex: 1,
-                                  child: Chip(
-                                    label: Text("Matematik"),
-                                    backgroundColor: Colors.red,
-                                  ))
-                            ],
-                          ),
-                          courseItem(
-                              "assets/ic_teacher.png",
-                              "Tamer Yüksel",
-                              "assets/ic_teacher.png",
-                              "Esenler Açı dershanesi"),
-                          courseItem("assets/ic_teacher.png", "G-209",
-                              "assets/ic_teacher.png", "tamer"),
-                          const SizedBox(height: 8),
-                          Center(
-                            child: YoButton(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width / 2,
-                                borderRadius: 24,
-                                borderColor: "05A95C",
-                                text: "Satın Al",
-                                backgroundColor: "05A95C",
-                                textColor: "FFFFFF",
-                                onPress: () {
-                                  Navigator.pushNamed(context, '/paymentPage',
-                                      arguments: {'courseModel': courseList[index]});                                }),
-                          )
-                        ],
-                      )),
-                    );
-                  },
-                )),
+                    ),
+                  ),
+                )
               ],
             ),
-          )),
+            Expanded(
+                child: ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
+                return CourseListItem();
+              },
+            )),
+          ],
+        ),
+      ),
     );
   }
 

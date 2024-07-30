@@ -29,7 +29,7 @@ class YoHexText extends StatelessWidget {
       child: onClick == null
           ? Text(text,
               textAlign: textAlign ?? TextAlign.start,
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.notoSans(
                   textStyle: TextStyle(
                 decoration: isUnderLine! == false
                     ? TextDecoration.none

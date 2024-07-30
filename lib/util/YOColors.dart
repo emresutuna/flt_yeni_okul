@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'HexColor.dart';
 
@@ -11,7 +12,45 @@ Color colorGray = HexColor("#9295A3");
 Color greenButton = HexColor("#05A95C");
 Color colorWhite = HexColor("#FFFFFF");
 
+Color color1 = HexColor("#222831");
+Color color2 = HexColor("#393E46");
+Color color3 = HexColor("#7DCB70");
+Color color4 = HexColor("#F6F6F6");
+Color color5 = HexColor("#FD275F");
+Color color6 = HexColor("#FF3A44");
 
+TextStyle styleBlack10Regular = GoogleFonts.notoSans(
+    fontSize: 10, fontWeight: FontWeight.normal, color: color1);
+TextStyle styleBlack12Regular = GoogleFonts.notoSans(
+    fontSize: 12, fontWeight: FontWeight.normal, color: color1);
+TextStyle styleBlack14Regular = GoogleFonts.notoSans(
+    fontSize: 14, fontWeight: FontWeight.normal, color: color1);
+TextStyle styleBlack16Regular = GoogleFonts.notoSans(
+    fontSize: 16, fontWeight: FontWeight.normal, color: color1);
+TextStyle styleBlack18Regular = GoogleFonts.notoSans(
+    fontSize: 18, fontWeight: FontWeight.normal, color: color1);
+TextStyle styleBlack10Bold = GoogleFonts.notoSans(
+    fontSize: 10, fontWeight: FontWeight.bold, color: color1);
+
+TextStyle styleBlack12Bold = GoogleFonts.notoSans(
+    fontSize: 12, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleGray12Bold = GoogleFonts.notoSans(
+    fontSize: 12, fontWeight: FontWeight.bold, color: color2);
+TextStyle styleBlack14Bold = GoogleFonts.notoSans(
+    fontSize: 14, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack16Bold = GoogleFonts.notoSans(
+    fontSize: 16, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack18Bold = GoogleFonts.notoSans(
+    fontSize: 18, fontWeight: FontWeight.bold, color: color1);
+
+TextStyle styleGreen18Bold = GoogleFonts.notoSans(
+    fontSize: 18, fontWeight: FontWeight.bold, color: color3);
+
+TextStyle styleWhite12Bold = GoogleFonts.notoSans(
+    fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
+
+TextStyle styleWhite14Bold = GoogleFonts.notoSans(
+    fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
 
 var gradient = const BoxDecoration(
   gradient: LinearGradient(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'YOText.dart';
+import 'package:yeni_okul/util/HexColor.dart';
+import 'package:yeni_okul/util/YOColors.dart';
 
 class CompanyListItem extends StatelessWidget {
   final String icon;
@@ -15,47 +15,59 @@ class CompanyListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF6F6F6),
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            width: 0.5,
+            color: HexColor("#80333333"),
+          )),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: const Icon(Icons.favorite_outline),
-          ),
-          Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1.0,
-                  color: Colors.black,
+          Stack(
+            children: [
+              Container(
+                height: 150,
+                decoration: const ShapeDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/company_logo2.png"),
+                    fit: BoxFit.fill,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                  ),
                 ),
-                shape: BoxShape.circle,
-                color: Colors.white,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.asset(
-                  icon,
-                  fit: BoxFit.fill,
-                ),
-              )),
-          Container(
-            padding: const EdgeInsets.only(top: 4),
-            child: Center(
-              child: YoText(
-                text: name,
-                size: 12,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
+              Positioned(right: 8,top: 8,child: Icon(Icons.favorite_outline,color: color1,),)
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              child: Text(
+                'Sultangazi Limit Dershaneleri',
+                textAlign: TextAlign.center,
+                style: styleBlack14Bold,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 6.0),
+            child: SizedBox(
+              child: Text(
+                'İstanbul/Esenler',
+                textAlign: TextAlign.center,
+                style: styleGray12Bold,
               ),
             ),
           ),
         ],
       ),
     );
-    ;
   }
 }

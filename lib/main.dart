@@ -49,9 +49,7 @@ class MyApp extends StatelessWidget {
           '/mainPage': (context) => const MyHomePage(title: ""),
           '/loginPage': (context) => const LoginPage(),
           '/userRolePage': (context) => const UserRolePage(),
-          '/registerPage': (context) => const RegisterPage(
-                userRole: UserRole.DEFAULT,
-              ),
+          '/registerPage': (context) => const RegisterPage(),
           '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
           '/emailOtp': (context) => const EmailOtpPage(),
           '/newPasswordPage': (context) => const NewPasswordPage(),

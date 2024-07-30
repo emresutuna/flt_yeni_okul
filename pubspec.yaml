@@ -56,9 +56,10 @@ dependencies:
   dropdown_button2: ^2.3.9
   expandable: ^5.0.1
   dio: ^5.4.3+1
+  google_maps_flutter: ^2.0.1
 
 flutter_launcher_icons:
-  image_path: "assets/yeni_okul_logo.png"
+  image_path: "assets/yeni_okul_logo_v2.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
 
@@ -106,6 +107,8 @@ flutter:
     - assets/ic_filter.png
     - assets/company_logo.jpg
     - assets/ic_teacher.png
+    - assets/yeni_okul_logo_v2.png
+    - assets/company_logo2.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

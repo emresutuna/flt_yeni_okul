@@ -3,11 +3,7 @@ import 'package:yeni_okul/ui/company/model/CompanyModel.dart';
 import 'package:yeni_okul/util/YOColors.dart';
 import 'package:yeni_okul/widgets/CompanyListFilterBottomSheet.dart';
 import 'package:yeni_okul/widgets/SearchBar.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
-
-import '../../util/HexColor.dart';
 import '../../widgets/CompanyListItem.dart';
-import '../../widgets/YOAppBar.dart';
 
 class CompanyListPage extends StatefulWidget {
   const CompanyListPage({super.key});
@@ -98,95 +94,96 @@ class _CompanyListPageState extends State<CompanyListPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> key = GlobalKey();
-
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: YOAppBar(
-        enableBackButton: true,
-        drawerKey: key,
-      ),
+      backgroundColor: Colors.white,
       body: SafeArea(
-          top: false,
-          child: Container(
-            padding: const EdgeInsets.only(top: 90),
-            decoration: gradient,
-            child: Column(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 8),
+              child: Row(
+                children: [
+                  InkWell(
+                    child: Icon(Icons.arrow_back_ios),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Text(
+                    "Kurumlar",
+                    style: styleBlack16Bold,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 24),
+              child: Text(
+                "Lorem ipsum dolar sit amet",
+                style: styleBlack12Bold,
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Row(
               children: [
-                const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 16.0,
-                        top: 8,
-                      ),
-                      child: YoText(
-                        text: "Kurumlar",
-                        size: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 5,
-                        child: YoSearchBar(onQueryChanged: onQueryChanged)),
-                    Expanded(
-                      flex: 1,
-                      child: InkWell(onTap: (){
-                        showCompanyFilterBottomSheet(context);
-                      },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          margin: const EdgeInsets.only(left: 0, right: 16),
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    HexColor("#F2AF47"),
-                                    HexColor("#FFDDA8")
-                                  ])),
-                          child: Image.asset(
-                            "assets/ic_filter.png",
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
                 Expanded(
-                    child: GridView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        primary: true,
-                        itemCount: companyList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          mainAxisSpacing: 0,
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 24.0,
-                          childAspectRatio: 2 / 2.7,
+                    flex: 5,
+                    child: YoSearchBar(onQueryChanged: onQueryChanged)),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      showCompanyFilterBottomSheet(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.only(left: 0, right: 16),
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: color6),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Image.asset(
+                          "assets/ic_filter.png",
+                          fit: BoxFit.contain,
                         ),
-                        itemBuilder: (context, index) => InkWell(
-                              onTap: () {
-
-                                  Navigator.pushNamed(context, '/companyDetail');
-
-                              },
-                              child: CompanyListItem(
-                                icon: companyList[index].companyPhoto!,
-                                name: companyList[index].companyName!,
-                                isFavorite: false,
-                              ),
-                            ))),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
-          )),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: GridView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  primary: true,
+                  itemCount: companyList.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 16,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 24.0,
+                    childAspectRatio: 2 / 2.7,
+                  ),
+                  itemBuilder: (context, index) => InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/companyDetail');
+                        },
+                        child: CompanyListItem(
+                          icon: companyList[index].companyPhoto!,
+                          name: companyList[index].companyName!,
+                          isFavorite: false,
+                        ),
+                      )),
+            )),
+          ],
+        ),
+      ),
     );
   }
 }

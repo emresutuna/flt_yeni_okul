@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yeni_okul/util/HexColor.dart';
+import 'package:yeni_okul/util/YOColors.dart';
 
 class YoSearchBar extends StatefulWidget {
   const YoSearchBar(
@@ -28,26 +29,27 @@ class _YoSearchBarState extends State<YoSearchBar> {
         child: Center(
           child: TextField(
             onChanged: onQueryChanged,
+            style: styleBlack12Bold,
             decoration: InputDecoration(
                 suffixIcon: const Icon(Icons.search),
-                suffixIconColor: HexColor("#bcbcbc"),
+                suffixIconColor: HexColor("#80333333"),
                 contentPadding: EdgeInsets.all(8.0),
                 fillColor: Colors.white,
                 filled: true,
                 hintText: 'Arama...',
                 hintStyle: GoogleFonts.montserrat(
-                    color: HexColor("#818181"),
+                    color: HexColor("#80333333"),
                     fontWeight: FontWeight.w500,
                     fontSize: 12),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: HexColor("#80333333"), width: 0.5),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: HexColor("#F0F1FA"), width: 2),
-                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide(color: HexColor("#80333333"), width: 2),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                focusColor: HexColor("F0F1FA")),
+                focusColor: HexColor("#80333333")),
           ),
         ));
   }
