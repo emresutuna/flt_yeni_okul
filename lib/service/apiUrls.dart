@@ -1,7 +1,7 @@
 const String loginUrl = "/login";
 const String register = "/register";
 const String lectures = "/lecture";
-const String school = "/school";
+const String school = "/school?id&province_id&city_id&name&email&phone";
 const String teacher = "/teacher";
-const String mainUrl = "http://10.0.2.2:8000/$gateway/";
+const String mainUrl = "https://api.bykurs.com.tr/api/v1";
 const String gateway = "/api";

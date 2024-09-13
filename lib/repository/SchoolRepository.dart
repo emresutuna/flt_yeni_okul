@@ -1,22 +1,22 @@
 import 'dart:io';
-import 'package:yeni_okul/service/apiUrls.dart';
-import 'package:yeni_okul/ui/login/model/LoginRequest.dart';
-import 'package:yeni_okul/ui/login/model/LoginResponse.dart';
+
+import 'package:yeni_okul/ui/company/model/SchoolResponse.dart';
 
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
+import '../service/apiUrls.dart';
 
-class UserRepository {
-  Future<ResultResponse<LoginResponse>> postLogin(LoginRequest request) async {
+class SchoolRepository {
+  Future<ResultResponse<SchoolResponse>> getSchool() async {
     try {
       final response = await APIService.instance
-          .request(loginUrl, param: request.toJson(), DioMethod.post);
+          .request(school, DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        LoginResponse loginResponse = LoginResponse.fromJson(body);
+        SchoolResponse schoolResponse = SchoolResponse.fromJson(body);
 
-        return ResultResponse.success(loginResponse);
+        return ResultResponse.success(schoolResponse);
       } else {
         return ResultResponse.failure(
             'API call failed with status code ${response.statusCode}');

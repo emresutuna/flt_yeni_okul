@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../util/YOColors.dart';
 import 'YOText.dart';
 
 class QuickAction extends StatelessWidget {
@@ -16,39 +17,37 @@ class QuickAction extends StatelessWidget {
           Container(
               margin: const EdgeInsets.only(top: 16),
               alignment: Alignment.center,
-              height: 60,
-              width: 60,
+              width: 80,
+              height: 80,
               // Border width
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
                 border: Border.all(
-                  width: 1.0,
-                  color: Colors.black,
+                  width: 2.0,
+                  color: color5,
                 ),
-                shape: BoxShape.circle,
+                shape: BoxShape.rectangle,
                 color: Colors.white,
               ),
-              child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(icon,fit: BoxFit.contain,),
+                    Image.asset(
+                      icon,
+                      fit: BoxFit.contain,
+                    ),
 
                   ],
                 ),
               )),
-          Container(
-            width: 80,
-            padding: const EdgeInsets.only(top: 4),
-            child: Center(
-              child: YoText(
-                text: name,
-                size: 10,
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-              ),
-            ),
-          ),
+          Text(
+            name,
+            style: styleBlack12Bold,
+            textAlign: TextAlign.center,
+          )
         ],
       ),
     );

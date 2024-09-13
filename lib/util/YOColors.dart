@@ -43,14 +43,24 @@ TextStyle styleBlack16Bold = GoogleFonts.notoSans(
 TextStyle styleBlack18Bold = GoogleFonts.notoSans(
     fontSize: 18, fontWeight: FontWeight.bold, color: color1);
 
-TextStyle styleGreen18Bold = GoogleFonts.notoSans(
-    fontSize: 18, fontWeight: FontWeight.bold, color: color3);
-
 TextStyle styleWhite12Bold = GoogleFonts.notoSans(
     fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
-
 TextStyle styleWhite14Bold = GoogleFonts.notoSans(
     fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
+TextStyle styleWhite16Bold = GoogleFonts.notoSans(
+    fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+TextStyle styleWhite18Bold = GoogleFonts.notoSans(
+    fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
+
+TextStyle styleWhite12Regular = GoogleFonts.notoSans(
+    fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white);
+TextStyle styleWhite14Regular = GoogleFonts.notoSans(
+    fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
+TextStyle styleWhite16Regular = GoogleFonts.notoSans(
+    fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white);
+
+TextStyle styleGreen18Bold = GoogleFonts.notoSans(
+    fontSize: 18, fontWeight: FontWeight.bold, color: color3);
 
 var gradient = const BoxDecoration(
   gradient: LinearGradient(
