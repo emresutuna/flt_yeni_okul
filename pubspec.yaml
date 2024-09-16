@@ -61,6 +61,7 @@ dependencies:
   syncfusion_flutter_calendar: ^26.2.7
   fluttertoast: ^8.1.2
   persistent_bottom_nav_bar: ^6.2.1
+  shimmer: ^2.0.0
 
 flutter_launcher_icons:
   image_path: "assets/yeni_okul_logo_v2.png"

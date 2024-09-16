@@ -30,62 +30,6 @@ class _CompanyListPageState extends State<CompanyListPage> {
     'Kiwi',
     'Lemon',
   ];
-  List<CompanyModel> companyList = [
-    CompanyModel(
-        id: 1,
-        companyId: 1,
-        companyName: "Esenler Açı Dershanesi",
-        companyDesc: "Esenler Açı Dershanesia",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-    CompanyModel(
-        id: 2,
-        companyId: 2,
-        companyName: "Fatih Sınav Dershanesi",
-        companyDesc: "Fatih sınav açıklama",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-    CompanyModel(
-        id: 3,
-        companyId: 3,
-        companyName: "Güngören Birey Dershanesi",
-        companyDesc: "Güngören Birey Dershanesi",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-    CompanyModel(
-        id: 4,
-        companyId: 4,
-        companyName: "Sultangazi Limit Eğitim Kurumları",
-        companyDesc: "Sultangazi Limit Eğitim Kurumları",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-    CompanyModel(
-        id: 4,
-        companyId: 4,
-        companyName: "Sultangazi Limit Eğitim Kurumları",
-        companyDesc: "Sultangazi Limit Eğitim Kurumları",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-    CompanyModel(
-        id: 4,
-        companyId: 4,
-        companyName: "Sultangazi Limit Eğitim Kurumları",
-        companyDesc: "Sultangazi Limit Eğitim Kurumları",
-        companyTitle: "title",
-        companyPhoto: "assets/company_logo.jpg",
-        companyLocation: [43.12312, 31.2131],
-        teacherList: null),
-  ];
 
   List<String> searchResults = [];
 
@@ -189,7 +133,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                       ),
                       itemBuilder: (context, index) => InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/companyDetail');
+                              Navigator.pushNamed(context, '/companyDetail', arguments: schoolList[index].id);
                             },
                             child: CompanyListItem(
                               icon: schoolList[index].photo ?? "",

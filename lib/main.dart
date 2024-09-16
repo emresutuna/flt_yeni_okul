@@ -5,9 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yeni_okul/repository/SchoolRepository.dart';
 import 'package:yeni_okul/repository/userRepository.dart';
-import 'package:yeni_okul/ui/company/CompanyDetailPage.dart';
+import 'package:yeni_okul/ui/companyDetail/CompanyDetailPage.dart';
 import 'package:yeni_okul/ui/company/CompanyListPage.dart';
 import 'package:yeni_okul/ui/company/bloc/SchoolBloc.dart';
+import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailBloc.dart';
 import 'package:yeni_okul/ui/course/CourseListPage.dart';
 import 'package:yeni_okul/ui/dashboard/dashboard.dart';
 import 'package:yeni_okul/ui/forgotpassword/forgotPasswordEmail.dart';
@@ -17,6 +18,7 @@ import 'package:yeni_okul/ui/login/loginPage.dart';
 import 'package:yeni_okul/ui/login/newPasswordPage.dart';
 import 'package:yeni_okul/ui/onboarding/onboarding.dart';
 import 'package:yeni_okul/ui/payment/PaymentPage.dart';
+import 'package:yeni_okul/ui/profile/bloc/ProfileBloc.dart';
 import 'package:yeni_okul/ui/profile/profile.dart';
 import 'package:yeni_okul/ui/purchasehistory/PurchaseHistoryPage.dart';
 import 'package:yeni_okul/ui/register/registerPage.dart';
@@ -39,11 +41,22 @@ void main() async {
         BlocProvider(
           create: (context) => LoginBloc(userRepository: UserRepository()),
         ),
-        // Add other BlocProviders if needed
+        BlocProvider(
+          create: (context) => SchoolBloc(schoolRepository: SchoolRepository()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SchoolDetailBloc(schoolRepository: SchoolRepository()),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc(userRepository: UserRepository()),
+        ),
+        // Add other BlocProviders as needed
       ],
       child: MyApp(),
     ),
-  );}
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -68,20 +81,26 @@ class MyApp extends StatelessWidget {
           '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
           '/emailOtp': (context) => const EmailOtpPage(),
           '/newPasswordPage': (context) => const NewPasswordPage(),
-          '/companyDetail': (context) => const CompanyDetailPage(),
+          '/companyDetail': (context) => BlocProvider(
+                create: (context) =>
+                    SchoolDetailBloc(schoolRepository: SchoolRepository()),
+                child: CompanyDetailPage(),
+              ),
           '/courseListPage': (context) => const CourseListPage(),
           '/companyList': (context) => BlocProvider(
-            create: (context) => SchoolBloc(schoolRepository: SchoolRepository()),
-            child: CompanyListPage(),
-          ),
+                create: (context) =>
+                    SchoolBloc(schoolRepository: SchoolRepository()),
+                child: CompanyListPage(),
+              ),
           '/paymentPage': (context) => const PaymentPage(),
           '/timeSheetPage': (context) => const TimeSheetPage(),
           '/purchaseHistoryPage': (context) => const PurchaseHistoryPage(),
           '/requestLessonPage': (context) => const RequestLessonPage(),
           '/loginPage': (context) => BlocProvider(
-            create: (context) => LoginBloc(userRepository: UserRepository()),
-            child: LoginPage(),
-          ),
+                create: (context) =>
+                    LoginBloc(userRepository: UserRepository()),
+                child: LoginPage(),
+              ),
         },
         home: const LoginPage());
   }
@@ -97,7 +116,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> listWidget = const [
+  List<Widget> listWidget = [
     DashboardPage(),
     Placeholder(),
     ProfilePage()

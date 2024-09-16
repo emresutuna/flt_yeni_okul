@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:yeni_okul/ui/company/model/SchoolResponse.dart';
+import 'package:yeni_okul/ui/companyDetail/model/SchoolDetailResponse.dart';
 
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
@@ -15,6 +16,25 @@ class SchoolRepository {
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         SchoolResponse schoolResponse = SchoolResponse.fromJson(body);
+
+        return ResultResponse.success(schoolResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<SchoolDetailResponse>> getSchoolById(int schoolId) async {
+    try {
+      final response = await APIService.instance
+          .request('$schoolDetail/$schoolId', DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        SchoolDetailResponse schoolResponse = SchoolDetailResponse.fromJson(body);
 
         return ResultResponse.success(schoolResponse);
       } else {
