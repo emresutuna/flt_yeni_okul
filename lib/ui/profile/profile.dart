@@ -4,6 +4,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:yeni_okul/ui/profile/bloc/ProfileEvent.dart';
 import 'package:yeni_okul/ui/profile/bloc/ProfileState.dart';
 import 'package:yeni_okul/util/HexColor.dart';
+import 'package:yeni_okul/util/SharedPrefHelper.dart';
 import 'package:yeni_okul/util/YOColors.dart';
 import 'package:yeni_okul/widgets/YOText.dart';
 import 'bloc/ProfileBloc.dart';
@@ -132,8 +133,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           profileItem("SSS", onTap: () {}),
                           profileItem("Yardım Merkezi", onTap: () {}),
                           profileItem("Hesabımı Sil", onTap: () {}),
-                          profileItem("Çıkış Yap",
-                              onTap: () {}, color: color6, isLastItem: true),
+                          profileItem("Çıkış Yap", onTap: () {
+                            clearSharedPreferences();
+                            refreshApp();
+                          }, color: color6, isLastItem: true),
                         ],
                       ),
                     ),

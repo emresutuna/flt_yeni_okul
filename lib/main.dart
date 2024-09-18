@@ -1,40 +1,26 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yeni_okul/repository/SchoolRepository.dart';
 import 'package:yeni_okul/repository/userRepository.dart';
-import 'package:yeni_okul/ui/companyDetail/CompanyDetailPage.dart';
-import 'package:yeni_okul/ui/company/CompanyListPage.dart';
 import 'package:yeni_okul/ui/company/bloc/SchoolBloc.dart';
 import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailBloc.dart';
-import 'package:yeni_okul/ui/course/CourseListPage.dart';
 import 'package:yeni_okul/ui/dashboard/dashboard.dart';
-import 'package:yeni_okul/ui/forgotpassword/forgotPasswordEmail.dart';
-import 'package:yeni_okul/ui/login/emailOtpPage.dart';
 import 'package:yeni_okul/ui/login/loginBloc/LoginBloc.dart';
-import 'package:yeni_okul/ui/login/loginPage.dart';
-import 'package:yeni_okul/ui/login/newPasswordPage.dart';
-import 'package:yeni_okul/ui/onboarding/onboarding.dart';
-import 'package:yeni_okul/ui/payment/PaymentPage.dart';
 import 'package:yeni_okul/ui/profile/bloc/ProfileBloc.dart';
 import 'package:yeni_okul/ui/profile/profile.dart';
-import 'package:yeni_okul/ui/purchasehistory/PurchaseHistoryPage.dart';
-import 'package:yeni_okul/ui/register/registerPage.dart';
-import 'package:yeni_okul/ui/register/userRolePage.dart';
-import 'package:yeni_okul/ui/requestlesson/RequestLessonPage.dart';
-import 'package:yeni_okul/ui/timesheet/TimeSheetPage.dart';
 import 'package:yeni_okul/util/SharedPref.dart';
 import 'package:yeni_okul/util/YOColors.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:yeni_okul/util/app_routes.dart';
+import 'package:yeni_okul/util/constants.dart';
 
 SharedPreferences? sharedPreferences;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PreferenceUtils.init();
-  await Firebase.initializeApp();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -53,56 +39,74 @@ void main() async {
         ),
         // Add other BlocProviders as needed
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    String userToken = PreferenceUtils.getString("auth_token");
+  State<MyApp> createState() => _MyAppState();
+}
 
-    return MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+class _MyAppState extends State<MyApp> {
+  String? initialRoute;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingAndToken();
+  }
+
+  Future<void> _checkOnboardingAndToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
+
+    String userToken = prefs.getString('auth_token') ?? "";
+
+    if (isFirstTime) {
+      setState(() {
+        initialRoute = '/onboardingPage';
+      });
+      prefs.setBool('isFirstTime', false);
+    } else if (userToken.isEmpty) {
+      // Token yoksa login sayfasına git
+      setState(() {
+        initialRoute = '/loginPage';
+      });
+    } else {
+      // Token varsa ana sayfaya git
+      setState(() {
+        initialRoute = '/mainPage';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (initialRoute == null) {
+      return const MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
-        initialRoute: userToken.isEmpty ? "/loginPage" : "/mainPage",
-        routes: {
-          '/onboardingPage': (context) => const OnboardingPage(),
-          '/mainPage': (context) => const MyHomePage(title: ""),
-          '/userRolePage': (context) => const UserRolePage(),
-          '/registerPage': (context) => const RegisterPage(),
-          '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
-          '/emailOtp': (context) => const EmailOtpPage(),
-          '/newPasswordPage': (context) => const NewPasswordPage(),
-          '/companyDetail': (context) => BlocProvider(
-                create: (context) =>
-                    SchoolDetailBloc(schoolRepository: SchoolRepository()),
-                child: CompanyDetailPage(),
-              ),
-          '/courseListPage': (context) => const CourseListPage(),
-          '/companyList': (context) => BlocProvider(
-                create: (context) =>
-                    SchoolBloc(schoolRepository: SchoolRepository()),
-                child: CompanyListPage(),
-              ),
-          '/paymentPage': (context) => const PaymentPage(),
-          '/timeSheetPage': (context) => const TimeSheetPage(),
-          '/purchaseHistoryPage': (context) => const PurchaseHistoryPage(),
-          '/requestLessonPage': (context) => const RequestLessonPage(),
-          '/loginPage': (context) => BlocProvider(
-                create: (context) =>
-                    LoginBloc(userRepository: UserRepository()),
-                child: LoginPage(),
-              ),
-        },
-        home: const LoginPage());
+      );
+    }
+
+    return GetMaterialApp(
+      title: AppStrings.appName,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      initialRoute: initialRoute,
+      routes: AppRoutes.routes,
+    );
   }
 }
 
@@ -117,9 +121,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> listWidget = [
-    DashboardPage(),
-    Placeholder(),
-    ProfilePage()
+    const DashboardPage(),
+    const Placeholder(),
+    const ProfilePage()
   ];
 
   PersistentTabController _controller =
@@ -139,19 +143,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.home),
-        title: ("Home"),
+        title: (AppStrings.homeTitle),
         activeColorPrimary: color5,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.search),
-        title: ("Search"),
+        title: (AppStrings.searchTitle),
         activeColorPrimary: color5,
         inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.person),
-        title: ("Profile"),
+        title: (AppStrings.profileTitle),
         activeColorPrimary: color5,
         inactiveColorPrimary: Colors.grey,
       ),

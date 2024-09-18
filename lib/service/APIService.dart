@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart'; // For kDebugMode
-import 'package:shared_preferences/shared_preferences.dart'; // For SharedPreferences
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'dart:io';
 import 'dart:convert'; // For JSON encoding
 
@@ -43,6 +43,7 @@ class APIService {
         },
       ),
     );
+    dio.interceptors.add(ChuckerDioInterceptor());
 
     // Add interceptors
     dio.interceptors.add(InterceptorsWrapper(
