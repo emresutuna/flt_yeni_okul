@@ -7,6 +7,7 @@ import 'package:yeni_okul/ui/login/model/UserLoginModel.dart';
 import 'package:yeni_okul/util/YOColors.dart';
 import 'package:yeni_okul/widgets/PrimaryButton.dart';
 import 'package:yeni_okul/widgets/YOText.dart';
+import '../../util/SharedPrefHelper.dart';
 import '../../widgets/YoHexText.dart';
 import 'loginBloc/LoginBloc.dart';
 import 'loginBloc/LoginEvent.dart';
@@ -28,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Sayfaya geri dönüldüğünde de kullanıcı verilerini sıfırla
     loginValidation.emailController.clear();
     loginValidation.passwordController.clear();
   }
@@ -45,8 +45,10 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacementNamed(context, '/mainPage');
             } else if (state is LoginError) {
               // Show error message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
+              Get.snackbar(
+                "Hata", "Kullanıcı adı veya şifre yanlış",
+                colorText: Colors.white,
+                backgroundColor: Colors.red,
               );
             }
           },
@@ -89,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                       TextField(
                         controller: loginValidation.passwordController,
                         cursorColor: color1,
+                        obscureText: true,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           hintText: 'Şifre',
@@ -122,6 +125,8 @@ class _LoginPageState extends State<LoginPage> {
                       PrimaryButton(
                         text: "Giriş Yap",
                         onPress: () {
+                          saveToken("3|qbnDaTS6ZN3aObipML6qq8ZE9WyhlPlKqfUn7HvT235efa9c");
+
                           if (loginValidation.loginValid()) {
                             context.read<LoginBloc>().add(
                               UserLogin(

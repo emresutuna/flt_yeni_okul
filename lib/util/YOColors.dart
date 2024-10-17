@@ -19,6 +19,15 @@ Color color4 = HexColor("#F6F6F6");
 Color color5 = HexColor("#FD275F");
 Color color6 = HexColor("#FF3A44");
 
+Color renkMatematik = HexColor("#4A90E2");
+Color renkTurkce = HexColor("#FFA500");
+Color renkFenBilgisi = HexColor("#6DD6A7");
+Color renkTarih = HexColor("#E94E77");
+Color renkCografya = HexColor("#FFD700");
+Color renkKimya = HexColor("#8E44AD");
+Color renkBiyoloji = HexColor("#F39C12");
+Color renkFizik = HexColor("#FF6F61");
+
 TextStyle styleBlack10Regular = GoogleFonts.notoSans(
     fontSize: 10, fontWeight: FontWeight.normal, color: color1);
 TextStyle styleBlack12Regular = GoogleFonts.notoSans(

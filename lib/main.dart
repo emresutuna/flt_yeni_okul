@@ -1,3 +1,4 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:yeni_okul/ui/login/loginBloc/LoginBloc.dart';
 import 'package:yeni_okul/ui/profile/bloc/ProfileBloc.dart';
 import 'package:yeni_okul/ui/profile/profile.dart';
 import 'package:yeni_okul/util/SharedPref.dart';
+import 'package:yeni_okul/util/SharedPrefHelper.dart';
 import 'package:yeni_okul/util/YOColors.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:yeni_okul/util/app_routes.dart';
@@ -57,7 +59,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    saveToken("3|qbnDaTS6ZN3aObipML6qq8ZE9WyhlPlKqfUn7HvT235efa9c");
+
     _checkOnboardingAndToken();
+
   }
 
   Future<void> _checkOnboardingAndToken() async {
@@ -73,12 +78,10 @@ class _MyAppState extends State<MyApp> {
       });
       prefs.setBool('isFirstTime', false);
     } else if (userToken.isEmpty) {
-      // Token yoksa login sayfasına git
       setState(() {
         initialRoute = '/loginPage';
       });
     } else {
-      // Token varsa ana sayfaya git
       setState(() {
         initialRoute = '/mainPage';
       });
@@ -98,6 +101,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     return GetMaterialApp(
+      navigatorObservers: [ChuckerFlutter.navigatorObserver],
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

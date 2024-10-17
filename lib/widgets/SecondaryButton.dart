@@ -1,40 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yeni_okul/util/YOColors.dart';
+
+import '../util/HexColor.dart';
 import 'YoHexText.dart';
 
 class SecondaryButton extends StatelessWidget {
-  final double? width;
-  final double? height;
-  final double? borderRadius;
   final String text;
-  final String? textColor;
   final VoidCallback onPress;
 
-  const SecondaryButton(
-      {super.key,
-      required this.width,
-      required this.height,
-      required this.borderRadius,
-      required this.text,
-      required this.textColor,
-      required this.onPress});
+  const SecondaryButton({super.key, required this.text, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? double.infinity,
-      height: height ?? 50,
+      width: double.infinity,
+      height: 50,
       child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius ?? 10),
+              borderRadius: BorderRadius.circular(10),
             ),
             backgroundColor: Colors.transparent,
             elevation: 0,
             side: BorderSide(
               width: 1.0,
-              color: color5,
+              color: color5, // Border color
             ),
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
             textStyle: GoogleFonts.notoSans(
@@ -48,7 +39,7 @@ class SecondaryButton extends StatelessWidget {
             size: 14,
             text: text,
             fontWeight: FontWeight.w600,
-            color: "#FD275F",
+            color: "#FD275F", // Text color
           )),
     );
   }

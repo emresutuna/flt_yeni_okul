@@ -1,5 +1,5 @@
 class LoginResponse {
-  String? status;
+  bool? status;
   String? token;
   User? user;
 

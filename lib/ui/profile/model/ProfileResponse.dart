@@ -1,5 +1,5 @@
 class ProfileResponse {
-  String? status;
+  bool? status;
   User? user;
 
   ProfileResponse({this.status, this.user});

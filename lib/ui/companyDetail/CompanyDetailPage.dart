@@ -19,8 +19,8 @@ class CompanyDetailPage extends StatefulWidget {
 
 class _CompanyDetailPageState extends State<CompanyDetailPage> {
   late int companyId;
-  double _originLatitude = 41.0387173;
-  double _originLongitude = 28.8824411;
+  final double _originLatitude = 41.0387173;
+  final double _originLongitude = 28.8824411;
   List<Teachers> teacherList = [];
 
   @override
@@ -104,7 +104,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16, top: 24),
+                    padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
                     child: Text(
                       state.schoolResponse.data?.description ?? "",
                       style: styleBlack14Bold,
@@ -146,7 +146,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                                   )
                                 ],
                               ),
-                              Icon(Icons.arrow_circle_right_outlined)
+                              const Icon(Icons.arrow_circle_right_outlined)
                             ],
                           ),
                         ),
@@ -215,7 +215,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                                 },
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             )
                           ],
@@ -228,7 +228,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
         } else if (state is SchoolDetailError) {
           return Center(child: Text('Error: ${state.error}'));
         } else {
-          return Center(child: Text('No courses available'));
+          return const Center(child: Text('No courses available'));
         }
       }),
     );

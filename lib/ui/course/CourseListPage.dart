@@ -1,12 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/ui/company/model/CompanyModel.dart';
-import 'package:yeni_okul/ui/course/model/CourseModel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:yeni_okul/ui/course/bloc/LessonBloc.dart';
+import 'package:yeni_okul/ui/course/bloc/LessonEvent.dart';
+import 'package:yeni_okul/ui/course/bloc/LessonState.dart';
 import 'package:yeni_okul/widgets/CourseListItem.dart';
+import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/SearchBar.dart';
 import '../../widgets/YOText.dart';
+import 'model/CourseModel.dart';
 
 class CourseListPage extends StatefulWidget {
   const CourseListPage({super.key});
@@ -16,59 +19,36 @@ class CourseListPage extends StatefulWidget {
 }
 
 class _CourseListPageState extends State<CourseListPage> {
-  List<String> data = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grapes',
-    'Honeydew',
-    'Kiwi',
-    'Lemon',
-  ];
-  List<CourseModel> courseList = [
-    CourseModel(
-        id: 1,
-        courseId: 1,
-        courseName: "Köklü Sayılar",
-        courseTitle: "Köklü Sayılar",
-        courseDesc: "Köklü sayılar ders anlatımı",
-        courseType: "Matematik",
-        date: "23.04.23",
-        startDate: "24.04.23",
-        endDate: "24.04.23",
-        hasPackageCourse: false,
-        time: "14:00",
-        quota: "5 kişi",
-        price: "100₺",
-        location: "Esenler/İstanbul",
-        teacher: Teacher(
-            id: 1,
-            teacherName: "Tamer",
-            teacherSurname: "Yüksel",
-            teacherBranch: "Matematik"),
-        company: CompanyModel(
-            id: 1,
-            companyId: 1,
-            companyName: "Esenler Açı Dershanesi",
-            companyDesc: "Esenler Açı Dershanesia",
-            companyTitle: "title",
-            companyPhoto: "assets/company_logo.jpg",
-            companyLocation: [43.12312, 31.2131],
-            teacherList: null))
-  ];
+  late List<Course> courseList;
 
-  List<String> searchResults = [];
+  List<Course> searchResults = [];
 
   void onQueryChanged(String query) {
+    //servis query isteği at
     setState(() {
-      searchResults = data
-          .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+      searchResults = courseList
+          .where(
+              (item) => item.quota != 0)
           .toList();
     });
   }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<LessonBloc>().add(FetchLesson());
+  }
+
+  List<Color> lessonColors = [
+    HexColor("#4A90E2"), // Blue
+    HexColor("#FFA500"), // Orange
+    HexColor("#6DD6A7"), // Light Green
+    HexColor("#E94E77"), // Red
+    HexColor("#FFD700"), // Yellow
+    HexColor("#8E44AD"), // Purple
+    HexColor("#F39C12"), // Pink
+    HexColor("#FF6F61"), // Gray
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -103,45 +83,73 @@ class _CourseListPageState extends State<CourseListPage> {
                 textAlign: TextAlign.start,
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                    flex: 5,
-                    child: YoSearchBar(onQueryChanged: onQueryChanged)),
-                Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () {
-                      showCompanyFilterBottomSheet(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      margin: const EdgeInsets.only(left: 0, right: 16),
-                      height: 45,
-                      width: 45,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: color6),
-                      child: Padding(
-                        padding: const EdgeInsets.all(3.0),
-                        child: Image.asset(
-                          "assets/ic_filter.png",
-                          fit: BoxFit.contain,
-                        ),
+            BlocBuilder<LessonBloc, LessonState>(builder: (context, state) {
+              if (state is LessonStateLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is LessonStateSuccess) {
+                courseList = state.lessonResponse.data?.courses ?? [];
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                              flex: 5,
+                              child:
+                                  YoSearchBar(onQueryChanged: onQueryChanged)),
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: () {
+                                showCompanyFilterBottomSheet(context);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                margin:
+                                    const EdgeInsets.only(left: 0, right: 16),
+                                height: 45,
+                                width: 45,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: color6),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    "assets/ic_filter.png",
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
+                      Expanded(
+                          child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: courseList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, '/courseDetail', arguments:courseList[index].id);
+
+                            },
+                            child: CourseListItem(
+                              courseModel: courseList[index],
+                              colors: HexColor(courseList[index].lesson.color),
+                            ),
+                          );
+                        },
+                      )),
+                    ],
                   ),
-                )
-              ],
-            ),
-            Expanded(
-                child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int index) {
-                return CourseListItem();
-              },
-            )),
+                );
+              } else if (state is LessonStateError) {
+                return Center(child: Text('Error: ${state.error}'));
+              } else {
+                return Center(child: Text('No courses available'));
+              }
+            }),
           ],
         ),
       ),

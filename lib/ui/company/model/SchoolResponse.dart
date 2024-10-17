@@ -1,5 +1,5 @@
 class SchoolResponse {
-  String? status;
+  bool? status;
   PageData? data;
 
   SchoolResponse({this.status, this.data});
