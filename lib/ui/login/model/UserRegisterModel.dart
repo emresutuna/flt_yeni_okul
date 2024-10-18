@@ -1,4 +1,5 @@
-import 'package:yeni_okul/ui/login/UserRole.dart';
+
+import '../UserRole.dart';
 
 class UserRegisterModel {
   String id;

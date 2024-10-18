@@ -1,4 +1,4 @@
-name: yeni_okul
+name: baykurs
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -118,6 +118,12 @@ flutter:
     - assets/company_logo2.png
     - assets/ic_success_payment.png
     - assets/ic_error_payment.png
+    - assets/ic_time_sheet.png
+    - assets/ic_find_course.png
+    - assets/ic_find_school.png
+    - assets/ic_request_course.png
+    - assets/ic_training_coach.png
+    - assets/ic_trial_club.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

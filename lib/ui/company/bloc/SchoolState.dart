@@ -1,4 +1,5 @@
-import 'package:yeni_okul/ui/company/model/SchoolResponse.dart';
+
+import '../model/SchoolResponse.dart';
 
 abstract class SchoolState {}
 

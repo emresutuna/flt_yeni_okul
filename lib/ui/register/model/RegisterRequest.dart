@@ -13,7 +13,6 @@ class RegisterRequest {
     required this.password,
   });
 
-  // JSON'e çevirme fonksiyonu
   Map<String, dynamic> toJson() {
     return {
       'name': name,

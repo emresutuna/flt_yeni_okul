@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yeni_okul/util/YOColors.dart';
 
 class LoginValidation extends GetxController {
-  // TextEditingController'ları Rx yapmayın
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // Reaktif boolean değişkenler
   RxBool isEmailValid = true.obs;
   RxBool isPasswordValid = true.obs;
 

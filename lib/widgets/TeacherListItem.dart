@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
-
+import '../util/HexColor.dart';
+import '../util/YOColors.dart';
+import 'YOText.dart';
 class TeacherListItem extends StatelessWidget {
   final String teacherName;
   final String teacherBranch;

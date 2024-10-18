@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'package:yeni_okul/service/apiUrls.dart';
-import 'package:yeni_okul/ui/login/model/LoginRequest.dart';
-import 'package:yeni_okul/ui/login/model/LoginResponse.dart';
-import 'package:yeni_okul/ui/profile/model/ProfileResponse.dart';
 
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
+import '../service/apiUrls.dart';
+import '../ui/login/model/LoginRequest.dart';
+import '../ui/login/model/LoginResponse.dart';
+import '../ui/profile/model/ProfileResponse.dart';
 
 class UserRepository {
   Future<ResultResponse<LoginResponse>> postLogin(LoginRequest request) async {

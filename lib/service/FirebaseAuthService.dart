@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:yeni_okul/util/state.dart';
+
+import '../util/state.dart';
 
 class FirebaseAuthService {
   final firebaseAuthService = FirebaseAuth.instance;

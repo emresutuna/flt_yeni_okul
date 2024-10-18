@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
-import 'package:yeni_okul/widgets/YoHexText.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+
+import '../../util/HexColor.dart';
+import '../../widgets/YOText.dart';
+import '../../widgets/YoHexText.dart';
 
 class EmailOtpPage extends StatefulWidget {
   const EmailOtpPage({super.key});

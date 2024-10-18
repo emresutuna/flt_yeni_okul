@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailBloc.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailEvent.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailState.dart';
-import 'package:yeni_okul/ui/companyDetail/model/SchoolDetailResponse.dart';
-import 'package:yeni_okul/widgets/ExpandedWidget.dart';
-import 'package:yeni_okul/widgets/TeacherListItem.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/ExpandedWidget.dart';
+import '../../widgets/TeacherListItem.dart';
 import '../../widgets/YOText.dart';
+import 'bloc/SchoolDetailBloc.dart';
+import 'bloc/SchoolDetailEvent.dart';
+import 'bloc/SchoolDetailState.dart';
+import 'model/SchoolDetailResponse.dart';
 
 class CompanyDetailPage extends StatefulWidget {
   const CompanyDetailPage({super.key});

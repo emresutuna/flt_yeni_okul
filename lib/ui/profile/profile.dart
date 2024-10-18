@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:yeni_okul/ui/profile/bloc/ProfileEvent.dart';
-import 'package:yeni_okul/ui/profile/bloc/ProfileState.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/util/SharedPrefHelper.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
+import '../../util/HexColor.dart';
+import '../../util/SharedPrefHelper.dart';
+import '../../util/YOColors.dart';
+import '../../widgets/YOText.dart';
 import 'bloc/ProfileBloc.dart';
+import 'bloc/ProfileEvent.dart';
+import 'bloc/ProfileState.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

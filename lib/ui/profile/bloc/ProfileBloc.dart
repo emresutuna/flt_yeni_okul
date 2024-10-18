@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:yeni_okul/repository/userRepository.dart';
-import 'package:yeni_okul/ui/profile/bloc/ProfileEvent.dart';
-import 'package:yeni_okul/ui/profile/bloc/ProfileState.dart';
+
+import '../../../repository/userRepository.dart';
+import 'ProfileEvent.dart';
+import 'ProfileState.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository;

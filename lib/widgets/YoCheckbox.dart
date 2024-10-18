@@ -1,9 +1,5 @@
-import 'dart:async';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/util/SimpleStream.dart';
-
+import '../util/SimpleStream.dart';
 import '../util/YOColors.dart';
 import 'YOText.dart';
 

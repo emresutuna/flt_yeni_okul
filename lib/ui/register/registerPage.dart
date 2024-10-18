@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/ui/login/UserRole.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/util/SimpleStream.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-import 'package:yeni_okul/widgets/PrimaryButton.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
-import 'package:yeni_okul/widgets/YoCheckbox.dart';
-import 'package:yeni_okul/widgets/YoHexText.dart';
-import 'package:flutter_text_box/flutter_text_box.dart';
+
+import '../../util/SimpleStream.dart';
+import '../../util/YOColors.dart';
+import '../../widgets/PrimaryButton.dart';
+import '../../widgets/YOText.dart';
+import '../login/UserRole.dart';
+
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

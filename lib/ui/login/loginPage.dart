@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/ui/login/model/LoginValidation.dart';
-import 'package:yeni_okul/ui/login/model/UserLoginModel.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-import 'package:yeni_okul/widgets/PrimaryButton.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
 import '../../util/SharedPrefHelper.dart';
+import '../../util/YOColors.dart';
+import '../../widgets/PrimaryButton.dart';
+import '../../widgets/YOText.dart';
 import '../../widgets/YoHexText.dart';
 import 'loginBloc/LoginBloc.dart';
 import 'loginBloc/LoginEvent.dart';
 import 'loginBloc/LoginState.dart';
 import 'model/LoginRequest.dart';
+import 'model/LoginValidation.dart';
+import 'model/UserLoginModel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

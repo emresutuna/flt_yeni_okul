@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:yeni_okul/repository/lectureRepository.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonEvent.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonState.dart';
+
+import '../../../repository/lectureRepository.dart';
+import 'LessonEvent.dart';
+import 'LessonState.dart';
+
 
 class LessonBloc extends Bloc<LessonEvent, LessonState> {
   final LectureRepository lectureRepository;

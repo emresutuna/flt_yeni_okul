@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:yeni_okul/repository/SchoolRepository.dart';
 
+import '../../../repository/SchoolRepository.dart';
 import 'SchoolEvent.dart';
 import 'SchoolState.dart';
 

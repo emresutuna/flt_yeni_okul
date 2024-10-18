@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:yeni_okul/ui/login/loginBloc/LoginEvent.dart';
-import 'package:yeni_okul/ui/login/loginBloc/LoginState.dart';
-import 'package:yeni_okul/util/SharedPrefHelper.dart';
+
 
 import '../../../repository/userRepository.dart';
+import '../../../util/SharedPrefHelper.dart';
+import 'LoginEvent.dart';
+import 'LoginState.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;

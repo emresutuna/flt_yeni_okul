@@ -1,6 +1,7 @@
+import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
-import 'package:yeni_okul/util/HexColor.dart';
+import 'package:baykurs/util/HexColor.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -251,7 +252,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
         footerBuilder: (context, dragDistance, pagesLength, setIndex) {
           return DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.grey,
+              color: Colors.white,
               border: Border.all(
                 width: 1.0,
                 color: Colors.black,
@@ -259,6 +260,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
             child: ColoredBox(
               color: Colors.white,
+
               child: Padding(
                 padding: const EdgeInsets.all(45.0),
                 child: Row(
@@ -268,9 +270,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       netDragPercent: dragDistance,
                       pagesLength: pagesLength,
                       indicator: Indicator(
+                        activeIndicator: ActiveIndicator(color: color5),
                         indicatorDesign: IndicatorDesign.polygon(
                           polygonDesign: PolygonDesign(
-                              polygon: DesignType.polygon_diamond,
+                              polygon: DesignType.polygon_circle,
                               polygonRadius: 10,
                               polygonSpacer: 30),
                         ),

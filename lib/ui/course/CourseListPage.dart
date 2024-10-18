@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonBloc.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonEvent.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonState.dart';
-import 'package:yeni_okul/widgets/CourseListItem.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CompanyListFilterBottomSheet.dart';
+import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
-import '../../widgets/YOText.dart';
+import 'bloc/LessonBloc.dart';
+import 'bloc/LessonEvent.dart';
+import 'bloc/LessonState.dart';
 import 'model/CourseModel.dart';
 
 class CourseListPage extends StatefulWidget {
@@ -39,17 +39,6 @@ class _CourseListPageState extends State<CourseListPage> {
     context.read<LessonBloc>().add(FetchLesson());
   }
 
-  List<Color> lessonColors = [
-    HexColor("#4A90E2"), // Blue
-    HexColor("#FFA500"), // Orange
-    HexColor("#6DD6A7"), // Light Green
-    HexColor("#E94E77"), // Red
-    HexColor("#FFD700"), // Yellow
-    HexColor("#8E44AD"), // Purple
-    HexColor("#F39C12"), // Pink
-    HexColor("#FF6F61"), // Gray
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +48,7 @@ class _CourseListPageState extends State<CourseListPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 8),
+              padding: const EdgeInsets.only(left: 16.0, top: 24),
               child: Row(
                 children: [
                   InkWell(
@@ -85,7 +74,7 @@ class _CourseListPageState extends State<CourseListPage> {
             ),
             BlocBuilder<LessonBloc, LessonState>(builder: (context, state) {
               if (state is LessonStateLoading) {
-                return const Center(child: CircularProgressIndicator());
+                return const SkeletonLoading();
               } else if (state is LessonStateSuccess) {
                 courseList = state.lessonResponse.data?.courses ?? [];
                 return Expanded(
@@ -155,59 +144,54 @@ class _CourseListPageState extends State<CourseListPage> {
       ),
     );
   }
+}
 
-  Widget courseItem(String firstIcon, String firstLabel, String secondIcon,
-      String secondLabel) {
+
+class SkeletonLoading extends StatelessWidget {
+  const SkeletonLoading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          courseLabel(firstIcon, firstLabel),
-          courseLabel(secondIcon, secondLabel),
-        ],
-      ),
-    );
-  }
-
-  Widget courseLabel(String icon, String label) {
-    return Flexible(
-      flex: 1,
-      fit: FlexFit.tight,
-      child: Wrap(
-        spacing: 12,
-        alignment: WrapAlignment.end,
-        clipBehavior: Clip.antiAlias,
-        crossAxisAlignment: WrapCrossAlignment.end,
-        direction: Axis.horizontal,
-        verticalDirection: VerticalDirection.up,
-        runAlignment: WrapAlignment.end,
-        children: [
-          const SizedBox(
-            width: 4,
-          ),
-          ListTile(
-            isThreeLine: false,
-            minLeadingWidth: 0,
-            minVerticalPadding: 0,
-            dense: true,
-            contentPadding: EdgeInsets.zero,
-            visualDensity: const VisualDensity(vertical: -3),
-            leading: Image.asset(icon),
-            titleAlignment: ListTileTitleAlignment.center,
-            title: Transform.translate(
-              offset: const Offset(-32, 0),
-              child: YoText(
-                text: label,
-                size: 12,
-                fontWeight: FontWeight.w600,
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height / 4.8,
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(10), // Kenarlara 10px radius
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // İçindeki shimmer'ları aralıklı dağıtmak için
+          children: [
+            // Üç tane üst üste shimmer
+            for (int i = 0; i < 3; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0), // Her bir shimmer arasında biraz boşluk
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2, // Genişlik daha belirgin olsun
+                    height: 20, // Her shimmer 20px yükseklik
+                    color: Colors.grey[400],
+                  ),
+                ),
+              ),
+            // Altta, sağdan ve soldan margin uygulanmış shimmer
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0), // Sağ ve soldan 16px margin
+              child: Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  width: double.infinity, // Ekranın tamamına genişlik
+                  height: 20, // Yükseklik
+                  color: Colors.grey[400],
+                ),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
-    );
-  }
+    );  }
 }

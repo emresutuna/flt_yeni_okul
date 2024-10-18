@@ -1,8 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
+import '../util/HexColor.dart';
+import '../util/YOColors.dart';
+import 'YOText.dart';
+
 
 String? selectedValue;
 
@@ -44,7 +46,7 @@ showCompanyFilterBottomSheet(BuildContext context) {
       context: context,
       builder: (context) {
         return Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))
           ),

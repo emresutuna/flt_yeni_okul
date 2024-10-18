@@ -1,22 +1,23 @@
+import 'package:baykurs/repository/SchoolRepository.dart';
+import 'package:baykurs/repository/userRepository.dart';
+import 'package:baykurs/ui/company/bloc/SchoolBloc.dart';
+import 'package:baykurs/ui/companyDetail/bloc/SchoolDetailBloc.dart';
+import 'package:baykurs/ui/dashboard/dashboard.dart';
+import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
+import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
+import 'package:baykurs/ui/profile/profile.dart';
+import 'package:baykurs/util/SharedPref.dart';
+import 'package:baykurs/util/SharedPrefHelper.dart';
+import 'package:baykurs/util/YOColors.dart';
+import 'package:baykurs/util/app_routes.dart';
+import 'package:baykurs/util/constants.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:yeni_okul/repository/SchoolRepository.dart';
-import 'package:yeni_okul/repository/userRepository.dart';
-import 'package:yeni_okul/ui/company/bloc/SchoolBloc.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailBloc.dart';
-import 'package:yeni_okul/ui/dashboard/dashboard.dart';
-import 'package:yeni_okul/ui/login/loginBloc/LoginBloc.dart';
-import 'package:yeni_okul/ui/profile/bloc/ProfileBloc.dart';
-import 'package:yeni_okul/ui/profile/profile.dart';
-import 'package:yeni_okul/util/SharedPref.dart';
-import 'package:yeni_okul/util/SharedPrefHelper.dart';
-import 'package:yeni_okul/util/YOColors.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:yeni_okul/util/app_routes.dart';
-import 'package:yeni_okul/util/constants.dart';
+
 
 SharedPreferences? sharedPreferences;
 

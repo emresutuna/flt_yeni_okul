@@ -1,4 +1,5 @@
-import 'package:yeni_okul/ui/login/model/LoginResponse.dart';
+
+import '../model/LoginResponse.dart';
 
 abstract class LoginState {}
 

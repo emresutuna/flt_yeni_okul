@@ -1,4 +1,5 @@
-import 'package:yeni_okul/ui/profile/model/ProfileResponse.dart';
+
+import '../model/ProfileResponse.dart';
 
 abstract class ProfileState {}
 

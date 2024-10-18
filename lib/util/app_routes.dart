@@ -1,35 +1,36 @@
+import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
+import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yeni_okul/repository/SchoolRepository.dart';
-import 'package:yeni_okul/repository/lectureRepository.dart';
-import 'package:yeni_okul/repository/userRepository.dart';
-import 'package:yeni_okul/ui/companyDetail/CompanyDetailPage.dart';
-import 'package:yeni_okul/ui/company/CompanyListPage.dart';
-import 'package:yeni_okul/ui/company/bloc/SchoolBloc.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailBloc.dart';
-import 'package:yeni_okul/ui/course/CourseListPage.dart';
-import 'package:yeni_okul/ui/course/bloc/LessonBloc.dart';
-import 'package:yeni_okul/ui/coursedetail/CourseDetailPage.dart';
-import 'package:yeni_okul/ui/forgotpassword/forgotPasswordEmail.dart';
-import 'package:yeni_okul/ui/login/emailOtpPage.dart';
-import 'package:yeni_okul/ui/login/loginBloc/LoginBloc.dart';
-import 'package:yeni_okul/ui/login/loginPage.dart';
-import 'package:yeni_okul/ui/login/newPasswordPage.dart';
-import 'package:yeni_okul/ui/onboarding/onboarding.dart';
-import 'package:yeni_okul/ui/payment/PaymentPreviewPage.dart';
-import 'package:yeni_okul/ui/purchasehistory/PurchaseHistoryPage.dart';
-import 'package:yeni_okul/ui/register/registerPage.dart';
-import 'package:yeni_okul/ui/register/userRolePage.dart';
-import 'package:yeni_okul/ui/requestlesson/RequestLessonPage.dart';
-import 'package:yeni_okul/ui/timesheet/TimeSheetPage.dart';
+
 
 import '../main.dart';
+import '../repository/SchoolRepository.dart';
+import '../repository/lectureRepository.dart';
+import '../repository/userRepository.dart';
+import '../ui/company/CompanyListPage.dart';
+import '../ui/company/bloc/SchoolBloc.dart';
+import '../ui/companyDetail/CompanyDetailPage.dart';
+import '../ui/companyDetail/bloc/SchoolDetailBloc.dart';
+import '../ui/course/CourseListPage.dart';
+import '../ui/course/bloc/LessonBloc.dart';
+import '../ui/coursedetail/CourseDetailPage.dart';
+import '../ui/forgotpassword/forgotPasswordEmail.dart';
+import '../ui/login/emailOtpPage.dart';
+import '../ui/login/loginBloc/LoginBloc.dart';
+import '../ui/login/loginPage.dart';
+import '../ui/login/newPasswordPage.dart';
+import '../ui/onboarding/onboarding.dart';
+import '../ui/payment/PaymentResultPage.dart';
+import '../ui/purchasehistory/PurchaseHistoryPage.dart';
+import '../ui/register/registerPage.dart';
+import '../ui/requestlesson/RequestLessonPage.dart';
+import '../ui/timesheet/TimeSheetPage.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
         '/onboardingPage': (context) => const OnboardingPage(),
         '/mainPage': (context) => const MyHomePage(title: ""),
-        '/userRolePage': (context) => const UserRolePage(),
         '/registerPage': (context) => const RegisterPage(),
         '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
         '/emailOtp': (context) => const EmailOtpPage(),
@@ -46,7 +47,7 @@ class AppRoutes {
             ),
     '/courseDetail': (context) => BlocProvider(
       create: (context) =>
-          LessonBloc(lectureRepository: LectureRepository()),
+          CourseDetailBloc(lectureRepository: LectureRepository()),
       child: const CourseDetailPage(),
     ),
         '/companyList': (context) => BlocProvider(
@@ -54,7 +55,8 @@ class AppRoutes {
                   SchoolBloc(schoolRepository: SchoolRepository()),
               child: const CompanyListPage(),
             ),
-        '/paymentPreviewPage': (context) => const PaymentPreviewPage(),
+        '/paymentResultPage': (context) => const PaymentResultPage(),
+        '/paymentPreview': (context) => const PaymentPreviewPage(),
         '/timeSheetPage': (context) => const TimeSheetPage(),
         '/purchaseHistoryPage': (context) => const PurchaseHistoryPage(),
         '/requestLessonPage': (context) =>  RequestLessonPage(),

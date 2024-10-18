@@ -1,5 +1,7 @@
 
-import 'package:yeni_okul/ui/course/model/CourseModel.dart';
+
+import 'package:baykurs/ui/coursedetail/model/CourseDetailResponseModel.dart';
+
 
 abstract class CourseDetailState {}
 
@@ -7,7 +9,7 @@ abstract class CourseDetailState {}
 class CourseDetailStateLoading extends CourseDetailState {}
 
 class CourseDetailStateSuccess extends CourseDetailState {
-  final CourseResponseModel courseResponseModel;
+  final CourseDetailResponseModel courseResponseModel;
 
   CourseDetailStateSuccess(this.courseResponseModel);
 }

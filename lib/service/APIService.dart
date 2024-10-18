@@ -4,9 +4,9 @@ import 'package:chucker_flutter/chucker_flutter.dart';
 import 'dart:io';
 import 'dart:convert'; // For JSON encoding
 
-import 'package:yeni_okul/service/apiUrls.dart';
 
 import '../util/SharedPrefHelper.dart';
+import 'apiUrls.dart';
 
 enum DioMethod { post, get, put, delete }
 

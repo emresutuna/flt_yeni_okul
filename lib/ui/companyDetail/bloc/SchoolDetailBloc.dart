@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailEvent.dart';
-import 'package:yeni_okul/ui/companyDetail/bloc/SchoolDetailState.dart';
 
 import '../../../repository/SchoolRepository.dart';
+import 'SchoolDetailEvent.dart';
+import 'SchoolDetailState.dart';
 
 class SchoolDetailBloc extends Bloc<SchoolDetailEvent, SchoolDetailState> {
   final SchoolRepository schoolRepository;

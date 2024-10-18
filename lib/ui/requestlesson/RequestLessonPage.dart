@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-import 'package:yeni_okul/widgets/PrimaryButton.dart';
 
-import '../../widgets/InfoWidget.dart'; // Renkleri tanımladığınız yer
 
+import '../../util/YOColors.dart';
+import '../../widgets/InfoWidget.dart';
+import '../../widgets/PrimaryButton.dart';
 class RequestLessonPage extends StatelessWidget {
   final TextEditingController lessonController = TextEditingController();
 

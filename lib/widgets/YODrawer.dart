@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
+import '../util/HexColor.dart';
+import 'YOText.dart';
 
 class YODrawer extends StatelessWidget {
   final PageController pageController;

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yeni_okul/ui/company/bloc/SchoolEvent.dart';
-import 'package:yeni_okul/ui/company/bloc/SchoolState.dart';
-import 'package:yeni_okul/ui/company/model/CompanyModel.dart';
-import 'package:yeni_okul/ui/company/model/SchoolResponse.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-import 'package:yeni_okul/widgets/CompanyListFilterBottomSheet.dart';
-import 'package:yeni_okul/widgets/SearchBar.dart';
+import '../../util/YOColors.dart';
+import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/CompanyListItem.dart';
+import '../../widgets/SearchBar.dart';
 import 'bloc/SchoolBloc.dart';
+import 'bloc/SchoolEvent.dart';
+import 'bloc/SchoolState.dart';
+import 'model/SchoolResponse.dart';
 
 class CompanyListPage extends StatefulWidget {
   const CompanyListPage({super.key});
@@ -78,9 +77,9 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 24),
+                  padding: const EdgeInsets.only(left: 16.0, top: 24,right: 16),
                   child: Text(
-                    "Lorem ipsum dolar sit amet",
+                    "Dilediğin kurumun profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin. Favoriye eklediğin kurumların yayınladığı derslere, “Ders Bul” özelliğiyle kolayca erişebilirsin.",
                     style: styleBlack12Bold,
                     textAlign: TextAlign.start,
                   ),

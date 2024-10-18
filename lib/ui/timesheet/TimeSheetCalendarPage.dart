@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:yeni_okul/util/YOColors.dart';
+
+import '../../util/YOColors.dart';
 
 class TimeSheetCalendarPage extends StatefulWidget {
   const TimeSheetCalendarPage({super.key});

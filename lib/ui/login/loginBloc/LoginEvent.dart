@@ -1,4 +1,5 @@
-import 'package:yeni_okul/ui/login/model/LoginRequest.dart';
+
+import '../model/LoginRequest.dart';
 
 abstract class LoginEvent {}
 

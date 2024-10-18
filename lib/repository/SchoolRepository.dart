@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:yeni_okul/ui/company/model/SchoolResponse.dart';
-import 'package:yeni_okul/ui/companyDetail/model/SchoolDetailResponse.dart';
 
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
 import '../service/apiUrls.dart';
+import '../ui/company/model/SchoolResponse.dart';
+import '../ui/companyDetail/model/SchoolDetailResponse.dart';
 
 class SchoolRepository {
   Future<ResultResponse<SchoolResponse>> getSchool() async {

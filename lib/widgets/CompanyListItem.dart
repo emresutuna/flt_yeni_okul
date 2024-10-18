@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/util/YOColors.dart';
-
+import '../util/HexColor.dart';
+import '../util/HexColor.dart';
+import '../util/YOColors.dart';
+import 'YOText.dart';
 class CompanyListItem extends StatelessWidget {
   final String icon;
   final String name;

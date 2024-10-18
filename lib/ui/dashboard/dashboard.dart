@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:yeni_okul/ui/model/QuickActionModel.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/util/SharedPrefHelper.dart';
+
+import '../../util/HexColor.dart';
+import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
 import '../course/model/CourseModel.dart';
+import '../model/QuickActionModel.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -18,12 +19,12 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   CarouselController buttonCarouselController = CarouselController();
   List<QuickActionModel> quickActionList = [
-    QuickActionModel(name: "Ders Programı", icon: "assets/teacher_circle.png"),
-    QuickActionModel(name: "Ders Bul", icon: "assets/teacher_circle.png"),
-    QuickActionModel(name: "Kurum Bul", icon: "assets/teacher_circle.png"),
-    QuickActionModel(name: "Ders Talep Et", icon: "assets/teacher_circle.png"),
-    QuickActionModel(name: "Eğitim Koçu", icon: "assets/teacher_circle.png"),
-    QuickActionModel(name: "Deneme Kulubü", icon: "assets/teacher_circle.png"),
+    QuickActionModel(name: "Ders Programı", icon: "assets/ic_time_sheet.png"),
+    QuickActionModel(name: "Ders Bul", icon: "assets/ic_find_course.png"),
+    QuickActionModel(name: "Kurum Bul", icon: "assets/ic_find_school.png"),
+    QuickActionModel(name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
+    QuickActionModel(name: "Eğitim Koçu", icon: "assets/ic_training_coach.png"),
+    QuickActionModel(name: "Deneme Kulubü", icon: "assets/ic_trial_club.png"),
   ];
   List<Course> courseList = [
     Course(
@@ -214,6 +215,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     itemCount: quickActionList.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
+                      mainAxisSpacing: 0,
+                      childAspectRatio: 1.1
                     ),
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {

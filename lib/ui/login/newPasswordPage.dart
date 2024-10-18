@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_text_box/flutter_text_box.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yeni_okul/util/HexColor.dart';
-import 'package:yeni_okul/widgets/YOText.dart';
-import 'package:yeni_okul/widgets/YoHexText.dart';
+
+import '../../util/HexColor.dart';
+import '../../widgets/YOText.dart';
+import '../../widgets/YoHexText.dart';
+
 
 class NewPasswordPage extends StatefulWidget {
   const NewPasswordPage({super.key});
