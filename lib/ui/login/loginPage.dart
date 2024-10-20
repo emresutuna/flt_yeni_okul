@@ -41,10 +41,8 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
-              // Navigate to another page on successful login
               Navigator.pushReplacementNamed(context, '/mainPage');
             } else if (state is LoginError) {
-              // Show error message
               Get.snackbar(
                 "Hata", "Kullanıcı adı veya şifre yanlış",
                 colorText: Colors.white,

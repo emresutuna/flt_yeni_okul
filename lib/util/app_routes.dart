@@ -1,8 +1,15 @@
+import 'package:baykurs/repository/paymentReposityory.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
+import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
+import 'package:baykurs/ui/profile/UserEditSelection.dart';
+import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
+import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
+import 'package:baykurs/ui/profile/userEdit/UserInfoEdit.dart';
+import 'package:baykurs/ui/register/bloc/RegisterBloc.dart';
+import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 import '../main.dart';
 import '../repository/SchoolRepository.dart';
@@ -21,7 +28,6 @@ import '../ui/login/loginBloc/LoginBloc.dart';
 import '../ui/login/loginPage.dart';
 import '../ui/login/newPasswordPage.dart';
 import '../ui/onboarding/onboarding.dart';
-import '../ui/payment/PaymentResultPage.dart';
 import '../ui/purchasehistory/PurchaseHistoryPage.dart';
 import '../ui/register/registerPage.dart';
 import '../ui/requestlesson/RequestLessonPage.dart';
@@ -31,38 +37,56 @@ class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
         '/onboardingPage': (context) => const OnboardingPage(),
         '/mainPage': (context) => const MyHomePage(title: ""),
-        '/registerPage': (context) => const RegisterPage(),
         '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
         '/emailOtp': (context) => const EmailOtpPage(),
+        '/mailUpdate': (context) => const UserinfoEdit(),
+        '/userEditSelection': (context) => const UserEditSelection(),
         '/newPasswordPage': (context) => const NewPasswordPage(),
         '/companyDetail': (context) => BlocProvider(
               create: (context) =>
                   SchoolDetailBloc(schoolRepository: SchoolRepository()),
               child: const CompanyDetailPage(),
             ),
+        '/passwordUpdate': (context) => BlocProvider(
+              create: (context) =>
+                  PasswordUpdateBloc(userRepository: UserRepository()),
+              child: const PasswordUpdatePage(),
+            ),
         '/courseListPage': (context) => BlocProvider(
               create: (context) =>
                   LessonBloc(lectureRepository: LectureRepository()),
               child: const CourseListPage(),
             ),
-    '/courseDetail': (context) => BlocProvider(
-      create: (context) =>
-          CourseDetailBloc(lectureRepository: LectureRepository()),
-      child: const CourseDetailPage(),
-    ),
+        '/courseDetail': (context) => BlocProvider(
+              create: (context) =>
+                  CourseDetailBloc(lectureRepository: LectureRepository()),
+              child: const CourseDetailPage(),
+            ),
         '/companyList': (context) => BlocProvider(
               create: (context) =>
                   SchoolBloc(schoolRepository: SchoolRepository()),
               child: const CompanyListPage(),
             ),
-        '/paymentResultPage': (context) => const PaymentResultPage(),
-        '/paymentPreview': (context) => const PaymentPreviewPage(),
-        '/timeSheetPage': (context) => const TimeSheetPage(),
+        '/paymentPreview': (context) => BlocProvider(
+              create: (context) =>
+                  PaymentPreviewBloc(paymentRepository: PaymentRepository()),
+              child: const PaymentPreviewPage(),
+            ),
+        '/timeSheetPage': (context) => BlocProvider(
+              create: (context) =>
+                  TimeSheetBloc(userRepository: UserRepository()),
+              child: const TimeSheetPage(),
+            ),
         '/purchaseHistoryPage': (context) => const PurchaseHistoryPage(),
-        '/requestLessonPage': (context) =>  RequestLessonPage(),
+        '/requestLessonPage': (context) => RequestLessonPage(),
         '/loginPage': (context) => BlocProvider(
               create: (context) => LoginBloc(userRepository: UserRepository()),
               child: const LoginPage(),
+            ),
+        '/registerPage': (context) => BlocProvider(
+              create: (context) =>
+                  RegisterBloc(userRepository: UserRepository()),
+              child: const RegisterPage(),
             ),
       };
 }

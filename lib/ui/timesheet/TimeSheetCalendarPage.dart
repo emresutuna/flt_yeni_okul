@@ -1,28 +1,40 @@
+import 'package:baykurs/util/HexColor.dart';
 import 'package:flutter/material.dart';
-import 'package:calendar_view/calendar_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../util/YOColors.dart';
+import 'model/TimeSheetResponse.dart';
 
 class TimeSheetCalendarPage extends StatefulWidget {
-  const TimeSheetCalendarPage({super.key});
+  final List<TimeSheet> timeSheetList;
+
+  const TimeSheetCalendarPage({super.key, required this.timeSheetList});
 
   @override
   State<TimeSheetCalendarPage> createState() => _TimeSheetCalendarPageState();
 }
 
 class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
-
   List<Meeting> _getDataSource() {
     final List<Meeting> meetings = <Meeting>[];
-    final DateTime today = DateTime.now();
-    final DateTime startTime = DateTime(today.year, today.month, today.day, 21);
-    final DateTime endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(Meeting(
-        'YKS HAZIRLIK-MATEMATİK-FONKSİYON-8-KARMA SORU ÇÖZÜMLERİYLE GENEL TEKRAR', startTime, endTime, color5, false));
+
+    for (var data in widget.timeSheetList) {
+      DateTime startTime = DateTime.parse(data.startDate!);
+      DateTime endTime = DateTime.parse(data.endDate!);
+      meetings.add(Meeting(
+        data.lesson!.name!,
+        startTime,
+        endTime,
+        HexColor(data.lesson!.color!),
+        false,
+        data.id!
+      ));
+    }
+
     return meetings;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,9 +45,9 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
           dataSource: MeetingDataSource(_getDataSource()),
           showCurrentTimeIndicator: true,
           todayHighlightColor: color5,
-          weekNumberStyle:  WeekNumberStyle(
+          weekNumberStyle: WeekNumberStyle(
             backgroundColor: color5,
-            textStyle: TextStyle(color: Colors.white, fontSize: 15),
+            textStyle: styleWhite16Regular,
           ),
           selectionDecoration: BoxDecoration(
             color: Colors.transparent,
@@ -45,23 +57,16 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
           ),
           onTap: (CalendarTapDetails details) {
             dynamic appointment = details.appointments;
-            DateTime date = details.date!;
-            CalendarElement element = details.targetElement;
-            if(appointment!= null ){
-              Fluttertoast.showToast(
-                msg: element.name,
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.black,
-                textColor: Colors.white,
-                fontSize: 16.0,
+            if (appointment != null && appointment.isNotEmpty) {
+              Meeting meeting = appointment[0];
+              Navigator.pushNamed(
+                context,
+                '/courseDetail',
+                arguments: meeting.courseId,
               );
+
             }
-
-
           },
-
         ),
       ),
     );
@@ -115,7 +120,7 @@ class MeetingDataSource extends CalendarDataSource {
 /// information about the event data which will be rendered in calendar.
 class Meeting {
   /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay,this.courseId);
 
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
@@ -131,4 +136,6 @@ class Meeting {
 
   /// IsAllDay which is equivalent to isAllDay property of [Appointment].
   bool isAllDay;
+
+  int courseId;
 }

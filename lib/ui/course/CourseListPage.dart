@@ -125,7 +125,7 @@ class _CourseListPageState extends State<CourseListPage> {
                             },
                             child: CourseListItem(
                               courseModel: courseList[index],
-                              colors: HexColor(courseList[index].lesson.color),
+                              colors: HexColor(courseList[index].lesson!.color!),
                             ),
                           );
                         },

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../util/YOColors.dart';
 import 'YoHexText.dart';
 
-class PrimaryButton extends StatelessWidget {
+class GreenPrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPress;
 
-  const PrimaryButton({super.key, required this.text, required this.onPress});
+  const GreenPrimaryButton(
+      {super.key, required this.text, required this.onPress});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class PrimaryButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            backgroundColor: color5,
+            backgroundColor: color3,
             elevation: 0,
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
             textStyle: GoogleFonts.notoSans(

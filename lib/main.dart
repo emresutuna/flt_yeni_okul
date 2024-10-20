@@ -60,10 +60,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    saveToken("3|qbnDaTS6ZN3aObipML6qq8ZE9WyhlPlKqfUn7HvT235efa9c");
-
     _checkOnboardingAndToken();
-
   }
 
   Future<void> _checkOnboardingAndToken() async {

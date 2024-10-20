@@ -18,7 +18,7 @@ class CourseDetailPage extends StatefulWidget {
 
 class _CourseDetailPageState extends State<CourseDetailPage> {
   late int courseId;
-  late CourseDetail courseDetail;
+   CourseDetail? courseDetail;
 
   @override
   void initState() {
@@ -106,11 +106,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               Row(
                                 children: [
                                   Text(
-                                    courseDetail.formattedDateRange,
+                                    courseDetail!.formattedDateRange,
                                     style: styleBlack12Regular,
                                   ),
                                   const Spacer(),
-                                  Text("${courseDetail.price} ₺",
+                                  Text("${courseDetail!.price} ₺",
                                       style: styleBlack16Bold.copyWith(
                                           color: greenButton)),
                                 ],
@@ -121,12 +121,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 children: [
                                   const Icon(Icons.room,
                                       size: 16, color: Colors.grey),
-                                  Text(courseDetail.classroom,
+                                  Text(courseDetail!.classroom,
                                       style: styleBlack12Regular),
                                 ],
                               ),
                               const SizedBox(height: 4),
-                              Text("Kontenjan: ${courseDetail.quota}",
+                              Text("Kontenjan: ${courseDetail!.quota}",
                                   style: styleBlack12Regular),
 
                               const SizedBox(height: 8),
@@ -138,11 +138,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                         horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color:
-                                          HexColor(courseDetail.lesson.color),
+                                          HexColor(courseDetail!.lesson.color),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      courseDetail.lesson.name,
+                                      courseDetail!.lesson.name,
                                       style: styleWhite12Bold,
                                     ),
                                   ),
@@ -178,8 +178,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               const SizedBox(height: 8),
 
                               Text(
-                                  courseDetail.teacher.user.name +
-                                      courseDetail.lesson.name,
+                                  courseDetail!.teacher.user.name +
+                                      courseDetail!.lesson.name,
                                   style: styleBlack12Regular),
                               const SizedBox(height: 8),
                               Divider(
@@ -193,7 +193,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               ),
                               const SizedBox(height: 8),
 
-                              Text(courseDetail.school.user.name,
+                              Text(courseDetail!.school.user.name,
                                   style: styleBlack12Bold),
                               Text('Fatih Mahallesi No:20 Fatih/İstanbul',
                                   style: styleBlack12Regular),
@@ -227,7 +227,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                     width: double.maxFinite,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
+                        backgroundColor: color3,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(16),

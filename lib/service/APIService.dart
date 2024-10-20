@@ -4,11 +4,10 @@ import 'package:chucker_flutter/chucker_flutter.dart';
 import 'dart:io';
 import 'dart:convert'; // For JSON encoding
 
-
 import '../util/SharedPrefHelper.dart';
 import 'apiUrls.dart';
 
-enum DioMethod { post, get, put, delete }
+enum DioMethod { post, get, put, delete, patch }
 
 class APIService {
   APIService._singleton();
@@ -18,16 +17,16 @@ class APIService {
 
   String get baseUrl {
     if (kDebugMode) {
-      return mainUrl;
+      return ApiUrls.mainUrl;
     }
 
-    return mainUrl;
+    return ApiUrls.mainUrl;
   }
 
-
-
-  Future<Dio> _createDio() async {
-    final token = await getToken(); // Fetch token from SharedPreferences
+  Future<Dio> _createDio({bool includeHeaders = true}) async {
+    final token = includeHeaders
+        ? await getToken()
+        : null; // Fetch token only if headers should be included
 
     final dio = Dio(
       BaseOptions(
@@ -36,7 +35,8 @@ class APIService {
         connectTimeout: const Duration(milliseconds: TIME_OUT),
         receiveTimeout: const Duration(milliseconds: TIME_OUT),
         contentType: Headers.jsonContentType,
-        headers: _buildHeaders(token),
+        headers: includeHeaders ? _buildHeaders(token) : null,
+        // Include headers if needed
         validateStatus: (status) {
           // Allow status codes 200–299 and 302
           return (status! < 300 || status == 302);
@@ -59,7 +59,8 @@ class APIService {
       },
       onResponse: (response, handler) {
         // Log response details
-        print('Response: ${response.statusCode} ${response.requestOptions.uri}');
+        print(
+            'Response: ${response.statusCode} ${response.requestOptions.uri}');
         print('Response Headers: ${response.headers}');
         print('Response Body: ${_prettyPrintJson(response.data)}');
         return handler.next(response); // Continue
@@ -68,7 +69,8 @@ class APIService {
         // Log error details
         print('Error: ${e.message}');
         if (e.response != null) {
-          print('Error Response: ${e.response!.statusCode} ${e.response!.requestOptions.uri}');
+          print(
+              'Error Response: ${e.response!.statusCode} ${e.response!.requestOptions.uri}');
           print('Error Response Headers: ${e.response!.headers}');
           print('Error Response Body: ${_prettyPrintJson(e.response!.data)}');
         }
@@ -85,9 +87,10 @@ class APIService {
         Map<String, dynamic>? param,
         String? contentType = 'application/json',
         dynamic formData,
+        bool includeHeaders = true, // Control header inclusion
       }) async {
     try {
-      final dio = await _createDio();
+      final dio = await _createDio(includeHeaders: includeHeaders);
 
       // Determine the content type for the request
       if (contentType == Headers.formUrlEncodedContentType) {
@@ -102,6 +105,12 @@ class APIService {
             );
           case DioMethod.put:
             return dio.put(
+              endpoint,
+              data: formData,
+              options: Options(contentType: contentType),
+            );
+          case DioMethod.patch: // Add patch case for form data
+            return dio.patch(
               endpoint,
               data: formData,
               options: Options(contentType: contentType),
@@ -128,6 +137,11 @@ class APIService {
             );
           case DioMethod.delete:
             return dio.delete(
+              endpoint,
+              data: param ?? formData,
+            );
+          case DioMethod.patch: // Add patch case
+            return dio.patch(
               endpoint,
               data: param ?? formData,
             );

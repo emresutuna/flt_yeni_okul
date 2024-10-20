@@ -40,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
       quota: 28,
       createdAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
       updatedAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
-      deletedAt: null,
+      deletedAt: "null",
       school: School(
         id: 6,
         userId: 6,
@@ -76,7 +76,7 @@ class _DashboardPageState extends State<DashboardPage> {
       quota: 20,
       createdAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
       updatedAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
-      deletedAt: null,
+      deletedAt: "",
       school: School(
         id: 3,
         userId: 3,
@@ -112,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
       quota: 17,
       createdAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
       updatedAt: DateTime.parse("2024-10-16T01:50:31.000000Z"),
-      deletedAt: null,
+      deletedAt: "null",
       school: School(
         id: 9,
         userId: 9,
@@ -236,6 +236,10 @@ class _DashboardPageState extends State<DashboardPage> {
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed("/requestLessonPage");
                         }
+                        if (index ==4){
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed("/userEditSelection");
+                        }
                       },
                       child: QuickAction(
                         icon: quickActionList[index].icon,
@@ -303,7 +307,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
                             width: MediaQuery.of(context).size.width * 0.96,
-                            child:  CourseListItem(courseModel: courseList[index],colors: HexColor(courseList[index].lesson.color),),
+                            child:  CourseListItem(courseModel: courseList[index],colors: HexColor(courseList[index].lesson!.color!),),
                           );
                         },
                       ),

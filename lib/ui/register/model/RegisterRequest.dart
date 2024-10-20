@@ -1,5 +1,6 @@
 class RegisterRequest {
   String name;
+  String surname;
   String tckn;
   String email;
   String phone;
@@ -7,6 +8,7 @@ class RegisterRequest {
 
   RegisterRequest({
     required this.name,
+    required this.surname,
     required this.tckn,
     required this.email,
     required this.phone,
@@ -16,6 +18,7 @@ class RegisterRequest {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
+      'surname': surname,
       'tckn': tckn,
       'email': email,
       'phone': phone,
@@ -26,6 +29,7 @@ class RegisterRequest {
   factory RegisterRequest.fromJson(Map<String, dynamic> json) {
     return RegisterRequest(
       name: json['name'],
+      surname: json['surname'],
       tckn: json['tckn'],
       email: json['email'],
       phone: json['phone'],

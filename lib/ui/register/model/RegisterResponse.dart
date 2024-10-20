@@ -1,11 +1,11 @@
-class LoginResponse {
+class RegisterResponse {
   bool? status;
   String? token;
   User? user;
 
-  LoginResponse({this.status, this.token, this.user});
+  RegisterResponse({this.status, this.token, this.user});
 
-  LoginResponse.fromJson(Map<String, dynamic> json) {
+  RegisterResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     token = json['token'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
@@ -23,38 +23,42 @@ class LoginResponse {
 }
 
 class User {
-  int? id;
-  int? roleId;
   String? name;
-  String? createdAt;
+  String? email;
+  String? phone;
+  int? roleId;
   String? updatedAt;
-  String? deletedAt;
+  String? createdAt;
+  int? id;
 
   User(
-      {this.id,
+      {this.name,
+        this.email,
+        this.phone,
         this.roleId,
-        this.name,
-        this.createdAt,
         this.updatedAt,
-        this.deletedAt});
+        this.createdAt,
+        this.id});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    roleId = json['role_id'];
     name = json['name'];
-    createdAt = json['created_at'];
+    email = json['email'];
+    phone = json['phone'];
+    roleId = json['role_id'];
     updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
+    createdAt = json['created_at'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['role_id'] = this.roleId;
     data['name'] = this.name;
-    data['created_at'] = this.createdAt;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['role_id'] = this.roleId;
     data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
+    data['created_at'] = this.createdAt;
+    data['id'] = this.id;
     return data;
   }
 }

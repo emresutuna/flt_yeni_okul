@@ -4,7 +4,6 @@ import 'dart:io';
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
 import '../service/apiUrls.dart';
-import '../ui/companyDetail/model/SchoolDetailResponse.dart';
 import '../ui/course/model/CourseModel.dart';
 import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
 
@@ -12,7 +11,7 @@ class LectureRepository {
   Future<ResultResponse<CourseResponseModel>> getLessons() async {
     try {
       final response = await APIService.instance
-          .request(getCourses, DioMethod.get);
+          .request(ApiUrls.getCourses, DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -36,7 +35,7 @@ class LectureRepository {
   Future<ResultResponse<CourseDetailResponseModel>> getCourseById(int courseId) async {
     try {
       final response = await APIService.instance
-          .request('$getCoursesById/$courseId$getCoursesById2', DioMethod.get);
+          .request('${ApiUrls.getCoursesById}/$courseId${ApiUrls.getCoursesById2}', DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;

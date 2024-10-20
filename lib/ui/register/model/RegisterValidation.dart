@@ -1,24 +1,73 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 
 class RegisterValidation extends GetxController {
   TextEditingController emailController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
   TextEditingController tcknController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController phoneController =
+      MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController schoolController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  // Reaktif boolean değişkenler
   RxBool isEmailValid = true.obs;
   RxBool isPasswordValid = true.obs;
   RxBool isPhoneValid = true.obs;
   RxBool isNameValid = true.obs;
+  RxBool isSurnameValid = true.obs;
   RxBool isTcknValid = true.obs;
   RxBool isSchoolValid = true.obs;
+  RxBool isPrivacyPolicyAccepted = false.obs;
+  RxBool isPolicyAccepted = false.obs;
 
-  bool loginValid() {
+  void clearAllFields() {
+    emailController.clear();
+    surnameController.clear();
+    tcknController.clear();
+    nameController.clear();
+    phoneController.clear();
+    schoolController.clear();
+    passwordController.clear();
+    isEmailValid.value = true;
+    isPasswordValid.value = true;
+    isPhoneValid.value = true;
+    isNameValid.value = true;
+    isSurnameValid.value = true;
+    isTcknValid.value = true;
+    isSchoolValid.value = true;
+    isPrivacyPolicyAccepted.value = false;
+    isPolicyAccepted.value = false;
+  }
+
+  String formatPhoneNumber(String maskedPhoneNumber) {
+    String rawPhone = maskedPhoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+    if (rawPhone.length == 10) {
+      return '+90$rawPhone';
+    } else {
+      throw FormatException("Geçersiz telefon numarası formatı");
+    }
+  }
+
+  bool isValidTCKN(String tckn) {
+    if (tckn.length != 11 || !RegExp(r'^[0-9]+$').hasMatch(tckn)) {
+      return false;
+    }
+    int total = 0;
+    for (int i = 0; i < 10; i++) {
+      total += int.parse(tckn[i]);
+    }
+    int firstDigit = total % 10;
+    if (firstDigit != int.parse(tckn[10])) {
+      return false;
+    }
+    return true;
+  }
+
+  bool registerValid() {
     String email = emailController.text.trim();
+    String surname = surnameController.text.trim();
     String password = passwordController.text.trim();
     String name = nameController.text.trim();
     String tckn = tcknController.text.trim();
@@ -51,31 +100,41 @@ class RegisterValidation extends GetxController {
       isNameValid.value = true;
     }
 
+    if (surname.isEmpty || surname.length < 1) {
+      isSurnameValid.value = false;
+      errorMessage += 'Soyisim en az 1 karakter olmalı. ';
+    } else {
+      isSurnameValid.value = true;
+    }
+/*
     // TCKN validation
-    if (tckn.isEmpty || tckn.length != 11) {
+    if (!isValidTCKN(tckn)) {
       isTcknValid.value = false;
-      errorMessage += 'TCKN 11 haneli olmalı. ';
+      errorMessage += 'Geçersiz TCKN. TCKN 11 haneli olmalıdır. ';
     } else {
       isTcknValid.value = true;
     }
 
+ */
+
     // Phone validation
-    if (phone.isEmpty || !phone.isPhoneNumber) {
+    String cleanedPhone = phone.replaceAll(RegExp(r'\D'), '');
+    if (cleanedPhone.isEmpty || cleanedPhone.length != 10) {
       isPhoneValid.value = false;
       errorMessage += 'Geçersiz telefon numarası. ';
     } else {
       isPhoneValid.value = true;
     }
 
-    // School validation
-    if (school.isEmpty) {
-      isSchoolValid.value = false;
-      errorMessage += 'Okul adı boş olamaz. ';
-    } else {
-      isSchoolValid.value = true;
+    // Privacy policy and general policy validation
+    if (!isPrivacyPolicyAccepted.value) {
+      errorMessage += 'Gizlilik politikası kabul edilmelidir. ';
     }
 
-    // Eğer herhangi bir hata varsa, tüm hataları tek bir mesajda göster
+    if (!isPolicyAccepted.value) {
+      errorMessage += 'Kullanım şartları kabul edilmelidir. ';
+    }
+
     if (errorMessage.isNotEmpty) {
       Get.snackbar(
         "Hata",
@@ -87,5 +146,13 @@ class RegisterValidation extends GetxController {
     }
 
     return true;
+  }
+
+  void updatePolicy(bool? value) {
+    isPolicyAccepted.value = value ?? false;
+  }
+
+  void updatePrivacyPolicy(bool? value) {
+    isPrivacyPolicyAccepted.value = value ?? false;
   }
 }

@@ -1,3 +1,5 @@
+import 'package:baykurs/ui/register/model/RegisterValidation.dart';
+import 'package:baykurs/util/PhoneFormatter.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/SimpleStream.dart';
@@ -5,7 +7,15 @@ import '../../util/YOColors.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/YOText.dart';
 import '../login/UserRole.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
+import 'bloc/RegisterBloc.dart';
+import 'bloc/RegisterEvent.dart';
+import 'bloc/RegisterState.dart';
+
+import 'model/RegisterRequest.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -17,217 +27,268 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   UserRole? userRole;
   bool privacyPolicy = false;
+  bool smsPolicy = false;
   SimpleStream<bool> checkStream = SimpleStream<bool>();
+  final RegisterValidation registerValidation = Get.put(RegisterValidation());
 
   bool get check => checkStream.current ?? false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    registerValidation.clearAllFields();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color4,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 0.0, top: 16, right: 0, bottom: 0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      color: color1,
-                      padding: EdgeInsets.zero,
-                      iconSize: 26,
-                      alignment: Alignment.centerLeft,
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
+      body: BlocConsumer<RegisterBloc, RegisterState>(
+        listener: (context, state) {
+          if (state is RegisterSuccess) {
+            Get.snackbar(
+              "Başarılı",
+              "Kayıt işlemi başarılı",
+              colorText: Colors.white,
+              backgroundColor: Colors.green,
+            );
+            Navigator.pushReplacementNamed(context, '/mainPage');
+          } else if (state is RegisterError) {
+            Get.snackbar(
+              "Hata",
+              state.error,
+              colorText: Colors.white,
+              backgroundColor: Colors.red,
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is RegisterLoading) {
+            return Stack(
+              children: [
+                _buildForm(context),
+                const Center(child: CircularProgressIndicator()),
+              ],
+            );
+          }
+          return _buildForm(context);
+        },
+      ),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, top: 16, right: 0, bottom: 0),
+              child: Row(
+                children: [
+                  IconButton(
+                    color: color1,
+                    padding: EdgeInsets.zero,
+                    iconSize: 26,
+                    alignment: Alignment.centerLeft,
+                    icon: const Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  YoText(
+                    text: "Kayıt Ol",
+                    size: 18,
+                    fontWeight: FontWeight.bold,
+                    color: color1,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            YoText(
+              text:
+                  "Kayıt olarak özgün eğitim modeliyle tanış, başarıya doğru ilk adımını at.",
+              size: 12,
+              fontWeight: FontWeight.w500,
+              textAlign: TextAlign.start,
+              color: color2,
+            ),
+            const SizedBox(height: 16),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: registerValidation.nameController,
+                cursorColor: color1,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  hintText: 'Ad',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
+                  focusedBorder: const UnderlineInputBorder(),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: registerValidation.surnameController,
+                cursorColor: color1,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  hintText: 'Soyad',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
+                  focusedBorder: const UnderlineInputBorder(),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: registerValidation.emailController,
+                cursorColor: color1,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  hintText: 'Email',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
+                  focusedBorder: const UnderlineInputBorder(),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: registerValidation.phoneController,
+                cursorColor: color1,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  hintText: 'Telefon No',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
+                  focusedBorder: const UnderlineInputBorder(),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: registerValidation.passwordController,
+                obscureText: true,
+                cursorColor: color1,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  hintText: 'Şifre',
+                  hintStyle:
+                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
+                  focusedBorder: const UnderlineInputBorder(),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Obx(
+                  () => Checkbox(
+                    activeColor: color5,
+                    value: registerValidation.isPolicyAccepted.value,
+                    onChanged: (bool? value) {
+                      registerValidation.updatePolicy(value);
+                    },
+                  ),
+                ),
+                const Expanded(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: [
+                      YoText(
+                        text:
+                            "Gizlilik Politikasını ve Kullanım Şartlarını kabul ediyorum.",
+                        size: 10,
+                        fontWeight: FontWeight.w500,
                       ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    YoText(
-                      text: "Kayıt Ol",
-                      size: 18,
-                      fontWeight: FontWeight.bold,
-                      color: color1,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              YoText(
-                text:
-                    "Hemen Kayıt olarak eşsiz deneyimimize katılabilirsin . Loem ipsum dolar ko sit amet ko",
-                size: 12,
-                fontWeight: FontWeight.w500,
-                textAlign: TextAlign.start,
-                color: color2,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  cursorColor: color1,
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    hintText: 'Ad',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: color2.withAlpha(75),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    labelStyle:
-                        TextStyle(color: color1, fontWeight: FontWeight.bold),
-                    focusColor: color2,
-                    focusedBorder: const UnderlineInputBorder(),
+                    ],
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  cursorColor: color1,
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    hintText: 'Soyad',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: color2.withAlpha(75),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    labelStyle:
-                        TextStyle(color: color1, fontWeight: FontWeight.bold),
-                    focusColor: color2,
-                    focusedBorder: const UnderlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  cursorColor: color1,
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    hintText: 'Email',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: color2.withAlpha(75),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    labelStyle:
-                        TextStyle(color: color1, fontWeight: FontWeight.bold),
-                    focusColor: color2,
-                    focusedBorder: const UnderlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  cursorColor: color1,
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    hintText: 'Telefon No',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: color2.withAlpha(75),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    labelStyle:
-                        TextStyle(color: color1, fontWeight: FontWeight.bold),
-                    focusColor: color2,
-                    focusedBorder: const UnderlineInputBorder(),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  cursorColor: color1,
-                  onChanged: (value) {},
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    hintText: 'Şifre',
-                    hintStyle: TextStyle(
-                      fontSize: 16,
-                      color: color2.withAlpha(75),
-                      fontWeight: FontWeight.w400,
-                    ),
-                    labelStyle:
-                        TextStyle(color: color1, fontWeight: FontWeight.bold),
-                    focusColor: color2,
-                    focusedBorder: const UnderlineInputBorder(),
-                  ),
-                ),
-              ),
-              ListTileTheme(
-                horizontalTitleGap: 0.0,
-                child: CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  tristate: false,
-                  activeColor: color5,
-                  side: BorderSide(width: 1, color: color5),
-                  title: const YoText(
-                    text:
-                        "By signing up you agree to our Terms & Conditions and Privacy Policy",
-                    textAlign: TextAlign.start,
-                  ),
+              ],
+            ),
 
-                  checkColor: Colors.white,
-
-                  value: privacyPolicy,
-                  onChanged: (newValue) {
-                    setState(() {
-                      privacyPolicy = newValue!;
-                    });
-                  },
-                  controlAffinity:
-                      ListTileControlAffinity.leading, //  <-- leading Checkbox
-                ),
-              ),
-              ListTileTheme(
-                horizontalTitleGap: 0.0,
-                child: CheckboxListTile(
-                  contentPadding: EdgeInsets.zero,
-                  tristate: false,
-                  activeColor: color5,
-                  side: BorderSide(width: 1, color: color5),
-                  title: const YoText(
-                    text:
-                        "By signing up you agree to our Terms & Conditions and Privacy Policy",
-                    textAlign: TextAlign.start,
+            Row(
+              children: [
+                Obx(
+                  () => Checkbox(
+                    activeColor: color5,
+                    value: registerValidation.isPrivacyPolicyAccepted.value,
+                    onChanged: (bool? value) {
+                      registerValidation.updatePrivacyPolicy(value);
+                    },
                   ),
-                  checkColor: Colors.white,
-                  value: checkStream.current ?? false,
-                  onChanged: (newValue) {
-                    setState(() {
-                      checkStream.update(newValue ?? false);
-                    });
-                  },
-                  controlAffinity:
-                      ListTileControlAffinity.leading, //  <-- leading Checkbox
                 ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              PrimaryButton(text: "Kayıt Ol", onPress: () {})
-            ],
-          ),
+                const Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      alignment: WrapAlignment.start,
+                      children: [
+                        YoText(
+                          text:
+                              "Gizlilik Politikasını ve Kullanım Şartlarını kabul ediyorum.",
+                          size: 10,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+            // Kayıt Ol butonu
+            PrimaryButton(
+              text: "Kayıt Ol",
+              onPress: () {
+                if (registerValidation.registerValid()) {
+                  context.read<RegisterBloc>().add(
+                        UserRegister(
+                          request: RegisterRequest(
+                            name: registerValidation.nameController.text,
+                            surname: registerValidation.surnameController.text,
+                            email: registerValidation.emailController.text,
+                            phone: registerValidation.formatPhoneNumber(registerValidation.phoneController.text),
+                            password:
+                                registerValidation.passwordController.text,
+                            tckn: "12345678901",
+                          ),
+                        ),
+                      );
+                } else {
+                  Get.snackbar(
+                    "Uyarı",
+                    "Lütfen Gizlilik Politikası ve Kullanım Şartlarını kabul edin.",
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

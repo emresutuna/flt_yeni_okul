@@ -11,7 +11,7 @@ class SchoolRepository {
   Future<ResultResponse<SchoolResponse>> getSchool() async {
     try {
       final response = await APIService.instance
-          .request(school, DioMethod.get);
+          .request(ApiUrls.school, DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -30,7 +30,7 @@ class SchoolRepository {
   Future<ResultResponse<SchoolDetailResponse>> getSchoolById(int schoolId) async {
     try {
       final response = await APIService.instance
-          .request('$schoolDetail/$schoolId', DioMethod.get);
+          .request('${ApiUrls.schoolDetail}/$schoolId', DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;

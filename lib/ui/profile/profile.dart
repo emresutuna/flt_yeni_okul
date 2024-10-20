@@ -127,7 +127,10 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.of(context, rootNavigator: true)
                                 .pushNamed("/timeSheetPage");
                           }),
-                          profileItem("Kullanıcı Bilgileri", onTap: () {}),
+                          profileItem("Kullanıcı Bilgileri", onTap: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed("/userEditSelection");
+                          }),
                           profileItem("Eğitim Bilgileri", onTap: () {}),
                           profileItem("Favorilerim", onTap: () {}),
                           profileItem("SSS", onTap: () {}),
