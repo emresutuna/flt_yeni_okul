@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/ErrorWidget.dart';
 import '../../widgets/ExpandedWidget.dart';
 import '../../widgets/TeacherListItem.dart';
 import '../../widgets/YOText.dart';
@@ -226,7 +227,11 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
             ),
           );
         } else if (state is SchoolDetailError) {
-          return Center(child: Text('Error: ${state.error}'));
+          return Container(
+            child: Center(child: BkErrorWidget(onPress: (){
+              Navigator.pop(context);
+            },)),
+          );
         } else {
           return const Center(child: Text('No courses available'));
         }

@@ -1,12 +1,15 @@
 import 'package:baykurs/repository/paymentReposityory.dart';
+import 'package:baykurs/ui/company/model/SchoolResponse.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
 import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
-import 'package:baykurs/ui/profile/userEdit/UserInfoEdit.dart';
+import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
 import 'package:baykurs/ui/register/bloc/RegisterBloc.dart';
+import 'package:baykurs/ui/teacherCoach/TeacherCoach.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +25,7 @@ import '../ui/companyDetail/bloc/SchoolDetailBloc.dart';
 import '../ui/course/CourseListPage.dart';
 import '../ui/course/bloc/LessonBloc.dart';
 import '../ui/coursedetail/CourseDetailPage.dart';
+import '../ui/favoriteschool/FavoriteSchoolPage.dart';
 import '../ui/forgotpassword/forgotPasswordEmail.dart';
 import '../ui/login/emailOtpPage.dart';
 import '../ui/login/loginBloc/LoginBloc.dart';
@@ -36,10 +40,15 @@ import '../ui/timesheet/TimeSheetPage.dart';
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
         '/onboardingPage': (context) => const OnboardingPage(),
+        '/teacherCoach': (context) => const TeacherCoach(),
+        '/favoriteSchool': (context) => BlocProvider(
+              create: (context) =>
+                  FavoriteSchoolBloc(userRepository: UserRepository()),
+              child: const FavoriteSchoolPage(),
+            ),
         '/mainPage': (context) => const MyHomePage(title: ""),
         '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
         '/emailOtp': (context) => const EmailOtpPage(),
-        '/mailUpdate': (context) => const UserinfoEdit(),
         '/userEditSelection': (context) => const UserEditSelection(),
         '/newPasswordPage': (context) => const NewPasswordPage(),
         '/companyDetail': (context) => BlocProvider(
@@ -52,10 +61,17 @@ class AppRoutes {
                   PasswordUpdateBloc(userRepository: UserRepository()),
               child: const PasswordUpdatePage(),
             ),
+        '/mailUpdate': (context) => BlocProvider(
+              create: (context) =>
+                  PasswordUpdateBloc(userRepository: UserRepository()),
+              child: const MailUpdatePage(),
+            ),
         '/courseListPage': (context) => BlocProvider(
               create: (context) =>
                   LessonBloc(lectureRepository: LectureRepository()),
-              child: const CourseListPage(),
+              child: const CourseListPage(
+                hasShowBackButton: true,
+              ),
             ),
         '/courseDetail': (context) => BlocProvider(
               create: (context) =>

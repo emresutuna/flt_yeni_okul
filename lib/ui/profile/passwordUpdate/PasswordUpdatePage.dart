@@ -2,11 +2,11 @@ import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
 import 'package:baykurs/ui/profile/bloc/UserUpdateEvent.dart';
 import 'package:baykurs/ui/profile/bloc/UserUpdateState.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateRequest.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baykurs/ui/profile/model/PasswordUpdateValidation.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import '../../../util/YOColors.dart';
 import '../../../widgets/PrimaryButton.dart';
 
@@ -24,6 +24,7 @@ class _PasswordUpdatePageState extends State<PasswordUpdatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Şifre Güncelle"),
       body: SafeArea(
         child: BlocConsumer<PasswordUpdateBloc, UserUpdateState>(
           listener: (context, state) {
@@ -50,20 +51,6 @@ class _PasswordUpdatePageState extends State<PasswordUpdatePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 24),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              child: const Icon(Icons.arrow_back_ios),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                            Text("Şifre Güncelle", style: styleBlack16Bold),
-                          ],
-                        ),
-                      ),
                       const SizedBox(height: 24),
                       Text(
                         'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',

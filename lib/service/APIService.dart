@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart'; // For kDebugMode
+import 'package:flutter/foundation.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:get/get.dart' as getx;
 import 'dart:io';
-import 'dart:convert'; // For JSON encoding
+import 'dart:convert';
 
 import '../util/SharedPrefHelper.dart';
 import 'apiUrls.dart';
@@ -35,7 +36,7 @@ class APIService {
         connectTimeout: const Duration(milliseconds: TIME_OUT),
         receiveTimeout: const Duration(milliseconds: TIME_OUT),
         contentType: Headers.jsonContentType,
-        headers: includeHeaders ? _buildHeaders(token) : null,
+        headers: _buildHeaders(token, includeHeaders),
         // Include headers if needed
         validateStatus: (status) {
           // Allow status codes 200–299 and 302
@@ -65,7 +66,7 @@ class APIService {
         print('Response Body: ${_prettyPrintJson(response.data)}');
         return handler.next(response); // Continue
       },
-      onError: (DioError e, handler) {
+      onError: (DioException e, handler) {
         // Log error details
         print('Error: ${e.message}');
         if (e.response != null) {
@@ -82,13 +83,13 @@ class APIService {
   }
 
   Future<Response> request(
-      String endpoint,
-      DioMethod method, {
-        Map<String, dynamic>? param,
-        String? contentType = 'application/json',
-        dynamic formData,
-        bool includeHeaders = true, // Control header inclusion
-      }) async {
+    String endpoint,
+    DioMethod method, {
+    Map<String, dynamic>? param,
+    String? contentType = 'application/json',
+    dynamic formData,
+    bool includeHeaders = true, // Control header inclusion
+  }) async {
     try {
       final dio = await _createDio(includeHeaders: includeHeaders);
 
@@ -153,21 +154,40 @@ class APIService {
         }
       }
     } catch (e) {
+      if (e is DioException) {
+        await _handleError(e); // Handle error with GetX navigation
+      }
       throw Exception('Network error: ${e.toString()}');
     }
   }
 
   // Helper method to build headers
-  Map<String, dynamic> _buildHeaders(String? token) {
+  Map<String, dynamic> _buildHeaders(String? token, bool includeToken) {
     final headers = <String, dynamic>{
       HttpHeaders.contentTypeHeader: Headers.jsonContentType,
+      'X-Requested-From': 'baykursmobileapp',
     };
-
-    if (token != null && token.isNotEmpty) {
-      headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
+    if (includeToken) {
+      if (token != null && token.isNotEmpty) {
+        headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
+      }
     }
 
     return headers;
+  }
+
+  Future<void> _handleError(DioException e) async {
+    print('Error: ${e.message}');
+    if (e.response != null) {
+      print(
+          'Error Response: ${e.response!.statusCode} ${e.response!.requestOptions.uri}');
+      print('Error Response Headers: ${e.response!.headers}');
+      print('Error Response Body: ${_prettyPrintJson(e.response!.data)}');
+
+      if (e.response!.statusCode == 401) {
+        getx.Get.offAllNamed('/loginPage');
+      }
+    }
   }
 
   // Helper method to pretty print JSON
@@ -176,7 +196,7 @@ class APIService {
       if (json is String) {
         return json;
       }
-      return JsonEncoder.withIndent('  ').convert(json);
+      return const JsonEncoder.withIndent('  ').convert(json);
     } catch (e) {
       return json.toString();
     }

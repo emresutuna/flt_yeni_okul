@@ -1,4 +1,6 @@
 import 'package:baykurs/ui/timesheet/model/TimeSheetMapper.dart';
+import 'package:baykurs/util/ListExtension.dart';
+import 'package:baykurs/widgets/ErrorWidget.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/HexColor.dart';
@@ -18,28 +20,33 @@ class TimeSheetCourseList extends StatefulWidget {
 class _TimeSheetCourseListState extends State<TimeSheetCourseList> {
   @override
   Widget build(BuildContext context) {
-    List<Course> courseList = widget.timeSheetList.map((timeSheet) => timeSheet.toCourse()).toList();
+    List<Course> courseList =
+        widget.timeSheetList.map((timeSheet) => timeSheet.toCourse()).toList();
 
     return Scaffold(
       body: Column(
         children: [
-          Expanded(
-              child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: widget.timeSheetList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: (){
-                      Navigator.pushNamed(context, '/courseDetail', arguments:courseList[index].id);
-
-                    },
-                    child: CourseListItem(
-                      courseModel: courseList[index],
-                      colors: HexColor(courseList[index].lesson!.color!),
-                    ),
-                  );
-                },
-              ))
+          courseList.isNullOrEmpty
+              ? const BkErrorWidget(
+                  title: "Hata",
+                  description: "Şuanda hiçbir ders satın almadınız")
+              : Expanded(
+                  child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: widget.timeSheetList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/courseDetail',
+                            arguments: courseList[index].id);
+                      },
+                      child: CourseListItem(
+                        courseModel: courseList[index],
+                        colors: HexColor(courseList[index].lesson!.color!),
+                      ),
+                    );
+                  },
+                ))
         ],
       ),
     );

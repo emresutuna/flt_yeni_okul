@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';
 import 'package:baykurs/ui/register/model/RegisterRequest.dart';
 import 'package:baykurs/ui/register/model/RegisterResponse.dart';
@@ -9,6 +10,7 @@ import 'package:dio/dio.dart';
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
 import '../service/apiUrls.dart';
+import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
 import '../ui/login/model/LoginRequest.dart';
 import '../ui/login/model/LoginResponse.dart';
 import '../ui/profile/model/ProfileResponse.dart';
@@ -138,6 +140,44 @@ class UserRepository {
           return ResultResponse.failure(errorMessage);
         }
       }
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<FavoriteSchoolResponse>> getFavorites() async {
+    try {
+      final response =
+      await APIService.instance.request(ApiUrls.getFavorites, DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        FavoriteSchoolResponse favoriteSchoolResponse = FavoriteSchoolResponse.fromJson(body);
+
+        return ResultResponse.success(favoriteSchoolResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<FavoriteToggleResponse>> toggleFav(int id) async {
+    try {
+      final response =
+      await APIService.instance.request(ApiUrls.toggleFavorite(id), DioMethod.post);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        FavoriteToggleResponse favoriteSchoolResponse = FavoriteToggleResponse.fromJson(body);
+
+        return ResultResponse.success(favoriteSchoolResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
       print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }

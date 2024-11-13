@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/YOText.dart';
 import '../../widgets/YoHexText.dart';
@@ -85,24 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      // TextEditingController reaktif olmadığı için Obx ile sarmalamayın
-                      TextField(
-                        controller: loginValidation.passwordController,
-                        cursorColor: color1,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          hintText: 'Şifre',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: color2.withAlpha(75),
-                            fontWeight: FontWeight.w400,
-                          ),
-                          labelStyle: TextStyle(color: color1, fontWeight: FontWeight.bold),
-                          focusColor: color2,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
-                      ),
+                      PasswordField(controller: loginValidation.passwordController,hint: "Şifre",),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -119,12 +103,9 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       const SizedBox(height: 24),
-                      // Giriş butonuna tıklama işlemi
                       PrimaryButton(
                         text: "Giriş Yap",
                         onPress: () {
-                          saveToken("3|qbnDaTS6ZN3aObipML6qq8ZE9WyhlPlKqfUn7HvT235efa9c");
-
                           if (loginValidation.loginValid()) {
                             context.read<LoginBloc>().add(
                               UserLogin(

@@ -1,13 +1,18 @@
+
 import 'package:baykurs/repository/SchoolRepository.dart';
+import 'package:baykurs/repository/lectureRepository.dart';
 import 'package:baykurs/repository/userRepository.dart';
 import 'package:baykurs/ui/company/bloc/SchoolBloc.dart';
 import 'package:baykurs/ui/companyDetail/bloc/SchoolDetailBloc.dart';
+import 'package:baykurs/ui/course/CourseListPage.dart';
+import 'package:baykurs/ui/course/bloc/LessonBloc.dart';
+import 'package:baykurs/ui/course/bloc/LessonEvent.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
+import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
 import 'package:baykurs/util/SharedPref.dart';
-import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/util/app_routes.dart';
 import 'package:baykurs/util/constants.dart';
@@ -18,12 +23,12 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-
 SharedPreferences? sharedPreferences;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PreferenceUtils.init();
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -36,6 +41,10 @@ void main() async {
         BlocProvider(
           create: (context) =>
               SchoolDetailBloc(schoolRepository: SchoolRepository()),
+        ),
+        BlocProvider(
+          create: (context) =>
+              LessonBloc(lectureRepository: LectureRepository()),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(userRepository: UserRepository()),
@@ -122,12 +131,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> listWidget = [
-    const DashboardPage(),
-    const Placeholder(),
-    const ProfilePage()
-  ];
-
   PersistentTabController _controller =
       PersistentTabController(initialIndex: 0);
 
@@ -135,32 +138,46 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
+    _controller.addListener(() {
+      if (_controller.index == 2) {
+        context.read<ProfileBloc>().add(FetchUserProfile());
+      }
+      if (_controller.index == 1) {
+        context.read<LessonBloc>().add(FetchLesson());
+      }
+    });
   }
 
   List<Widget> _buildScreens() {
-    return [const DashboardPage(), const Placeholder(), const ProfilePage()];
+    return [
+      const DashboardPage(),
+      const CourseListPage(
+        hasShowBackButton: false,
+      ),
+      const ProfilePage()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: (AppStrings.homeTitle),
-        activeColorPrimary: color5,
-        inactiveColorPrimary: Colors.grey,
-      ),
+          icon: const Icon(Icons.home),
+          title: (AppStrings.homeTitle),
+          activeColorPrimary: color5,
+          inactiveColorPrimary: Colors.grey,
+          textStyle: styleBlack12Bold.copyWith(color: color5)),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.search),
-        title: (AppStrings.searchTitle),
-        activeColorPrimary: color5,
-        inactiveColorPrimary: Colors.grey,
-      ),
+          icon: const Icon(Icons.search),
+          title: (AppStrings.searchTitle),
+          activeColorPrimary: color5,
+          inactiveColorPrimary: Colors.grey,
+          textStyle: styleBlack12Bold.copyWith(color: color5)),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person),
-        title: (AppStrings.profileTitle),
-        activeColorPrimary: color5,
-        inactiveColorPrimary: Colors.grey,
-      ),
+          icon: const Icon(Icons.person),
+          title: (AppStrings.profileTitle),
+          activeColorPrimary: color5,
+          inactiveColorPrimary: Colors.grey,
+          textStyle: styleBlack12Bold.copyWith(color: color5)),
     ];
   }
 

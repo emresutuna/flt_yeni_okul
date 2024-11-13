@@ -1,5 +1,6 @@
 import 'package:baykurs/ui/register/model/RegisterValidation.dart';
 import 'package:baykurs/util/PhoneFormatter.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/SimpleStream.dart';
@@ -43,6 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color4,
+      appBar:WhiteAppBar("Hesap Oluştur"),
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
@@ -85,30 +87,6 @@ class _RegisterPageState extends State<RegisterPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 0.0, top: 16, right: 0, bottom: 0),
-              child: Row(
-                children: [
-                  IconButton(
-                    color: color1,
-                    padding: EdgeInsets.zero,
-                    iconSize: 26,
-                    alignment: Alignment.centerLeft,
-                    icon: const Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  YoText(
-                    text: "Kayıt Ol",
-                    size: 18,
-                    fontWeight: FontWeight.bold,
-                    color: color1,
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 16),
             YoText(
               text:
@@ -271,7 +249,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             name: registerValidation.nameController.text,
                             surname: registerValidation.surnameController.text,
                             email: registerValidation.emailController.text,
-                            phone: registerValidation.formatPhoneNumber(registerValidation.phoneController.text),
+                            phone: registerValidation.formatPhoneNumber(
+                                registerValidation.phoneController.text),
                             password:
                                 registerValidation.passwordController.text,
                             tckn: "12345678901",

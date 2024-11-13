@@ -22,7 +22,8 @@ class _DashboardPageState extends State<DashboardPage> {
     QuickActionModel(name: "Ders Programı", icon: "assets/ic_time_sheet.png"),
     QuickActionModel(name: "Ders Bul", icon: "assets/ic_find_course.png"),
     QuickActionModel(name: "Kurum Bul", icon: "assets/ic_find_school.png"),
-    QuickActionModel(name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
+    QuickActionModel(
+        name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
     QuickActionModel(name: "Eğitim Koçu", icon: "assets/ic_training_coach.png"),
     QuickActionModel(name: "Deneme Kulubü", icon: "assets/ic_trial_club.png"),
   ];
@@ -144,6 +145,7 @@ class _DashboardPageState extends State<DashboardPage> {
     // Initialize the future to read user name
     userNameFuture = readData("user_name");
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,11 +215,11 @@ class _DashboardPageState extends State<DashboardPage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: quickActionList.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 0,
-                      childAspectRatio: 1.1
-                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 0,
+                            childAspectRatio: 1.1),
                     itemBuilder: (context, index) => InkWell(
                       onTap: () {
                         if (index == 2) {
@@ -228,7 +230,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed("/timeSheetPage");
                         }
-                        if(index == 1){
+                        if (index == 1) {
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed("/courseListPage");
                         }
@@ -236,7 +238,11 @@ class _DashboardPageState extends State<DashboardPage> {
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed("/requestLessonPage");
                         }
-                        if (index ==4){
+                        if (index == 4) {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushNamed("/teacherCoach");
+                        }
+                        if (index == 5) {
                           Navigator.of(context, rootNavigator: true)
                               .pushNamed("/userEditSelection");
                         }
@@ -247,50 +253,17 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: HexColor("#F6F6F6"),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (userName != null) ...[
-                                  Text(
-                                    userName,
-                                    style: styleBlack14Bold,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 6.0),
-                                    child: Text(
-                                      "Kuruma ait dersleri Görüntüle",
-                                      style: styleBlack12Regular,
-                                    ),
-                                  )
-                                ] else ...[
-                                  Text(
-                                    'Kullanıcı adı mevcut değil',
-                                    style: styleBlack14Bold,
-                                  ),
-                                ]
-                              ],
-                            ),
-                            const Icon(Icons.arrow_circle_right_outlined)
-                          ],
-                        ),
-                      ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, bottom: 8, left: 16),
+                    child: Text(
+                      "Yaklaşan Derslerin",
+                      style: styleBlack16Bold,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 16, bottom: 8, left: 16),
+                    padding:
+                        const EdgeInsets.only(top: 16, bottom: 8, left: 16),
                     child: Text(
                       "İlgilenecebileceğin Dersler",
                       style: styleBlack16Bold,
@@ -307,7 +280,11 @@ class _DashboardPageState extends State<DashboardPage> {
                         itemBuilder: (BuildContext context, int index) {
                           return SizedBox(
                             width: MediaQuery.of(context).size.width * 0.96,
-                            child:  CourseListItem(courseModel: courseList[index],colors: HexColor(courseList[index].lesson!.color!),),
+                            child: CourseListItem(
+                              courseModel: courseList[index],
+                              colors:
+                                  HexColor(courseList[index].lesson!.color!),
+                            ),
                           );
                         },
                       ),
@@ -322,5 +299,3 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 }
-
-// Sample LessonList data

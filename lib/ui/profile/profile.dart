@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/login/UnLoginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -5,6 +6,7 @@ import '../../util/HexColor.dart';
 import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/YOText.dart';
+import '../webViewPage/WebViewPage.dart';
 import 'bloc/ProfileBloc.dart';
 import 'bloc/ProfileEvent.dart';
 import 'bloc/ProfileState.dart';
@@ -25,7 +27,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
@@ -131,10 +132,18 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.of(context, rootNavigator: true)
                                 .pushNamed("/userEditSelection");
                           }),
-                          profileItem("Eğitim Bilgileri", onTap: () {}),
-                          profileItem("Favorilerim", onTap: () {}),
-                          profileItem("SSS", onTap: () {}),
-                          profileItem("Yardım Merkezi", onTap: () {}),
+                          profileItem("Favorilerim", onTap: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed("/favoriteSchool");
+                          }),
+                          profileItem("SSS", onTap: () {
+                            openWebView('https://www.bykurs.com.tr',
+                                'Sıkça Sorulan Sorular');
+                          }),
+                          profileItem("Yardım Merkezi", onTap: () {
+                            openWebView(
+                                'https://www.bykurs.com.tr', 'Yardım Merkezi');
+                          }),
                           profileItem("Hesabımı Sil", onTap: () {}),
                           profileItem("Çıkış Yap", onTap: () {
                             clearSharedPreferences();
@@ -150,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       } else if (state is ProfileError) {
-        return Center(child: Text('Error: ${state.error}'));
+        return UnLoginPage();
       } else {
         return Center();
       }

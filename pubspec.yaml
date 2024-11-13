@@ -44,7 +44,7 @@ dependencies:
   flutter_text_box: ^0.0.1
   otp_text_field: ^1.1.3
   firebase_core: ^2.25.3
-  firebase_auth: ^4.17.3
+  firebase_auth: ^4.16.0
   firebase_storage: ^11.6.4
   cloud_firestore: ^4.15.3
   shared_preferences: ^2.2.2
@@ -60,15 +60,16 @@ dependencies:
   google_maps_flutter: ^2.0.1
   calendar_view: ^1.2.0
   syncfusion_flutter_calendar: ^26.2.7
-  fluttertoast: ^8.1.2
   persistent_bottom_nav_bar: ^6.2.1
   shimmer: ^2.0.0
   get: ^4.6.6
   chucker_flutter: ^1.6.3
   flutter_masked_text2: ^0.9.1
+  webview_flutter: ^4.7.0
+  cached_network_image: ^3.4.0
 
 flutter_launcher_icons:
-  image_path: "assets/yeni_okul_logo_v2.png"
+  image_path: "assets/bk_logo.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
 
@@ -109,6 +110,7 @@ flutter:
     - assets/ic_drawer.png
     - assets/ic_user.png
     - assets/placeholder.png
+    - assets/bk_logo.png
     - assets/yeni_okul_logo.png
     - assets/illus.png
     - assets/student_icon.png

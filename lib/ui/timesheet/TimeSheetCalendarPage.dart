@@ -1,9 +1,10 @@
 import 'package:baykurs/util/HexColor.dart';
+import 'package:baykurs/util/ListExtension.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../util/YOColors.dart';
+import '../../widgets/ErrorWidget.dart';
 import 'model/TimeSheetResponse.dart';
 
 class TimeSheetCalendarPage extends StatefulWidget {
@@ -22,14 +23,8 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
     for (var data in widget.timeSheetList) {
       DateTime startTime = DateTime.parse(data.startDate!);
       DateTime endTime = DateTime.parse(data.endDate!);
-      meetings.add(Meeting(
-        data.lesson!.name!,
-        startTime,
-        endTime,
-        HexColor(data.lesson!.color!),
-        false,
-        data.id!
-      ));
+      meetings.add(Meeting(data.lesson!.name!, startTime, endTime,
+          HexColor(data.lesson!.color!), false, data.id!));
     }
 
     return meetings;
@@ -40,34 +35,45 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SfCalendar(
-          view: CalendarView.week,
-          dataSource: MeetingDataSource(_getDataSource()),
-          showCurrentTimeIndicator: true,
-          todayHighlightColor: color5,
-          weekNumberStyle: WeekNumberStyle(
-            backgroundColor: color5,
-            textStyle: styleWhite16Regular,
-          ),
-          selectionDecoration: BoxDecoration(
-            color: Colors.transparent,
-            border: Border.all(color: Colors.black, width: 2),
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            shape: BoxShape.rectangle,
-          ),
-          onTap: (CalendarTapDetails details) {
-            dynamic appointment = details.appointments;
-            if (appointment != null && appointment.isNotEmpty) {
-              Meeting meeting = appointment[0];
-              Navigator.pushNamed(
-                context,
-                '/courseDetail',
-                arguments: meeting.courseId,
-              );
-
-            }
-          },
-        ),
+        child: widget.timeSheetList.isNullOrEmpty
+            ? const Column(
+                mainAxisAlignment: MainAxisAlignment.start, // Aligns to the top
+                crossAxisAlignment:
+                    CrossAxisAlignment.center, // Centers horizontally
+                children: [
+                  BkErrorWidget(
+                    title: "Hata",
+                    description: "Şuanda hiçbir ders satın almadınız",
+                  ),
+                ],
+              )
+            : SfCalendar(
+                view: CalendarView.week,
+                dataSource: MeetingDataSource(_getDataSource()),
+                showCurrentTimeIndicator: true,
+                todayHighlightColor: color5,
+                weekNumberStyle: WeekNumberStyle(
+                  backgroundColor: color5,
+                  textStyle: styleWhite16Regular,
+                ),
+                selectionDecoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border.all(color: Colors.black, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  shape: BoxShape.rectangle,
+                ),
+                onTap: (CalendarTapDetails details) {
+                  dynamic appointment = details.appointments;
+                  if (appointment != null && appointment.isNotEmpty) {
+                    Meeting meeting = appointment[0];
+                    Navigator.pushNamed(
+                      context,
+                      '/courseDetail',
+                      arguments: meeting.courseId,
+                    );
+                  }
+                },
+              ),
       ),
     );
   }
@@ -120,7 +126,8 @@ class MeetingDataSource extends CalendarDataSource {
 /// information about the event data which will be rendered in calendar.
 class Meeting {
   /// Creates a meeting class with required details.
-  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay,this.courseId);
+  Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay,
+      this.courseId);
 
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;

@@ -1,4 +1,5 @@
 import 'package:baykurs/ui/profile/model/UserEditSelectionItem.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/HexColor.dart';
@@ -15,32 +16,19 @@ class _UserEditSelectionState extends State<UserEditSelection> {
   @override
   Widget build(BuildContext context) {
     final List<UserEditSelectionItem> userEditSelectionItems = [
-      UserEditSelectionItem(name: "Okul Bilgileri", route: "/profileInfo"),
+      UserEditSelectionItem(name: "Eğitim Bilgileri", route: "/profileInfo"),
       UserEditSelectionItem(name: "Email Değiştir", route: "/mailUpdate"),
       UserEditSelectionItem(name: "Şifre Değiştir", route: "/passwordUpdate"),
     ];
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Kullanıcı Bilgileri"),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Row(
-                  children: [
-                    InkWell(
-                      child: const Icon(Icons.arrow_back_ios),
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    Text("Bilgileri Güncelle", style: styleBlack16Bold),
-                  ],
-                ),
-              ),
               const SizedBox(
                 height: 24,
               ),
@@ -54,9 +42,7 @@ class _UserEditSelectionState extends State<UserEditSelection> {
               ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                // ListView'ın boyutunu sarmalayıcıya göre ayarla
                 physics: const NeverScrollableScrollPhysics(),
-                // Kaydırmayı devre dışı bırak
                 itemCount: userEditSelectionItems.length,
                 itemBuilder: (BuildContext context, int index) {
                   final item = userEditSelectionItems[index];

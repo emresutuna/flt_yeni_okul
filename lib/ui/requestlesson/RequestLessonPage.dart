@@ -1,3 +1,4 @@
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -13,16 +14,8 @@ class RequestLessonPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell( onTap: (){
-          Navigator.pop(context);
-        },
-            child: const Icon(Icons.arrow_back_ios)),
-        title: Text(
-          'Ders Talep Et',
-          style: styleBlack16Bold,
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Ders Talep Et"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -32,7 +25,7 @@ class RequestLessonPage extends StatelessWidget {
               // Açıklama metinleri
               Text(
                 'İhtiyacın olan dersi talep ederek sonraki haftanın programına dahil edebilirsin.',
-                style: GoogleFonts.notoSans(fontSize: 16),
+                style: styleBlack12Bold,
               ),
               const SizedBox(height: 16),
               const InfoCardWidget(

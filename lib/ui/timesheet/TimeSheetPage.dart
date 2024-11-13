@@ -33,19 +33,20 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
       child:
           BlocBuilder<TimeSheetBloc, TimeSheetState>(builder: (context, state) {
         if (state is TimeSheetLoadingState) {
-          return const Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: CircularProgressIndicator(),
-              )
-            ],
+          return Scaffold(
+            body: Container(
+              child: Center(child: CircularProgressIndicator()),
+            ),
           );
         }
         if (state is TimeSheetError) {
-          return const BkErrorWidget();
-        }
+          return Scaffold(
+            body: Container(
+              child: Center(child: BkErrorWidget(onPress: (){
+                Navigator.pop(context);
+              },)),
+            ),
+          );        }
         if (state is TimeSheetSuccess) {
           timeSheet = state.timeSheetResponse.data!;
           return Scaffold(
@@ -57,9 +58,9 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
               ),
               title: Text(
                 'Ders Programı',
-                style: styleBlack14Bold,
+                style: styleBlack16Bold,
               ),
-              centerTitle: true,
+              centerTitle: false,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(50),
                 child: ClipRRect(

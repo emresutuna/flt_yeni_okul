@@ -1,5 +1,6 @@
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,6 +36,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Ders Detayı"),
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
@@ -50,20 +52,6 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0.0, top: 8),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                child: const Icon(Icons.arrow_back_ios),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              Text("Ders Detayı", style: styleBlack16Bold),
-                            ],
-                          ),
-                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 16.0, top: 24, bottom: 16),

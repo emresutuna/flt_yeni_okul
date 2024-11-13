@@ -1,14 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../util/HexColor.dart';
 import '../util/HexColor.dart';
 import '../util/YOColors.dart';
 import 'YOText.dart';
+
 class CompanyListItem extends StatelessWidget {
   final String icon;
   final String name;
   final bool isFavorite;
   final String province;
   final String city;
+  final VoidCallback onFavoriteClick;
 
   const CompanyListItem(
       {super.key,
@@ -16,7 +19,8 @@ class CompanyListItem extends StatelessWidget {
       required this.name,
       required this.isFavorite,
       required this.province,
-      required this.city});
+      required this.city,
+      required this.onFavoriteClick});
 
   @override
   Widget build(BuildContext context) {
@@ -35,25 +39,37 @@ class CompanyListItem extends StatelessWidget {
             children: [
               Container(
                 height: 150,
+                width: double.maxFinite,
                 decoration: const ShapeDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/company_logo2.png"),
-                    fit: BoxFit.fill,
-                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(4),
                     ),
+                  ),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: icon,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) => Image.asset(
+                    "assets/placeholder.png",
+                    fit: BoxFit.fill,
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    "assets/placeholder.png",
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
               Positioned(
-                right: 8,
-                top: 8,
-                child: Icon(
-                  Icons.favorite_outline,
-                  color: color1,
+                right: 3,
+                top: 3,
+                child: InkWell(
+                  onTap: onFavoriteClick,
+                  child: Icon(
+                    !isFavorite ? Icons.favorite_outline : Icons.favorite,
+                    color: color5,
+                  ),
                 ),
               )
             ],

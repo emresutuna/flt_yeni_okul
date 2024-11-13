@@ -1,3 +1,5 @@
+import 'package:baykurs/widgets/InfoWidget.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -12,7 +14,9 @@ import 'bloc/LessonState.dart';
 import 'model/CourseModel.dart';
 
 class CourseListPage extends StatefulWidget {
-  const CourseListPage({super.key});
+  final bool hasShowBackButton;
+
+  const CourseListPage({super.key, required this.hasShowBackButton});
 
   @override
   State<CourseListPage> createState() => _CourseListPageState();
@@ -26,10 +30,7 @@ class _CourseListPageState extends State<CourseListPage> {
   void onQueryChanged(String query) {
     //servis query isteği at
     setState(() {
-      searchResults = courseList
-          .where(
-              (item) => item.quota != 0)
-          .toList();
+      searchResults = courseList.where((item) => item.quota != 0).toList();
     });
   }
 
@@ -43,34 +44,25 @@ class _CourseListPageState extends State<CourseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Dersler"),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 16.0, top: 24),
-              child: Row(
-                children: [
-                  InkWell(
-                    child: const Icon(Icons.arrow_back_ios),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Text(
-                    "Dersler",
-                    style: styleBlack16Bold,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 24),
               child: Text(
-                "Lorem ipsum dolar sit amet",
+                "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
                 style: styleBlack12Bold,
                 textAlign: TextAlign.start,
               ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left:16.0,right: 16,top: 16),
+              child: InfoCardWidget(
+                  title: "Dersler",
+                  description:
+                      "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin."),
             ),
             BlocBuilder<LessonBloc, LessonState>(builder: (context, state) {
               if (state is LessonStateLoading) {
@@ -100,7 +92,7 @@ class _CourseListPageState extends State<CourseListPage> {
                                 width: 45,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: color6),
+                                    color: color5),
                                 child: Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: Image.asset(
@@ -119,13 +111,14 @@ class _CourseListPageState extends State<CourseListPage> {
                         itemCount: courseList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: (){
-                              Navigator.pushNamed(context, '/courseDetail', arguments:courseList[index].id);
-
+                            onTap: () {
+                              Navigator.pushNamed(context, '/courseDetail',
+                                  arguments: courseList[index].id);
                             },
                             child: CourseListItem(
                               courseModel: courseList[index],
-                              colors: HexColor(courseList[index].lesson!.color!),
+                              colors:
+                                  HexColor(courseList[index].lesson!.color!),
                             ),
                           );
                         },
@@ -146,7 +139,6 @@ class _CourseListPageState extends State<CourseListPage> {
   }
 }
 
-
 class SkeletonLoading extends StatelessWidget {
   const SkeletonLoading({Key? key}) : super(key: key);
 
@@ -158,28 +150,29 @@ class SkeletonLoading extends StatelessWidget {
         height: MediaQuery.of(context).size.height / 4.8,
         decoration: BoxDecoration(
           color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10), // Kenarlara 10px radius
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // İçindeki shimmer'ları aralıklı dağıtmak için
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Üç tane üst üste shimmer
             for (int i = 0; i < 3; i++)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0), // Her bir shimmer arasında biraz boşluk
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Shimmer.fromColors(
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    width: MediaQuery.of(context).size.width / 2, // Genişlik daha belirgin olsun
-                    height: 20, // Her shimmer 20px yükseklik
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: 20,
                     color: Colors.grey[400],
                   ),
                 ),
               ),
             // Altta, sağdan ve soldan margin uygulanmış shimmer
             Padding(
-              padding: const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0), // Sağ ve soldan 16px margin
+              padding:
+                  const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
+              // Sağ ve soldan 16px margin
               child: Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,
@@ -193,5 +186,6 @@ class SkeletonLoading extends StatelessWidget {
           ],
         ),
       ),
-    );  }
+    );
+  }
 }

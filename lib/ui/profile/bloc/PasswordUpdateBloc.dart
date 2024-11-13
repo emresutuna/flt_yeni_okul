@@ -31,5 +31,6 @@ class PasswordUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
         emit(UserUpdateError(errorMessage));
       }
     });
+
   }
 }

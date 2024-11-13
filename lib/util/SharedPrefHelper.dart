@@ -31,5 +31,5 @@ Future<void> clearSharedPreferences() async {
   await prefs.clear();
 }
 void refreshApp() {
-  Get.offAllNamed('/loginPage'); // Navigate to your desired initial page
+  Get.offAllNamed('/loginPage');
 }

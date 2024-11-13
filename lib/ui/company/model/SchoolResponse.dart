@@ -1,248 +1,243 @@
 class SchoolResponse {
-  bool? status;
-  PageData? data;
+  final bool status;
+  final SchoolData data;
 
-  SchoolResponse({this.status, this.data});
+  SchoolResponse({required this.status, required this.data});
 
-  SchoolResponse.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    data = json['data'] != null ? new PageData.fromJson(json['data']) : null;
+  factory SchoolResponse.fromJson(Map<String, dynamic> json) {
+    return SchoolResponse(
+      status: json['status'],
+      data: SchoolData.fromJson(json['data']),
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
-}
-
-class PageData {
-  List<School>? data;
-  String? path;
-  int? perPage;
-  int? nextCursor;
-  int? nextPageUrl;
-  int? prevCursor;
-  int? prevPageUrl;
-
-  PageData(
-      {this.data,
-        this.path,
-        this.perPage,
-        this.nextCursor,
-        this.nextPageUrl,
-        this.prevCursor,
-        this.prevPageUrl});
-
-  PageData.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      data = <School>[];
-      json['data'].forEach((v) {
-        data!.add(new School.fromJson(v));
-      });
-    }
-    path = json['path'];
-    perPage = json['per_page'];
-    nextCursor = json['next_cursor'];
-    nextPageUrl = json['next_page_url'];
-    prevCursor = json['prev_cursor'];
-    prevPageUrl = json['prev_page_url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    data['path'] = this.path;
-    data['per_page'] = this.perPage;
-    data['next_cursor'] = this.nextCursor;
-    data['next_page_url'] = this.nextPageUrl;
-    data['prev_cursor'] = this.prevCursor;
-    data['prev_page_url'] = this.prevPageUrl;
-    return data;
+  // CopyWith for SchoolResponse
+  SchoolResponse copyWith({
+    bool? status,
+    SchoolData? data,
+  }) {
+    return SchoolResponse(
+      status: status ?? this.status,
+      data: data ?? this.data,
+    );
   }
 }
 
-class School {
-  int? id;
-  int? userId;
-  int? provinceId;
-  int? cityId;
-  String? address;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
-  User? user;
-  Province? province;
-  City? city;
-  String? photo;
+class SchoolData {
+  final int currentPage;
+  final List<SchoolItem> schools;
+  final String? firstPageUrl;
+  final String? lastPageUrl;
+  final String? nextPageUrl;
+  final String? prevPageUrl;
+  final int total;
 
-  School(
-      {this.id,
-        this.userId,
-        this.provinceId,
-        this.cityId,
-        this.address,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt,
-        this.user,
-        this.province,
-        this.city,
-        this.photo});
+  SchoolData({
+    required this.currentPage,
+    required this.schools,
+    this.firstPageUrl,
+    this.lastPageUrl,
+    this.nextPageUrl,
+    this.prevPageUrl,
+    required this.total,
+  });
 
-  School.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    provinceId = json['province_id'];
-    cityId = json['city_id'];
-    address = json['address'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    province = json['province'] != null
-        ? new Province.fromJson(json['province'])
-        : null;
-    city = json['city'] != null ? new City.fromJson(json['city']) : null;
-    photo = json['photo'];
+  factory SchoolData.fromJson(Map<String, dynamic> json) {
+    return SchoolData(
+      currentPage: json['current_page'],
+      schools: (json['data'] as List)
+          .map((item) => SchoolItem.fromJson(item))
+          .toList(),
+      firstPageUrl: json['first_page_url'],
+      lastPageUrl: json['last_page_url'],
+      nextPageUrl: json['next_page_url'],
+      prevPageUrl: json['prev_page_url'],
+      total: json['total'],
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['province_id'] = this.provinceId;
-    data['city_id'] = this.cityId;
-    data['address'] = this.address;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
-    }
-    if (this.province != null) {
-      data['province'] = this.province!.toJson();
-    }
-    if (this.city != null) {
-      data['city'] = this.city!.toJson();
-    }
-    data['photo'] = this.photo;
-    return data;
+  // CopyWith for SchoolData
+  SchoolData copyWith({
+    int? currentPage,
+    List<SchoolItem>? schools,
+    String? firstPageUrl,
+    String? lastPageUrl,
+    String? nextPageUrl,
+    String? prevPageUrl,
+    int? total,
+  }) {
+    return SchoolData(
+      currentPage: currentPage ?? this.currentPage,
+      schools: schools ?? this.schools,
+      firstPageUrl: firstPageUrl ?? this.firstPageUrl,
+      lastPageUrl: lastPageUrl ?? this.lastPageUrl,
+      nextPageUrl: nextPageUrl ?? this.nextPageUrl,
+      prevPageUrl: prevPageUrl ?? this.prevPageUrl,
+      total: total ?? this.total,
+    );
   }
 }
 
-class User {
-  int? id;
-  int? roleId;
-  String? name;
-  String? createdAt;
-  String? updatedAt;
-  Null? deletedAt;
+class SchoolItem {
+  final int id;
+  final int userId;
+  final int cityId;
+  final String address;
+  final String description;
+  final String? photo;
+  bool isFav;
+  final City city;
+  final User user;
 
-  User(
-      {this.id,
-        this.roleId,
-        this.name,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
+  SchoolItem({
+    required this.id,
+    required this.userId,
+    required this.cityId,
+    required this.address,
+    required this.description,
+    required this.photo,
+    required this.isFav,
+    required this.city,
+    required this.user,
+  });
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    roleId = json['role_id'];
-    name = json['name'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
+  factory SchoolItem.fromJson(Map<String, dynamic> json) {
+    return SchoolItem(
+      id: json['id'],
+      userId: json['user_id'],
+      cityId: json['city_id'],
+      address: json['address'],
+      description: json['description'],
+      photo: json['photo'],
+      isFav: json['isFav'],
+      city: City.fromJson(json['city']),
+      user: User.fromJson(json['user']),
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['role_id'] = this.roleId;
-    data['name'] = this.name;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    return data;
-  }
-}
-
-class Province {
-  int? id;
-  String? name;
-  String? code;
-  String? latitude;
-  String? longitude;
-  int? order;
-
-  Province(
-      {this.id,
-        this.name,
-        this.code,
-        this.latitude,
-        this.longitude,
-        this.order});
-
-  Province.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    code = json['code'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    order = json['order'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['code'] = this.code;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['order'] = this.order;
-    return data;
+  // CopyWith for SchoolItem
+  SchoolItem copyWith({
+    int? id,
+    int? userId,
+    int? cityId,
+    String? address,
+    String? description,
+    String? photo,
+    bool? isFav,
+    City? city,
+    User? user,
+  }) {
+    return SchoolItem(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      cityId: cityId ?? this.cityId,
+      address: address ?? this.address,
+      description: description ?? this.description,
+      photo: photo ?? this.photo,
+      isFav: isFav ?? this.isFav,
+      city: city ?? this.city,
+      user: user ?? this.user,
+    );
   }
 }
 
 class City {
-  int? id;
-  int? provinceId;
-  String? name;
-  String? latitude;
-  String? longitude;
-  int? order;
+  final int id;
+  final String name;
+  final int provinceId;
+  final Province province;
 
-  City(
-      {this.id,
-        this.provinceId,
-        this.name,
-        this.latitude,
-        this.longitude,
-        this.order});
+  City({
+    required this.id,
+    required this.name,
+    required this.provinceId,
+    required this.province,
+  });
 
-  City.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    provinceId = json['province_id'];
-    name = json['name'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    order = json['order'];
+  factory City.fromJson(Map<String, dynamic> json) {
+    return City(
+      id: json['id'],
+      name: json['name'],
+      provinceId: json['province_id'],
+      province: Province.fromJson(json['province']),
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['province_id'] = this.provinceId;
-    data['name'] = this.name;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['order'] = this.order;
-    return data;
+  // CopyWith for City
+  City copyWith({
+    int? id,
+    String? name,
+    int? provinceId,
+    Province? province,
+  }) {
+    return City(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      provinceId: provinceId ?? this.provinceId,
+      province: province ?? this.province,
+    );
+  }
+}
+
+class Province {
+  final int id;
+  final String name;
+
+  Province({required this.id, required this.name});
+
+  factory Province.fromJson(Map<String, dynamic> json) {
+    return Province(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+
+  // CopyWith for Province
+  Province copyWith({
+    int? id,
+    String? name,
+  }) {
+    return Province(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
+  }
+}
+
+class User {
+  final int id;
+  final String name;
+  final String email;
+  final String phone;
+
+  User({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+    );
+  }
+
+  // CopyWith for User
+  User copyWith({
+    int? id,
+    String? name,
+    String? email,
+    String? phone,
+  }) {
+    return User(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+    );
   }
 }
