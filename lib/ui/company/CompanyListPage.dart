@@ -1,12 +1,14 @@
 import 'dart:async';
-import 'package:baykurs/util/SizedBoxExtension.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/YOColors.dart';
+import '../../util/pageAnimation.dart';
 import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/SearchBar.dart';
+import '../filter/FilterLesson.dart';
 import 'bloc/SchoolBloc.dart';
 import 'bloc/SchoolEvent.dart';
 import 'bloc/SchoolState.dart';
@@ -100,7 +102,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   flex: 1,
                   child: InkWell(
                     onTap: () {
-                      showCompanyFilterBottomSheet(context);
+                      Navigator.of(context).push(createRoute(FilterLesson()));
+
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),

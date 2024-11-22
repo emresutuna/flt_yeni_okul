@@ -1,4 +1,4 @@
-import 'package:baykurs/util/SizedBoxExtension.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/SecondaryButton.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,7 @@ class UnLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -35,7 +36,7 @@ class UnLoginPage extends StatelessWidget {
                     text: "Giriş Yap",
                     onPress: () {
                       Navigator.of(context, rootNavigator: true)
-                          .pushReplacementNamed("/loginPage");
+                          .pushNamed("/loginPage");
                     },
                   ),
                   16.toHeight,
@@ -43,7 +44,7 @@ class UnLoginPage extends StatelessWidget {
                     text: 'Kayıt Ol',
                     onPress: () {
                       Navigator.of(context, rootNavigator: true)
-                          .pushReplacementNamed("/registerPage");
+                          .pushNamed("/registerPage");
                     },
                   )
                 ],

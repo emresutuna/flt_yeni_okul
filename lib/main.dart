@@ -1,4 +1,3 @@
-
 import 'package:baykurs/repository/SchoolRepository.dart';
 import 'package:baykurs/repository/lectureRepository.dart';
 import 'package:baykurs/repository/userRepository.dart';
@@ -7,6 +6,7 @@ import 'package:baykurs/ui/companyDetail/bloc/SchoolDetailBloc.dart';
 import 'package:baykurs/ui/course/CourseListPage.dart';
 import 'package:baykurs/ui/course/bloc/LessonBloc.dart';
 import 'package:baykurs/ui/course/bloc/LessonEvent.dart';
+import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
@@ -48,6 +48,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => ProfileBloc(userRepository: UserRepository()),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc(userRepository: UserRepository()),
         ),
         // Add other BlocProviders as needed
       ],
@@ -99,6 +102,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     if (initialRoute == null) {
       return const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: Center(
             child: CircularProgressIndicator(),

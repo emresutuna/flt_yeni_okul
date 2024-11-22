@@ -19,6 +19,8 @@ class ApiUrls {
 
   static String buyCourse(int id) => "/course/$id/buy";
   static const String getFavorites = "/mobile/favorites";
+  static const String getHomePage = "/mobile/homepage";
+  static const String getHomePageWithLogin = "/mobile/homepage/isLoggedIn";
 
   static String toggleFavorite(int id) => "/mobile/favorites/$id";
 

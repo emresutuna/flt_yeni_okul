@@ -4,7 +4,7 @@ import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolEvent.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolState.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
-import 'package:baykurs/util/SizedBoxExtension.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -27,8 +27,7 @@ class APIService {
   Future<Dio> _createDio({bool includeHeaders = true}) async {
     final token = includeHeaders
         ? await getToken()
-        : null; // Fetch token only if headers should be included
-
+        : null;
     final dio = Dio(
       BaseOptions(
         baseUrl: baseUrl,
@@ -37,16 +36,13 @@ class APIService {
         receiveTimeout: const Duration(milliseconds: TIME_OUT),
         contentType: Headers.jsonContentType,
         headers: _buildHeaders(token, includeHeaders),
-        // Include headers if needed
         validateStatus: (status) {
-          // Allow status codes 200–299 and 302
           return (status! < 300 || status == 302);
         },
       ),
     );
     dio.interceptors.add(ChuckerDioInterceptor());
 
-    // Add interceptors
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         // Log request details

@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color4,
-      appBar:WhiteAppBar("Hesap Oluştur"),
+      appBar:WhiteAppBar("Hesap Oluştur",onTap: (){Navigator.pop(context);},canGoBack: true),
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {

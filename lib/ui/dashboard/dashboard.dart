@@ -1,5 +1,9 @@
+import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
+import 'package:baykurs/ui/dashboard/bloc/DashboardEvent.dart';
+import 'package:baykurs/ui/dashboard/bloc/DashboardState.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../util/HexColor.dart';
 import '../../util/SharedPrefHelper.dart';
@@ -143,7 +147,8 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     // Initialize the future to read user name
-    userNameFuture = readData("user_name");
+    context.read<DashboardBloc>().add(FetchDashboard());
+
   }
 
   @override
@@ -151,18 +156,11 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: FutureBuilder<String?>(
-          future: userNameFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        child: BlocBuilder<DashboardBloc, DashboardState>(
+          builder: (context, state) {
+            if(state is DashboardLoading){
               return const Center(child: CircularProgressIndicator());
             }
-
-            if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            }
-
-            final userName = snapshot.data;
 
             return SingleChildScrollView(
               child: Column(

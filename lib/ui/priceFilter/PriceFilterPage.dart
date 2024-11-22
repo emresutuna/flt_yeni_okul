@@ -1,4 +1,4 @@
-import 'package:baykurs/util/SizedBoxExtension.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 
@@ -31,42 +31,39 @@ class _PriceFilterState extends State<PriceFilter> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(child: _buildPriceBox('En Az', _minPrice)),
-              16.toWidth,
-              Expanded(child: _buildPriceBox('En Çok', _maxPrice)),
-            ],
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: _buildPriceBox('En Az', _minPrice)),
+            16.toWidth,
+            Expanded(child: _buildPriceBox('En Çok', _maxPrice)),
+          ],
+        ),
+        16.toHeight,
+        RangeSlider(
+          values: _currentRangeValues,
+          min: widget.minLimit,
+          max: widget.maxLimit,
+          divisions: 500,
+          labels: RangeLabels(
+            '${_currentRangeValues.start.round()} TL',
+            '${_currentRangeValues.end.round()} TL',
           ),
-          16.toHeight,
-          RangeSlider(
-            values: _currentRangeValues,
-            min: widget.minLimit,
-            max: widget.maxLimit,
-            divisions: 500,
-            labels: RangeLabels(
-              '${_currentRangeValues.start.round()} TL',
-              '${_currentRangeValues.end.round()} TL',
-            ),
-            onChanged: (RangeValues values) {
-              setState(() {
-                _currentRangeValues = values;
-                _minPrice = values.start;
-                _maxPrice = values.end;
-              });
-              // Fiyat aralığı değiştiğinde onApply fonksiyonu çağrılıyor
-              widget.onApply(_minPrice, _maxPrice);
-            },
-            activeColor: color5,
-            inactiveColor: color5.withAlpha(50),
-          ),
-        ],
-      ),
+          onChanged: (RangeValues values) {
+            setState(() {
+              _currentRangeValues = values;
+              _minPrice = values.start;
+              _maxPrice = values.end;
+            });
+            // Fiyat aralığı değiştiğinde onApply fonksiyonu çağrılıyor
+            widget.onApply(_minPrice, _maxPrice);
+          },
+          activeColor: color5,
+          inactiveColor: color5.withAlpha(50),
+        ),
+      ],
     );
   }
 

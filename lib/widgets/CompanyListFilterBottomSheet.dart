@@ -1,5 +1,5 @@
 import 'package:baykurs/ui/priceFilter/PriceFilterPage.dart';
-import 'package:baykurs/util/SizedBoxExtension.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
