@@ -1,3 +1,5 @@
+import '../../course/model/CourseModel.dart';
+
 class MobileHomeResponse {
   bool? status;
   List<String>? sliderData;
@@ -118,29 +120,6 @@ class IncomingLesson {
   }
 }
 
-class School {
-  int? id;
-  int? userId;
-  User? user;
-
-  School({this.id, this.userId, this.user});
-
-  factory School.fromJson(Map<String, dynamic> json) {
-    return School(
-      id: json['id'],
-      userId: json['user_id'],
-      user: json['user'] != null ? User.fromJson(json['user']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user_id': userId,
-      'user': user?.toJson(),
-    };
-  }
-}
 
 class User {
   int? id;

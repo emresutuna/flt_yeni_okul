@@ -1,14 +1,13 @@
 import 'dart:async';
+import 'package:baykurs/ui/filter/FilterSchool.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/YOColors.dart';
 import '../../util/pageAnimation.dart';
-import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/SearchBar.dart';
-import '../filter/FilterLesson.dart';
 import 'bloc/SchoolBloc.dart';
 import 'bloc/SchoolEvent.dart';
 import 'bloc/SchoolState.dart';
@@ -55,7 +54,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
   }
 
   void toggleFavorite(int index, List<SchoolItem> item) {
-    item[index].isFav = !item[index].isFav;
+    item[index].isFav = !item[index].isFav!;
     _streamController.add(List<SchoolItem>.from(item));
     context.read<SchoolBloc>().add(ToggleFavorite(schoolId: item[index].id));
   }
@@ -102,7 +101,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   flex: 1,
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(createRoute(FilterLesson()));
+                      Navigator.of(context).push(createRoute(FilterSchool()));
 
                     },
                     child: Container(

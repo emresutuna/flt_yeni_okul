@@ -70,22 +70,22 @@ class CourseData {
 }
 
 class Course {
-  final int? id; // Changed to nullable
-  final int? schoolId; // Changed to nullable
-  final int? lessonId; // Changed to nullable
-  final int? teacherId; // Changed to nullable
-  final DateTime? startDate; // Changed to nullable
-  final DateTime? endDate; // Changed to nullable
-  final String? classroom; // Changed to nullable
-  final DateTime? deadline; // Changed to nullable
-  final double? price; // Changed to nullable
-  final int? quota; // Changed to nullable
-  final DateTime? createdAt; // Changed to nullable
-  final DateTime? updatedAt; // Changed to nullable
-  final String? deletedAt; // Changed to nullable
-  final School? school; // Changed to nullable
-  final Lesson? lesson; // Changed to nullable
-  final Teacher? teacher; // Changed to nullable
+  final int? id;
+  final int? schoolId;
+  final int? lessonId;
+  final int? teacherId;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String? classroom;
+  final DateTime? deadline;
+  final double? price;
+  final int? quota;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final String? deletedAt;
+  final School? school;
+  final Lesson? lesson;
+  final Teacher? teacher;
 
   Course({
     this.id,

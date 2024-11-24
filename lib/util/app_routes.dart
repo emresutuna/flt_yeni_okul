@@ -9,6 +9,7 @@ import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
 import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
 import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
 import 'package:baykurs/ui/register/bloc/RegisterBloc.dart';
+import 'package:baykurs/ui/requestlesson/bloc/RequestLessonBloc.dart';
 import 'package:baykurs/ui/teacherCoach/TeacherCoach.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +95,11 @@ class AppRoutes {
               child: const TimeSheetPage(),
             ),
         '/purchaseHistoryPage': (context) => const PurchaseHistoryPage(),
-        '/requestLessonPage': (context) => RequestLessonPage(),
+        '/requestLessonPage': (context) => BlocProvider(
+              create: (context) =>
+                  RequestLessonBloc(userRepository: UserRepository()),
+              child: const RequestLessonPage(),
+            ),
         '/loginPage': (context) => BlocProvider(
               create: (context) => LoginBloc(userRepository: UserRepository()),
               child: const LoginPage(),

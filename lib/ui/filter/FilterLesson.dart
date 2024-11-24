@@ -2,6 +2,7 @@ import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 
+import '../../util/LessonExtension.dart';
 import '../priceFilter/PriceFilterPage.dart';
 
 class FilterLesson extends StatelessWidget {
@@ -100,16 +101,7 @@ class FilterLesson extends StatelessWidget {
   }
 
   Widget _buildBranches() {
-    final branches = [
-      "Matematik",
-      "Fizik",
-      "Geometri",
-      "Edebiyat",
-      "Dil Anlatım",
-      "Kimya",
-      "Biyoloji",
-      "Tarih"
-    ];
+    final branches = BranchesExtension.getAllBranches();
 
     // Seçim durumunu takip etmek için bir liste
     final List<bool> isSelected = List.generate(branches.length, (index) => false);
@@ -121,7 +113,7 @@ class FilterLesson extends StatelessWidget {
           runSpacing: 8,
           children: branches.asMap().entries.map((entry) {
             int index = entry.key;
-            String branch = entry.value;
+            String branch = entry.value.name;
             return ChoiceChip(
               label: Text(branch),
               selected: isSelected[index],

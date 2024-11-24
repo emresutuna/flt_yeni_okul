@@ -16,7 +16,7 @@ Color color1 = HexColor("#222831");
 Color color2 = HexColor("#393E46");
 Color color3 = HexColor("#7DCB70");
 Color color4 = HexColor("#F6F6F6");
-Color color5 = HexColor("#FD275F");
+Color color5 = HexColor("#F4951E");
 Color color6 = HexColor("#FF3A44");
 
 Color renkMatematik = HexColor("#4A90E2");

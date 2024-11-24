@@ -38,6 +38,7 @@ class QuickAction extends StatelessWidget {
                     Image.asset(
                       icon,
                       fit: BoxFit.contain,
+                      color: color5,
                     ),
 
                   ],

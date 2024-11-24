@@ -1,6 +1,6 @@
 import 'dart:io';
 
-
+import 'package:baykurs/util/SharedPrefHelper.dart';
 
 import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
@@ -12,8 +12,11 @@ import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
 class SchoolRepository {
   Future<ResultResponse<SchoolResponse>> getSchool() async {
     try {
-      final response = await APIService.instance
-          .request(ApiUrls.school, DioMethod.get);
+      final token = await getToken();
+      final response = await APIService.instance.request(
+          token != null ? ApiUrls.getSchoolWithLogin : ApiUrls.school,
+          DioMethod.get,
+          includeHeaders: token != null ? true : false);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -29,7 +32,9 @@ class SchoolRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
-  Future<ResultResponse<SchoolResponse>> getSchoolBySearch(String queryText) async {
+
+  Future<ResultResponse<SchoolResponse>> getSchoolBySearch(
+      String queryText) async {
     try {
       final response = await APIService.instance
           .request(ApiUrls.schoolSearch(queryText), DioMethod.get);
@@ -48,14 +53,17 @@ class SchoolRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
-  Future<ResultResponse<SchoolDetailResponse>> getSchoolById(int schoolId) async {
+
+  Future<ResultResponse<SchoolDetailResponse>> getSchoolById(
+      int schoolId) async {
     try {
       final response = await APIService.instance
-          .request('${ApiUrls.schoolDetail}/$schoolId', DioMethod.get);
+          .request('${ApiUrls.school}/$schoolId', DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        SchoolDetailResponse schoolResponse = SchoolDetailResponse.fromJson(body);
+        SchoolDetailResponse schoolResponse =
+            SchoolDetailResponse.fromJson(body);
 
         return ResultResponse.success(schoolResponse);
       } else {
@@ -67,14 +75,16 @@ class SchoolRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
   Future<ResultResponse<FavoriteToggleResponse>> toggleFav(int id) async {
     try {
-      final response =
-      await APIService.instance.request(ApiUrls.toggleFavorite(id), DioMethod.post);
+      final response = await APIService.instance
+          .request(ApiUrls.toggleFavorite(id), DioMethod.post);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        FavoriteToggleResponse favoriteSchoolResponse = FavoriteToggleResponse.fromJson(body);
+        FavoriteToggleResponse favoriteSchoolResponse =
+            FavoriteToggleResponse.fromJson(body);
 
         return ResultResponse.success(favoriteSchoolResponse);
       } else {

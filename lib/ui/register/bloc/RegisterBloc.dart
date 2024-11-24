@@ -1,4 +1,3 @@
-import 'package:baykurs/ui/login/model/UserRegisterModel.dart';
 import 'package:baykurs/ui/register/bloc/RegisterEvent.dart';
 import 'package:baykurs/ui/register/bloc/RegisterState.dart';
 import 'package:bloc/bloc.dart';

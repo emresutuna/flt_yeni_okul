@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:baykurs/ui/course/model/CourseModel.dart';
 import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';
 import 'package:baykurs/ui/register/model/RegisterRequest.dart';
 import 'package:baykurs/ui/register/model/RegisterResponse.dart';
+import 'package:baykurs/ui/requestlesson/CourseRequest.dart';
 import 'package:baykurs/ui/timesheet/model/TimeSheetResponse.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +19,7 @@ import '../ui/login/model/LoginRequest.dart';
 import '../ui/login/model/LoginResponse.dart';
 import '../ui/profile/model/ProfileResponse.dart';
 import '../ui/profile/model/UserUpdateRequest.dart';
+import '../ui/requestlesson/CourseRequestResponse.dart';
 
 class UserRepository {
   Future<ResultResponse<LoginResponse>> postLogin(LoginRequest request) async {
@@ -199,9 +202,32 @@ class UserRepository {
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        MobileHomeResponse mobileHomeResponse = MobileHomeResponse.fromJson(body);
+        MobileHomeResponse mobileHomeResponse =
+            MobileHomeResponse.fromJson(body);
 
         return ResultResponse.success(mobileHomeResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<RequestCourseResponseModel>> courseRequest(
+      CourseRequest request) async {
+    try {
+      final response = await APIService.instance.request(
+          ApiUrls.courseRequestURL, param: request.toJson(), DioMethod.post);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        RequestCourseResponseModel responseModel =
+            RequestCourseResponseModel.fromJson(body);
+
+        return ResultResponse.success(responseModel);
       } else {
         return ResultResponse.failure(
             'API call failed with status code ${response.statusCode}');

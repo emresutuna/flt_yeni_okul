@@ -85,7 +85,7 @@ class SchoolItem {
   final String address;
   final String description;
   final String? photo;
-  bool isFav;
+  bool? isFav;
   final City city;
   final User user;
 
