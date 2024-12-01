@@ -27,7 +27,7 @@ class YOAppBar extends StatelessWidget implements PreferredSizeWidget {
               padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 2),
               child: Center(
                   child: Image.asset(
-                "assets/yeni_okul_logo.png",
+                "assets/baykurs_main_logo.png",
                 fit: BoxFit.contain,
                 height: 50,
                 width: 80,

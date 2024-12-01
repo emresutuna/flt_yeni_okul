@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           "Profil",
                           style: styleWhite16Bold,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           children: [
                             Container(
@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 shape: BoxShape.circle,
                                 color: Colors.white,
                               ),
-                              child: Center(child: Text("EŞ")),
+                              child: const Center(child: Text("EŞ")),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 16.0),
@@ -159,9 +159,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       } else if (state is ProfileError) {
-        return UnLoginPage();
+        return const UnLoginPage();
       } else {
-        return Center();
+        return const Center();
       }
     }));
   }
@@ -189,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Shimmer.fromColors(
@@ -218,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,
@@ -228,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   color: Colors.white,
                                 ),
                               ),
-                              SizedBox(height: 8),
+                              const SizedBox(height: 8),
                               Shimmer.fromColors(
                                 baseColor: Colors.grey[300]!,
                                 highlightColor: Colors.grey[100]!,

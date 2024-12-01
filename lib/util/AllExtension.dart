@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../ui/requestlesson/CourseRequestSchool.dart';
 import '../ui/requestlesson/Region.dart';
 
 extension SizedBoxExtension on int {
@@ -58,6 +59,13 @@ extension ProvinceDropdownExtension on List<Province> {
   List<DropdownMenuItem<Province>> toDropdownItems() {
     return this.map<DropdownMenuItem<Province>>((Province province) {
       return province.toDropdownItem();
+    }).toList();
+  }
+}
+extension SchoolDropdownExtension on List<CourseRequestSchool> {
+  List<DropdownMenuItem<CourseRequestSchool>> toDropdownItems() {
+    return this.map<DropdownMenuItem<CourseRequestSchool>>((CourseRequestSchool school) {
+      return school.toDropdownItem();
     }).toList();
   }
 }

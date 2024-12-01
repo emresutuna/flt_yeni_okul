@@ -69,7 +69,7 @@ dependencies:
   cached_network_image: ^3.4.0
 
 flutter_launcher_icons:
-  image_path: "assets/bk_logo.png"
+  image_path: "assets/baykurs_main_logo.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
 
@@ -103,24 +103,15 @@ flutter:
     - assets/ic_menu.png
     - assets/ic_drawer_logo.svg
     - assets/ic_drawer_logo.png
-    - assets/green_logo.png
-    - assets/logo2.jpg
-    - assets/logo2.png
-    - assets/mlogo.png
-    - assets/ic_drawer.png
     - assets/ic_user.png
     - assets/placeholder.png
-    - assets/bk_logo.png
-    - assets/yeni_okul_logo.png
+    - assets/baykurs_main_logo.png
     - assets/illus.png
-    - assets/student_icon.png
-    - assets/student_circle.png
     - assets/teacher_circle.png
     - assets/company_circle.png
     - assets/ic_filter.png
     - assets/company_logo.jpg
     - assets/ic_teacher.png
-    - assets/yeni_okul_logo_v2.png
     - assets/company_logo2.png
     - assets/ic_success_payment.png
     - assets/ic_error_payment.png

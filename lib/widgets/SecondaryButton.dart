@@ -33,12 +33,8 @@ class SecondaryButton extends StatelessWidget {
             ),
           ),
           onPressed: () => onPress.call(),
-          child: YoHexText(
-            size: 14,
-            text: text,
-            fontWeight: FontWeight.w600,
-            color: "#FD275F", // Text color
-          )),
+          child: Text(text,style: styleBlack14Bold.copyWith(color: color5),)
+      ),
     );
   }
 }

@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 import '../util/LessonExtension.dart';
 
 class BranchesDropdown extends StatelessWidget {
-  final Function(Branch?) onBranchSelected;
+  final Function(Branches?) onBranchSelected;
 
   const BranchesDropdown({Key? key, required this.onBranchSelected})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final branches = BranchesExtension.getAllBranches(); // Enum'dan gelen liste
+    final branches = BranchesExtension.allBranches;
 
-    // Filter duplicates using the `id` property, assuming `id` is unique
     final uniqueBranches = branches.toSet().toList();
 
-    return DropdownButtonFormField<Branch>(
+    return DropdownButtonFormField<Branches>(
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -27,16 +26,16 @@ class BranchesDropdown extends StatelessWidget {
         ),
       ),
       items: uniqueBranches.map((branch) {
-        return DropdownMenuItem<Branch>(
+        return DropdownMenuItem<Branches>(
           value: branch,
           child: Text(
-            branch.name,
+            branch.value,
             style: styleBlack14Bold,
           ),
         );
       }).toList(),
       onChanged: onBranchSelected,
-      hint: const Text('Branş Seç'),
+      hint:  Text('Branş Seç',style: styleBlack14Bold.copyWith(color: Colors.grey)),
     );
   }
 }

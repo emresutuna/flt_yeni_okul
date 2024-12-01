@@ -101,7 +101,7 @@ class FilterLesson extends StatelessWidget {
   }
 
   Widget _buildBranches() {
-    final branches = BranchesExtension.getAllBranches();
+    final branches = BranchesExtension.allBranches;
 
     // Seçim durumunu takip etmek için bir liste
     final List<bool> isSelected = List.generate(branches.length, (index) => false);

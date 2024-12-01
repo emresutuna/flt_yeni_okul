@@ -115,8 +115,9 @@ class _MyAppState extends State<MyApp> {
       navigatorObservers: [ChuckerFlutter.navigatorObserver],
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
+      color: Colors.white,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
       initialRoute: initialRoute,

@@ -23,9 +23,10 @@ class UnLoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/yeni_okul_logo_v2.png',
+                    'assets/baykurs_main_logo.png',
                     height: MediaQuery.of(context).size.height / 7.5,
                   ),
+                  16.toHeight,
                   Text(
                     "Henüz giriş yapmadınız. Giriş veya Kayıt işlemi yaparak Profil bilgilerinize ulaşabilirsiniz.",
                     textAlign: TextAlign.center,

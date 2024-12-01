@@ -13,8 +13,8 @@ class UserUpdateResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = this.status;
-    data['message'] = this.message;
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
@@ -61,16 +61,16 @@ class UserUpdate {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['role_id'] = this.roleId;
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
+    data['id'] = id;
+    data['role_id'] = roleId;
+    data['name'] = name;
+    data['surname'] = surname;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['deleted_at'] = deletedAt;
     return data;
   }
 }

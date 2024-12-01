@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/YOText.dart';
-import '../../widgets/YoHexText.dart';
 import 'loginBloc/LoginBloc.dart';
 import 'loginBloc/LoginEvent.dart';
 import 'loginBloc/LoginState.dart';
@@ -37,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: color4,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
@@ -64,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/yeni_okul_logo_v2.png',
+                        'assets/baykurs_main_logo.png',
                         height: MediaQuery.of(context).size.height / 3.5,
                       ),
                       const SizedBox(height: 16),
@@ -138,11 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             Navigator.pushNamed(context, '/registerPage');
                           },
-                          child: const YoHexText(
-                            text: "Kayıt Ol",
-                            fontWeight: FontWeight.bold,
-                            color: "FD275F",
-                          ),
+                          child: Text("Kayıt Ol",style: styleBlack14Bold.copyWith(color: color5),)
                         ),
                       ),
                     ],

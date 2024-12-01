@@ -4,6 +4,7 @@ import 'package:baykurs/ui/requestlesson/CourseRequest.dart';
 import 'package:baykurs/ui/requestlesson/bloc/RequestLessonBloc.dart';
 import 'package:baykurs/ui/requestlesson/bloc/RequestLessonState.dart';
 import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/widgets/BranchesDropDown.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/InfoWidget.dart';
 import '../../widgets/PrimaryButton.dart';
+import 'CourseRequestSchool.dart';
 import 'Region.dart';
 import 'bloc/RequestLessonEvent.dart';
 
@@ -27,27 +29,30 @@ class RequestLessonPage extends StatefulWidget {
 class _RequestLessonPageState extends State<RequestLessonPage> {
   final TextEditingController lessonController = TextEditingController();
 
-  Branch? selectedBranch;
+  Branches? selectedBranch;
   BranchTopic? selectedTopic;
   List<BranchTopic> branchTopics = [];
   Region? selectedRegion;
   List<Region> regions = [];
   Province? selectedProvince;
+  CourseRequestSchool? selectedSchool;
   List<Province> provinces = [];
+  List<CourseRequestSchool> schools = [];
   String? selectedTimeRange;
 
-  void handleBranchSelection(Branch? branch) {
+  void handleBranchSelection(Branches? branch) {
     setState(() {
       selectedBranch = branch;
       if (selectedBranch != null) {
-        branchTopics = selectedBranch!.topics;
+        var branchFiltered =
+            filterBranchTopicsByBranch(classLevelBranches, selectedBranch!);
+        branchTopics = branchFiltered;
         selectedTopic = null;
       } else {
         branchTopics = [];
         selectedTopic = null;
       }
     });
-    print('Seçilen Ders ID: ${branch?.id}, Adı: ${branch?.name}');
   }
 
   Future<void> fetchRegions() async {
@@ -88,6 +93,54 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
       }
     } else {
       throw Exception('Failed to load districts');
+    }
+  }
+
+  Future<void> fetchSchool() async {
+    try {
+      final String? token = await getToken();
+
+      final url = selectedRegion == null
+          ? ApiUrls.getCourseRequestSchools
+          : ApiUrls.getCourseRequestSchoolsById(
+              selectedRegion?.id ?? 0, selectedProvince?.id ?? 0);
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+
+        if (responseData['status'] == true) {
+          final List<dynamic> data = responseData['data'];
+
+          final List<CourseRequestSchool> schoolList =
+              data.map((json) => CourseRequestSchool.fromJson(json)).toList();
+
+          setState(() {
+            schools = schoolList;
+          });
+        } else {
+          throw Exception(
+              'Unexpected response status: ${responseData['status']}');
+        }
+      } else {
+        throw Exception(
+            'Failed to load schools, status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      Get.snackbar(
+        "Hata",
+        "Kurumlar şuanlık alınamıyor",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+        snackPosition: SnackPosition.TOP,
+      );
+      debugPrint('Error fetching schools: $error');
     }
   }
 
@@ -162,16 +215,16 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           );
                         }).toList(),
                         onChanged: selectedBranch == null
-                            ? null // Branş seçilmediyse konu dropdown'u tıklanamaz
+                            ? null
                             : (BranchTopic? newValue) {
                                 setState(() {
                                   selectedTopic = newValue;
                                 });
-                                print('Seçilen Konu: ${selectedTopic?.name}');
                               },
-                        hint: const Text('Konu Seç'),
-                        value:
-                            selectedTopic, // Konu seçildiğinde burada görüntülenir
+                        hint: Text('Konu Seç',
+                            style:
+                                styleBlack14Bold.copyWith(color: Colors.grey)),
+                        value: selectedTopic,
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField<Region>(
@@ -190,20 +243,23 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           setState(() {
                             selectedRegion = newValue;
                             selectedProvince = null;
+                            selectedSchool = null;
+                            schools.clear();
                             provinces.clear();
                           });
 
                           if (newValue != null) {
-                            print('Seçilen Bölge ID: ${newValue.id}');
-                            print('Seçilen Bölge Adı: ${newValue.name}');
                             fetchProvince(newValue.id);
+                            fetchSchool();
                           }
                         },
-                        hint: const Text('İl Seç'),
+                        hint: Text(
+                          'İl Seç',
+                          style: styleBlack14Bold.copyWith(color: Colors.grey),
+                        ),
                         value: selectedRegion,
                       ),
                       const SizedBox(height: 16),
-                      // Saat Aralığı Dropdown
                       if (provinces.isNotEmpty)
                         DropdownButtonFormField<Province>(
                           decoration: InputDecoration(
@@ -220,17 +276,69 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           onChanged: (Province? newDistrict) {
                             setState(() {
                               selectedProvince = newDistrict;
+                              selectedSchool = null;
+                              schools.clear();
                             });
 
                             if (newDistrict != null) {
-                              print('Seçilen District ID: ${newDistrict.id}');
-                              print(
-                                  'Seçilen District Adı: ${newDistrict.name}');
+                              fetchSchool();
                             }
                           },
-                          hint: const Text('İlçe Seç'),
+                          hint: Text(
+                            'İlçe Seç',
+                            style:
+                                styleBlack14Bold.copyWith(color: Colors.grey),
+                          ),
                           value: selectedProvince,
                         ),
+                      16.toHeight,
+                      DropdownButtonFormField<CourseRequestSchool>(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: color1),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide(color: color1),
+                          ),
+                        ),
+                        items:
+                            (selectedRegion != null && selectedProvince != null)
+                                ? schools.toDropdownItems()
+                                : [],
+                        onChanged: (selectedRegion != null &&
+                                selectedProvince != null)
+                            ? (CourseRequestSchool? newSchool) {
+                                setState(() {
+                                  selectedSchool = newSchool;
+                                });
+                                if (newSchool != null) {
+
+                                }
+                              }
+                            : null,
+                        hint: Text(
+                          'Kurum Seç',
+                          style: styleBlack14Bold,
+                        ),
+                        value: selectedSchool,
+                        disabledHint: GestureDetector(
+                          onTap: () {
+                            Get.snackbar(
+                              "Hata",
+                              "Lütfen önce il ve ilçe seçimini yapınız",
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                            );
+                          },
+                          child: Text(
+                            'Kurum Seç (Önce İl/İlçe)',
+                            style:
+                                styleBlack14Bold.copyWith(color: Colors.grey),
+                          ),
+                        ),
+                      ),
                       const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
@@ -238,22 +346,24 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           text: "Ders Talep Et",
                           onPress: () {
                             if (selectedBranch != null &&
-                                selectedTopic != null) {
-                              context.read<RequestLessonBloc>().add(
-                                  RequestLesson(
+                                selectedTopic != null &&
+                                selectedSchool != null) {
+                              context
+                                  .read<RequestLessonBloc>()
+                                  .add(RequestLesson(
                                       request: CourseRequest(
-                                          lessonId:
-                                              selectedBranch!.id.toString(),
-                                          cityId: selectedRegion!.id.toString(),
-                                          schoolId: "1",
-                                          name: "",
-                                          message: "")));
-                              print(
-                                  'Talep edilen ders: ${selectedBranch?.name}');
-                              print(
-                                  'Talep edilen konu: ${selectedTopic?.name}');
-                              print(
-                                  'Talep edilen bölge: ${selectedRegion?.name}');
+                                    topicId: selectedTopic!.id,
+                                    cityId: selectedProvince!.id,
+                                    schoolId: selectedSchool!.id.toInt(),
+                                    subject: selectedTopic!.name,
+                                  )));
+                            } else {
+                              Get.snackbar(
+                                "Hata",
+                                "Lütfen tüm alanları doldurunuz",
+                                colorText: Colors.white,
+                                backgroundColor: Colors.red,
+                              );
                             }
                           },
                         ),
