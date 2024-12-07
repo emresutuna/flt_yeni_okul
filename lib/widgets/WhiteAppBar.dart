@@ -12,9 +12,9 @@ PreferredSizeWidget WhiteAppBar(String text,
     leading: canGoBack
         ? IconButton(
             onPressed: onTap ?? () => Get.back(),
-            icon: const Icon(
+            icon:  Icon(
               Icons.arrow_back_ios,
-              color: Colors.black38,
+              color: color1,
             ),
           )
         : null,

@@ -5,12 +5,12 @@ import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/YOColors.dart';
-import '../../util/pageAnimation.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/SearchBar.dart';
 import 'bloc/SchoolBloc.dart';
 import 'bloc/SchoolEvent.dart';
 import 'bloc/SchoolState.dart';
+import 'model/SchoolFilter.dart';
 import 'model/SchoolResponse.dart';
 
 class CompanyListPage extends StatefulWidget {
@@ -21,25 +21,18 @@ class CompanyListPage extends StatefulWidget {
 }
 
 class _CompanyListPageState extends State<CompanyListPage> {
-  List<String> data = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Elderberry',
-    'Fig',
-    'Grapes',
-    'Honeydew',
-    'Kiwi',
-    'Lemon',
-  ];
   StreamController<List<SchoolItem>> _streamController =
       StreamController<List<SchoolItem>>.broadcast();
   List<String> searchResults = [];
+  SchoolFilter schoolFilter = SchoolFilter();
+  String query = "";
 
   void onQueryChanged(String query) {
+    this.query = query;
     if (query.length > 2) {
-      context.read<SchoolBloc>().add(SearchSchool(queryText: query));
+      context
+          .read<SchoolBloc>()
+          .add(SearchSchool(schoolFilter: schoolFilter.copyWith(query: query)));
     }
   }
 
@@ -66,12 +59,13 @@ class _CompanyListPageState extends State<CompanyListPage> {
     _streamController = StreamController<List<SchoolItem>>();
     _streamController.sink.add(schools);
   }
+
   @override
   void dispose() {
     super.dispose();
     _streamController.close();
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,9 +94,24 @@ class _CompanyListPageState extends State<CompanyListPage> {
                 Expanded(
                   flex: 1,
                   child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(createRoute(FilterSchool()));
+                    onTap: () async {
+                      final filter = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FilterSchool(
+                                  currentFilter: schoolFilter,
+                                ),
+                            fullscreenDialog: true),
+                      ) as SchoolFilter?;
 
+                      if (filter != null) {
+                        schoolFilter = filter;
+                        if (mounted) {
+                          context.read<SchoolBloc>().add(SearchSchool(
+                              schoolFilter:
+                                  schoolFilter.copyWith(query: query)));
+                        }
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),

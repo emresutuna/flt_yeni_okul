@@ -15,8 +15,9 @@ class CourseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String lessonName = courseModel?.lesson?.name ?? 'Ders bilgisi bulunamadı';
+    String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String teacherName = courseModel?.teacher?.user?.name ?? 'Eğitmen bilgisi bulunamadı';
-    String classroom = courseModel?.classroom ?? 'Sınıf bilgisi yok';
+    String classroom = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
 
     String dateString = courseModel?.startDate != null
         ? DateFormat('dd/MM/yyyy').format(courseModel!.startDate!)
@@ -24,20 +25,23 @@ class CourseListItem extends StatelessWidget {
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(courseModel!.startDate!)
         : 'Saat bilgisi yok';
+    String endTime = courseModel?.startDate != null
+        ? DateFormat('HH:mm').format(courseModel!.endDate!)
+        : 'Saat bilgisi yok';
 
-    String price = '${courseModel?.price ?? 0}₺'; // Fiyat bilgisi
+    String price = '${courseModel?.price ?? 0} ₺';
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         height: MediaQuery.of(context).size.height / 4.8 ,
         decoration: BoxDecoration(
-          color: HexColor("#F6F6F6"),
+          color: HexColor("#F7F9F9"),
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(
             width: 0.5,
-            color: HexColor("#80333333"),
+            color: HexColor("#222831").withAlpha(60),
           ),
         ),
         child: Row(
@@ -46,34 +50,34 @@ class CourseListItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Expanded(
-              flex: 12,
+              flex: 11,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      lessonName,
+                      title,
                       style: styleBlack14Bold,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Eğitmen: $teacherName",
+                        "Kurum: $classroom",
                         style: styleBlack12Bold,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Sınıf: $classroom",
+                        "Eğitmen: $teacherName",
                         style: styleBlack12Regular,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Tarih: $dateString | Saat: $timeString",
+                        "Tarih: $dateString | Saat: $timeString - $endTime",
                         style: styleBlack12Regular,
                       ),
                     ),
@@ -123,6 +127,7 @@ class CourseListItem extends StatelessWidget {
                     quarterTurns: 3,
                     child: Text(
                       lessonName,
+                      textAlign: TextAlign.center,
                       style: styleWhite12Bold,
                     ),
                   ),

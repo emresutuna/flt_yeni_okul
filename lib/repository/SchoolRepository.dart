@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:baykurs/ui/company/model/SchoolFilter.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 
 import '../service/APIService.dart';
@@ -34,10 +35,10 @@ class SchoolRepository {
   }
 
   Future<ResultResponse<SchoolResponse>> getSchoolBySearch(
-      String queryText) async {
+       SchoolFilter filter) async {
     try {
       final response = await APIService.instance
-          .request(ApiUrls.schoolSearch(queryText), DioMethod.get);
+          .request(buildUrlWithFilter(ApiUrls.school,filter), DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;

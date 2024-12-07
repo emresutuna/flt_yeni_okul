@@ -1,3 +1,5 @@
+import 'package:baykurs/ui/company/model/SchoolFilter.dart';
+
 abstract class SchoolEvent {}
 
 class FetchSchool extends SchoolEvent {}
@@ -9,10 +11,10 @@ class ToggleFavorite extends SchoolEvent {
 }
 
 class SearchSchool extends SchoolEvent {
-  final String queryText;
+  final SchoolFilter schoolFilter;
 
   SearchSchool({
-    required this.queryText,
+    required this.schoolFilter,
   });
 }
 

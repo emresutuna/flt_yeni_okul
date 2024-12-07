@@ -23,7 +23,7 @@ class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
     on<SearchSchool>((event, emit) async {
       emit(SchoolLoading());
       try {
-        final result = await schoolRepository.getSchoolBySearch(event.queryText);
+        final result = await schoolRepository.getSchoolBySearch(event.schoolFilter);
         emit(SchoolSuccess(result.data!));
       } catch (e) {
         emit(SchoolError('Sonuç Bulunamadı'));

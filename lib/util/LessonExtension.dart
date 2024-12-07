@@ -104,6 +104,13 @@ List<BranchTopic> filterBranchTopicsByBranch(
       .expand((b) => b.topics)
       .toList();
 }
+List<BranchTopic> filterBranchTopicsByBranchId(
+    List<ClassLevelBranch> branches, int branchId) {
+  return branches
+      .where((b) => b.branch.index == branchId)
+      .expand((b) => b.topics)
+      .toList();
+}
 List<ClassLevelBranch> classLevelBranches = [
   ClassLevelBranch(
     classLevel: ClassTypes.FifthGrade.value,
@@ -3847,12 +3854,10 @@ Map<String, List<BranchTopic>> filterByBranch(Branches branchEnum) {
   for (var clb in classLevelBranches) {
     String branch = clb.branch.name;
 
-    // Branş yoksa oluştur
     if (!branchMap.containsKey(branch)) {
       branchMap[branch] = [];
     }
 
-    // Konuları ekle
     branchMap[branch]!.addAll(clb.topics);
   }
 

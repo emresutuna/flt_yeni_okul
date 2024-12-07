@@ -74,6 +74,8 @@ class Course {
   final int? schoolId;
   final int? lessonId;
   final int? teacherId;
+  final String? title;
+  final String? description;
   final DateTime? startDate;
   final DateTime? endDate;
   final String? classroom;
@@ -92,6 +94,8 @@ class Course {
     this.schoolId,
     this.lessonId,
     this.teacherId,
+    this.title,
+    this.description,
     this.startDate,
     this.endDate,
     this.classroom,
@@ -110,6 +114,8 @@ class Course {
     return Course(
       id: json['id'],
       schoolId: json['school_id'],
+      title: json['title'],
+      description: json['description'],
       lessonId: json['lesson_id'],
       teacherId: json['teacher_id'],
       startDate: json['start_date'] != null ? DateTime.parse(json['start_date']) : null,

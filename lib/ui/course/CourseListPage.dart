@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/widgets/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/CompanyListFilterBottomSheet.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
 import 'bloc/LessonBloc.dart';
 import 'bloc/LessonEvent.dart';
 import 'bloc/LessonState.dart';
+import 'model/CourseFilter.dart';
 import 'model/CourseModel.dart';
 
 class CourseListPage extends StatefulWidget {
@@ -26,6 +27,8 @@ class _CourseListPageState extends State<CourseListPage> {
   late List<Course> courseList;
 
   List<Course> searchResults = [];
+  CourseFilter courseFilter = CourseFilter();
+
 
   void onQueryChanged(String query) {
     //servis query isteği at
@@ -58,7 +61,7 @@ class _CourseListPageState extends State<CourseListPage> {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.only(left:16.0,right: 16,top: 16),
+              padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
               child: InfoCardWidget(
                   title: "Dersler",
                   description:
@@ -81,8 +84,19 @@ class _CourseListPageState extends State<CourseListPage> {
                           Expanded(
                             flex: 1,
                             child: InkWell(
-                              onTap: () {
-                                showCompanyFilterBottomSheet(context);
+                              onTap: () async {
+                                final filter = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FilterLesson(courseFilter: courseFilter),
+                                    fullscreenDialog: true,
+                                  ),
+                                ) as CourseFilter?;
+
+                                if (filter != null) {
+                                  courseFilter = filter;
+                                //  fetchCoursesWithFilter(filter);
+                                }
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(8),
@@ -117,8 +131,8 @@ class _CourseListPageState extends State<CourseListPage> {
                             },
                             child: CourseListItem(
                               courseModel: courseList[index],
-                              colors:
-                                  HexColor(courseList[index].lesson!.color!),
+                              colors: HexColor(
+                                  courseList[index].lesson!.color ?? "#4A90E2"),
                             ),
                           );
                         },

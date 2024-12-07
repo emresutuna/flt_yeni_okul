@@ -2,12 +2,14 @@ import 'package:baykurs/ui/filter/FilterProvince.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
-
+import '../company/model/SchoolFilter.dart';
 import '../requestlesson/Region.dart';
 import 'FilterRegion.dart';
 
 class FilterSchool extends StatefulWidget {
-  const FilterSchool({super.key});
+  final SchoolFilter currentFilter;
+
+  const FilterSchool({super.key, required this.currentFilter});
 
   @override
   State<FilterSchool> createState() => _FilterSchoolState();
@@ -16,9 +18,42 @@ class FilterSchool extends StatefulWidget {
 class _FilterSchoolState extends State<FilterSchool> {
   final TextEditingController ilController = TextEditingController();
   final TextEditingController ilceController = TextEditingController();
+  late SchoolFilter schoolFilter;
 
   Region? selectedCity;
   Province? selectedProvince;
+
+  @override
+  void initState() {
+    super.initState();
+    schoolFilter = widget.currentFilter;
+    currentFilterController();
+  }
+
+  void currentFilterController() {
+    if (schoolFilter.cityName != null) {
+      ilceController.text = schoolFilter.cityName!;
+    }
+    if (schoolFilter.provinceName != null) {
+      ilController.text = schoolFilter.provinceName!;
+    }
+    selectedCity = schoolFilter.cityId != null
+        ? Region(id: schoolFilter.cityId!, name: schoolFilter.cityName ?? "")
+        : null;
+    selectedProvince = schoolFilter.provinceId != null
+        ? Province(id: schoolFilter.provinceId!, name: schoolFilter.provinceName ?? "")
+        : null;
+  }
+
+  void clearFilters() {
+    setState(() {
+      ilController.clear();
+      ilceController.clear();
+      schoolFilter = SchoolFilter();
+      selectedCity = null;
+      selectedProvince = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,22 +69,21 @@ class _FilterSchoolState extends State<FilterSchool> {
           style: styleBlack16Bold,
         ),
         leading: InkWell(
-          child: Icon(Icons.arrow_back_ios),
+          child: const Icon(Icons.arrow_back_ios),
           onTap: () {
             Navigator.pop(context);
           },
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              // Temizle işlemi
-            },
+            onPressed: clearFilters,
             child: Text(
               "Temizle",
               style: styleBlack14Bold.copyWith(
-                  color: Colors.redAccent,
-                  decoration: TextDecoration.underline,
-                  decorationColor: Colors.redAccent),
+                color: Colors.redAccent,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.redAccent,
+              ),
             ),
           ),
         ],
@@ -168,7 +202,17 @@ class _FilterSchoolState extends State<FilterSchool> {
       height: 60,
       child: ElevatedButton(
           onPressed: () {
-            // Filtrele işlemi
+            final updatedFilter = schoolFilter.copyWith(
+              cityName: ilceController.text.isNotEmpty
+                  ? ilceController.text
+                  : null,
+              provinceName: ilController.text.isNotEmpty
+                  ? ilController.text
+                  : null,
+              provinceId: selectedProvince?.id,
+              cityId: selectedCity?.id,
+            );
+            Navigator.pop(context, updatedFilter);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: color5,
