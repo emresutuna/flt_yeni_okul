@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolEvent.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolState.dart';
@@ -8,7 +7,6 @@ import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/WhiteAppBar.dart';
@@ -21,9 +19,9 @@ class FavoriteSchoolPage extends StatefulWidget {
 }
 
 class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
-  FavoriteSchoolResponse? favoriteSchoolResponse = null;
+  FavoriteSchoolResponse? favoriteSchoolResponse;
   final StreamController<List<SchoolList>> _streamController =
-      StreamController<List<SchoolList>>();
+  StreamController<List<SchoolList>>();
 
   @override
   void initState() {
@@ -57,9 +55,11 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
               Expanded(
                 child: BlocConsumer<FavoriteSchoolBloc, FavoriteSchoolState>(
                   listener: (context, state) {
-                    if(state is FavoriteSchoolError){
+                    if (state is FavoriteSchoolError) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Bir hata oluştu: ${state.error}')),
+                        SnackBar(
+                          content: Text('Bir hata oluştu: ${state.error}'),
+                        ),
                       );
                     }
                   },
@@ -70,8 +70,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                         _streamController.add(favoriteSchoolResponse!.data!);
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(
-                            left: 0.0, right: 0, top: 8),
+                        padding: const EdgeInsets.only(left: 0.0, right: 0, top: 8),
                         child: StreamBuilder<List<SchoolList>>(
                           stream: _streamController.stream,
                           builder: (context, snapshot) {
@@ -81,12 +80,16 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                   child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
-                                  child: Text(
-                                      'Bir hata oluştu: ${snapshot.error}'));
+                                child: Text(
+                                    'Bir hata oluştu: ${snapshot.error}'),
+                              );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('Veri bulunamadı'));
+                              return const BkErrorWidget(
+                                title: "Bilgi",
+                                description:
+                                "Şuanda hiçbir kurumu favoriye almadınız",
+                              );
                             }
 
                             List<SchoolList> schoolList = snapshot.data!;
@@ -95,11 +98,11 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                               padding: EdgeInsets.zero,
                               itemCount: schoolList.length,
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                    mainAxisSpacing: 16,
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 24.0,
-                                    childAspectRatio: 2 / 2.7,
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                mainAxisSpacing: 16,
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 24.0,
+                                childAspectRatio: 2 / 2.7,
                               ),
                               itemBuilder: (context, index) {
                                 return InkWell(
@@ -112,9 +115,10 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                   },
                                   child: CompanyListItem(
                                     icon: schoolList[index].school!.photo ?? "",
-                                    name: schoolList[index].school!.user!.name!,
+                                    name:
+                                    schoolList[index].school!.user!.name!,
                                     isFavorite:
-                                        schoolList[index].school!.isFav!,
+                                    schoolList[index].school!.isFav!,
                                     province: schoolList[index]
                                         .school!
                                         .cityId!

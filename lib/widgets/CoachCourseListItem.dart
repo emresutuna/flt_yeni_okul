@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -6,19 +7,22 @@ import '../util/HexColor.dart';
 import '../util/YOColors.dart';
 import 'TertiaryButton.dart';
 
-class CourseListItem extends StatelessWidget {
-  final Course? courseModel;
+class CoachCourseListItem extends StatelessWidget {
+  final CourseCoach? courseModel;
   final Color colors;
 
-  const CourseListItem({super.key, required this.courseModel, required this.colors});
+  const CoachCourseListItem(
+      {super.key, required this.courseModel, required this.colors});
 
   @override
   Widget build(BuildContext context) {
-    String lessonName = courseModel?.lesson?.name ?? 'Ders bilgisi bulunamadı';
-    String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
-    String teacherName = courseModel?.teacher?.user?.name ?? 'Eğitmen bilgisi bulunamadı';
-    String classroom = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
+    String lessonName = courseModel?.lessonName ?? 'Eğitim Koçu';
+    String desc =
+        courseModel?.description ?? 'Ders açıklama bilgisi bulunamadı';
+    String title = courseModel?.title ?? 'Ders Başlığı bulunamadı';
+    String classroom = courseModel?.schoolName ?? 'Kurum bilgisi yok';
 
+    /*
     String dateString = courseModel?.startDate != null
         ? DateFormat('dd/MM/yyyy').format(courseModel!.startDate!)
         : 'Tarih bilgisi yok';
@@ -31,10 +35,12 @@ class CourseListItem extends StatelessWidget {
 
     String price = '${courseModel?.price ?? 0} ₺';
 
+
+     */
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: MediaQuery.of(context).size.height / 4.3 ,
+        height: MediaQuery.of(context).size.height / 4.8,
         decoration: BoxDecoration(
           color: HexColor("#F7F9F9"),
           shape: BoxShape.rectangle,
@@ -63,44 +69,32 @@ class CourseListItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
+                        "İçerik: $desc",
+                        style: styleBlack12Regular,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
                         "Kurum: $classroom",
                         style: styleBlack12Bold,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Eğitmen: $teacherName",
-                        style: styleBlack12Regular,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Tarih: $dateString | Saat: $timeString - $endTime",
-                        style: styleBlack12Regular,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding: const EdgeInsets.all(16),
                       child: Row(
                         children: [
-                          Text(
-                            price,
-                            style: styleGreen18Bold,
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
-                          TertiaryButton(
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            height: 40,
-                            borderRadius: 8,
-                            text: "Satın Al",
-                            textColor: null,
-                            onPress: () {
-                              // Satın alma işlemi için yapılacaklar
-                            },
+                          Expanded(
+                            child: TertiaryButton(
+                              width: 10,
+                              height: 40,
+                              borderRadius: 8,
+                              text: "Detayı Gör",
+                              textColor: null,
+                              onPress: () {
+                                // Satın alma işlemi için yapılacaklar
+                              },
+                            ),
                           ),
                         ],
                       ),

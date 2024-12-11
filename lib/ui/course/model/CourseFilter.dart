@@ -24,8 +24,8 @@ class CourseFilter {
   Map<String, String> toQueryParams() {
     final Map<String, String> params = {};
     if (query != null && query!.isNotEmpty) params['query'] = query!;
-    if (provinceId != null) params['province_id'] = provinceId.toString();
-    if (cityId != null) params['city_id'] = cityId.toString();
+    if (provinceId != null) params['city_id'] = provinceId.toString();
+    if (cityId != null) params['province_id'] = cityId.toString();
     if (lessonId != null) params['lesson_id'] = lessonId.toString();
     if (topicId != null) params['topic_id'] = topicId.toString();
     if (minPrice != null) params['minPrice'] = minPrice.toString();
@@ -55,4 +55,8 @@ class CourseFilter {
       maxPrice: maxPrice ?? this.maxPrice,
     );
   }
+}
+String buildUrlWithFilter(String baseUrl, CourseFilter filter) {
+  final uri = Uri.parse(baseUrl).replace(queryParameters: filter.toQueryParams());
+  return uri.toString();
 }

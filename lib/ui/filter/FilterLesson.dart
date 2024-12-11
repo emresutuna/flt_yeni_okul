@@ -49,13 +49,13 @@ class _FilterLessonState extends State<FilterLesson> {
 
     selectedProvince = courseFilter.provinceId != null
         ? Province(
-        id: courseFilter.provinceId!, name: courseFilter.provinceName ?? "")
+            id: courseFilter.provinceId!, name: courseFilter.provinceName ?? "")
         : null;
 
     // Branşların seçim durumunu ayarla
     isSelected = List.generate(
       BranchesExtension.allBranches.length,
-          (index) => courseFilter.lessonId == index + 1,
+      (index) => courseFilter.lessonId == index + 1,
     );
   }
 
@@ -170,14 +170,16 @@ class _FilterLessonState extends State<FilterLesson> {
         final result = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                FilterTopicPage(
-                  initialTopicId: courseFilter.topicId,
-                  topics: filterBranchTopicsByBranchId(
-                      classLevelBranches, courseFilter.lessonId ?? -1),
-                ),
+            builder: (context) => FilterTopicPage(
+              initialTopicId: courseFilter.topicId,
+              topics: filterBranchTopicsByBranchId(
+                classLevelBranches,
+                (courseFilter.lessonId != null ? courseFilter.lessonId! - 1 : -1),
+              ),
+            ),
           ),
         );
+
         if (result != null && result is Map<String, dynamic>) {
           setState(() {
             courseFilter = courseFilter.copyWith(topicId: result['id']);
@@ -189,7 +191,7 @@ class _FilterLessonState extends State<FilterLesson> {
         child: TextField(
           controller: TextEditingController(
             text:
-            courseFilter.topicId != null ? konuController.text : "Konu Seç",
+                courseFilter.topicId != null ? konuController.text : "Konu Seç",
           ),
           decoration: InputDecoration(
             hintText: "Konu Seç",
@@ -225,11 +227,10 @@ class _FilterLessonState extends State<FilterLesson> {
             final result = await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    FilterProvince(
-                      selectedCityId: selectedCity?.id ?? 0,
-                      initialSelectedProvince: selectedProvince,
-                    ),
+                builder: (context) => FilterProvince(
+                  selectedCityId: selectedCity?.id ?? 0,
+                  initialSelectedProvince: selectedProvince,
+                ),
               ),
             );
             if (result != null && result is Province) {
@@ -259,10 +260,7 @@ class _FilterLessonState extends State<FilterLesson> {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: branches
-          .asMap()
-          .entries
-          .map((entry) {
+      children: branches.asMap().entries.map((entry) {
         int index = entry.key;
         String branch = entry.value.value;
         return ChoiceChip(
@@ -285,11 +283,10 @@ class _FilterLessonState extends State<FilterLesson> {
                   hasSelectableTopic = false;
                 }
               } else {
-
                 isSelected = List.generate(isSelected.length, (_) => false);
                 isSelected[index] = true;
                 courseFilter = courseFilter.copyWith(
-                  lessonId: index,
+                  lessonId: index + 1,
                   topicId: null,
                 );
                 konuController.clear();
@@ -302,7 +299,6 @@ class _FilterLessonState extends State<FilterLesson> {
     );
   }
 
-
   Widget _buildFilterButton() {
     return SizedBox(
       width: double.infinity,
@@ -312,9 +308,9 @@ class _FilterLessonState extends State<FilterLesson> {
           final updatedFilter = courseFilter.copyWith(
             query: konuController.text.isNotEmpty ? konuController.text : null,
             provinceName:
-            ilController.text.isNotEmpty ? ilController.text : null,
+                ilController.text.isNotEmpty ? ilController.text : null,
             cityName:
-            ilceController.text.isNotEmpty ? ilceController.text : null,
+                ilceController.text.isNotEmpty ? ilceController.text : null,
             provinceId: selectedProvince?.id,
             cityId: selectedCity?.id,
           );

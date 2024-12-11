@@ -6,11 +6,13 @@ import '../util/YOColors.dart';
 class YoSearchBar extends StatefulWidget {
   final void Function(String query) onQueryChanged;
   final VoidCallback? onClear;
+  final VoidCallback? onClearCallback; // New callback for clear action
 
   const YoSearchBar({
     super.key,
     required this.onQueryChanged,
     this.onClear,
+    this.onClearCallback, // Initialize the new callback
   });
 
   @override
@@ -37,8 +39,14 @@ class _YoSearchBarState extends State<YoSearchBar> {
 
     FocusScope.of(context).unfocus();
 
+    // Trigger the onClear callback if provided
     if (widget.onClear != null) {
       widget.onClear!();
+    }
+
+    // Trigger the new clear callback for additional actions (e.g., API call)
+    if (widget.onClearCallback != null) {
+      widget.onClearCallback!();
     }
   }
 

@@ -37,6 +37,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
   }
 
   void onQueryCleared() {
+    query = "";
+    schoolFilter.copyWith(query: query);
     context.read<SchoolBloc>().add(FetchSchool());
   }
 
@@ -88,7 +90,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   flex: 5,
                   child: YoSearchBar(
                     onQueryChanged: onQueryChanged,
-                    onClear: onQueryCleared,
+                    onClearCallback: onQueryCleared,
                   ),
                 ),
                 Expanded(

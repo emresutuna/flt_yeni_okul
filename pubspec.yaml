@@ -67,6 +67,9 @@ dependencies:
   flutter_masked_text2: ^0.9.1
   webview_flutter: ^4.7.0
   cached_network_image: ^3.4.0
+  firebase_messaging: ^14.7.10
+  firebase_analytics: ^10.5.0
+  flutter_local_notifications: ^18.0.1
 
 flutter_launcher_icons:
   image_path: "assets/baykurs_main_logo.png"
@@ -134,15 +137,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  fonts:
-    - family: Montserrat
-      fonts:
-        - asset: fonts/Montserrat-Bold.ttf
-          weight: 700
-        - asset: fonts/Montserrat-Regular.ttf
-          weight: 500
-        - asset: fonts/Montserrat-SemiBold.ttf
-          weight: 600
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

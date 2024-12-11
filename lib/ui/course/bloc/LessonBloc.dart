@@ -4,7 +4,6 @@ import '../../../repository/lectureRepository.dart';
 import 'LessonEvent.dart';
 import 'LessonState.dart';
 
-
 class LessonBloc extends Bloc<LessonEvent, LessonState> {
   final LectureRepository lectureRepository;
 
@@ -16,7 +15,39 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
         final result = await lectureRepository.getLessons();
         emit(LessonStateSuccess(result.data!));
       } catch (e) {
-        emit(LessonStateError('Failed to fetch users'));
+        emit(LessonStateError('Failed to fetch Course'));
+      }
+    });
+
+    on<FetchCourseCoach>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result = await lectureRepository.getCourseCoach();
+        emit(CourseCoachSuccess((result.data!)));
+      } catch (e) {
+        emit(LessonStateError('Failed to fetch Course Coach'));
+      }
+    });
+
+    on<FetchLessonWithFilter>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result =
+            await lectureRepository.getCourseByFilter(event.courseFilter);
+        emit(LessonStateSuccess(result.data!));
+      } catch (e) {
+        emit(LessonStateError('Sonuç Bulunamadı'));
+      }
+    });
+
+    on<FetchCourseCoachDetail>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result =
+        await lectureRepository.getCourseCoachDetail(event.id);
+        emit(CourseCoachDetailSuccess(result.data!));
+      } catch (e) {
+        emit(LessonStateError('Sonuç Bulunamadı'));
       }
     });
   }

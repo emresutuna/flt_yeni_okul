@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../util/HexColor.dart';
+
 import '../util/YOColors.dart';
-import 'YOText.dart';
-class InfoCardWidget extends StatelessWidget {
+
+class InfoCardWidget extends StatefulWidget {
   final String title;
   final String description;
   final IconData icon;
@@ -13,43 +13,65 @@ class InfoCardWidget extends StatelessWidget {
     Key? key,
     required this.title,
     required this.description,
-    this.icon = Icons.info_outline, // Default icon if not provided
-    this.backgroundColor = const Color(0xFFEFF8FE), // Light blue background
-    this.borderColor = const Color(0xFF007AFF), // Default border color
+    this.icon = Icons.info_outline,
+    this.backgroundColor = const Color(0xFFEFF8FE),
+    this.borderColor = const Color(0xFF007AFF),
   }) : super(key: key);
 
   @override
+  State<InfoCardWidget> createState() => _InfoCardWidgetState();
+}
+
+class _InfoCardWidgetState extends State<InfoCardWidget> {
+  bool isVisible = true;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        border: Border.all(color: borderColor),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: borderColor,
-            size: 24,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: styleBlack14Bold,
-                ),
-                const SizedBox(height: 4),
-                Text(description, style: styleBlack12Regular),
-              ],
+    return Visibility(
+      visible: isVisible,
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.backgroundColor,
+          border: Border.all(color: widget.borderColor),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              widget.icon,
+              color: widget.borderColor,
+              size: 24,
             ),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: styleBlack14Bold,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(widget.description, style: styleBlack12Regular),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isVisible = false;
+                });
+              },
+              child: Icon(
+                Icons.close,
+                color: widget.borderColor,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

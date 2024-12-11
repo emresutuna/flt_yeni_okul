@@ -10,6 +10,11 @@ extension SizedBoxExtension on int {
     );
   }
 }
+extension NullableIntExtension on int? {
+  int defaultOr(int defaultValue) {
+    return this ?? defaultValue;
+  }
+}
 
 extension SizedBoxExtensionWidth on int {
   Widget get toWidth {

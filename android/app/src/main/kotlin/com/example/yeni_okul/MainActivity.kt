@@ -1,6 +1,7 @@
-package com.example.yeni_okul
+package com.app.baykurs
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterActivity(){
+
 }

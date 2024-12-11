@@ -12,11 +12,16 @@ import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
+import 'package:baykurs/util/FcmUtil.dart';
+import 'package:baykurs/util/NotificationHelper.dart';
+import 'package:baykurs/util/NotificationPermissionHelper.dart';
 import 'package:baykurs/util/SharedPref.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/util/app_routes.dart';
 import 'package:baykurs/util/constants.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -28,6 +33,10 @@ SharedPreferences? sharedPreferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PreferenceUtils.init();
+  await Firebase.initializeApp();
+  FCMMethods.initFCM();
+  FirebaseMessaging.instance;
+  await NotificationHelper.instance.initialize();
 
   runApp(
     MultiBlocProvider(
@@ -73,6 +82,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _checkOnboardingAndToken();
+    NotificationPermissionHelper.instance.requestPermission(context);
   }
 
   Future<void> _checkOnboardingAndToken() async {

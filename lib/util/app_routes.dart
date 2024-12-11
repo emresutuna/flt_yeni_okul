@@ -1,5 +1,4 @@
 import 'package:baykurs/repository/paymentReposityory.dart';
-import 'package:baykurs/ui/company/model/SchoolResponse.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
@@ -11,10 +10,10 @@ import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
 import 'package:baykurs/ui/register/bloc/RegisterBloc.dart';
 import 'package:baykurs/ui/requestlesson/bloc/RequestLessonBloc.dart';
 import 'package:baykurs/ui/teacherCoach/TeacherCoach.dart';
+import 'package:baykurs/ui/teacherCoachDetail/TeacherCoachDetail.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../main.dart';
 import '../repository/SchoolRepository.dart';
 import '../repository/lectureRepository.dart';
@@ -78,6 +77,11 @@ class AppRoutes {
               create: (context) =>
                   CourseDetailBloc(lectureRepository: LectureRepository()),
               child: const CourseDetailPage(),
+            ),
+        '/teacherCoachDetail': (context) => BlocProvider(
+              create: (context) =>
+                  CourseDetailBloc(lectureRepository: LectureRepository()),
+              child: const TeacherCoachDetail(),
             ),
         '/companyList': (context) => BlocProvider(
               create: (context) =>
