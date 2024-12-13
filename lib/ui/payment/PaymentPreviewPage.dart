@@ -4,9 +4,6 @@ import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../coursedetail/model/CourseDetailResponseModel.dart';

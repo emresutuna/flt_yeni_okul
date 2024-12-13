@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../util/state.dart';
-
 class FirebaseAuthService {
   final firebaseAuthService = FirebaseAuth.instance;
 
@@ -18,12 +16,10 @@ class FirebaseAuthService {
   }
 
   Future<bool> loginWithMail(String email, String password) async {
-    var state = State.LOADING;
     try {
       await firebaseAuthService.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (e) {
       print("Auth exception ${e.toString()}");
-      state = State.ERROR;
     }
     return true;
   }

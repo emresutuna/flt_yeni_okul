@@ -66,7 +66,7 @@ class QuickActionsGrid extends StatelessWidget {
     QuickActionModel(
         name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
     QuickActionModel(name: "Eğitim Koçu", icon: "assets/ic_training_coach.png"),
-    QuickActionModel(name: "Deneme Kulubü", icon: "assets/ic_trial_club.png"),
+    QuickActionModel(name: "Kurs(Paket Ders)", icon: "assets/ic_trial_club.png"),
   ];
 
   void _handleQuickActionNavigation(BuildContext context, int index) {

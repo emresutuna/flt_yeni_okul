@@ -24,6 +24,11 @@ class CourseCoachDetailSuccess extends LessonState {
 
   CourseCoachDetailSuccess(this.courseCoachResponse);
 }
+class CourseBundleSuccess extends LessonState {
+  final CourseCoachDetailResponse courseCoachResponse;
+
+  CourseBundleSuccess(this.courseCoachResponse);
+}
 
 class LessonStateError extends LessonState {
   final String error;

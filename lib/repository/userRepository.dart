@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:baykurs/ui/course/model/CourseModel.dart';
 import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';

@@ -27,7 +27,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context) != null) {
         courseId = ModalRoute.of(context)!.settings.arguments as int;
-        context.read<CourseDetailBloc>().add(FetchCourseById(id: courseId!));
+        context.read<CourseDetailBloc>().add(FetchCourseById(id: courseId));
       }
     });
   }
