@@ -1,3 +1,5 @@
+import '../../../util/BaseCourseModel.dart';
+
 class CourseCoachDetailResponse {
   bool? status;
   CourseCoachDetail? data;
@@ -47,25 +49,6 @@ class CourseCoachDetail {
     }
     data['title'] = title;
     data['description'] = description;
-    return data;
-  }
-}
-
-class Topics {
-  int? id;
-  String? name;
-
-  Topics({this.id, this.name});
-
-  Topics.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
     return data;
   }
 }
@@ -128,47 +111,6 @@ class Course {
     data['lesson'] = lesson;
     data['teacher_name'] = teacherName;
     data['teacher_surname'] = teacherSurname;
-    return data;
-  }
-}
-
-class School {
-  int? id;
-  String? name;
-  String? address;
-  String? latitude;
-  String? longitude;
-  String? cityName;
-  String? provinceName;
-
-  School(
-      {this.id,
-      this.name,
-      this.address,
-      this.latitude,
-      this.longitude,
-      this.cityName,
-      this.provinceName});
-
-  School.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    address = json['address'];
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    cityName = json['city_name'];
-    provinceName = json['province_name'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['address'] = address;
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['city_name'] = cityName;
-    data['province_name'] = provinceName;
     return data;
   }
 }

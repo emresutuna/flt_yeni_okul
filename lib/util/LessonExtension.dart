@@ -1,3 +1,5 @@
+import 'HexColor.dart';
+
 enum Branches {
   Mathematics,
   Turkish,
@@ -13,6 +15,7 @@ enum Branches {
   Geography,
   Geometry
 }
+
 enum ClassTypes {
   FifthGrade,
   SixthGrade,
@@ -87,16 +90,61 @@ extension BranchesExtension on Branches {
         return "İngilizce";
     }
   }
+
   static List<Branches> get allBranches {
     return Branches.values;
   }
+
+  static const Map<String, String> branchColors = {
+    "Matematik": "#4A90E2",
+    "Türkçe": "#FFA500",
+    "Fizik": "#FFD700",
+    "Kimya": "#48C9B0",
+    "Biyoloji": "#A9DFBF",
+    "Geometri": "#97819F",
+    "Tarih": "#FF6F61",
+    "Coğrafya": "#58D68D",
+    "Türk Dili ve Edebiyatı": "#A88F61",
+    "Fen ve Teknoloji": "#E94E77",
+    "Sosyal Bilgiler": "#8E44AD",
+    "İnkılap Tarihi ve Atatürkçülük": "#C0392B",
+    "İngilizce": "#F364D0",
+  };
+
+  static String? getColorForBranch(String branchName) {
+    return branchColors[branchName];
+  }
+
+
+  static Branches? fromTurkishName(String turkishName) {
+    Map<String, Branches> nameToBranchMap = {
+      "Matematik": Branches.Mathematics,
+      "Türkçe": Branches.Turkish,
+      "Fizik": Branches.Physics,
+      "Kimya": Branches.Chemistry,
+      "Biyoloji": Branches.Biology,
+      "Geometri": Branches.Geometry,
+      "Tarih": Branches.History,
+      "Coğrafya": Branches.Geography,
+      "Türk Dili ve Edebiyatı": Branches.TurkishLanguageAndLiterature,
+      "Fen ve Teknoloji": Branches.ScienceAndTechnology,
+      "Sosyal Bilgiler": Branches.SocialStudies,
+      "İnkılap Tarihi ve Atatürkçülük": Branches.HistoryOfRevolutionAndKemalism,
+      "İngilizce": Branches.English,
+    };
+
+    return nameToBranchMap[turkishName];
+  }
 }
-List<BranchTopic> returnFilterByBranches(List<ClassLevelBranch> branches,Branches branch) {
+
+List<BranchTopic> returnFilterByBranches(
+    List<ClassLevelBranch> branches, Branches branch) {
   return branches
       .where((branch) => branch.branch.value == branch.branch.value)
       .expand((branch) => branch.topics)
       .toList();
 }
+
 List<BranchTopic> filterBranchTopicsByBranch(
     List<ClassLevelBranch> branches, Branches branch) {
   return branches
@@ -104,6 +152,7 @@ List<BranchTopic> filterBranchTopicsByBranch(
       .expand((b) => b.topics)
       .toList();
 }
+
 List<BranchTopic> filterBranchTopicsByBranchId(
     List<ClassLevelBranch> branches, int branchId) {
   return branches
@@ -111,6 +160,7 @@ List<BranchTopic> filterBranchTopicsByBranchId(
       .expand((b) => b.topics)
       .toList();
 }
+
 List<ClassLevelBranch> classLevelBranches = [
   ClassLevelBranch(
     classLevel: ClassTypes.FifthGrade.value,
@@ -121,37 +171,43 @@ List<ClassLevelBranch> classLevelBranches = [
         id: 1,
         name: "Dikdörtgenler",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 2,
         name: "Geometrik Şekiller",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 3,
         name: "Olasılık",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 4,
         name: "Kesirler",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 5,
         name: "İşlemlerle Cebirsel Düşünme",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 6,
         name: "İstatiksel Araştırma Süreci",
         className: ClassTypes.FifthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
     ],
   ),
   ClassLevelBranch(
@@ -163,85 +219,99 @@ List<ClassLevelBranch> classLevelBranches = [
         id: 7,
         name: "Doğal Sayılarla İşlemler",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 8,
         name: "Çarpanlar ve Katlar",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 9,
         name: "Kümeler",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 10,
         name: "Tam Sayılar",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 11,
         name: "Kesirlerde İşlemler",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 12,
         name: "Ondalık Gösterimler",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 13,
         name: "Oran",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 14,
         name: "Cebirsel İfadeler",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 15,
         name: "Veri Analizi",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 16,
         name: "Açılar",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 17,
         name: "Alan Ölçme",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 18,
         name: "Çember",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 19,
         name: "Geometrik Cisimler ve Hacim Ölçme",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
       BranchTopic(
         classType: ClassTypes.SixthGrade.index,
         id: 20,
         name: "Sıvıları Ölçme",
         className: ClassTypes.SixthGrade.value,
-        parentId: 1,),
+        parentId: 1,
+      ),
     ],
   ),
   ClassLevelBranch(
@@ -506,7 +576,6 @@ List<ClassLevelBranch> classLevelBranches = [
       ),
     ],
   ),
-
   ClassLevelBranch(
     classLevel: ClassTypes.EleventhGrade.value,
     branch: Branches.Mathematics,
@@ -717,37 +786,43 @@ List<ClassLevelBranch> classLevelBranches = [
         id: 82,
         name: "Atatürk’ü Tanımak",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 83,
         name: "Duyularımı Tanıyorum",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 84,
         name: "Geleneklerimiz",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 85,
         name: "İletişim Ve Sosyal İlişkiler",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 86,
         name: "Oyun Dünyası",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
       BranchTopic(
         classType: ClassTypes.FifthGrade.index,
         id: 87,
         name: "Sağlıklı Yaşıyorum",
         className: ClassTypes.FifthGrade.value,
-        parentId: 2,),
+        parentId: 2,
+      ),
     ],
   ),
   ClassLevelBranch(
@@ -2692,7 +2767,8 @@ List<ClassLevelBranch> classLevelBranches = [
       BranchTopic(
         classType: ClassTypes.SeventhGrade.index,
         id: 343,
-        name: "Describing What People Do Regularly (Giving Explanations and Reasons)",
+        name:
+            "Describing What People Do Regularly (Giving Explanations and Reasons)",
         className: ClassTypes.SeventhGrade.value,
         parentId: 9,
       ),
@@ -2831,7 +2907,8 @@ List<ClassLevelBranch> classLevelBranches = [
       BranchTopic(
         classType: ClassTypes.EighthGrade.index,
         id: 362,
-        name: "Accepting and Refusing/Apologizing/Giving Explanations and Reasons",
+        name:
+            "Accepting and Refusing/Apologizing/Giving Explanations and Reasons",
         className: ClassTypes.EighthGrade.value,
         parentId: 9,
       ),
@@ -2964,7 +3041,8 @@ List<ClassLevelBranch> classLevelBranches = [
       BranchTopic(
         classType: ClassTypes.EighthGrade.index,
         id: 381,
-        name: "Making Predictions About The Future (Giving Reasons and Results)",
+        name:
+            "Making Predictions About The Future (Giving Reasons and Results)",
         className: ClassTypes.EighthGrade.value,
         parentId: 9,
       ),
@@ -3846,8 +3924,8 @@ List<ClassLevelBranch> classLevelBranches = [
       ),
     ],
   ),
-
 ];
+
 Map<String, List<BranchTopic>> filterByBranch(Branches branchEnum) {
   Map<String, List<BranchTopic>> branchMap = {};
 
@@ -3864,8 +3942,8 @@ Map<String, List<BranchTopic>> filterByBranch(Branches branchEnum) {
   return branchMap;
 }
 
-
-Map<String, Map<String, List<BranchTopic>>> filterByClassAndBranch(List<ClassLevelBranch> classLevelBranches) {
+Map<String, Map<String, List<BranchTopic>>> filterByClassAndBranch(
+    List<ClassLevelBranch> classLevelBranches) {
   Map<String, Map<String, List<BranchTopic>>> classAndBranchMap = {};
 
   for (var clb in classLevelBranches) {
@@ -3911,7 +3989,11 @@ class BranchTopic {
   final String className;
 
   BranchTopic(
-      {required this.name, required this.id, required this.classType, required this.className, required this.parentId});
+      {required this.name,
+      required this.id,
+      required this.classType,
+      required this.className,
+      required this.parentId});
 
   @override
   bool operator ==(Object other) {

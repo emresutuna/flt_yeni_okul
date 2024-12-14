@@ -1,264 +1,138 @@
-class CourseResponseModel {
-  final bool? status; // Changed to nullable
-  final CourseData? data; // Changed to nullable
+import '../../../util/BaseCourseModel.dart';
 
-  CourseResponseModel({
-    this.status,
-    this.data,
-  });
+class CourseResponse {
+  bool? status;
+  CourseData? data;
 
-  factory CourseResponseModel.fromJson(Map<String, dynamic> json) {
-    return CourseResponseModel(
-      status: json['status'],
-      data: json['data'] != null ? CourseData.fromJson(json['data']) : null,
-    );
+  CourseResponse({this.status, this.data});
+
+  CourseResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    data = json['data'] != null ? CourseData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'status': status,
-      'data': data?.toJson(),
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
   }
 }
 
 class CourseData {
-  final List<Course>? courses; // Changed to nullable
-  final String? path; // Changed to nullable
-  final int? perPage; // Changed to nullable
-  final String? nextCursor; // Changed to nullable
-  final String? nextPageUrl; // Changed to nullable
-  final String? prevCursor; // Changed to nullable
-  final String? prevPageUrl; // Changed to nullable
+  int? currentPage;
+  List<CourseList>? data;
+  String? firstPageUrl;
+  int? from;
+  int? lastPage;
+  String? lastPageUrl;
+  List<Links>? links;
+  Null? nextPageUrl;
+  String? path;
+  int? perPage;
+  Null? prevPageUrl;
+  int? to;
+  int? total;
 
-  CourseData({
-    this.courses,
-    this.path,
-    this.perPage,
-    this.nextCursor,
-    this.nextPageUrl,
-    this.prevCursor,
-    this.prevPageUrl,
-  });
+  CourseData(
+      {this.currentPage,
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.links,
+      this.nextPageUrl,
+      this.path,
+      this.perPage,
+      this.prevPageUrl,
+      this.to,
+      this.total});
 
-  factory CourseData.fromJson(Map<String, dynamic> json) {
-    var list = json['data'] as List?;
-    List<Course>? coursesList = list?.map((i) => Course.fromJson(i)).toList();
-
-    return CourseData(
-      courses: coursesList,
-      path: json['path'],
-      perPage: json['per_page'],
-      nextCursor: json['next_cursor'],
-      nextPageUrl: json['next_page_url'],
-      prevCursor: json['prev_cursor'],
-      prevPageUrl: json['prev_page_url'],
-    );
+  CourseData.fromJson(Map<String, dynamic> json) {
+    currentPage = json['current_page'];
+    if (json['data'] != null) {
+      data = <CourseList>[];
+      json['data'].forEach((v) {
+        data!.add(CourseList.fromJson(v));
+      });
+    }
+    firstPageUrl = json['first_page_url'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    lastPageUrl = json['last_page_url'];
+    if (json['links'] != null) {
+      links = <Links>[];
+      json['links'].forEach((v) {
+        links!.add(Links.fromJson(v));
+      });
+    }
+    nextPageUrl = json['next_page_url'];
+    path = json['path'];
+    perPage = json['per_page'];
+    prevPageUrl = json['prev_page_url'];
+    to = json['to'];
+    total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'data': courses?.map((course) => course.toJson()).toList(),
-      'path': path,
-      'per_page': perPage,
-      'next_cursor': nextCursor,
-      'next_page_url': nextPageUrl,
-      'prev_cursor': prevCursor,
-      'prev_page_url': prevPageUrl,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['current_page'] = currentPage;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    data['first_page_url'] = firstPageUrl;
+    data['from'] = from;
+    data['last_page'] = lastPage;
+    data['last_page_url'] = lastPageUrl;
+    if (links != null) {
+      data['links'] = links!.map((v) => v.toJson()).toList();
+    }
+    data['next_page_url'] = nextPageUrl;
+    data['path'] = path;
+    data['per_page'] = perPage;
+    data['prev_page_url'] = prevPageUrl;
+    data['to'] = to;
+    data['total'] = total;
+    return data;
   }
 }
 
-class Course {
-  final int? id;
-  final int? schoolId;
-  final int? lessonId;
-  final int? teacherId;
-  final String? title;
-  final String? description;
-  final DateTime? startDate;
-  final DateTime? endDate;
-  final String? classroom;
-  final DateTime? deadline;
-  final double? price;
-  final int? quota;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final String? deletedAt;
-  final School? school;
-  final Lesson? lesson;
-  final Teacher? teacher;
+class CourseList extends BaseCourse {
+  CourseList({
+    int? id,
+    String? title,
+    String? description,
+    String? startDate,
+    String? endDate,
+    int? price,
+    int? quota,
+    String? schoolName,
+    School? school,
+    List<Topics>? topics,
+    String? lessonName,
+  }) : super(
+            id: id,
+            title: title,
+            description: description,
+            startDate: startDate,
+            endDate: endDate,
+            price: price,
+            quota: quota,
+            schoolName: schoolName,
+            school: school,
+            topics: topics,
+            lessonName: lessonName);
 
-  Course({
-    this.id,
-    this.schoolId,
-    this.lessonId,
-    this.teacherId,
-    this.title,
-    this.description,
-    this.startDate,
-    this.endDate,
-    this.classroom,
-    this.deadline,
-    this.price,
-    this.quota,
-    this.createdAt,
-    this.updatedAt,
-    this.deletedAt,
-    this.school,
-    this.lesson,
-    this.teacher,
-  });
-
-  factory Course.fromJson(Map<String, dynamic> json) {
-    return Course(
-      id: json['id'],
-      schoolId: json['school_id'],
-      title: json['title'],
-      description: json['description'],
-      lessonId: json['lesson_id'],
-      teacherId: json['teacher_id'],
-      startDate: json['start_date'] != null ? DateTime.parse(json['start_date']) : null,
-      endDate: json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
-      classroom: json['classroom'],
-      deadline: json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
-      price: json['price'] != null ? json['price'].toDouble() : null,
-      quota: json['quota'],
-      createdAt: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
-      updatedAt: json['updated_at'] != null ? DateTime.parse(json['updated_at']) : null,
-      deletedAt: json['deleted_at'],
-      school: json['school'] != null ? School.fromJson(json['school']) : null,
-      lesson: json['lesson'] != null ? Lesson.fromJson(json['lesson']) : null,
-      teacher: json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null,
-    );
+  CourseList.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'school_id': schoolId,
-      'lesson_id': lessonId,
-      'teacher_id': teacherId,
-      'start_date': startDate?.toIso8601String(),
-      'end_date': endDate?.toIso8601String(),
-      'classroom': classroom,
-      'deadline': deadline?.toIso8601String(),
-      'price': price,
-      'quota': quota,
-      'created_at': createdAt?.toIso8601String(),
-      'updated_at': updatedAt?.toIso8601String(),
-      'deleted_at': deletedAt,
-      'school': school?.toJson(),
-      'lesson': lesson?.toJson(),
-      'teacher': teacher?.toJson(),
-    };
-  }
-}
-
-class School {
-  final int? id; // Changed to nullable
-  final int? userId; // Changed to nullable
-  final User? user; // Changed to nullable
-
-  School({
-    this.id,
-    this.userId,
-    this.user,
-  });
-
-  factory School.fromJson(Map<String, dynamic> json) {
-    return School(
-      id: json['id'],
-      userId: json['user_id'],
-      user: json['user'] != null ? User.fromJson(json['user']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user_id': userId,
-      'user': user?.toJson(),
-    };
-  }
-}
-
-class User {
-  final int? id; // Changed to nullable
-  final String? name; // Changed to nullable
-
-  User({
-    this.id,
-    this.name,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      name: json['name'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
-  }
-}
-
-class Lesson {
-  final int? id; // Changed to nullable
-  final String? name; // Changed to nullable
-  final String? color; // Changed to nullable
-
-  Lesson({
-    this.id,
-    this.name,
-    this.color,
-  });
-
-  factory Lesson.fromJson(Map<String, dynamic> json) {
-    return Lesson(
-      id: json['id'],
-      name: json['name'],
-      color: json['color'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'color': color,
-    };
-  }
-}
-
-class Teacher {
-  final int? id; // Changed to nullable
-  final int? userId; // Changed to nullable
-  final User? user; // Changed to nullable
-
-  Teacher({
-    this.id,
-    this.userId,
-    this.user,
-  });
-
-  factory Teacher.fromJson(Map<String, dynamic> json) {
-    return Teacher(
-      id: json['id'],
-      userId: json['user_id'],
-      user: json['user'] != null ? User.fromJson(json['user']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'user_id': userId,
-      'user': user?.toJson(),
-    };
+    final data = super.toJson();
+    data['lesson'] = lesson;
+    return data;
   }
 }

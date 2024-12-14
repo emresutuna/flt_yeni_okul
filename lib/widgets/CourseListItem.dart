@@ -7,26 +7,28 @@ import '../util/YOColors.dart';
 import 'TertiaryButton.dart';
 
 class CourseListItem extends StatelessWidget {
-  final Course? courseModel;
+  final CourseList? courseModel;
   final Color colors;
 
   const CourseListItem({super.key, required this.courseModel, required this.colors});
 
   @override
   Widget build(BuildContext context) {
-    String lessonName = courseModel?.lesson?.name ?? 'Ders bilgisi bulunamadı';
+    String lessonName = courseModel?.lesson?.name ?? courseModel?.lessonName??'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
-    String teacherName = courseModel?.teacher?.user?.name ?? 'Eğitmen bilgisi bulunamadı';
-    String classroom = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
+    String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
+    String teacherName = 'Eğitmen bilgisi bulunamadı';
 
     String dateString = courseModel?.startDate != null
-        ? DateFormat('dd/MM/yyyy').format(courseModel!.startDate!)
+        ? courseModel!.startDate!
         : 'Tarih bilgisi yok';
+
     String timeString = courseModel?.startDate != null
-        ? DateFormat('HH:mm').format(courseModel!.startDate!)
+        ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
         : 'Saat bilgisi yok';
-    String endTime = courseModel?.startDate != null
-        ? DateFormat('HH:mm').format(courseModel!.endDate!)
+
+    String endTime = courseModel?.endDate != null
+        ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
         : 'Saat bilgisi yok';
 
     String price = '${courseModel?.price ?? 0} ₺';
@@ -63,7 +65,7 @@ class CourseListItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Kurum: $classroom",
+                        "Kurum: $schoolName",
                         style: styleBlack12Bold,
                       ),
                     ),

@@ -11,14 +11,14 @@ import '../ui/course/model/CourseModel.dart';
 import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
 
 class LectureRepository {
-  Future<ResultResponse<CourseResponseModel>> getLessons() async {
+  Future<ResultResponse<CourseResponse>> getLessons() async {
     try {
       final response =
           await APIService.instance.request(ApiUrls.getCourses, DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        CourseResponseModel lessonResponse = CourseResponseModel.fromJson(body);
+        CourseResponse lessonResponse = CourseResponse.fromJson(body);
 
         return ResultResponse.success(lessonResponse);
       } else if (response.statusCode == HttpStatus.unauthorized) {
@@ -112,7 +112,7 @@ class LectureRepository {
     }
   }
 
-  Future<ResultResponse<CourseResponseModel>> getCourseByFilter(
+  Future<ResultResponse<CourseResponse>> getCourseByFilter(
       CourseFilter filter) async {
     try {
       final response = await APIService.instance.request(
@@ -120,7 +120,7 @@ class LectureRepository {
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        CourseResponseModel lessonResponse = CourseResponseModel.fromJson(body);
+        CourseResponse lessonResponse = CourseResponse.fromJson(body);
 
         return ResultResponse.success(lessonResponse);
       } else if (response.statusCode == HttpStatus.unauthorized) {
@@ -137,17 +137,17 @@ class LectureRepository {
     }
   }
 
-  Future<ResultResponse<CourseDetailResponseModel>> getCourseById(
+  Future<ResultResponse<CourseDetailResponse>> getCourseById(
       int courseId) async {
     try {
       final response = await APIService.instance.request(
-          '${ApiUrls.getCoursesById}/$courseId${ApiUrls.getCoursesById2}',
+          ApiUrls.getCoursesById(courseId),
           DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        CourseDetailResponseModel courseResponseModel =
-            CourseDetailResponseModel.fromJson(body);
+        CourseDetailResponse courseResponseModel =
+            CourseDetailResponse.fromJson(body);
 
         return ResultResponse.success(courseResponseModel);
       } else {

@@ -1,4 +1,5 @@
-import '../../course/model/CourseModel.dart';
+
+import '../../../util/BaseCourseModel.dart';
 
 class MobileHomeResponse {
   bool? status;
@@ -38,85 +39,45 @@ class MobileHomeResponse {
   }
 }
 
-class IncomingLesson {
-  int? id;
-  String? title;
-  String? description;
+class IncomingLesson extends BaseCourse {
   int? schoolId;
   int? lessonId;
   int? teacherId;
-  String? startDate;
-  String? endDate;
   String? classroom;
   String? deadline;
-  int? price;
-  int? quota;
   School? school;
-  User? lesson;
-  School? teacher;
+  Lesson? lesson;
+  Teacher? teacher;
   List<Topics>? topics;
 
-  IncomingLesson({
-    this.id,
-    this.title,
-    this.description,
-    this.schoolId,
-    this.lessonId,
-    this.teacherId,
-    this.startDate,
-    this.endDate,
-    this.classroom,
-    this.deadline,
-    this.price,
-    this.quota,
-    this.school,
-    this.lesson,
-    this.teacher,
-    this.topics,
-  });
+  IncomingLesson({int? id, String? title, String? description, String? startDate, String? endDate, int? price, int? quota, this.schoolId, this.lessonId, this.teacherId, this.classroom, this.deadline, this.school, this.lesson, this.teacher, this.topics})
+      : super(id: id, title: title, description: description, startDate: startDate, endDate: endDate, price: price, quota: quota);
 
-  factory IncomingLesson.fromJson(Map<String, dynamic> json) {
-    return IncomingLesson(
-      id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      schoolId: json['school_id'],
-      lessonId: json['lesson_id'],
-      teacherId: json['teacher_id'],
-      startDate: json['start_date'],
-      endDate: json['end_date'],
-      classroom: json['classroom'],
-      deadline: json['deadline'],
-      price: json['price'],
-      quota: json['quota'],
-      school: json['school'] != null ? School.fromJson(json['school']) : null,
-      lesson: json['lesson'] != null ? User.fromJson(json['lesson']) : null,
-      teacher: json['teacher'] != null ? School.fromJson(json['teacher']) : null,
-      topics: json['topics'] != null
-          ? (json['topics'] as List).map((v) => Topics.fromJson(v)).toList()
-          : null,
-    );
+  IncomingLesson.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
+    schoolId = json['school_id'];
+    lessonId = json['lesson_id'];
+    teacherId = json['teacher_id'];
+    classroom = json['classroom'];
+    deadline = json['deadline'];
+    school = json['school'] != null ? School.fromJson(json['school']) : null;
+    lesson = json['lesson'] != null ? Lesson.fromJson(json['lesson']) : null;
+    teacher = json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
+    topics = json['topics'] != null ? (json['topics'] as List).map((v) => Topics.fromJson(v)).toList() : null;
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'school_id': schoolId,
-      'lesson_id': lessonId,
-      'teacher_id': teacherId,
-      'start_date': startDate,
-      'end_date': endDate,
-      'classroom': classroom,
-      'deadline': deadline,
-      'price': price,
-      'quota': quota,
-      'school': school?.toJson(),
-      'lesson': lesson?.toJson(),
-      'teacher': teacher?.toJson(),
-      'topics': topics?.map((v) => v.toJson()).toList(),
-    };
+    final data = super.toJson();
+    data['school_id'] = schoolId;
+    data['lesson_id'] = lessonId;
+    data['teacher_id'] = teacherId;
+    data['classroom'] = classroom;
+    data['deadline'] = deadline;
+    data['school'] = school?.toJson();
+    data['lesson'] = lesson?.toJson();
+    data['teacher'] = teacher?.toJson();
+    data['topics'] = topics?.map((v) => v.toJson()).toList();
+    return data;
   }
 }
 
@@ -138,30 +99,6 @@ class User {
     return {
       'id': id,
       'name': name,
-    };
-  }
-}
-
-class Topics {
-  int? id;
-  String? name;
-  Pivot? pivot;
-
-  Topics({this.id, this.name, this.pivot});
-
-  factory Topics.fromJson(Map<String, dynamic> json) {
-    return Topics(
-      id: json['id'],
-      name: json['name'],
-      pivot: json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'pivot': pivot?.toJson(),
     };
   }
 }

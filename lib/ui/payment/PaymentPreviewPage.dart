@@ -1,6 +1,7 @@
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewEvent.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
+import 'package:baykurs/util/LessonExtension.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +18,7 @@ class PaymentPreviewPage extends StatefulWidget {
 }
 
 class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
-  CourseDetail? courseDetail;
+  CourseDetailData? courseDetail;
 
   @override
   void initState() {
@@ -26,7 +27,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
       if (ModalRoute.of(context) != null) {
         setState(() {
           courseDetail =
-              ModalRoute.of(context)!.settings.arguments as CourseDetail;
+              ModalRoute.of(context)!.settings.arguments as CourseDetailData;
         });
       }
     });
@@ -141,28 +142,38 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),
                                       decoration: BoxDecoration(
-                                        color:
-                                            HexColor(courseDetail!.lesson.color),
+                                        color: HexColor(
+                                            BranchesExtension.getColorForBranch(
+                                                  courseDetail?.lesson?.name ??
+                                                      courseDetail
+                                                          ?.lessonName ??
+                                                      "Ders bulunamadı",
+                                                ) ??
+                                                "Varsayılan renk kodu"),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
-                                        courseDetail!.lesson.name,
+                                        courseDetail!.lesson?.name ??
+                                            courseDetail!.lessonName ??
+                                            "Ders bulunamadı",
                                         style: styleWhite12Bold,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      courseDetail!.school.user.name,
+                                      courseDetail!.school?.name ??
+                                          courseDetail!.schoolName ??
+                                          "Kurum ismi bulunamadı",
                                       style: styleBlack12Bold,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      courseDetail!.formattedDateRange,
+                                      courseDetail!.formattedDateRange ?? "",
                                       style: styleBlack12Regular,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      courseDetail!.classroom,
+                                      courseDetail!.classroom ?? "-",
                                       style: styleBlack12Regular,
                                     ),
                                     const SizedBox(height: 16),
@@ -187,7 +198,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                 text: "Devam Et",
                                 onPress: () {
                                   context.read<PaymentPreviewBloc>().add(
-                                        BuyCourse(courseId: courseDetail!.id),
+                                        BuyCourse(
+                                            courseId: courseDetail!.id ?? 0),
                                       );
                                 },
                               ),

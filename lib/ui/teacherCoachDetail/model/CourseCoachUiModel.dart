@@ -1,3 +1,4 @@
+import '../../../util/BaseCourseModel.dart';
 import '../../../util/DateExtension.dart';
 import 'CourseCoachDetailResponse.dart';
 

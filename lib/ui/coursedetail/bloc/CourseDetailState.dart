@@ -9,7 +9,7 @@ abstract class CourseDetailState {}
 class CourseDetailStateLoading extends CourseDetailState {}
 
 class CourseDetailStateSuccess extends CourseDetailState {
-  final CourseDetailResponseModel courseResponseModel;
+  final CourseDetailResponse courseResponseModel;
 
   CourseDetailStateSuccess(this.courseResponseModel);
 }

@@ -3,11 +3,19 @@ import '../model/CourseFilter.dart';
 abstract class LessonEvent {}
 
 class FetchLesson extends LessonEvent {}
+class FetchCourseBundle extends LessonEvent{}
 
 class FetchLessonWithFilter extends LessonEvent {
   final CourseFilter courseFilter;
 
   FetchLessonWithFilter({
+    required this.courseFilter,
+  });
+}
+class FetchCourseBundleWithFilter extends LessonEvent {
+  final CourseFilter courseFilter;
+
+  FetchCourseBundleWithFilter({
     required this.courseFilter,
   });
 }

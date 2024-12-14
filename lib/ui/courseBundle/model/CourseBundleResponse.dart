@@ -1,12 +1,15 @@
+import '../../../util/BaseCourseModel.dart';
+import '../../course/model/CourseModel.dart';
+
 class CourseBundleResponse {
   bool? status;
-  CourseBundle? data;
+  CourseBundleData? data;
 
   CourseBundleResponse({this.status, this.data});
 
   CourseBundleResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? CourseBundle.fromJson(json['data']) : null;
+    data = json['data'] != null ? CourseBundleData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -19,42 +22,43 @@ class CourseBundleResponse {
   }
 }
 
-class CourseBundle {
+class CourseBundleData {
   int? currentPage;
-  List<CourseBundleList>? data;
+  List<CourseBundle>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
   String? lastPageUrl;
   List<Links>? links;
-  Null? nextPageUrl;
+  String? nextPageUrl;
   String? path;
   int? perPage;
-  Null? prevPageUrl;
+  String? prevPageUrl;
   int? to;
   int? total;
 
-  CourseBundle(
-      {this.currentPage,
-        this.data,
-        this.firstPageUrl,
-        this.from,
-        this.lastPage,
-        this.lastPageUrl,
-        this.links,
-        this.nextPageUrl,
-        this.path,
-        this.perPage,
-        this.prevPageUrl,
-        this.to,
-        this.total});
+  CourseBundleData({
+    this.currentPage,
+    this.data,
+    this.firstPageUrl,
+    this.from,
+    this.lastPage,
+    this.lastPageUrl,
+    this.links,
+    this.nextPageUrl,
+    this.path,
+    this.perPage,
+    this.prevPageUrl,
+    this.to,
+    this.total,
+  });
 
-  CourseBundle.fromJson(Map<String, dynamic> json) {
+  CourseBundleData.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <CourseBundleList>[];
+      data = <CourseBundle>[];
       json['data'].forEach((v) {
-        data!.add(CourseBundleList.fromJson(v));
+        data!.add(CourseBundle.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -98,61 +102,52 @@ class CourseBundle {
   }
 }
 
-class CourseBundleList {
-  String? title;
-  String? description;
-  String? startDate;
-  String? lessonName;
-  String? schoolName;
-  int? price;
+class CourseBundle extends BaseCourse {
+  CourseBundle({
+    int? id,
+    String? title,
+    String? description,
+    String? startDate,
+    String? endDate,
+    int? price,
+    int? quota,
+    String? schoolName,
+    School? school,
+    String? lessonName,
+    Lesson? lesson,
+  }) : super(
+    id: id,
+    title: title,
+    description: description,
+    startDate: startDate,
+    endDate: endDate,
+    price: price,
+    quota: quota,
+    schoolName: schoolName,
+    school: school,
+    lessonName: lessonName,
+    lesson: lesson,
+  );
 
-  CourseBundleList(
-      {this.title,
-        this.description,
-        this.startDate,
-        this.lessonName,
-        this.schoolName,
-        this.price});
+  CourseBundle.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 
-  CourseBundleList.fromJson(Map<String, dynamic> json) {
-    title = json['title'];
-    description = json['description'];
-    startDate = json['start_date'];
-    lessonName = json['lesson_name'];
-    schoolName = json['school_name'];
-    price = json['price'];
-  }
-
+  @override
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['title'] = title;
-    data['description'] = description;
-    data['start_date'] = startDate;
-    data['lesson_name'] = lessonName;
-    data['school_name'] = schoolName;
-    data['price'] = price;
-    return data;
+    return super.toJson();
   }
-}
-
-class Links {
-  String? url;
-  String? label;
-  bool? active;
-
-  Links({this.url, this.label, this.active});
-
-  Links.fromJson(Map<String, dynamic> json) {
-    url = json['url'];
-    label = json['label'];
-    active = json['active'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['url'] = url;
-    data['label'] = label;
-    data['active'] = active;
-    return data;
+  CourseList toCourseList() {
+    return CourseList(
+      id: id,
+      title: title,
+      description: description,
+      startDate: startDate,
+      endDate: endDate,
+      price: price,
+      quota: quota,
+      schoolName: schoolName,
+      school: school,
+      topics: topics,
+      lessonName: lessonName,
+    );
   }
 }

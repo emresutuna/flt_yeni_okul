@@ -20,7 +20,7 @@ class TimeSheetCourseList extends StatefulWidget {
 class _TimeSheetCourseListState extends State<TimeSheetCourseList> {
   @override
   Widget build(BuildContext context) {
-    List<Course> courseList =
+    List<CourseList> courseList =
         widget.timeSheetList.map((timeSheet) => timeSheet.toCourse()).toList();
 
     return Scaffold(
@@ -42,7 +42,7 @@ class _TimeSheetCourseListState extends State<TimeSheetCourseList> {
                       },
                       child: CourseListItem(
                         courseModel: courseList[index],
-                        colors: HexColor(courseList[index].lesson!.color!),
+                        colors: HexColor("#4A90E2"),
                       ),
                     );
                   },

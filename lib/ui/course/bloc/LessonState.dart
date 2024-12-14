@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';
 
@@ -8,7 +9,7 @@ abstract class LessonState {}
 class LessonStateLoading extends LessonState {}
 
 class LessonStateSuccess extends LessonState {
-  final CourseResponseModel lessonResponse;
+  final CourseResponse lessonResponse;
 
   LessonStateSuccess(this.lessonResponse);
 }
@@ -24,10 +25,11 @@ class CourseCoachDetailSuccess extends LessonState {
 
   CourseCoachDetailSuccess(this.courseCoachResponse);
 }
-class CourseBundleSuccess extends LessonState {
-  final CourseCoachDetailResponse courseCoachResponse;
 
-  CourseBundleSuccess(this.courseCoachResponse);
+class CourseBundleSuccess extends LessonState {
+  final CourseBundleResponse courseBundleResponse;
+
+  CourseBundleSuccess(this.courseBundleResponse);
 }
 
 class LessonStateError extends LessonState {

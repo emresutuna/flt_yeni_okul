@@ -24,9 +24,8 @@ class CourseListPage extends StatefulWidget {
 }
 
 class _CourseListPageState extends State<CourseListPage> {
-  late List<Course> courseList;
+  late List<CourseList> courseList;
 
-  List<Course> searchResults = [];
   CourseFilter courseFilter = CourseFilter();
   String query = "";
 
@@ -130,7 +129,7 @@ class _CourseListPageState extends State<CourseListPage> {
                   child: BlocBuilder<LessonBloc, LessonState>(
                     builder: (context, state) {
                       if (state is LessonStateSuccess) {
-                        courseList = state.lessonResponse.data?.courses ?? [];
+                        courseList = state.lessonResponse.data?.data ?? [];
                         return Column(
                           children: [
                             Expanded(
@@ -146,9 +145,7 @@ class _CourseListPageState extends State<CourseListPage> {
                                   },
                                   child: CourseListItem(
                                     courseModel: courseList[index],
-                                    colors: HexColor(
-                                        courseList[index].lesson!.color ??
-                                            "#4A90E2"),
+                                    colors: HexColor("#4A90E2"),
                                   ),
                                 );
                               },

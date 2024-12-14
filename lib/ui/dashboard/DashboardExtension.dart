@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../../util/BaseCourseModel.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
@@ -127,7 +128,7 @@ class IncomingLessonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Course> courses = lessons.map((lesson) => lesson.toCourse()).toList();
+    List<CourseList> courses = lessons.map((lesson) => CourseMapper.toCourseList(lesson)).toList();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -142,7 +143,7 @@ class IncomingLessonsWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.96,
               child: CourseListItem(
                 courseModel: courses[index],
-                colors: HexColor(courses[index].lesson!.color!),
+                colors: HexColor("#4A90E2"),
               ),
             );
           },
@@ -199,52 +200,36 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
-Course mapIncomingLessonToCourse(IncomingLesson incomingLesson) {
-  return Course(
-    id: incomingLesson.id,
-    schoolId: incomingLesson.schoolId,
-    lessonId: incomingLesson.lessonId,
-    teacherId: incomingLesson.teacherId,
-    startDate: incomingLesson.startDate != null
-        ? DateTime.tryParse(incomingLesson.startDate!)
-        : null,
-    endDate: incomingLesson.endDate != null
-        ? DateTime.tryParse(incomingLesson.endDate!)
-        : null,
-    classroom: incomingLesson.classroom,
-    deadline: incomingLesson.deadline != null
-        ? DateTime.tryParse(incomingLesson.deadline!)
-        : null,
-    price: incomingLesson.price?.toDouble(),
-    quota: incomingLesson.quota,
-    createdAt: null,
-    updatedAt: null,
-    deletedAt: null,
-    school: incomingLesson.school,
-    lesson: incomingLesson.lesson as Lesson?,
-    teacher: incomingLesson.teacher as Teacher?,
-  );
-}
-
-extension IncomingLessonMapper on IncomingLesson {
-  Course toCourse() {
-    return Course(
-      id: id,
-      schoolId: schoolId,
-      lessonId: lessonId,
-      teacherId: teacherId,
-      startDate: startDate != null ? DateTime.tryParse(startDate!) : null,
-      endDate: endDate != null ? DateTime.tryParse(endDate!) : null,
-      classroom: classroom,
-      deadline: deadline != null ? DateTime.tryParse(deadline!) : null,
-      price: price?.toDouble(),
-      quota: quota,
-      createdAt: null,
-      updatedAt: null,
-      deletedAt: null,
-      school: school,
-      lesson: lesson as Lesson?,
-      teacher: teacher as Teacher?,
+class CourseMapper {
+  /// CourseList -> IncomingLesson
+  static IncomingLesson toIncomingLesson(CourseList courseList) {
+    return IncomingLesson(
+      id: courseList.id,
+      title: courseList.title,
+      description: courseList.description,
+      startDate: courseList.startDate,
+      endDate: courseList.endDate,
+      price: courseList.price,
+      quota: courseList.quota,
+      topics: courseList.topics,
+      school: courseList.school != null ? School(name: courseList.schoolName??"", id: 0,) : null, // String'i School nesnesine çevirir
+      lesson: courseList.lesson != null ? Lesson(name: courseList.lesson?.name?? courseList.lessonName??"", id: 0, color: "") : null, // String'i User nesnesine çevirir
+    );
+  }
+  /// IncomingLesson -> CourseList
+  static CourseList toCourseList(IncomingLesson incomingLesson) {
+    return CourseList(
+      id: incomingLesson.id,
+      title: incomingLesson.title,
+      description: incomingLesson.description,
+      startDate: incomingLesson.startDate,
+      endDate: incomingLesson.endDate,
+      price: incomingLesson.price,
+      quota: incomingLesson.quota,
+      topics: incomingLesson.topics,
+      schoolName: incomingLesson.school?.name,
+      lessonName: incomingLesson.lesson?.name,
     );
   }
 }
+

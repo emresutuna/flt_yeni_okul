@@ -12,7 +12,6 @@ class ApiUrls {
   static const String topics = "/topic?id=&name=&lesson_id=&grade=";
   static const String getCourses = "/mobile/course";
   static const String getCourseCoaches = "/mobile/courseCoach";
-  static const String getCoursesById = "/course";
   static const String getTimeSheet = "/me/calendar";
   static const String updateUser = "/me/update";
   static const String courseRequestURL = "/mobile/courseRequest";
@@ -22,6 +21,7 @@ class ApiUrls {
   static String buyCourse(int id) => "/course/$id/buy";
 
   static String courseCoachDetail(int id) => "/mobile/courseCoach/$id";
+  static String getCoursesById(int id) => "/mobile/course/$id";
   static const String getFavorites = "/mobile/favorites";
   static const String getHomePage = "/mobile/homepage";
   static const String getHomePageWithLogin = "/mobile/homepage";
