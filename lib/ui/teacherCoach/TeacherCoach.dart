@@ -12,6 +12,7 @@ import '../course/bloc/LessonBloc.dart';
 import '../course/bloc/LessonEvent.dart';
 import '../course/bloc/LessonState.dart';
 import '../course/model/CourseFilter.dart';
+import '../course/model/CourseTypeEnum.dart';
 
 class TeacherCoach extends StatefulWidget {
   const TeacherCoach({super.key});
@@ -88,8 +89,9 @@ class _TeacherCoachState extends State<TeacherCoach> {
                           final filter = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  FilterLesson(courseFilter: courseFilter),
+                              builder: (context) => FilterLesson(
+                                  courseFilter: courseFilter,
+                                  courseTypeEnum: CourseTypeEnum.COURSE_COACH),
                               fullscreenDialog: true,
                             ),
                           ) as CourseFilter?;

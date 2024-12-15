@@ -1,0 +1,1 @@
+enum CourseTypeEnum { COURSE, COURSE_BUNDLE, COURSE_COACH }

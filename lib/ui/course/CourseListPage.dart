@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/widgets/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
@@ -93,7 +94,7 @@ class _CourseListPageState extends State<CourseListPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  FilterLesson(courseFilter: courseFilter),
+                                  FilterLesson(courseFilter: courseFilter,courseTypeEnum: CourseTypeEnum.COURSE,),
                               fullscreenDialog: true,
                             ),
                           ) as CourseFilter?;

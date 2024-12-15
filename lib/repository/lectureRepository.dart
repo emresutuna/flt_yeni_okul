@@ -111,6 +111,31 @@ class LectureRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+  Future<ResultResponse<CourseBundleResponse>> getCourseBundleWithFilter(
+      CourseFilter filter) async {
+    try {
+      final response = await APIService.instance.request(
+          buildUrlWithFilter(ApiUrls.getCourseBundle, filter), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        CourseBundleResponse courseCoachResponse =
+        CourseBundleResponse.fromJson(body);
+
+        return ResultResponse.success(courseCoachResponse);
+      } else if (response.statusCode == HttpStatus.unauthorized) {
+        // Unauthorized - redirect to login page
+        return ResultResponse.failure(
+            'Unauthorized: Redirecting to login page');
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
 
   Future<ResultResponse<CourseCoachResponse>> getCourseCoachByFilter(
       CourseFilter filter) async {

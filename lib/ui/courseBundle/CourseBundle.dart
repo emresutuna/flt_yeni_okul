@@ -14,6 +14,7 @@ import '../course/bloc/LessonBloc.dart';
 import '../course/bloc/LessonEvent.dart';
 import '../course/bloc/LessonState.dart';
 import '../course/model/CourseFilter.dart';
+import '../course/model/CourseTypeEnum.dart';
 
 class CourseBundleListPage extends StatefulWidget {
   const CourseBundleListPage({super.key});
@@ -92,14 +93,14 @@ class _CourseListPageState extends State<CourseBundleListPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  FilterLesson(courseFilter: courseFilter),
+                                  FilterLesson(courseFilter: courseFilter,courseTypeEnum: CourseTypeEnum.COURSE_BUNDLE),
                               fullscreenDialog: true,
                             ),
                           ) as CourseFilter?;
 
                           if (filter != null) {
                             courseFilter = filter;
-                            lessonBloc.add(FetchLessonWithFilter(
+                            lessonBloc.add(FetchCourseBundleWithFilter(
                                 courseFilter:
                                     courseFilter.copyWith(query: query)));
                           }

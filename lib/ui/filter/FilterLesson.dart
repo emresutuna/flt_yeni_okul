@@ -1,4 +1,5 @@
 import 'package:baykurs/ui/course/model/CourseFilter.dart';
+import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/filter/FilterProvince.dart';
 import 'package:baykurs/ui/filter/FilterRegion.dart';
 import 'package:baykurs/util/AllExtension.dart';
@@ -11,8 +12,10 @@ import 'FilterTopic.dart';
 
 class FilterLesson extends StatefulWidget {
   final CourseFilter courseFilter;
+  final CourseTypeEnum courseTypeEnum;
 
-  const FilterLesson({super.key, required this.courseFilter});
+  const FilterLesson(
+      {super.key, required this.courseFilter, required this.courseTypeEnum});
 
   @override
   _FilterLessonState createState() => _FilterLessonState();
@@ -26,6 +29,7 @@ class _FilterLessonState extends State<FilterLesson> {
   Region? selectedCity;
   Province? selectedProvince;
   late CourseFilter courseFilter;
+  late CourseTypeEnum courseType;
 
   List<bool> isSelected = [];
   bool hasSelectableTopic = false;
@@ -35,6 +39,7 @@ class _FilterLessonState extends State<FilterLesson> {
   void initState() {
     super.initState();
     courseFilter = widget.courseFilter;
+    courseType = widget.courseTypeEnum;
     initializeFields();
   }
 
@@ -52,7 +57,6 @@ class _FilterLessonState extends State<FilterLesson> {
             id: courseFilter.provinceId!, name: courseFilter.provinceName ?? "")
         : null;
 
-    // Branşların seçim durumunu ayarla
     isSelected = List.generate(
       BranchesExtension.allBranches.length,
       (index) => courseFilter.lessonId == index + 1,
@@ -145,13 +149,18 @@ class _FilterLessonState extends State<FilterLesson> {
                       _buildTextField(
                           "İlçe Seç", ilceController, context, false),
                       16.toHeight,
-                      Text("Branş", style: styleBlack18Bold),
-                      16.toHeight,
-                      _buildBranches(),
-                      16.toHeight,
-                      Text("Konu", style: styleBlack18Bold),
-                      16.toHeight,
-                      _buildTopicSelector(),
+                      if (courseType == CourseTypeEnum.COURSE ||
+                          courseType == CourseTypeEnum.COURSE_BUNDLE) ...[
+                        Text("Branş", style: styleBlack18Bold),
+                        16.toHeight,
+                        _buildBranches(),
+                        16.toHeight,
+                      ],
+                      if (courseType == CourseTypeEnum.COURSE) ...[
+                        Text("Konu", style: styleBlack18Bold),
+                        16.toHeight,
+                        _buildTopicSelector(),
+                      ]
                     ],
                   ),
                 ),

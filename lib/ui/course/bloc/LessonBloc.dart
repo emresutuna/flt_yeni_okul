@@ -70,5 +70,15 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
         emit(LessonStateError('Sonuç Bulunamadı'));
       }
     });
+
+    on<FetchCourseBundleWithFilter>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result = await lectureRepository.getCourseBundleWithFilter(event.courseFilter);
+        emit(CourseBundleSuccess(result.data!));
+      } catch (e) {
+        emit(LessonStateError('Sonuç Bulunamadı'));
+      }
+    });
   }
 }
