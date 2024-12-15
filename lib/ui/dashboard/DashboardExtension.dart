@@ -88,9 +88,9 @@ class QuickActionsGrid extends StatelessWidget {
       case 4: // Eğitim Koçu
         Navigator.of(context, rootNavigator: true).pushNamed("/teacherCoach");
         break;
-      case 5: // Deneme Kulubü
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed("/userEditSelection");
+      case 5: // Paket Ders
+        Navigator.of(context, rootNavigator: true).pushNamed("/courseBundleList");
+
         break;
       default:
         break;

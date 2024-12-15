@@ -6,7 +6,6 @@ import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/LessonExtension.dart';
-import '../priceFilter/PriceFilterPage.dart';
 import '../requestlesson/Region.dart';
 import 'FilterTopic.dart';
 
@@ -30,6 +29,7 @@ class _FilterLessonState extends State<FilterLesson> {
 
   List<bool> isSelected = [];
   bool hasSelectableTopic = false;
+  RangeValues _currentRange = const RangeValues(0, 900);
 
   @override
   void initState() {
@@ -116,17 +116,24 @@ class _FilterLessonState extends State<FilterLesson> {
                       16.toHeight,
                       Text("Fiyat", style: styleBlack18Bold),
                       16.toHeight,
-                      PriceFilter(
-                        minLimit: 0,
-                        maxLimit: 50000,
-                        onApply: (minValue, maxValue) {
+                      priceRangeSlider(
+                        ctx: context,
+                        minValue: 0,
+                        maxValue: 900,
+                        currentRange: _currentRange,
+                        onChanged: (newRange) {
                           setState(() {
+                            _currentRange = newRange;
                             courseFilter = courseFilter.copyWith(
-                              minPrice: minValue.toInt(),
-                              maxPrice: maxValue.toInt(),
+                              minPrice: _currentRange.start.toInt(),
+                              maxPrice: _currentRange.end.toInt(),
                             );
                           });
                         },
+                        leftLabel: "Min: ${_currentRange.start.toInt()} TL",
+                        rightLabel: "Max: ${_currentRange.end.toInt()} TL",
+                        activeColor: color5,
+                        inactiveColor: Colors.grey[300]!,
                       ),
                       16.toHeight,
                       Text("İl", style: styleBlack16Bold),
@@ -174,7 +181,9 @@ class _FilterLessonState extends State<FilterLesson> {
               initialTopicId: courseFilter.topicId,
               topics: filterBranchTopicsByBranchId(
                 classLevelBranches,
-                (courseFilter.lessonId != null ? courseFilter.lessonId! - 1 : -1),
+                (courseFilter.lessonId != null
+                    ? courseFilter.lessonId! - 1
+                    : -1),
               ),
             ),
           ),
@@ -330,4 +339,65 @@ class _FilterLessonState extends State<FilterLesson> {
       ),
     );
   }
+}
+
+Widget priceRangeSlider(
+    {required double minValue,
+    required double maxValue,
+    required RangeValues currentRange,
+    required ValueChanged<RangeValues> onChanged,
+    String? leftLabel,
+    String? rightLabel,
+    Color activeColor = Colors.orange,
+    Color inactiveColor = Colors.grey,
+    required BuildContext ctx}) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: const [
+        BoxShadow(
+          color: Colors.black26,
+          blurRadius: 6,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(leftLabel ?? "${currentRange.start.toInt()} TL",
+                style: styleBlack14Regular.copyWith(color: Colors.grey[600])),
+            Text(rightLabel ?? "${currentRange.end.toInt()} TL",
+                style: styleBlack14Regular.copyWith(color: Colors.grey[600])),
+          ],
+        ),
+        SliderTheme(
+          data: SliderTheme.of(ctx).copyWith(
+            trackHeight: 2,
+            activeTrackColor: color5.withOpacity(0.9),
+            inactiveTrackColor: Colors.grey[300],
+            thumbColor: color5,
+            overlayColor: color5.withOpacity(0.7),
+            thumbShape: const RoundSliderThumbShape(
+                enabledThumbRadius: 10.0, elevation: 2.0),
+            rangeThumbShape:
+                const RoundRangeSliderThumbShape(enabledThumbRadius: 10.0),
+          ),
+          child: RangeSlider(
+            values: currentRange,
+            min: minValue,
+            max: maxValue,
+            divisions: (maxValue - minValue).toInt(),
+            onChanged: onChanged,
+          ),
+        ),
+      ],
+    ),
+  );
 }

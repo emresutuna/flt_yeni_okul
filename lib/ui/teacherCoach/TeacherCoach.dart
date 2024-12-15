@@ -29,14 +29,14 @@ class _TeacherCoachState extends State<TeacherCoach> {
   void onQueryChanged(String query) {
     this.query = query;
     if (query.length > 2) {
-      context.read<LessonBloc>().add(FetchLessonWithFilter(
+      context.read<LessonBloc>().add(FetchCourseCoachWithFilter(
           courseFilter: courseFilter.copyWith(query: query)));
     }
   }
 
   void onQueryCleared() {
     query = "";
-    context.read<LessonBloc>().add(FetchLessonWithFilter(
+    context.read<LessonBloc>().add(FetchCourseCoachWithFilter(
         courseFilter: courseFilter.copyWith(query: query)));
   }
 
@@ -96,7 +96,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
 
                           if (filter != null) {
                             courseFilter = filter;
-                            lessonBloc.add(FetchLessonWithFilter(
+                            lessonBloc.add(FetchCourseCoachWithFilter(
                                 courseFilter:
                                     courseFilter.copyWith(query: query)));
                           }

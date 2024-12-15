@@ -17,19 +17,19 @@ class CourseListItem extends StatelessWidget {
     String lessonName = courseModel?.lesson?.name ?? courseModel?.lessonName??'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
-    String teacherName = 'Eğitmen bilgisi bulunamadı';
+    String teacherName = courseModel?.teacherFormatted??'';
 
     String dateString = courseModel?.startDate != null
         ? courseModel!.startDate!
-        : 'Tarih bilgisi yok';
+        : '-';
 
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
-        : 'Saat bilgisi yok';
+        : '-';
 
     String endTime = courseModel?.endDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
-        : 'Saat bilgisi yok';
+        : '-';
 
     String price = '${courseModel?.price ?? 0} ₺';
 
@@ -69,6 +69,7 @@ class CourseListItem extends StatelessWidget {
                         style: styleBlack12Bold,
                       ),
                     ),
+                    teacherName.isEmpty?const SizedBox():
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(

@@ -144,7 +144,7 @@ class CourseBundle extends BaseCourse {
       endDate: endDate,
       price: price,
       quota: quota,
-      schoolName: schoolName,
+      schoolName: schoolName ?? school?.name,
       school: school,
       topics: topics,
       lessonName: lessonName,

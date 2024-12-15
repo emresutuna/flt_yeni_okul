@@ -40,12 +40,32 @@ class LessonBloc extends Bloc<LessonEvent, LessonState> {
       }
     });
 
-    on<FetchCourseCoachDetail>((event, emit) async {
+    on<FetchCourseCoachWithFilter>((event, emit) async {
       emit(LessonStateLoading());
       try {
         final result =
-        await lectureRepository.getCourseCoachDetail(event.id);
+            await lectureRepository.getCourseCoachByFilter(event.courseFilter);
+        emit(CourseCoachSuccess(result.data!));
+      } catch (e) {
+        emit(LessonStateError('Sonuç Bulunamadı'));
+      }
+    });
+
+    on<FetchCourseCoachDetail>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result = await lectureRepository.getCourseCoachDetail(event.id);
         emit(CourseCoachDetailSuccess(result.data!));
+      } catch (e) {
+        emit(LessonStateError('Sonuç Bulunamadı'));
+      }
+    });
+
+    on<FetchCourseBundle>((event, emit) async {
+      emit(LessonStateLoading());
+      try {
+        final result = await lectureRepository.getCourseBundle();
+        emit(CourseBundleSuccess(result.data!));
       } catch (e) {
         emit(LessonStateError('Sonuç Bulunamadı'));
       }

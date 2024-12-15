@@ -1,4 +1,5 @@
 import 'package:baykurs/repository/paymentReposityory.dart';
+import 'package:baykurs/ui/courseBundle/CourseBundle.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
@@ -72,6 +73,11 @@ class AppRoutes {
               child: const CourseListPage(
                 hasShowBackButton: true,
               ),
+            ),
+        '/courseBundleList': (context) => BlocProvider(
+              create: (context) =>
+                  LessonBloc(lectureRepository: LectureRepository()),
+              child: const CourseBundleListPage(),
             ),
         '/courseDetail': (context) => BlocProvider(
               create: (context) =>

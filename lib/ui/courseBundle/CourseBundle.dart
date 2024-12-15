@@ -15,17 +15,14 @@ import '../course/bloc/LessonEvent.dart';
 import '../course/bloc/LessonState.dart';
 import '../course/model/CourseFilter.dart';
 
-
-class CourseListPage extends StatefulWidget {
-  final bool hasShowBackButton;
-
-  const CourseListPage({super.key, required this.hasShowBackButton});
+class CourseBundleListPage extends StatefulWidget {
+  const CourseBundleListPage({super.key});
 
   @override
-  State<CourseListPage> createState() => _CourseListPageState();
+  State<CourseBundleListPage> createState() => _CourseListPageState();
 }
 
-class _CourseListPageState extends State<CourseListPage> {
+class _CourseListPageState extends State<CourseBundleListPage> {
   late List<CourseBundle> courseList;
 
   CourseFilter courseFilter = CourseFilter();
@@ -76,7 +73,7 @@ class _CourseListPageState extends State<CourseListPage> {
                   child: InfoCardWidget(
                       title: "Dersler",
                       description:
-                      "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin."),
+                          "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin."),
                 ),
                 Row(
                   children: [
@@ -104,7 +101,7 @@ class _CourseListPageState extends State<CourseListPage> {
                             courseFilter = filter;
                             lessonBloc.add(FetchLessonWithFilter(
                                 courseFilter:
-                                courseFilter.copyWith(query: query)));
+                                    courseFilter.copyWith(query: query)));
                           }
                         },
                         child: Container(
@@ -137,24 +134,23 @@ class _CourseListPageState extends State<CourseListPage> {
                           children: [
                             Expanded(
                                 child: ListView.builder(
-                                  padding: EdgeInsets.zero,
-                                  itemCount: courseList.length,
-                                  itemBuilder: (BuildContext context,
-                                      int index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, '/courseDetail',
-                                            arguments: courseList[index].id);
-                                      },
-                                      child: CourseListItem(
-                                        courseModel: courseList[index]
-                                            .toCourseList(),
-                                        colors: HexColor("#4A90E2"),
-                                      ),
-                                    );
+                              padding: EdgeInsets.zero,
+                              itemCount: courseList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, '/courseDetail',
+                                        arguments: courseList[index].id);
                                   },
-                                )),
+                                  child: CourseListItem(
+                                    courseModel:
+                                        courseList[index].toCourseList(),
+                                    colors: HexColor("#4A90E2"),
+                                  ),
+                                );
+                              },
+                            )),
                           ],
                         );
                       } else if (state is LessonStateError) {
@@ -195,10 +191,7 @@ class SkeletonLoading extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height / 4.8,
+        height: MediaQuery.of(context).size.height / 4.8,
         decoration: BoxDecoration(
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(10),
@@ -213,10 +206,7 @@ class SkeletonLoading extends StatelessWidget {
                   baseColor: Colors.grey[300]!,
                   highlightColor: Colors.grey[100]!,
                   child: Container(
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 2,
+                    width: MediaQuery.of(context).size.width / 2,
                     height: 20,
                     color: Colors.grey[400],
                   ),
@@ -224,7 +214,7 @@ class SkeletonLoading extends StatelessWidget {
               ),
             Padding(
               padding:
-              const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
+                  const EdgeInsets.only(bottom: 8.0, left: 16.0, right: 16.0),
               child: Shimmer.fromColors(
                 baseColor: Colors.grey[300]!,
                 highlightColor: Colors.grey[100]!,

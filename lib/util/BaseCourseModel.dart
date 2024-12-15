@@ -59,9 +59,10 @@ class BaseCourse {
     if (teacher != null) {
       teacherFormatted = teacher.user.name; // Teacher nesnesindeki isim
     } else if (teacherName != null && teacherSurname != null) {
-      teacherFormatted = "$teacherName $teacherSurname"; // teacher_name ve teacher_surname birleştirilir
+      teacherFormatted =
+          "$teacherName $teacherSurname"; // teacher_name ve teacher_surname birleştirilir
     } else {
-      teacherFormatted = "Öğretmen bilgisi bulunamadı"; // Varsayılan değer
+      teacherFormatted = ""; // Varsayılan değer
     }
   }
 
@@ -74,21 +75,28 @@ class BaseCourse {
     price = json['price'];
     quota = json['quota'];
 
-    // School işlemleri
-    schoolName = json['school'] is String ? json['school'] : null;
     school = json['school'] != null && json['school'] is Map<String, dynamic>
         ? School.fromJson(json['school'])
         : null;
-
-    // Lesson işlemleri
-    lessonName = json['lesson'] is String ? json['lesson'] : null;
+    schoolName = json['school_name'] is String
+        ? json['school_name']
+        : json['school'] is String
+            ? json['school']
+            : null;
+    lessonName = json['lesson_name'] is String
+        ? json['lesson_name']
+        : json['lesson'] is String
+            ? json['lesson']
+            : null;
     lesson = json['lesson'] != null && json['lesson'] is Map<String, dynamic>
         ? Lesson.fromJson(json['lesson'])
         : null;
 
     // Topics işlemleri
     if (json['topics'] is List) {
-      topics = (json['topics'] as List).map((topic) => Topics.fromJson(topic)).toList();
+      topics = (json['topics'] as List)
+          .map((topic) => Topics.fromJson(topic))
+          .toList();
     }
 
     // Tarihlerin formatlanması
@@ -109,7 +117,8 @@ class BaseCourse {
     }
 
     // teacherFormatted alanını ayarla
-    Teacher? teacher = json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
+    Teacher? teacher =
+        json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
     String? teacherName = json['teacher_name'];
     String? teacherSurname = json['teacher_surname'];
 
@@ -142,7 +151,6 @@ class BaseCourse {
   }
 }
 
-
 class Topics {
   int? id;
   String? name;
@@ -161,6 +169,7 @@ class Topics {
     return data;
   }
 }
+
 class School {
   int? id;
   String? name;
@@ -172,12 +181,12 @@ class School {
 
   School(
       {this.id,
-        this.name,
-        this.address,
-        this.latitude,
-        this.longitude,
-        this.cityName,
-        this.provinceName});
+      this.name,
+      this.address,
+      this.latitude,
+      this.longitude,
+      this.cityName,
+      this.provinceName});
 
   School.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -225,6 +234,7 @@ class Lesson {
     };
   }
 }
+
 class Teacher {
   final int id;
   final int userId;
@@ -269,6 +279,7 @@ class User {
     };
   }
 }
+
 class Links {
   String? url;
   String? label;
