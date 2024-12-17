@@ -20,11 +20,6 @@ class CourseCoachSuccess extends LessonState {
   CourseCoachSuccess(this.courseCoachResponse);
 }
 
-class CourseCoachDetailSuccess extends LessonState {
-  final CourseCoachDetailResponse courseCoachResponse;
-
-  CourseCoachDetailSuccess(this.courseCoachResponse);
-}
 
 class CourseBundleSuccess extends LessonState {
   final CourseBundleResponse courseBundleResponse;

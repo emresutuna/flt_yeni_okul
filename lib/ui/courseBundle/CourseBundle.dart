@@ -141,7 +141,7 @@ class _CourseListPageState extends State<CourseBundleListPage> {
                                 return InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
-                                        context, '/courseDetail',
+                                        context, '/courseBundleDetail',
                                         arguments: courseList[index].id);
                                   },
                                   child: CourseListItem(

@@ -55,7 +55,7 @@ class _CourseListPageState extends State<CourseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Dersler"),
+      appBar: WhiteAppBar("Dersler",canGoBack: widget.hasShowBackButton),
       body: SafeArea(
         child: Stack(
           children: [

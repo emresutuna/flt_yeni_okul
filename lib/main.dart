@@ -8,6 +8,7 @@ import 'package:baykurs/ui/course/bloc/LessonBloc.dart';
 import 'package:baykurs/ui/course/bloc/LessonEvent.dart';
 import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
+import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
@@ -60,6 +61,9 @@ void main() async {
         ),
         BlocProvider(
           create: (context) => DashboardBloc(userRepository: UserRepository()),
+        ),
+        BlocProvider(
+          create: (context) => FilterBloc(lectureRepository: LectureRepository()),
         ),
         // Add other BlocProviders as needed
       ],

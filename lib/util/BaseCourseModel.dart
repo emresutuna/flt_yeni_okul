@@ -1,26 +1,36 @@
 import 'DateExtension.dart';
 
-import 'DateExtension.dart';
 
 class BaseCourse {
   int? id;
   String? title;
   String? description;
-  String? startDate; // Orijinal başlangıç tarihi (String olarak tutulur)
-  String? endDate; // Orijinal bitiş tarihi (String olarak tutulur)
+  String? startDate;
+  String? endDate;
   int? price;
   int? quota;
-  String? schoolName; // School'un adı
-  School? school; // School nesnesi
-  String? lessonName; // Lesson'un adı
-  Lesson? lesson; // Lesson nesnesi
+  String? schoolName;
+  String? classroom;
+  School? school;
+  String? lessonName;
+  Lesson? lesson;
   List<Topics>? topics;
-  String? formattedStartDate;
-  String? formattedEndDate;
-  String? formattedDateRange;
-
-  // Yeni eklenen alan
   String? teacherFormatted;
+
+  /// Lazy-loaded formatted start date
+  String? get formattedStartDate =>
+      startDate != null ? formatStartDate(DateTime.parse(startDate!)) : null;
+
+  /// Lazy-loaded formatted end date
+  String? get formattedEndDate =>
+      endDate != null ? formatEndDate(DateTime.parse(endDate!)) : null;
+
+  /// Lazy-loaded formatted date range
+  String? get formattedDateRange =>
+      startDate != null && endDate != null
+          ? formatDateRange(
+          DateTime.parse(startDate!), DateTime.parse(endDate!))
+          : null;
 
   BaseCourse({
     this.id,
@@ -31,38 +41,21 @@ class BaseCourse {
     this.price,
     this.quota,
     this.schoolName,
+    this.classroom,
     this.school,
     this.lessonName,
     this.lesson,
     this.topics,
-    Teacher? teacher, // Teacher nesnesi eklendi
-    String? teacherName, // teacher_name eklendi
-    String? teacherSurname, // teacher_surname eklendi
+    String? teacherName,
+    String? teacherSurname,
+    Teacher? teacher,
   }) {
-    if (startDate != null) {
-      DateTime parsedStartDate = DateTime.parse(startDate!);
-      formattedStartDate = formatStartDate(parsedStartDate);
-    }
-
-    if (endDate != null) {
-      DateTime parsedEndDate = DateTime.parse(endDate!);
-      formattedEndDate = formatEndDate(parsedEndDate);
-    }
-
-    if (startDate != null && endDate != null) {
-      DateTime parsedStartDate = DateTime.parse(startDate!);
-      DateTime parsedEndDate = DateTime.parse(endDate!);
-      formattedDateRange = formatDateRange(parsedStartDate, parsedEndDate);
-    }
-
-    // teacherFormatted alanını ayarla
     if (teacher != null) {
-      teacherFormatted = teacher.user.name; // Teacher nesnesindeki isim
+      teacherFormatted = teacher.user.name;
     } else if (teacherName != null && teacherSurname != null) {
-      teacherFormatted =
-          "$teacherName $teacherSurname"; // teacher_name ve teacher_surname birleştirilir
+      teacherFormatted = "$teacherName $teacherSurname";
     } else {
-      teacherFormatted = ""; // Varsayılan değer
+      teacherFormatted = "Öğretmen bilgisi mevcut değil";
     }
   }
 
@@ -74,81 +67,59 @@ class BaseCourse {
     endDate = json['end_date'];
     price = json['price'];
     quota = json['quota'];
+    classroom = json['classroom'];
 
-    school = json['school'] != null && json['school'] is Map<String, dynamic>
-        ? School.fromJson(json['school'])
-        : null;
-    schoolName = json['school_name'] is String
-        ? json['school_name']
-        : json['school'] is String
-            ? json['school']
-            : null;
-    lessonName = json['lesson_name'] is String
-        ? json['lesson_name']
-        : json['lesson'] is String
-            ? json['lesson']
-            : null;
-    lesson = json['lesson'] != null && json['lesson'] is Map<String, dynamic>
-        ? Lesson.fromJson(json['lesson'])
-        : null;
+    // School kontrolü
+    if (json['school'] != null) {
+      if (json['school'] is Map<String, dynamic>) {
+        school = School.fromJson(json['school']);
+      } else if (json['school'] is String) {
+        schoolName = json['school'];
+      }
+    }
 
-    // Topics işlemleri
-    if (json['topics'] is List) {
+    // Lesson kontrolü
+    if (json['lesson'] != null) {
+      if (json['lesson'] is Map<String, dynamic>) {
+        lesson = Lesson.fromJson(json['lesson']);
+      } else if (json['lesson'] is String) {
+        lessonName = json['lesson'];
+      }
+    }
+
+    // Topics kontrolü
+    if (json['topics'] != null && json['topics'] is List) {
       topics = (json['topics'] as List)
+          .where((topic) => topic is Map<String, dynamic>) // Ekstra kontrol
           .map((topic) => Topics.fromJson(topic))
           .toList();
     }
 
-    // Tarihlerin formatlanması
-    if (startDate != null) {
-      DateTime parsedStartDate = DateTime.parse(startDate!);
-      formattedStartDate = formatStartDate(parsedStartDate);
-    }
-
-    if (endDate != null) {
-      DateTime parsedEndDate = DateTime.parse(endDate!);
-      formattedEndDate = formatEndDate(parsedEndDate);
-    }
-
-    if (startDate != null && endDate != null) {
-      DateTime parsedStartDate = DateTime.parse(startDate!);
-      DateTime parsedEndDate = DateTime.parse(endDate!);
-      formattedDateRange = formatDateRange(parsedStartDate, parsedEndDate);
-    }
-
-    // teacherFormatted alanını ayarla
-    Teacher? teacher =
-        json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
-    String? teacherName = json['teacher_name'];
-    String? teacherSurname = json['teacher_surname'];
-
-    if (teacher != null) {
+    // Teacher kontrolü
+    if (json['teacher'] != null && json['teacher'] is Map<String, dynamic>) {
+      Teacher teacher = Teacher.fromJson(json['teacher']);
       teacherFormatted = teacher.user.name;
-    } else if (teacherName != null && teacherSurname != null) {
-      teacherFormatted = "$teacherName $teacherSurname";
+    } else if (json['teacher_name'] != null && json['teacher_surname'] != null) {
+      teacherFormatted = "${json['teacher_name']} ${json['teacher_surname']}";
     } else {
-      teacherFormatted = "Öğretmen bilgisi bulunamadı";
+      teacherFormatted = "Öğretmen bilgisi mevcut değil";
     }
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'start_date': startDate,
-      'end_date': endDate,
-      'price': price,
-      'quota': quota,
-      'school': school?.toJson() ?? schoolName,
-      'lesson': lesson?.toJson() ?? lessonName,
-      'topics': topics?.map((topic) => topic.toJson()).toList(),
-      'formatted_start_date': formattedStartDate,
-      'formatted_end_date': formattedEndDate,
-      'formatted_date_range': formattedDateRange,
-      'teacher_formatted': teacherFormatted, // Yeni eklenen alan
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'description': description,
+    'start_date': startDate,
+    'end_date': endDate,
+    'price': price,
+    'quota': quota,
+    'classroom': classroom,
+    'school': school?.toJson() ?? schoolName,
+    'lesson': lesson?.toJson() ?? lessonName,
+    'topics': topics?.map((topic) => topic.toJson()).toList(),
+    'teacher_formatted': teacherFormatted,
+  };
 }
 
 class Topics {

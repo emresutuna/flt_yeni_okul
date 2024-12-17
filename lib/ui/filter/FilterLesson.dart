@@ -2,10 +2,13 @@ import 'package:baykurs/ui/course/model/CourseFilter.dart';
 import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/filter/FilterProvince.dart';
 import 'package:baykurs/ui/filter/FilterRegion.dart';
+import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
+import 'package:baykurs/ui/filter/bloc/FilterEvent.dart';
+import 'package:baykurs/ui/filter/bloc/FilterState.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/LessonExtension.dart';
 import '../requestlesson/Region.dart';
 import 'FilterTopic.dart';
@@ -30,17 +33,21 @@ class _FilterLessonState extends State<FilterLesson> {
   Province? selectedProvince;
   late CourseFilter courseFilter;
   late CourseTypeEnum courseType;
+  bool isLoading = false;
 
   List<bool> isSelected = [];
   bool hasSelectableTopic = false;
-  RangeValues _currentRange = const RangeValues(0, 900);
+  late RangeValues _currentRange;
+  double maxPriceData = 0.0;
 
   @override
   void initState() {
     super.initState();
     courseFilter = widget.courseFilter;
     courseType = widget.courseTypeEnum;
+    _currentRange = const RangeValues(0, 100.0);
     initializeFields();
+    context.read<FilterBloc>().add(FetchMaxPrice(courseTypeEnum: courseType));
   }
 
   void initializeFields() {
@@ -105,72 +112,96 @@ class _FilterLessonState extends State<FilterLesson> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          "Herhangi birini seçerek kullanıcı bilgilerini güncelleyebilirsiniz"),
-                      16.toHeight,
-                      Text("Fiyat", style: styleBlack18Bold),
-                      16.toHeight,
-                      priceRangeSlider(
-                        ctx: context,
-                        minValue: 0,
-                        maxValue: 900,
-                        currentRange: _currentRange,
-                        onChanged: (newRange) {
-                          setState(() {
-                            _currentRange = newRange;
-                            courseFilter = courseFilter.copyWith(
-                              minPrice: _currentRange.start.toInt(),
-                              maxPrice: _currentRange.end.toInt(),
-                            );
-                          });
-                        },
-                        leftLabel: "Min: ${_currentRange.start.toInt()} TL",
-                        rightLabel: "Max: ${_currentRange.end.toInt()} TL",
-                        activeColor: color5,
-                        inactiveColor: Colors.grey[300]!,
+      body: BlocBuilder<FilterBloc, FilterState>(builder: (context, state) {
+        if (state is FilterStateLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is FilterStateSuccess) {
+          final maxPriceData =
+              double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
+          if (_currentRange.start == 0.0 && _currentRange.end == 100.0) {
+            _currentRange = RangeValues(0.0, maxPriceData);
+          }
+          return Stack(
+            children: [
+              Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                                "Herhangi birini seçerek kullanıcı bilgilerini güncelleyebilirsiniz"),
+                            16.toHeight,
+                            Text("Fiyat", style: styleBlack18Bold),
+                            16.toHeight,
+                            priceRangeSlider(
+                              ctx: context,
+                              minValue: 0.0,
+                              maxValue: maxPriceData,
+                              currentRange: _currentRange,
+                              onChanged: (newRange) {
+                                setState(() {
+                                  _currentRange = newRange; // Değeri güncelle
+                                });
+                              },
+                              leftLabel:
+                                  "Min: ${_currentRange.start.toInt()} TL",
+                              rightLabel:
+                                  "Max: ${_currentRange.end.toInt()} TL",
+                              activeColor: Colors.orange,
+                              inactiveColor: Colors.grey[300]!,
+                            ),
+                            16.toHeight,
+                            Text("İl", style: styleBlack16Bold),
+                            16.toHeight,
+                            _buildTextField(
+                                "İl Seç", ilController, context, true),
+                            16.toHeight,
+                            Text("İlçe", style: styleBlack16Bold),
+                            16.toHeight,
+                            _buildTextField(
+                                "İlçe Seç", ilceController, context, false),
+                            16.toHeight,
+                            if (courseType == CourseTypeEnum.COURSE ||
+                                courseType == CourseTypeEnum.COURSE_BUNDLE) ...[
+                              Text("Branş", style: styleBlack18Bold),
+                              16.toHeight,
+                              _buildBranches(),
+                              16.toHeight,
+                            ],
+                            if (courseType == CourseTypeEnum.COURSE) ...[
+                              Text("Konu", style: styleBlack18Bold),
+                              16.toHeight,
+                              _buildTopicSelector(),
+                            ]
+                          ],
+                        ),
                       ),
-                      16.toHeight,
-                      Text("İl", style: styleBlack16Bold),
-                      16.toHeight,
-                      _buildTextField("İl Seç", ilController, context, true),
-                      16.toHeight,
-                      Text("İlçe", style: styleBlack16Bold),
-                      16.toHeight,
-                      _buildTextField(
-                          "İlçe Seç", ilceController, context, false),
-                      16.toHeight,
-                      if (courseType == CourseTypeEnum.COURSE ||
-                          courseType == CourseTypeEnum.COURSE_BUNDLE) ...[
-                        Text("Branş", style: styleBlack18Bold),
-                        16.toHeight,
-                        _buildBranches(),
-                        16.toHeight,
-                      ],
-                      if (courseType == CourseTypeEnum.COURSE) ...[
-                        Text("Konu", style: styleBlack18Bold),
-                        16.toHeight,
-                        _buildTopicSelector(),
-                      ]
-                    ],
+                    ),
                   ),
-                ),
+                  _buildFilterButton(),
+                ],
               ),
-            ),
-            _buildFilterButton(),
-          ],
-        ),
-      ),
+            ],
+          );
+        } else {
+          return SizedBox();
+        }
+      }),
     );
+  }
+
+  void updateRange(RangeValues newRange) {
+    setState(() {
+      _currentRange = newRange; // State'i güncelle
+      courseFilter = courseFilter.copyWith(
+        minPrice: newRange.start.toInt(),
+        maxPrice: newRange.end.toInt(),
+      );
+    });
   }
 
   Widget _buildTopicSelector() {
@@ -350,16 +381,57 @@ class _FilterLessonState extends State<FilterLesson> {
   }
 }
 
-Widget priceRangeSlider(
-    {required double minValue,
-    required double maxValue,
-    required RangeValues currentRange,
-    required ValueChanged<RangeValues> onChanged,
-    String? leftLabel,
-    String? rightLabel,
-    Color activeColor = Colors.orange,
-    Color inactiveColor = Colors.grey,
-    required BuildContext ctx}) {
+Widget priceRangeSlider2({
+  required BuildContext ctx,
+  required double minValue,
+  required double maxValue,
+  required RangeValues currentRange,
+  required ValueChanged<RangeValues> onChanged,
+}) {
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Min: ${currentRange.start.toInt()} TL",
+              style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+          Text("Max: ${currentRange.end.toInt()} TL",
+              style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+        ],
+      ),
+      SliderTheme(
+        data: SliderTheme.of(ctx).copyWith(
+          trackHeight: 2,
+          activeTrackColor: Colors.blueAccent,
+          inactiveTrackColor: Colors.grey[300],
+          thumbColor: Colors.blueAccent,
+          overlayColor: Colors.blueAccent.withOpacity(0.3),
+          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
+          rangeThumbShape:
+              const RoundRangeSliderThumbShape(enabledThumbRadius: 10),
+        ),
+        child: RangeSlider(
+          values: currentRange,
+          min: minValue,
+          max: maxValue,
+          onChanged: onChanged, // Güncellemeyi burada sağlıyoruz
+        ),
+      ),
+    ],
+  );
+}
+
+Widget priceRangeSlider({
+  required double minValue,
+  required double maxValue,
+  required RangeValues currentRange,
+  required ValueChanged<RangeValues> onChanged,
+  String? leftLabel,
+  String? rightLabel,
+  Color activeColor = Colors.orange,
+  Color inactiveColor = Colors.grey,
+  required BuildContext ctx,
+}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
     decoration: BoxDecoration(
@@ -381,20 +453,19 @@ Widget priceRangeSlider(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(leftLabel ?? "${currentRange.start.toInt()} TL",
-                style: styleBlack14Regular.copyWith(color: Colors.grey[600])),
+                style: TextStyle(color: Colors.grey[600], fontSize: 14)),
             Text(rightLabel ?? "${currentRange.end.toInt()} TL",
-                style: styleBlack14Regular.copyWith(color: Colors.grey[600])),
+                style: TextStyle(color: Colors.grey[600], fontSize: 14)),
           ],
         ),
         SliderTheme(
           data: SliderTheme.of(ctx).copyWith(
             trackHeight: 2,
-            activeTrackColor: color5.withOpacity(0.9),
-            inactiveTrackColor: Colors.grey[300],
-            thumbColor: color5,
-            overlayColor: color5.withOpacity(0.7),
-            thumbShape: const RoundSliderThumbShape(
-                enabledThumbRadius: 10.0, elevation: 2.0),
+            activeTrackColor: activeColor.withOpacity(0.9),
+            inactiveTrackColor: inactiveColor,
+            thumbColor: activeColor,
+            overlayColor: activeColor.withOpacity(0.7),
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10.0),
             rangeThumbShape:
                 const RoundRangeSliderThumbShape(enabledThumbRadius: 10.0),
           ),
@@ -402,8 +473,9 @@ Widget priceRangeSlider(
             values: currentRange,
             min: minValue,
             max: maxValue,
-            divisions: (maxValue - minValue).toInt(),
-            onChanged: onChanged,
+            onChanged: (RangeValues newRange) {
+              onChanged(newRange);
+            },
           ),
         ),
       ],

@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:baykurs/ui/course/model/CourseFilter.dart';
+import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
+import 'package:baykurs/ui/filter/model/PriceModel.dart';
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';
 
@@ -9,6 +11,7 @@ import '../service/APIService.dart';
 import '../service/ResultResponse.dart';
 import '../service/apiUrls.dart';
 import '../ui/course/model/CourseModel.dart';
+import '../ui/courseBundleDetail/model/CourseBundleDetailResponse.dart';
 import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
 
 class LectureRepository {
@@ -200,6 +203,48 @@ class LectureRepository {
             CourseDetailResponse.fromJson(body);
 
         return ResultResponse.success(courseResponseModel);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<CourseBundleDetailResponse>> getCourseBundleById(
+      int courseId) async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.getCourseBundleById(courseId), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        CourseBundleDetailResponse courseResponseModel =
+        CourseBundleDetailResponse.fromJson(body);
+
+        return ResultResponse.success(courseResponseModel);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<PriceModel>> getMaxPrice(
+      CourseTypeEnum courseType) async {
+    try {
+      final response = await APIService.instance
+          .request(UrlHelper.getMaxPriceUrl(courseType), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        PriceModel priceModel =
+        PriceModel.fromJson(body);
+
+        return ResultResponse.success(priceModel);
       } else {
         return ResultResponse.failure(
             'API call failed with status code ${response.statusCode}');

@@ -1,5 +1,8 @@
-import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailMapper.dart';
-import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachUiModel.dart';
+import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
+import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
+import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
+import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/BaseCourseModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,10 +10,6 @@ import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/InfoWidget.dart';
 import '../../widgets/WhiteAppBar.dart';
-import '../course/bloc/LessonBloc.dart';
-import '../course/bloc/LessonEvent.dart';
-import '../course/bloc/LessonState.dart';
-import 'model/CourseCoachDetailResponse.dart';
 
 class TeacherCoachDetail extends StatefulWidget {
   const TeacherCoachDetail({super.key});
@@ -20,8 +19,11 @@ class TeacherCoachDetail extends StatefulWidget {
 }
 
 class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
-  late CourseCoachDetailUiModel courseDetail;
+  late List<BaseCourse> courseDetail;
   late int courseId;
+  List<String> dates = [];
+  String selectedDate = "";
+  String? selectedTime;
 
   @override
   void initState() {
@@ -29,9 +31,37 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context) != null) {
         courseId = ModalRoute.of(context)!.settings.arguments as int;
-        context.read<LessonBloc>().add(FetchCourseCoachDetail(id: courseId));
+        context
+            .read<CourseDetailBloc>()
+            .add(FetchCourseCoachById(id: courseId));
       }
     });
+  }
+
+  void extractDates() {
+    dates = courseDetail
+        .map((course) => course.startDate?.split("T")[0] ?? "")
+        .toSet()
+        .toList();
+    if (selectedDate.isEmpty && dates.isNotEmpty) {
+      selectedDate = dates.first; // Varsayılan olarak ilk tarihi seç
+    }
+  }
+
+  // Seçili tarihe ait dersleri getir
+  List<BaseCourse> getLessonsForSelectedDate() {
+    return courseDetail
+        .where((course) => (course.startDate ?? "").startsWith(selectedDate))
+        .toList();
+  }
+
+  // Seçili tarihe ait saatleri getir
+  List<String> getTimesForSelectedDate() {
+    return getLessonsForSelectedDate().map((course) {
+      final startTime = course.startDate?.split('T')[1].substring(0, 5) ?? "";
+      final endTime = course.endDate?.split('T')[1].substring(0, 5) ?? "";
+      return "$startTime - $endTime";
+    }).toList();
   }
 
   @override
@@ -39,11 +69,13 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WhiteAppBar("Eğitim Koçu Detay"),
-      body: BlocBuilder<LessonBloc, LessonState>(builder: (context, state) {
-        if (state is LessonStateLoading) {
+      body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
+          builder: (context, state) {
+        if (state is CourseDetailStateLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CourseCoachDetailSuccess) {
-          courseDetail = mapToUiModel(state.courseCoachResponse.data!);
+          courseDetail = state.courseCoachResponse.data!;
+          extractDates();
           return SafeArea(
             child: Stack(
               children: [
@@ -85,7 +117,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text(courseDetail.title,
+                                    child: Text(courseDetail.first.title ?? "",
                                         style: styleBlack14Bold),
                                   ),
                                 ],
@@ -94,11 +126,11 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                               Row(
                                 children: [
                                   Text(
-                                    courseDetail.course.formattedStartDate,
+                                    "",
                                     style: styleBlack12Regular,
                                   ),
                                   const Spacer(),
-                                  Text("${courseDetail.price} ₺",
+                                  Text("${courseDetail.first.price} ₺",
                                       style: styleBlack16Bold.copyWith(
                                           color: greenButton)),
                                 ],
@@ -109,14 +141,10 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 children: [
                                   const Icon(Icons.room,
                                       size: 16, color: Colors.grey),
-                                  Text(courseDetail.course.classroom,
+                                  Text(courseDetail.first.classroom ?? "",
                                       style: styleBlack12Regular),
                                 ],
                               ),
-                              const SizedBox(height: 4),
-                              Text("Kontenjan: ${courseDetail.course.quota}",
-                                  style: styleBlack12Regular),
-
                               const SizedBox(height: 8),
                               // Lesson Badge and Description
                               Row(
@@ -129,7 +157,9 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
-                                      courseDetail.course.lesson,
+                                      courseDetail.first.lesson?.name ??
+                                          courseDetail.first.lessonName ??
+                                          "Ders bulunamadı",
                                       style: styleWhite12Bold,
                                     ),
                                   ),
@@ -141,6 +171,84 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 color: Colors.black38.withAlpha(40),
                               ),
                               const SizedBox(height: 8),
+
+                              Text("Tarih Seçin:", style: styleBlack14Bold),
+                              SizedBox(
+                                height: 60,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: dates.length,
+                                  itemBuilder: (context, index) {
+                                    final isSelected =
+                                        selectedDate == dates[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedDate = dates[index];
+                                          selectedTime = null;
+                                        });
+                                      },
+                                      child: AnimatedContainer(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        margin: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0, vertical: 8.0),
+                                        decoration: BoxDecoration(
+                                          color: isSelected
+                                              ? color5
+                                              : Colors.grey.shade300,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        child: Center(
+                                          child: Text(dates[index],
+                                              style: styleBlack12Bold.copyWith(
+                                                color: isSelected
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              )),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              8.toHeight,
+                              Divider(
+                                height: 1,
+                                color: Colors.black38.withAlpha(40),
+                              ),
+                              8.toHeight,
+                              // Saat Seçici
+                              Text("Saat Seçin:", style: styleBlack14Bold),
+                              Wrap(
+                                spacing: 10,
+                                children: getTimesForSelectedDate().map((time) {
+                                  final isSelected = selectedTime == time;
+                                  return ChoiceChip(
+                                    label: Text(time,
+                                        style: styleBlack12Bold.copyWith(
+                                          color: isSelected
+                                              ? Colors.white
+                                              : Colors.black,
+                                        )),
+                                    selected: isSelected,
+                                    selectedColor: Colors.green,
+                                    onSelected: (bool selected) {
+                                      setState(() {
+                                        selectedTime = time;
+                                      });
+                                    },
+                                  );
+                                }).toList(),
+                              ),
+                              8.toHeight,
+                              Divider(
+                                height: 1,
+                                color: Colors.black38.withAlpha(40),
+                              ),
+                              8.toHeight,
                               Text(
                                 'Ders Açıklaması',
                                 style: styleBlack14Bold,
@@ -148,7 +256,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                               const SizedBox(height: 8),
 
                               Text(
-                                courseDetail.description,
+                                courseDetail.first.title ?? "",
                                 style: styleBlack12Regular,
                               ),
                               const SizedBox(height: 12),
@@ -164,9 +272,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                               ),
                               const SizedBox(height: 8),
 
-                              Text(
-                                  courseDetail.course.teacherName +
-                                      courseDetail.course.teacherSurname,
+                              Text(courseDetail.first.teacherFormatted ?? "",
                                   style: styleBlack12Regular),
                               const SizedBox(height: 8),
                               Divider(
@@ -180,9 +286,9 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                               ),
                               const SizedBox(height: 8),
 
-                              Text(courseDetail.course.school.name,
+                              Text(courseDetail.first.school?.name ?? "",
                                   style: styleBlack12Bold),
-                              Text('Fatih Mahallesi No:20 Fatih/İstanbul',
+                              Text(courseDetail.first.school?.address ?? "",
                                   style: styleBlack12Regular),
                               const SizedBox(height: 16),
                               // Placeholder for the map image
@@ -236,7 +342,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
               ],
             ),
           );
-        } else if (state is LessonStateError) {
+        } else if (state is CourseDetailStateError) {
           return Center(child: Text('Error: ${state.error}'));
         } else {
           return SizedBox();

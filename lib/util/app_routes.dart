@@ -1,5 +1,6 @@
 import 'package:baykurs/repository/paymentReposityory.dart';
 import 'package:baykurs/ui/courseBundle/CourseBundle.dart';
+import 'package:baykurs/ui/courseBundleDetail/CourseBundleDetail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
@@ -15,6 +16,7 @@ import 'package:baykurs/ui/teacherCoachDetail/TeacherCoachDetail.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../main.dart';
 import '../repository/SchoolRepository.dart';
 import '../repository/lectureRepository.dart';
@@ -83,6 +85,11 @@ class AppRoutes {
               create: (context) =>
                   CourseDetailBloc(lectureRepository: LectureRepository()),
               child: const CourseDetailPage(),
+            ),
+        '/courseBundleDetail': (context) => BlocProvider(
+              create: (context) =>
+                  CourseDetailBloc(lectureRepository: LectureRepository()),
+              child: const CourseBundleDetailPage(),
             ),
         '/teacherCoachDetail': (context) => BlocProvider(
               create: (context) =>

@@ -23,6 +23,10 @@ class CourseBundleResponse {
 }
 
 class CourseBundleData {
+  int? id;
+  String? title;
+  String? description;
+  double? price;
   int? currentPage;
   List<CourseBundle>? data;
   String? firstPageUrl;
@@ -38,6 +42,10 @@ class CourseBundleData {
   int? total;
 
   CourseBundleData({
+    this.id,
+    this.title,
+    this.description,
+    this.price,
     this.currentPage,
     this.data,
     this.firstPageUrl,
@@ -53,7 +61,12 @@ class CourseBundleData {
     this.total,
   });
 
+  // JSON'dan veri oluşturma
   CourseBundleData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    description = json['description'];
+    price = json['price'] != null ? json['price'].toDouble() : null;
     currentPage = json['current_page'];
     if (json['data'] != null) {
       data = <CourseBundle>[];
@@ -79,8 +92,13 @@ class CourseBundleData {
     total = json['total'];
   }
 
+  // JSON'a veri dönüştürme
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['description'] = description;
+    data['price'] = price;
     data['current_page'] = currentPage;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -101,6 +119,7 @@ class CourseBundleData {
     return data;
   }
 }
+
 
 class CourseBundle extends BaseCourse {
   CourseBundle({

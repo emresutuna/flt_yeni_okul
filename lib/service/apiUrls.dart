@@ -1,3 +1,5 @@
+import '../ui/course/model/CourseTypeEnum.dart';
+
 class ApiUrls {
   static const String loginUrl = "/login";
   static const String register = "/register";
@@ -23,6 +25,7 @@ class ApiUrls {
 
   static String courseCoachDetail(int id) => "/mobile/courseCoach/$id";
   static String getCoursesById(int id) => "/mobile/course/$id";
+  static String getCourseBundleById(int id) => "/mobile/courseBundle/$id";
   static const String getFavorites = "/mobile/favorites";
   static const String getHomePage = "/mobile/homepage";
   static const String getHomePageWithLogin = "/mobile/homepage";
@@ -46,4 +49,20 @@ class ApiUrls {
   static String toggleFavorite(int id) => "/mobile/favorites/$id";
 
   static String schoolSearch(String query) => "/mobile/school?name=$query";
+}
+class UrlHelper {
+  static String getMaxPriceUrl(CourseTypeEnum courseType) {
+    const baseUrl = 'https://api.bykurs.com.tr/api/v1/mobile';
+
+    switch (courseType) {
+      case CourseTypeEnum.COURSE:
+        return '$baseUrl/course/maxPrice';
+      case CourseTypeEnum.COURSE_BUNDLE:
+        return '$baseUrl/courseBundle/maxPrice';
+      case CourseTypeEnum.COURSE_COACH:
+        return '$baseUrl/courseCoach/maxPrice';
+      default:
+        throw Exception('Invalid Course Type');
+    }
+  }
 }

@@ -141,7 +141,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
                                   onTap: () {
                                     Navigator.pushNamed(
                                         context, '/teacherCoachDetail',
-                                        arguments: courseList[index].id);
+                                        arguments: courseList[index].teacherId);
                                   },
                                   child: CoachCourseListItem(
                                     courseModel: courseList[index],

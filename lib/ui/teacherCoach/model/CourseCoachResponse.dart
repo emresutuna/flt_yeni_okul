@@ -106,6 +106,7 @@ class CourseCoach {
   String? lessonName;
   String? schoolName;
   int? price;
+  int? teacherId;
 
   CourseCoach(
       {this.id,
@@ -114,7 +115,7 @@ class CourseCoach {
         this.startDate,
         this.lessonName,
         this.schoolName,
-        this.price});
+        this.price,this.teacherId});
 
   CourseCoach.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -124,6 +125,7 @@ class CourseCoach {
     lessonName = json['lesson_name'];
     schoolName = json['school_name'];
     price = json['price'];
+    teacherId = json['teacher_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -135,6 +137,7 @@ class CourseCoach {
     data['lesson_name'] = lessonName;
     data['school_name'] = schoolName;
     data['price'] = price;
+    data['teacher_id'] = teacherId;
     return data;
   }
 }
