@@ -36,7 +36,7 @@ class CourseListItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        height: MediaQuery.of(context).size.height / 4.3 ,
+        height: MediaQuery.of(context).size.height / 4.0 ,
         decoration: BoxDecoration(
           color: HexColor("#F7F9F9"),
           shape: BoxShape.rectangle,
@@ -80,10 +80,28 @@ class CourseListItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Tarih: $dateString | Saat: $timeString - $endTime",
+                        "Tarih: ${courseModel?.formattedStartDate??""} - $endTime",
                         style: styleBlack12Regular,
                       ),
                     ),
+                    courseModel?.topics != null && courseModel!.topics!.isNotEmpty
+                        ? Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Konular: ",
+                              style: styleBlack12Regular.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: courseModel?.topics?.map((e) => e.name).join(" - ") ?? "",
+                              style: styleBlack12Regular,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ) : const SizedBox.shrink(),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
