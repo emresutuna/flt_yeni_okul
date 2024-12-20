@@ -1,4 +1,3 @@
-
 import '../../../util/BaseCourseModel.dart';
 
 class MobileHomeResponse {
@@ -20,12 +19,11 @@ class MobileHomeResponse {
       sliderData: json['sliderData']?.cast<String>(),
       incomingLesson: json['incomingLesson'] != null
           ? (json['incomingLesson'] as List)
-          .map((v) => IncomingLesson.fromJson(v))
-          .toList()
+              .map((v) => IncomingLesson.fromJson(v))
+              .toList()
           : null,
-      interestedLesson: json['interestedLesson'] != null
-          ? json['interestedLesson']
-          : null,
+      interestedLesson:
+          json['interestedLesson'] != null ? json['interestedLesson'] : null,
     );
   }
 
@@ -50,8 +48,31 @@ class IncomingLesson extends BaseCourse {
   Teacher? teacher;
   List<Topics>? topics;
 
-  IncomingLesson({int? id, String? title, String? description, String? startDate, String? endDate, int? price, int? quota, this.schoolId, this.lessonId, this.teacherId, this.classroom, this.deadline, this.school, this.lesson, this.teacher, this.topics})
-      : super(id: id, title: title, description: description, startDate: startDate, endDate: endDate, price: price, quota: quota);
+  IncomingLesson(
+      {int? id,
+      String? title,
+      String? description,
+      String? startDate,
+      String? endDate,
+      int? price,
+      int? quota,
+      this.schoolId,
+      this.lessonId,
+      this.teacherId,
+      this.classroom,
+      this.deadline,
+      this.school,
+      this.lesson,
+      this.teacher,
+      this.topics})
+      : super(
+            id: id,
+            title: title,
+            description: description,
+            startDate: startDate,
+            endDate: endDate,
+            price: price,
+            quota: quota);
 
   IncomingLesson.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     schoolId = json['school_id'];
@@ -61,8 +82,11 @@ class IncomingLesson extends BaseCourse {
     deadline = json['deadline'];
     school = json['school'] != null ? School.fromJson(json['school']) : null;
     lesson = json['lesson'] != null ? Lesson.fromJson(json['lesson']) : null;
-    teacher = json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
-    topics = json['topics'] != null ? (json['topics'] as List).map((v) => Topics.fromJson(v)).toList() : null;
+    teacher =
+        json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
+    topics = json['topics'] != null
+        ? (json['topics'] as List).map((v) => Topics.fromJson(v)).toList()
+        : null;
   }
 
   @override
@@ -80,7 +104,6 @@ class IncomingLesson extends BaseCourse {
     return data;
   }
 }
-
 
 class User {
   int? id;
