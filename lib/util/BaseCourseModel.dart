@@ -85,6 +85,8 @@ class BaseCourse {
       } else if (json['lesson'] is String) {
         lessonName = json['lesson'];
       }
+    } else if (json['lesson_name'] != null && json['lesson_name'] is String) {
+      lessonName = json['lesson_name'];
     }
 
     // Topics kontrolü

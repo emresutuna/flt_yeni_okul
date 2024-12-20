@@ -9,6 +9,7 @@ import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/InfoWidget.dart';
 import '../coursedetail/bloc/CourseDetailState.dart';
+import 'ExpandableCourseItem.dart';
 
 class CourseBundleDetailPage extends StatefulWidget {
   const CourseBundleDetailPage({super.key});
@@ -38,7 +39,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Ders Detayı"),
+      appBar: WhiteAppBar("Paket Ders Detayı"),
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
@@ -110,23 +111,6 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
 
                               Row(
                                 children: [
-                                  const Icon(Icons.room,
-                                      size: 16, color: Colors.grey),
-                                  Text("Bilinmiyor",
-                                      style: styleBlack12Regular),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              /*
-                                  Text("Kontenjan: ${courseDetail!.quota}",
-                                      style: styleBlack12Regular),
-
-                                   */
-
-                              const SizedBox(height: 8),
-                              // Lesson Badge and Description
-                              Row(
-                                children: [
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 4),
@@ -159,28 +143,51 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                 color: Colors.black38.withAlpha(40),
                               ),
                               const SizedBox(height: 8),
-                              Text(
-                                'Ders Açıklaması',
-                                style: styleBlack14Bold,
-                              ),
-                              const SizedBox(height: 8),
-
-                              Text(
-                                'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
-                                style: styleBlack12Regular,
-                              ),
-                              const SizedBox(height: 12),
-                              const SizedBox(height: 8),
-                              Divider(
-                                height: 1,
-                                color: Colors.black38.withAlpha(40),
-                              ),
-                              const SizedBox(height: 8),
-
-                              const SizedBox(height: 8),
-                              Divider(
-                                height: 1,
-                                color: Colors.black38.withAlpha(40),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Ders Açıklaması',
+                                      style: styleBlack14Bold),
+                                  const SizedBox(height: 8),
+                                  Text(courseDetail?.description ?? "",
+                                      style: styleBlack12Regular),
+                                  const SizedBox(height: 8),
+                                  Divider(
+                                      height: 1,
+                                      color: Colors.black38.withAlpha(40)),
+                                  const SizedBox(height: 8),
+                                  Text('Kurs (Paket Ders) İçeriği',
+                                      style: styleBlack14Bold),
+                                  const SizedBox(height: 8),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount:
+                                        courseDetail?.courses.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      final course =
+                                          courseDetail?.courses[index];
+                                      return ExpandableCourseDetail(
+                                        title: course?.title ?? "",
+                                        description: course?.description ?? "",
+                                        teacher: course?.teacherFormatted ?? "",
+                                        date: course?.formattedDateRange ?? "",
+                                        time: course?.topics
+                                                ?.map((e) => e.name)
+                                                .join(" - ") ??
+                                            "",
+                                        location: course?.classroom ?? "",
+                                        price: "",
+                                      );
+                                    },
+                                  ),
+                                  // Dynamically sizes itself
+                                  const SizedBox(height: 8),
+                                  Divider(
+                                      height: 1,
+                                      color: Colors.black38.withAlpha(40)),
+                                ],
                               ),
                               const SizedBox(height: 8),
                               Text(
@@ -194,10 +201,11 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                       courseDetail!.courses.first.schoolName ??
                                       "",
                                   style: styleBlack12Bold),
-                              Text(courseDetail?.courses.first.school?.address ??"",
+                              Text(
+                                  courseDetail?.courses.first.school?.address ??
+                                      "",
                                   style: styleBlack12Regular),
                               const SizedBox(height: 16),
-                              // Placeholder for the map image
                               Container(
                                 height: 150,
                                 decoration: BoxDecoration(

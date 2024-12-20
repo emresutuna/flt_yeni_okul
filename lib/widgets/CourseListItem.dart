@@ -19,6 +19,7 @@ class CourseListItem extends StatelessWidget {
     String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
     String teacherName = courseModel?.teacherFormatted??'';
 
+    print(courseModel?.lesson?.name ?? courseModel?.lessonName??'Ders bilgisi bulunamadı');
     String dateString = courseModel?.startDate != null
         ? courseModel!.startDate!
         : '-';

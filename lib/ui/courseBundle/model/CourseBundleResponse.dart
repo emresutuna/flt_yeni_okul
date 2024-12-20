@@ -132,7 +132,6 @@ class CourseBundle extends BaseCourse {
     int? quota,
     String? schoolName,
     School? school,
-    String? lessonName,
     Lesson? lesson,
   }) : super(
     id: id,
@@ -144,7 +143,6 @@ class CourseBundle extends BaseCourse {
     quota: quota,
     schoolName: schoolName,
     school: school,
-    lessonName: lessonName,
     lesson: lesson,
   );
 
@@ -166,7 +164,7 @@ class CourseBundle extends BaseCourse {
       schoolName: schoolName ?? school?.name,
       school: school,
       topics: topics,
-      lessonName: lessonName,
+      lessonName: lessonName?? lesson?.name
     );
   }
 }
