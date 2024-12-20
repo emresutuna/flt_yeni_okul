@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "346531028254",
+    "project_id": "baykurs-e4140",
+    "storage_bucket": "baykurs-e4140.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346531028254:android:00029d161822477a5a3d0f",
+        "android_client_info": {
+          "package_name": "com.app.baykurs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnzCb9j5QET8F0gRYIWO0-3xwPg-6UZNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
