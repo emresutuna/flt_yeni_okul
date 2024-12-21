@@ -2,7 +2,7 @@ import '../../../util/BaseCourseModel.dart';
 
 class MobileHomeResponse {
   bool? status;
-  List<String>? sliderData;
+  List<SliderData>? sliderData;
   List<IncomingLesson>? incomingLesson;
   List<dynamic>? interestedLesson;
 
@@ -16,7 +16,11 @@ class MobileHomeResponse {
   factory MobileHomeResponse.fromJson(Map<String, dynamic> json) {
     return MobileHomeResponse(
       status: json['status'],
-      sliderData: json['sliderData']?.cast<String>(),
+      sliderData: json['sliderData'] != null
+          ? (json['sliderData'] as List)
+          .map((v) => SliderData.fromJson(v))
+          .toList()
+          : null,
       incomingLesson: json['incomingLesson'] != null
           ? (json['incomingLesson'] as List)
               .map((v) => IncomingLesson.fromJson(v))
@@ -30,13 +34,36 @@ class MobileHomeResponse {
   Map<String, dynamic> toJson() {
     return {
       'status': status,
-      'sliderData': sliderData,
+      'sliderData': sliderData?.map((v) => v.toJson()).toList(),
       'incomingLesson': incomingLesson?.map((v) => v.toJson()).toList(),
       'interestedLesson': interestedLesson,
     };
   }
 }
+class SliderData {
+  int? id;
+  String? title;
+  String? description;
+  String? img;
 
+  SliderData({this.id, this.title, this.description, this.img});
+
+  SliderData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    description = json['description'];
+    img = json['img'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['description'] = this.description;
+    data['img'] = this.img;
+    return data;
+  }
+}
 class IncomingLesson extends BaseCourse {
   int? schoolId;
   int? lessonId;

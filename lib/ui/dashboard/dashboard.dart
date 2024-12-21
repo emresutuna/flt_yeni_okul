@@ -17,7 +17,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   late carousel_slider.CarouselSliderController controller;
 
-  List<String> sliderData = [];
+  List<SliderData> sliderData = [];
   List<IncomingLesson> incomingLessons = [];
   List<dynamic> interestedLessons = [];
 

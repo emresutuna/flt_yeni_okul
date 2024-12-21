@@ -10,7 +10,7 @@ import 'model/MobileHomeResponse.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
 class HomeCarouselWidget extends StatelessWidget {
-  final List<String> sliderData;
+  final List<SliderData> sliderData;
   final carousel_slider.CarouselSliderController controller;
 
   const HomeCarouselWidget({
@@ -40,12 +40,42 @@ class HomeCarouselWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  data,
-                  style: const TextStyle(fontSize: 16.0),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    data.img ?? 'https://via.placeholder.com/300',
+                  ),
+                  fit: BoxFit.cover,
                 ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  // Text content
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          data.title ?? "",
+                          style: styleBlack18Bold,
+                        ),
+                        Text(
+                          data.description ?? "",
+                          style: styleBlack14Regular,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             );
           },
@@ -218,7 +248,8 @@ class CourseMapper {
               name: courseList.schoolName ?? "",
               id: 0,
             )
-          : null, // String'i School nesnesine çevirir
+          : null,
+      // String'i School nesnesine çevirir
       lesson: courseList.lesson != null
           ? Lesson(
               name: courseList.lesson?.name ?? courseList.lessonName ?? "",

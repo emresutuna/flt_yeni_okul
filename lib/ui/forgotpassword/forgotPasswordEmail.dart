@@ -1,10 +1,8 @@
+import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_text_box/flutter_text_box.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../../util/HexColor.dart';
-import '../../widgets/YOText.dart';
-import '../../widgets/YoHexText.dart';
+import 'package:get/get.dart';
+import '../../util/YOColors.dart';
 
 
 class ForgotPasswordEmailPage extends StatefulWidget {
@@ -19,98 +17,65 @@ class _ForgotPasswordEmailPageState extends State<ForgotPasswordEmailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Color.fromARGB(100, 141, 153, 202),
-              Color.fromARGB(100, 141, 153, 202),
-              Color.fromARGB(90, 141, 153, 202),
-              Color.fromARGB(53, 141, 153, 202),
-              Color.fromARGB(34, 141, 153, 202),
-              Color.fromARGB(0, 141, 153, 202),
-            ],
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 0.0, top: 32, right: 0, bottom: 0),
-                child: IconButton(
-                  color: HexColor("#1A1348"),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  iconSize: 32,
-                  alignment: Alignment.centerLeft,
-                  icon: const Icon(
-                    Icons.close,
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+      backgroundColor: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, top: 32, right: 0, bottom: 0),
+              child: IconButton(
+                color: color2,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                iconSize: 32,
+                alignment: Alignment.centerLeft,
+                icon: const Icon(
+                  Icons.close,
                 ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              const YoHexText(
-                text: "Şifremi Unuttum",
-                size: 20,
-                fontWeight: FontWeight.bold,
-                color: "#1A1348",
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              const YoHexText(
-                text:
-                    "Kayıt esnasında verilmiş olan e-mail adresinizi yazınız.",
-                size: 14,
-                fontWeight: FontWeight.w500,
-                color: "#1A1348",
-              ),
-              const SizedBox(height: 32),
-              TextBoxLabel(
-                label: 'E-mail',
-                hint: 'E-mailinizi girin',
-                errorText: 'Bu alan zorunludur!',
-                onSaved: (String value) {},
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
+            ),
+            const SizedBox(
+              height: 16,
+            ),
+            Text(
+              "Şifremi Unuttum",
+              style: styleBlack18Bold,
+            ),
+            const SizedBox(
+              height: 32,
+            ),
+            Text(
+              "Kayıt esnasında verilmiş olan e-mail adresinizi yazınız.",
+              style: styleBlack14Regular,
+            ),
+            const SizedBox(height: 32),
+            TextBoxLabel(
+              label: 'E-mail',
+              hint: 'E-mailinizi girin',
+              errorText: 'Bu alan zorunludur!',
+              onSaved: (String value) {},
+            ),
+            const SizedBox(height: 32),
+            SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor: HexColor("#1A1348"),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 18),
-                      textStyle: GoogleFonts.montserrat(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/emailOtp');
-                    },
-                    child: const YoText(
-                      text: "Şifremi Sıfırla",
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )),
-              ),
-            ],
-          ),
+                child: PrimaryButton(
+                    text: "Şifremi Sıfırla",
+                    onPress: () {
+                      Get.snackbar(
+                        "Başarılı",
+                        "Mail Adresinize sıfırlama bağlantısı iletildi",
+                        colorText: Colors.white,
+                        backgroundColor: Colors.green,
+                      );
+                    })),
+          ],
         ),
       ),
     );
