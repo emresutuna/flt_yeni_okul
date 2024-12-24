@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/InfoWidget.dart';
+import '../../widgets/infoWidget/InfoWidget.dart';
 import '../../widgets/PrimaryButton.dart';
 import 'CourseRequestSchool.dart';
 import 'Region.dart';

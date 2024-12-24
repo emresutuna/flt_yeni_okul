@@ -11,6 +11,7 @@ Color colorBlack = HexColor("#191B32");
 Color colorGray = HexColor("#9295A3");
 Color greenButton = HexColor("#05A95C");
 Color colorWhite = HexColor("#FFFFFF");
+Color colorLightGray = HexColor("#F4F6FF");
 
 Color color1 = HexColor("#222831");
 Color color2 = HexColor("#393E46");
@@ -28,49 +29,60 @@ Color renkKimya = HexColor("#8E44AD");
 Color renkBiyoloji = HexColor("#F39C12");
 Color renkFizik = HexColor("#FF6F61");
 
-TextStyle styleBlack10Regular = GoogleFonts.notoSans(
+TextStyle styleBlack10Regular = GoogleFonts.poppins(
     fontSize: 10, fontWeight: FontWeight.normal, color: color1);
-TextStyle styleBlack12Regular = GoogleFonts.notoSans(
+TextStyle styleBlack12Regular = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.normal, color: color1);
-TextStyle styleBlack14Regular = GoogleFonts.notoSans(
+TextStyle styleBlack14Regular = GoogleFonts.poppins(
     fontSize: 14, fontWeight: FontWeight.normal, color: color1);
-TextStyle styleBlack16Regular = GoogleFonts.notoSans(
+TextStyle styleBlack16Regular = GoogleFonts.poppins(
     fontSize: 16, fontWeight: FontWeight.normal, color: color1);
-TextStyle styleBlack18Regular = GoogleFonts.notoSans(
+TextStyle styleBlack18Regular = GoogleFonts.poppins(
     fontSize: 18, fontWeight: FontWeight.normal, color: color1);
-TextStyle styleBlack10Bold = GoogleFonts.notoSans(
+TextStyle styleBlack10Bold = GoogleFonts.poppins(
     fontSize: 10, fontWeight: FontWeight.bold, color: color1);
 
-TextStyle styleBlack12Bold = GoogleFonts.notoSans(
-    fontSize: 12, fontWeight: FontWeight.bold, color: color1);
-TextStyle styleGray12Bold = GoogleFonts.notoSans(
-    fontSize: 12, fontWeight: FontWeight.bold, color: color2);
-TextStyle styleBlack14Bold = GoogleFonts.notoSans(
-    fontSize: 14, fontWeight: FontWeight.bold, color: color1);
-TextStyle styleBlack16Bold = GoogleFonts.notoSans(
-    fontSize: 16, fontWeight: FontWeight.bold, color: color1);
-TextStyle styleBlack18Bold = GoogleFonts.notoSans(
-    fontSize: 18, fontWeight: FontWeight.bold, color: color1);
+TextStyle style54Black12Regular = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black54);
+TextStyle style54Black14Regular = GoogleFonts.poppins(
+    fontSize: 14, fontWeight: FontWeight.normal, color: Colors.black54);
+TextStyle style54Black16Regular = GoogleFonts.poppins(
+    fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black54);
 
-TextStyle styleWhite12Bold = GoogleFonts.notoSans(
+TextStyle styleBlack12Bold = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleGray12Bold = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.bold, color: color2);
+TextStyle styleBlack14Bold = GoogleFonts.poppins(
+    fontSize: 14, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack16Bold = GoogleFonts.poppins(
+    fontSize: 16, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack18Bold = GoogleFonts.poppins(
+    fontSize: 18, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack22Bold = GoogleFonts.poppins(
+    fontSize: 22, fontWeight: FontWeight.bold, color: color1);
+
+
+TextStyle styleWhite12Bold = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white);
-TextStyle styleWhite14Bold = GoogleFonts.notoSans(
+TextStyle styleWhite14Bold = GoogleFonts.poppins(
     fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white);
-TextStyle styleWhite16Bold = GoogleFonts.notoSans(
+TextStyle styleWhite16Bold = GoogleFonts.poppins(
     fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
-TextStyle styleWhite18Bold = GoogleFonts.notoSans(
+TextStyle styleWhite18Bold = GoogleFonts.poppins(
     fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white);
 
-TextStyle styleWhite12Regular = GoogleFonts.notoSans(
+TextStyle styleWhite12Regular = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white);
-TextStyle styleWhite14Regular = GoogleFonts.notoSans(
+TextStyle styleWhite14Regular = GoogleFonts.poppins(
     fontSize: 14, fontWeight: FontWeight.normal, color: Colors.white);
-TextStyle styleWhite16Regular = GoogleFonts.notoSans(
+TextStyle styleWhite16Regular = GoogleFonts.poppins(
     fontSize: 16, fontWeight: FontWeight.normal, color: Colors.white);
 
-TextStyle styleGreen18Bold = GoogleFonts.notoSans(
+TextStyle styleGreen18Bold = GoogleFonts.poppins(
     fontSize: 18, fontWeight: FontWeight.bold, color: color3);
-
+TextStyle styleBlack14W600 = GoogleFonts.poppins(
+    fontSize: 14, fontWeight: FontWeight.w700, color: color1);
 var gradient = const BoxDecoration(
   gradient: LinearGradient(
     begin: Alignment.topRight,

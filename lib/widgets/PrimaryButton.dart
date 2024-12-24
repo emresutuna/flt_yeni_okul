@@ -1,7 +1,5 @@
+import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../util/YOColors.dart';
-import 'YoHexText.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -15,25 +13,10 @@ class PrimaryButton extends StatelessWidget {
       width: double.infinity,
       height: 50,
       child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            backgroundColor: color5,
-            elevation: 0,
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 0),
-            textStyle: GoogleFonts.notoSans(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () => onPress.call(),
-          child: YoHexText(
-            size: 14,
-            text: text,
-            fontWeight: FontWeight.w600,
-            color: "#FFFFFF",
+          onPressed: onPress,
+          child: Text(
+            text,
+            style: styleBlack14Bold.copyWith(color: Colors.white),
           )),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/filter/FilterLesson.dart';
-import 'package:baykurs/widgets/InfoWidget.dart';
+import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -140,9 +140,11 @@ class _CourseListPageState extends State<CourseListPage> {
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, '/courseDetail',
-                                        arguments: courseList[index].id);
+                                      Navigator.of(context, rootNavigator: !widget.hasShowBackButton).pushNamed(
+                                          '/courseDetail',
+                                          arguments: courseList[index].id
+                                      );
+
                                   },
                                   child: CourseListItem(
                                     courseModel: courseList[index],

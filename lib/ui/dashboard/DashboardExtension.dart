@@ -24,11 +24,11 @@ class HomeCarouselWidget extends StatelessWidget {
     return carousel_slider.CarouselSlider(
       carouselController: controller,
       options: carousel_slider.CarouselOptions(
-        height: 200.0,
+        height: 220.0,
         viewportFraction: 1,
         initialPage: 0,
         enableInfiniteScroll: true,
-        autoPlay: false,
+        autoPlay: true,
         enlargeCenterPage: true,
       ),
       items: sliderData.map((data) {
@@ -44,38 +44,25 @@ class HomeCarouselWidget extends StatelessWidget {
                   image: NetworkImage(
                     data.img ?? 'https://via.placeholder.com/300',
                   ),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      data.title ?? "",
+                      style: styleBlack18Bold,
                     ),
-                  ),
-                  // Text content
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          data.title ?? "",
-                          style: styleBlack18Bold,
-                        ),
-                        Text(
-                          data.description ?? "",
-                          style: styleBlack14Regular,
-                        ),
-                      ],
+                    Text(
+                      data.description ?? "",
+                      style: styleBlack14Regular,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

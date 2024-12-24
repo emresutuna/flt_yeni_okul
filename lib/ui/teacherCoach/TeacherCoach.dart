@@ -1,6 +1,6 @@
 import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
-import 'package:baykurs/widgets/InfoWidget.dart';
+import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

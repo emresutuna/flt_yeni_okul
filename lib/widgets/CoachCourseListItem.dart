@@ -1,9 +1,7 @@
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
-import '../ui/course/model/CourseModel.dart';
 import '../util/HexColor.dart';
+import '../util/LessonExtension.dart';
 import '../util/YOColors.dart';
 import 'TertiaryButton.dart';
 
@@ -16,7 +14,7 @@ class CoachCourseListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String lessonName = courseModel?.lessonName ?? 'Eğitim Koçu';
+    String lessonName = courseModel?.lesson ?? 'Eğitim Koçu';
     String desc =
         courseModel?.description ?? 'Ders açıklama bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders Başlığı bulunamadı';
@@ -108,7 +106,12 @@ class CoachCourseListItem extends StatelessWidget {
               child: Container(
                 height: double.maxFinite,
                 decoration: ShapeDecoration(
-                  color: colors,
+                  color: HexColor(BranchesExtension.getColorForBranch(
+                    courseModel?.lesson ??
+                        courseModel?.lessonName ??
+                        DEFAULT_LESSON_COLOR,
+                  ) ??
+                      DEFAULT_LESSON_COLOR),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(8),

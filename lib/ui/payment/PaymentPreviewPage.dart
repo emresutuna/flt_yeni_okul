@@ -1,8 +1,10 @@
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewEvent.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/HexColor.dart';
@@ -71,20 +73,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
     return SafeArea(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 24),
-            child: Row(
-              children: [
-                InkWell(
-                  child: const Icon(Icons.arrow_back_ios),
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Text("Ders Satın Al", style: styleBlack16Bold),
-              ],
-            ),
-          ),
+          WhiteAppBar("Ders Satın Al"),
           Column(
             children: [
               Padding(
@@ -149,7 +138,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                                           ?.lessonName ??
                                                       "Ders bulunamadı",
                                                 ) ??
-                                                "Varsayılan renk kodu"),
+                                                DEFAULT_LESSON_COLOR),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(

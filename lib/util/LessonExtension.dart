@@ -1,5 +1,3 @@
-import 'HexColor.dart';
-
 enum Branches {
   Mathematics,
   Turkish,
@@ -109,6 +107,7 @@ extension BranchesExtension on Branches {
     "Sosyal Bilgiler": "#8E44AD",
     "İnkılap Tarihi ve Atatürkçülük": "#C0392B",
     "İngilizce": "#F364D0",
+    "Eğitim Koçu": "#413F42",
   };
 
   static String? getColorForBranch(String branchName) {
@@ -4004,3 +4003,4 @@ class BranchTopic {
   @override
   int get hashCode => id.hashCode;
 }
+ const DEFAULT_LESSON_COLOR="#4A90E2";

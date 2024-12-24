@@ -76,7 +76,22 @@ class RegisterValidation extends GetxController {
 
     String errorMessage = '';
 
-    // E-mail validation
+    if (email.isEmpty &&
+        surname.isEmpty &&
+        password.isEmpty &&
+        name.isEmpty &&
+        tckn.isEmpty &&
+        phone.isEmpty &&
+        school.isEmpty) {
+      Get.snackbar(
+        "Hata",
+        "Lütfen tüm alanları doldurunuz.",
+        colorText: Colors.white,
+        backgroundColor: Colors.red,
+      );
+      return false;
+    }
+
     if (email.isEmpty || !email.isEmail) {
       isEmailValid.value = false;
       errorMessage += 'Geçersiz e-posta. ';
@@ -84,7 +99,6 @@ class RegisterValidation extends GetxController {
       isEmailValid.value = true;
     }
 
-    // Password validation
     if (password.isEmpty || password.length < 8) {
       isPasswordValid.value = false;
       errorMessage += 'Şifre en az 8 karakter olmalı. ';
@@ -92,7 +106,6 @@ class RegisterValidation extends GetxController {
       isPasswordValid.value = true;
     }
 
-    // Name validation
     if (name.isEmpty || name.length < 2) {
       isNameValid.value = false;
       errorMessage += 'İsim en az 2 karakter olmalı. ';
@@ -106,18 +119,7 @@ class RegisterValidation extends GetxController {
     } else {
       isSurnameValid.value = true;
     }
-/*
-    // TCKN validation
-    if (!isValidTCKN(tckn)) {
-      isTcknValid.value = false;
-      errorMessage += 'Geçersiz TCKN. TCKN 11 haneli olmalıdır. ';
-    } else {
-      isTcknValid.value = true;
-    }
 
- */
-
-    // Phone validation
     String cleanedPhone = phone.replaceAll(RegExp(r'\D'), '');
     if (cleanedPhone.isEmpty || cleanedPhone.length != 10) {
       isPhoneValid.value = false;
@@ -126,7 +128,13 @@ class RegisterValidation extends GetxController {
       isPhoneValid.value = true;
     }
 
-    // Privacy policy and general policy validation
+    if (school.isEmpty) {
+      isSchoolValid.value = false;
+      errorMessage += 'Okul alanı boş bırakılamaz. ';
+    } else {
+      isSchoolValid.value = true;
+    }
+
     if (!isPrivacyPolicyAccepted.value) {
       errorMessage += 'Gizlilik politikası kabul edilmelidir. ';
     }

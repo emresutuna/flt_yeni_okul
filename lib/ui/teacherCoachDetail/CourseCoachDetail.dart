@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/BaseCourseModel.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/InfoWidget.dart';
+import '../../widgets/infoWidget/InfoWidget.dart';
 import '../coursedetail/bloc/CourseDetailState.dart';
 
 class CourseBundleDetailPage extends StatefulWidget {

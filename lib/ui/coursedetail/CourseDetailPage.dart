@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/InfoWidget.dart';
+import '../../widgets/infoWidget/InfoWidget.dart';
 import 'bloc/CourseDetailState.dart';
 import 'model/CourseDetailResponseModel.dart';
 
@@ -55,7 +55,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 16.0, top: 24, bottom: 16),
+                              left: 16.0, top: 0, bottom: 16),
                           child: Text(
                             "Lorem ipsum dolar sit amet",
                             style: styleBlack12Bold,
@@ -100,7 +100,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                   ),
                                   const Spacer(),
                                   Text("${courseDetail!.price} ₺",
-                                      style: styleBlack16Bold.copyWith(
+                                      style: styleBlack22Bold.copyWith(
                                           color: greenButton)),
                                 ],
                               ),
@@ -129,7 +129,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                       color:
                                           HexColor( BranchesExtension.getColorForBranch(
                                             courseDetail?.lesson?.name ?? courseDetail?.lessonName ?? "Ders bulunamadı",
-                                          ) ?? "Varsayılan renk kodu"),
+                                          ) ?? DEFAULT_LESSON_COLOR),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(

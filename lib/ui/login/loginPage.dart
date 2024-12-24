@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
+import '../../widgets/PrimaryInputField.dart';
 import '../../widgets/YOText.dart';
 import 'loginBloc/LoginBloc.dart';
 import 'loginBloc/LoginEvent.dart';
@@ -43,7 +44,8 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacementNamed(context, '/mainPage');
             } else if (state is LoginError) {
               Get.snackbar(
-                "Hata", "Kullanıcı adı veya şifre yanlış",
+                "Hata",
+                "Kullanıcı adı veya şifre yanlış",
                 colorText: Colors.white,
                 backgroundColor: Colors.red,
               );
@@ -57,7 +59,8 @@ class _LoginPageState extends State<LoginPage> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16, top: 0, right: 16, bottom: 0),
+                  padding: const EdgeInsets.only(
+                      left: 16, top: 0, right: 16, bottom: 0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -66,38 +69,33 @@ class _LoginPageState extends State<LoginPage> {
                         height: MediaQuery.of(context).size.height / 3.5,
                       ),
                       const SizedBox(height: 16),
-                      // TextEditingController reaktif olmadığı için Obx ile sarmalamayın
-                      TextField(
+
+                      PrimaryInputField(
+                        padding: const EdgeInsets.all(0),
                         controller: loginValidation.emailController,
-                        cursorColor: color1,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                            fontSize: 16,
-                            color: color2.withAlpha(75),
-                            fontWeight: FontWeight.w400,
-                          ),
-                          labelStyle: TextStyle(color: color1, fontWeight: FontWeight.bold),
-                          focusColor: color2,
-                          focusedBorder: const UnderlineInputBorder(),
-                        ),
+                        hintText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 8),
-                      PasswordField(controller: loginValidation.passwordController,hint: "Şifre",),
+                      PasswordField(
+                        controller: loginValidation.passwordController,
+                        hint: "Şifre",
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/forgotPasswordEmail');
-                            },
-                            child: YoText(
-                              text: "Şifremi Unuttum",
-                              color: color5,
-                              isUnderLine: true,
-                            ),
-                          ),
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/forgotPasswordEmail');
+                              },
+                              child: Text(
+                                "Şifremi Unuttum",
+                                style: styleBlack14Regular.copyWith(
+                                    color: color5,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: color5),
+                              )),
                         ],
                       ),
                       const SizedBox(height: 24),
@@ -106,14 +104,16 @@ class _LoginPageState extends State<LoginPage> {
                         onPress: () {
                           if (loginValidation.loginValid()) {
                             context.read<LoginBloc>().add(
-                              UserLogin(
-                                request: LoginRequest(
-                                  email: loginValidation.emailController.text,
-                                  password: loginValidation.passwordController.text,
-                                  remember: 0,
-                                ),
-                              ),
-                            );
+                                  UserLogin(
+                                    request: LoginRequest(
+                                      email:
+                                          loginValidation.emailController.text,
+                                      password: loginValidation
+                                          .passwordController.text,
+                                      remember: 0,
+                                    ),
+                                  ),
+                                );
                           }
                         },
                       ),
@@ -121,23 +121,26 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            foregroundColor: Colors.black,
-                            elevation: 0,
-                            side: BorderSide.none,
-                            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
-                            textStyle: GoogleFonts.montserrat(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              foregroundColor: Colors.black,
+                              elevation: 0,
+                              side: BorderSide.none,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 18),
+                              textStyle: GoogleFonts.montserrat(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/registerPage');
-                          },
-                          child: Text("Kayıt Ol",style: styleBlack14Bold.copyWith(color: color5),)
-                        ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/registerPage');
+                            },
+                            child: Text(
+                              "Kayıt Ol",
+                              style: styleBlack14Bold.copyWith(color: color5),
+                            )),
                       ),
                     ],
                   ),

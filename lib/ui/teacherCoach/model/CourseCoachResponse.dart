@@ -104,6 +104,7 @@ class CourseCoach {
   String? description;
   String? startDate;
   String? lessonName;
+  String? lesson;
   String? schoolName;
   int? price;
   int? teacherId;
@@ -114,6 +115,7 @@ class CourseCoach {
         this.description,
         this.startDate,
         this.lessonName,
+        this.lesson,
         this.schoolName,
         this.price,this.teacherId});
 
@@ -124,6 +126,7 @@ class CourseCoach {
     startDate = json['start_date'];
     lessonName = json['lesson_name'];
     schoolName = json['school_name'];
+    lesson = json['lesson'];
     price = json['price'];
     teacherId = json['teacher_id'];
   }
@@ -135,6 +138,7 @@ class CourseCoach {
     data['description'] = description;
     data['start_date'] = startDate;
     data['lesson_name'] = lessonName;
+    data['lesson'] = lesson;
     data['school_name'] = schoolName;
     data['price'] = price;
     data['teacher_id'] = teacherId;

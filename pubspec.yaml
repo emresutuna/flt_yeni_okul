@@ -124,6 +124,10 @@ flutter:
     - assets/ic_request_course.png
     - assets/ic_training_coach.png
     - assets/ic_trial_club.png
+    - assets/first_slide.jpg
+    - assets/second_slide.jpg
+    - assets/second_slide_alternative.jpg
+    - assets/third_slide.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

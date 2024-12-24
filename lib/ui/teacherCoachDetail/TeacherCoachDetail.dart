@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/InfoWidget.dart';
+import '../../widgets/infoWidget/InfoWidget.dart';
 import '../../widgets/WhiteAppBar.dart';
 
 class TeacherCoachDetail extends StatefulWidget {

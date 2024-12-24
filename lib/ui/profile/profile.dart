@@ -43,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Stack(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 1.2,
+                  height: MediaQuery.of(context).size.height * 1.05,
                   width: MediaQuery.of(context).size.width,
                   color: color5,
                   child: Padding(
@@ -52,9 +52,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Profil",
-                          style: styleWhite16Bold,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Profil",
+                              style: styleWhite16Bold,
+                            ),
+                            IconButton(onPressed: (){
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushNamed("/notificationPage");
+                            }, icon: const Icon(Icons.notifications,size: 24,color: Colors.white,))
+                          ],
                         ),
                         const SizedBox(height: 16),
                         Row(
@@ -103,7 +112,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 Positioned(
-                  top: 130,
+                  top: 160,
                   left: 0,
                   right: 0,
                   child: Container(
@@ -256,7 +265,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             Positioned(
-              top: 130,
+              top: 160,
               left: 0,
               right: 0,
               child: Container(

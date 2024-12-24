@@ -1,14 +1,15 @@
 import 'package:baykurs/ui/register/model/RegisterValidation.dart';
 import 'package:baykurs/util/PhoneFormatter.dart';
+import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/SimpleStream.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/YOText.dart';
 import '../login/UserRole.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -44,7 +45,9 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: color4,
-      appBar:WhiteAppBar("Hesap Oluştur",onTap: (){Navigator.pop(context);},canGoBack: true),
+      appBar: WhiteAppBar("Hesap Oluştur", onTap: () {
+        Navigator.pop(context);
+      }, canGoBack: true),
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
@@ -97,85 +100,33 @@ class _RegisterPageState extends State<RegisterPage> {
               color: color2,
             ),
             const SizedBox(height: 16),
+            PrimaryInputField(
+              controller: registerValidation.nameController,
+              hintText: 'Ad',
+              keyboardType: TextInputType.name,
+            ),
+            PrimaryInputField(
+              controller: registerValidation.surnameController,
+              hintText: 'Soyad',
+              keyboardType: TextInputType.name,
+            ),
 
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: registerValidation.nameController,
-                cursorColor: color1,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  hintText: 'Ad',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
-                  focusedBorder: const UnderlineInputBorder(),
-                ),
-              ),
+            PrimaryInputField(
+              controller: registerValidation.emailController,
+              hintText: 'Email',
+              keyboardType: TextInputType.emailAddress,
+            ),
+            PrimaryInputField(
+              controller: registerValidation.phoneController,
+              hintText: 'Telefon No',
+              keyboardType: TextInputType.phone,
             ),
 
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: registerValidation.surnameController,
-                cursorColor: color1,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  hintText: 'Soyad',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
-                  focusedBorder: const UnderlineInputBorder(),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: registerValidation.emailController,
-                cursorColor: color1,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  hintText: 'Email',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
-                  focusedBorder: const UnderlineInputBorder(),
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: registerValidation.phoneController,
-                cursorColor: color1,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  hintText: 'Telefon No',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
-                  focusedBorder: const UnderlineInputBorder(),
-                ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
+              child: PasswordField(
                 controller: registerValidation.passwordController,
-                obscureText: true,
-                cursorColor: color1,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  hintText: 'Şifre',
-                  hintStyle:
-                      TextStyle(fontSize: 16, color: color2.withAlpha(75)),
-                  focusedBorder: const UnderlineInputBorder(),
-                ),
+                hint: "Şifre",
               ),
             ),
             const SizedBox(height: 16),
@@ -257,13 +208,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       );
-                } else {
-                  Get.snackbar(
-                    "Uyarı",
-                    "Lütfen Gizlilik Politikası ve Kullanım Şartlarını kabul edin.",
-                    backgroundColor: Colors.red,
-                    colorText: Colors.white,
-                  );
                 }
               },
             ),

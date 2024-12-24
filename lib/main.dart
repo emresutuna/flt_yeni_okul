@@ -17,6 +17,7 @@ import 'package:baykurs/util/FcmUtil.dart';
 import 'package:baykurs/util/NotificationHelper.dart';
 import 'package:baykurs/util/NotificationPermissionHelper.dart';
 import 'package:baykurs/util/SharedPref.dart';
+import 'package:baykurs/util/Theme.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/util/app_routes.dart';
 import 'package:baykurs/util/constants.dart';
@@ -26,6 +27,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
@@ -34,7 +36,9 @@ SharedPreferences? sharedPreferences;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   PreferenceUtils.init();
-  await Firebase.initializeApp();
+  await GoogleFonts.pendingFonts([
+    GoogleFonts.poppins(),
+  ]);  await Firebase.initializeApp();
   FCMMethods.initFCM();
   FirebaseMessaging.instance;
   await NotificationHelper.instance.initialize();
@@ -63,7 +67,8 @@ void main() async {
           create: (context) => DashboardBloc(userRepository: UserRepository()),
         ),
         BlocProvider(
-          create: (context) => FilterBloc(lectureRepository: LectureRepository()),
+          create: (context) =>
+              FilterBloc(lectureRepository: LectureRepository()),
         ),
         // Add other BlocProviders as needed
       ],
@@ -115,9 +120,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (initialRoute == null) {
-      return const MaterialApp(
+      return  MaterialApp(
+        theme: appTheme,
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
+        home: const Scaffold(
           body: Center(
             child: CircularProgressIndicator(),
           ),
@@ -130,10 +136,7 @@ class _MyAppState extends State<MyApp> {
       title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       color: Colors.white,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        useMaterial3: true,
-      ),
+      theme: appTheme,
       initialRoute: initialRoute,
       routes: AppRoutes.routes,
     );

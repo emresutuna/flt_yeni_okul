@@ -313,7 +313,10 @@ class _FilterLessonState extends State<FilterLesson> {
         int index = entry.key;
         String branch = entry.value.value;
         return ChoiceChip(
-          label: Text(branch),
+          label: Text(
+            branch,
+            style: styleBlack12Bold.copyWith(color: color5),
+          ),
           selected: isSelected[index],
           checkmarkColor: Colors.white,
           selectedColor: color5,

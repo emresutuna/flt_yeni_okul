@@ -34,7 +34,8 @@ import '../ui/login/emailOtpPage.dart';
 import '../ui/login/loginBloc/LoginBloc.dart';
 import '../ui/login/loginPage.dart';
 import '../ui/login/newPasswordPage.dart';
-import '../ui/onboarding/onboarding.dart';
+import '../ui/notification/NotificationPage.dart';
+import '../ui/onboarding/OnBoardingScreen.dart';
 import '../ui/purchasehistory/PurchaseHistoryPage.dart';
 import '../ui/register/registerPage.dart';
 import '../ui/requestlesson/RequestLessonPage.dart';
@@ -42,8 +43,13 @@ import '../ui/timesheet/TimeSheetPage.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
-        '/onboardingPage': (context) => const OnboardingPage(),
+        '/onboardingPage': (context) =>  OnboardingScreen(),
         '/teacherCoach': (context) => const TeacherCoach(),
+        '/notificationPage': (context) => BlocProvider(
+              create: (context) =>
+                  FavoriteSchoolBloc(userRepository: UserRepository()),
+              child:  const NotificationPage(),
+            ),
         '/favoriteSchool': (context) => BlocProvider(
               create: (context) =>
                   FavoriteSchoolBloc(userRepository: UserRepository()),
