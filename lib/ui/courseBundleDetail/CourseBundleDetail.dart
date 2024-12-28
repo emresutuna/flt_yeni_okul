@@ -39,7 +39,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Ders Detayı"),
+      appBar: WhiteAppBar("Kurs Detayı"),
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
@@ -57,9 +57,9 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 16.0, top: 24, bottom: 16),
+                              left: 16.0, top: 0, bottom: 16),
                           child: Text(
-                            "Lorem ipsum dolar sit amet",
+                            "Kursa ait tüm detayları incele.",
                             style: styleBlack12Bold,
                             textAlign: TextAlign.start,
                           ),
@@ -67,7 +67,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                         const InfoCardWidget(
                           title: 'Bilgi',
                           description:
-                              'Bir bölgedeki tüm kurumlardan ya da tek bir kurumdan ders talebinde bulunarak, kurumların bir sonraki haftanın ders programına talep ettiğin dersi eklemelerini sağlayabilirsin.',
+                              'Kursa ait açılan her bir dersin tarihini ve detaylarını  Kurs İçeriği kısmında inceleyebilirsin',
                           icon: Icons.info_outline,
                         ),
                         const SizedBox(height: 16),
@@ -102,28 +102,17 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                     style: styleBlack12Regular,
                                   ),
                                   const Spacer(),
-                                  Text("${courseDetail!.price} ₺",
+                                  Text("₺${courseDetail!.price}",
                                       style: styleBlack16Bold.copyWith(
                                           color: greenButton)),
                                 ],
                               ),
                               const SizedBox(height: 4),
-
-                              Row(
-                                children: [
-                                  const Icon(Icons.room,
-                                      size: 16, color: Colors.grey),
-                                  Text("Bilinmiyor",
-                                      style: styleBlack12Regular),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              /*
+/*
                                   Text("Kontenjan: ${courseDetail!.quota}",
                                       style: styleBlack12Regular),
 
-                                   */
-
+ */
                               const SizedBox(height: 8),
                               // Lesson Badge and Description
                               Row(
@@ -173,8 +162,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                       height: 1,
                                       color: Colors.black38.withAlpha(40)),
                                   const SizedBox(height: 8),
-                                  Text('Kurs (Paket Ders) İçeriği',
-                                      style: styleBlack14Bold),
+                                  Text('Kurs İçeriği', style: styleBlack14Bold),
                                   const SizedBox(height: 8),
                                   ListView.builder(
                                     shrinkWrap: true,
@@ -218,7 +206,9 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                       courseDetail!.courses.first.schoolName ??
                                       "",
                                   style: styleBlack12Bold),
-                              Text(courseDetail?.courses.first.school?.address ??"",
+                              Text(
+                                  courseDetail?.courses.first.school?.address ??
+                                      "",
                                   style: styleBlack12Regular),
                               const SizedBox(height: 16),
                               // Placeholder for the map image

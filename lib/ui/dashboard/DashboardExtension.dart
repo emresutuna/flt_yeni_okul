@@ -54,11 +54,11 @@ class HomeCarouselWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
-                      data.title ?? "",
+                      "",
                       style: styleBlack18Bold,
                     ),
                     Text(
-                      data.description ?? "",
+                      "",
                       style: styleBlack14Regular,
                     ),
                   ],
@@ -78,12 +78,11 @@ class QuickActionsGrid extends StatelessWidget {
   final List<QuickActionModel> quickActionList = [
     QuickActionModel(name: "Ders Programı", icon: "assets/ic_time_sheet.png"),
     QuickActionModel(name: "Ders Bul", icon: "assets/ic_find_course.png"),
+    QuickActionModel(name: "Kurs Bul", icon: "assets/ic_trial_club.png"),
     QuickActionModel(name: "Kurum Bul", icon: "assets/ic_find_school.png"),
     QuickActionModel(
         name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
     QuickActionModel(name: "Eğitim Koçu", icon: "assets/ic_training_coach.png"),
-    QuickActionModel(
-        name: "Kurs(Paket Ders)", icon: "assets/ic_trial_club.png"),
   ];
 
   void _handleQuickActionNavigation(BuildContext context, int index) {
@@ -94,20 +93,20 @@ class QuickActionsGrid extends StatelessWidget {
       case 1: // Ders Bul
         Navigator.of(context, rootNavigator: true).pushNamed("/courseListPage");
         break;
-      case 2: // Kurum Bul
-        Navigator.of(context, rootNavigator: true).pushNamed("/companyList");
+      case 2: // Kurs Bul
+        Navigator.of(context, rootNavigator: true)
+            .pushNamed("/courseBundleList");
         break;
-      case 3: // Ders Talep Et
+      case 3: // Kurum Bul
+        Navigator.of(context, rootNavigator: true).pushNamed("/companyList");
+
+        break;
+      case 4: //Ders Talep ET
         Navigator.of(context, rootNavigator: true)
             .pushNamed("/requestLessonPage");
         break;
-      case 4: // Eğitim Koçu
+      case 5: // Kurum Bul
         Navigator.of(context, rootNavigator: true).pushNamed("/teacherCoach");
-        break;
-      case 5: // Paket Ders
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed("/courseBundleList");
-
         break;
       default:
         break;

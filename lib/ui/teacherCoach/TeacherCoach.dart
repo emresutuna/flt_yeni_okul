@@ -59,7 +59,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 24),
+                  padding: const EdgeInsets.only(left: 16.0, top: 8,right: 16),
                   child: Text(
                     "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
                     style: styleBlack12Bold,
@@ -130,27 +130,30 @@ class _TeacherCoachState extends State<TeacherCoach> {
                         courseList =
                             state.courseCoachResponse.data?.courseCoachList ??
                                 [];
-                        return Column(
-                          children: [
-                            Expanded(
-                                child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: courseList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, '/teacherCoachDetail',
-                                        arguments: courseList[index].teacherId);
-                                  },
-                                  child: CoachCourseListItem(
-                                    courseModel: courseList[index],
-                                    colors: HexColor("#4A90E2"),
-                                  ),
-                                );
-                              },
-                            )),
-                          ],
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                  child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: courseList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, '/teacherCoachDetail',
+                                          arguments: courseList[index].teacherId);
+                                    },
+                                    child: CoachCourseListItem(
+                                      courseModel: courseList[index],
+                                      colors: HexColor("#4A90E2"),
+                                    ),
+                                  );
+                                },
+                              )),
+                            ],
+                          ),
                         );
                       } else if (state is LessonStateError) {
                         return Center(child: Text('Error: ${state.error}'));

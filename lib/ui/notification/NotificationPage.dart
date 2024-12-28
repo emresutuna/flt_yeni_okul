@@ -50,7 +50,7 @@ class _NotificationsPageState extends State<NotificationPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Hemen Kayıt olarak eşsiz deneyimimize katılabilirsin.\nLorem ipsum dolar ko sit amet ko',
+              'Hemen Kayıt olarak eşsiz deneyimimize katılabilirsin.',
               style: TextStyle(fontSize: 14),
             ),
             16.toHeight,
@@ -95,7 +95,7 @@ class NotificationCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: Colors.grey.shade100,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(

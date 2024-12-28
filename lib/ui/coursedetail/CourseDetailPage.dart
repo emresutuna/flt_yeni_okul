@@ -57,22 +57,15 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                           padding: const EdgeInsets.only(
                               left: 16.0, top: 0, bottom: 16),
                           child: Text(
-                            "Lorem ipsum dolar sit amet",
+                            "Derse ait tüm detayları incele.",
                             style: styleBlack12Bold,
                             textAlign: TextAlign.start,
                           ),
                         ),
-                        const InfoCardWidget(
-                          title: 'Bilgi',
-                          description:
-                              'Bir bölgedeki tüm kurumlardan ya da tek bir kurumdan ders talebinde bulunarak, kurumların bir sonraki haftanın ders programına talep ettiğin dersi eklemelerini sağlayabilirsin.',
-                          icon: Icons.info_outline,
-                        ),
-                        const SizedBox(height: 16),
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: HexColor("F9F9F9"),
+                            color: HexColor("#F9F9F9"),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(color: Colors.grey.shade300),
                           ),
@@ -86,37 +79,63 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                        'YKS HAZIRLIK – MATEMATİK – Fonksiyon 8 – Karma Soru Çözümleriyle Genel Tekrar',
+                                        courseDetail!.title??"",
                                         style: styleBlack14Bold),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text(
-                                    courseDetail!.formattedStartDate ?? "",
-                                    style: styleBlack12Regular,
-                                  ),
-                                  const Spacer(),
-                                  Text("${courseDetail!.price} ₺",
-                                      style: styleBlack22Bold.copyWith(
-                                          color: greenButton)),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
 
-                              Row(
+                              Stack(
                                 children: [
-                                  const Icon(Icons.room,
-                                      size: 16, color: Colors.grey),
-                                  Text(courseDetail!.classroom ?? "Bilinmiyor",
-                                      style: styleBlack12Regular),
+                                  Positioned(
+                                    top: 10,
+                                    right: 10,
+                                    child: Text("₺${courseDetail!.price}",
+                                        textAlign: TextAlign.end,
+                                        style: styleBlack22Bold.copyWith(
+                                            color: greenButton)),
+                                  ),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Tarih: ",
+                                            style: styleBlack12Bold,
+                                          ),
+                                          Text(
+                                            courseDetail!.formattedStartDate ?? "",
+                                            style: styleBlack12Regular,
+                                          ),
+                                          const Spacer(),
+
+                                        ],
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Text("Derslik: ",
+                                              style: styleBlack12Bold),
+                                          Text(courseDetail!.classroom ?? "Bilinmiyor",
+                                              style: styleBlack12Regular),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Text("Kontenjan: ",
+                                              style: styleBlack12Bold),
+                                          Text("${courseDetail!.quota}",
+                                              style: styleBlack12Regular),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+
                                 ],
                               ),
-                              const SizedBox(height: 4),
-                              Text("Kontenjan: ${courseDetail!.quota}",
-                                  style: styleBlack12Regular),
+
 
                               const SizedBox(height: 8),
                               // Lesson Badge and Description

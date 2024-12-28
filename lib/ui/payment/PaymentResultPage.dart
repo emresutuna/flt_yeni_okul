@@ -16,23 +16,33 @@ class PaymentResultPage extends StatelessWidget {
       body: SafeArea(
         child: PaymentResultPageWidget(
           isSuccess: isSuccess,
-          title: isSuccess
-              ? "Ödeme İşlemi Başarılı"
-              : "Ödeme İşlemi Başarısız",
+          title: isSuccess ? "Ödeme İşlemi Başarılı" : "Ödeme İşlemi Başarısız",
           message: isSuccess
               ? "Ödemenizi başarıyla tamamladık, teşekkür ederiz."
               : "Ödeme işleminizi tamamlayamadık, lütfen tekrar deneyin.",
-          primaryButtonText: "Anasayfaya Dön",
-          secondaryButtonText: "Ders Programı",
+          primaryButtonText: isSuccess ? "Ana Sayfaya Dön" : "Tekrar Dene",
+          secondaryButtonText: isSuccess ? "Ders Programı" : "Ana Sayfaya Dön",
           onPrimaryButtonPress: () {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (context) => const MyHomePage(title: "")),
-                  (Route<dynamic> route) => false,
-            );
+            if (isSuccess) {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: "")),
+                (Route<dynamic> route) => false,
+              );
+            } else {
+              Navigator.pop(context);
+            }
           },
           onSecondaryButtonPress: () {
-            Navigator.of(context).pushReplacementNamed('/timeSheetPage');
+            if (isSuccess) {
+              Navigator.of(context).pushReplacementNamed('/timeSheetPage');
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: "")),
+                (Route<dynamic> route) => false,
+              );
+            }
           },
         ),
       ),

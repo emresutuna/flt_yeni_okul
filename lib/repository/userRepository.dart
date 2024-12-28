@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
+import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';
 import 'package:baykurs/ui/register/model/RegisterRequest.dart';
 import 'package:baykurs/ui/register/model/RegisterResponse.dart';
@@ -75,6 +76,45 @@ class UserRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
+  Future<ResultResponse<LogoutResponse>> logout() async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.logout, DioMethod.post, includeHeaders: true);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        LogoutResponse logoutResponse = LogoutResponse.fromJson(body);
+        return ResultResponse.success(logoutResponse);
+      }
+      else if (response.statusCode == HttpStatus.unauthorized) {
+        Map<String, dynamic> body = response.data;
+        LogoutResponse logoutResponse = LogoutResponse.fromJson(body);
+        return ResultResponse.success(logoutResponse);
+      }
+      else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null && e.response!.data is Map<String, dynamic>) {
+          String errorMessage =
+              e.response!.data['message'] ?? 'Bir hata oluştu.';
+
+          if (e.response?.statusCode == HttpStatus.unauthorized) {
+            LogoutResponse logoutResponse =
+            LogoutResponse.fromJson(e.response!.data);
+            return ResultResponse.success(logoutResponse);
+          }
+
+          return ResultResponse.failure(errorMessage);
+        }
+      }
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
 
   Future<ResultResponse<ProfileResponse>> getUserProfile() async {
     try {

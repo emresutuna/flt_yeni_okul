@@ -15,7 +15,7 @@ class SchoolFilter {
 
   Map<String, String> toQueryParams() {
     final Map<String, String> params = {};
-    if (query != null && query!.isNotEmpty) params['query'] = query!;
+    if (query != null && query!.isNotEmpty) params['name'] = query!;
     if (provinceId != null) params['province_id'] = provinceId.toString();
     if (cityId != null) params['city_id'] = cityId.toString();
     return params;

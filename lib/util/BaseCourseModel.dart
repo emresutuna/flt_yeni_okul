@@ -1,6 +1,5 @@
 import 'DateExtension.dart';
 
-
 class BaseCourse {
   int? id;
   String? title;
@@ -26,11 +25,9 @@ class BaseCourse {
       endDate != null ? formatEndDate(DateTime.parse(endDate!)) : null;
 
   /// Lazy-loaded formatted date range
-  String? get formattedDateRange =>
-      startDate != null && endDate != null
-          ? formatDateRange(
-          DateTime.parse(startDate!), DateTime.parse(endDate!))
-          : null;
+  String? get formattedDateRange => startDate != null && endDate != null
+      ? formatDateRange(DateTime.parse(startDate!), DateTime.parse(endDate!))
+      : null;
 
   BaseCourse({
     this.id,
@@ -69,7 +66,6 @@ class BaseCourse {
     quota = json['quota'];
     classroom = json['classroom'];
 
-    // School kontrolü
     if (json['school'] != null) {
       if (json['school'] is Map<String, dynamic>) {
         school = School.fromJson(json['school']);
@@ -78,7 +74,6 @@ class BaseCourse {
       }
     }
 
-    // Lesson kontrolü
     if (json['lesson'] != null) {
       if (json['lesson'] is Map<String, dynamic>) {
         lesson = Lesson.fromJson(json['lesson']);
@@ -86,11 +81,13 @@ class BaseCourse {
         lessonName = json['lesson'];
       }
     }
+    if (json['lesson_name'] != null && json['lesson_name'] is String) {
+      lessonName = json['lesson_name'];
+    }
 
-    // Topics kontrolü
     if (json['topics'] != null && json['topics'] is List) {
       topics = (json['topics'] as List)
-          .where((topic) => topic is Map<String, dynamic>) // Ekstra kontrol
+          .where((topic) => topic is Map<String, dynamic>)
           .map((topic) => Topics.fromJson(topic))
           .toList();
     }
@@ -99,7 +96,8 @@ class BaseCourse {
     if (json['teacher'] != null && json['teacher'] is Map<String, dynamic>) {
       Teacher teacher = Teacher.fromJson(json['teacher']);
       teacherFormatted = teacher.user.name;
-    } else if (json['teacher_name'] != null && json['teacher_surname'] != null) {
+    } else if (json['teacher_name'] != null &&
+        json['teacher_surname'] != null) {
       teacherFormatted = "${json['teacher_name']} ${json['teacher_surname']}";
     } else {
       teacherFormatted = "Öğretmen bilgisi mevcut değil";
@@ -107,19 +105,19 @@ class BaseCourse {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'title': title,
-    'description': description,
-    'start_date': startDate,
-    'end_date': endDate,
-    'price': price,
-    'quota': quota,
-    'classroom': classroom,
-    'school': school?.toJson() ?? schoolName,
-    'lesson': lesson?.toJson() ?? lessonName,
-    'topics': topics?.map((topic) => topic.toJson()).toList(),
-    'teacher_formatted': teacherFormatted,
-  };
+        'id': id,
+        'title': title,
+        'description': description,
+        'start_date': startDate,
+        'end_date': endDate,
+        'price': price,
+        'quota': quota,
+        'classroom': classroom,
+        'school': school?.toJson() ?? schoolName,
+        'lesson': lesson?.toJson() ?? lessonName,
+        'topics': topics?.map((topic) => topic.toJson()).toList(),
+        'teacher_formatted': teacherFormatted,
+      };
 }
 
 class Topics {

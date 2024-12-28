@@ -105,7 +105,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 16, right: 16, top: 24),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 24),
                     child: Text(
                       state.schoolResponse.data?.description ?? "",
                       style: styleBlack14Bold,
@@ -141,7 +142,51 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 6.0),
                                     child: Text(
-                                      "Kuruma ait dersleri Görüntüle",
+                                      "Kuruma ait dersleri görüntüle",
+                                      style: styleBlack12Regular,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const Icon(Icons.arrow_circle_right_outlined)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16, bottom: 16),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            width: 0.5,
+                            color: color2,
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/courseListPage");
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Kursları Görüntüle",
+                                    style: styleBlack14Bold,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 6.0),
+                                    child: Text(
+                                      "Kuruma ait kursları görüntüle",
                                       style: styleBlack12Regular,
                                     ),
                                   )
@@ -228,9 +273,11 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
           );
         } else if (state is SchoolDetailError) {
           return Container(
-            child: Center(child: BkErrorWidget(onPress: (){
-              Navigator.pop(context);
-            },)),
+            child: Center(child: BkErrorWidget(
+              onPress: () {
+                Navigator.pop(context);
+              },
+            )),
           );
         } else {
           return const Center(child: Text('No courses available'));

@@ -41,7 +41,7 @@ class BkErrorWidget extends StatelessWidget {
               const SizedBox(height: 16),
               Text(title, style: styleBlack16Bold),
               const SizedBox(height: 8),
-              Text(description, style: styleBlack14Regular),
+              Text(description, style: styleBlack14Regular,textAlign: TextAlign.center,),
               if (onPress != null) ...[
                 const SizedBox(height: 16),
                 PrimaryButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../ui/course/model/CourseModel.dart';
+import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
 import '../util/HexColor.dart';
 import '../util/LessonExtension.dart';
 import '../util/YOColors.dart';
@@ -34,10 +35,10 @@ class CourseListItem extends StatelessWidget {
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
         : '-';
 
-    String price = '${courseModel?.price ?? 0} ₺';
+    String price = '₺${courseModel?.price ?? 0}';
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left:16.0,right: 16,top: 8,bottom: 8),
       child: Container(
         height: MediaQuery.of(context).size.height / 4.0,
         decoration: BoxDecoration(
@@ -130,7 +131,8 @@ class CourseListItem extends StatelessWidget {
                             text: "Satın Al",
                             textColor: null,
                             onPress: () {
-                              // Satın alma işlemi için yapılacaklar
+                              Navigator.pushNamed(context, '/paymentPreview',
+                                  arguments: mapCourseListToDetail(courseModel!));
                             },
                           ),
                         ],
@@ -162,7 +164,7 @@ class CourseListItem extends StatelessWidget {
                   child: RotatedBox(
                     quarterTurns: 3,
                     child: Text(
-                      lessonName,
+                     "5.Sınıf  ${lessonName}" ,
                       textAlign: TextAlign.center,
                       style: styleWhite12Bold,
                     ),
@@ -175,4 +177,21 @@ class CourseListItem extends StatelessWidget {
       ),
     );
   }
+}
+CourseDetailData mapCourseListToDetail(CourseList courseList) {
+  return CourseDetailData(
+    id: courseList.id,
+    title: courseList.title,
+    description: courseList.description,
+    startDate: courseList.startDate,
+    endDate: courseList.endDate,
+    price: courseList.price,
+    quota: courseList.quota,
+    schoolName: courseList.schoolName,
+    school: courseList.school,
+    topics: courseList.topics,
+    classroom: null, // Varsayılan değer atanıyor
+    teacherName: null, // Varsayılan değer atanıyor
+    teacherSurname: null, // Varsayılan değer atanıyor
+  );
 }

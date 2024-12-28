@@ -10,7 +10,8 @@ class CourseDetailResponse {
 
   CourseDetailResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? CourseDetailData.fromJson(json['data']) : null;
+    data =
+        json['data'] != null ? CourseDetailData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -27,6 +28,8 @@ class CourseDetailData extends BaseCourse {
   String? classroom;
   String? teacherName;
   String? teacherSurname;
+  String? lessonName;
+  Lesson? lesson;
 
   CourseDetailData({
     int? id,
@@ -43,17 +46,17 @@ class CourseDetailData extends BaseCourse {
     this.teacherName,
     this.teacherSurname,
   }) : super(
-    id: id,
-    title: title,
-    description: description,
-    startDate: startDate,
-    endDate: endDate,
-    price: price,
-    quota: quota,
-    school: school,
-    schoolName: schoolName,
-    topics: topics,
-  );
+          id: id,
+          title: title,
+          description: description,
+          startDate: startDate,
+          endDate: endDate,
+          price: price,
+          quota: quota,
+          school: school,
+          schoolName: schoolName,
+          topics: topics,
+        );
 
   CourseDetailData.fromJson(Map<String, dynamic> json) : super.fromJson(json) {
     classroom = json['classroom'];
@@ -62,7 +65,9 @@ class CourseDetailData extends BaseCourse {
     school = json['school'] != null ? School.fromJson(json['school']) : null;
     schoolName = school?.name; // School nesnesinden name alınır
     if (json['topics'] is List) {
-      topics = (json['topics'] as List).map((topic) => Topics.fromJson(topic)).toList();
+      topics = (json['topics'] as List)
+          .map((topic) => Topics.fromJson(topic))
+          .toList();
     }
   }
 
@@ -72,6 +77,9 @@ class CourseDetailData extends BaseCourse {
     data['classroom'] = classroom;
     data['teacher_name'] = teacherName;
     data['teacher_surname'] = teacherSurname;
+    if (lesson != null) {
+      data['lesson'] = lesson!.toJson();
+    }
     return data;
   }
 }

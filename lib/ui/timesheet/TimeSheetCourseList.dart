@@ -28,8 +28,8 @@ class _TimeSheetCourseListState extends State<TimeSheetCourseList> {
         children: [
           courseList.isNullOrEmpty
               ? const BkErrorWidget(
-                  title: "Hata",
-                  description: "Şuanda hiçbir ders satın almadınız")
+                  title: "Bu Hafta Boşsun",
+                  description: "Şu anda hiçbir ders satın almadığın için ders programın oluşturulamadı")
               : Expanded(
                   child: ListView.builder(
                   padding: EdgeInsets.zero,

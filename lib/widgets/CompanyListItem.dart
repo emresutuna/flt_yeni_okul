@@ -41,21 +41,24 @@ class CompanyListItem extends StatelessWidget {
                 decoration: const ShapeDecoration(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(4),
-                      topRight: Radius.circular(4),
+                      topLeft: Radius.circular(2),
+                      topRight: Radius.circular(2),
                     ),
                   ),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: icon,
-                  fit: BoxFit.fill,
-                  placeholder: (context, url) => Image.asset(
-                    "assets/placeholder.png",
+                child: Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: CachedNetworkImage(
+                    imageUrl: icon,
                     fit: BoxFit.fill,
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    "assets/placeholder.png",
-                    fit: BoxFit.fill,
+                    placeholder: (context, url) => Image.asset(
+                      "assets/placeholder.png",
+                      fit: BoxFit.fill,
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      "assets/placeholder.png",
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),

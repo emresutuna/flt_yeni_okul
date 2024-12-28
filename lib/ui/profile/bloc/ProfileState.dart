@@ -1,4 +1,6 @@
 
+import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
+
 import '../model/ProfileResponse.dart';
 
 abstract class ProfileState {}
@@ -12,9 +14,19 @@ class ProfileSuccess extends ProfileState {
 
   ProfileSuccess(this.profileResponse);
 }
+class LogoutSuccess extends ProfileState {
+  final LogoutResponse profileResponse;
+
+  LogoutSuccess(this.profileResponse);
+}
 
 class ProfileError extends ProfileState {
   final String error;
 
   ProfileError(this.error);
+}
+class LogoutError extends ProfileState {
+  final String error;
+
+  LogoutError(this.error);
 }

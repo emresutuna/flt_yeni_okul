@@ -6,13 +6,15 @@ import '../util/YOColors.dart';
 class YoSearchBar extends StatefulWidget {
   final void Function(String query) onQueryChanged;
   final VoidCallback? onClear;
-  final VoidCallback? onClearCallback; // New callback for clear action
+  final VoidCallback? onClearCallback; // Yeni callback
+  final FocusNode? focusNode; // Dışarıdan FocusNode alacak
 
   const YoSearchBar({
     super.key,
     required this.onQueryChanged,
     this.onClear,
-    this.onClearCallback, // Initialize the new callback
+    this.onClearCallback,
+    this.focusNode, // FocusNode parametresi eklendi
   });
 
   @override
@@ -22,7 +24,6 @@ class YoSearchBar extends StatefulWidget {
 class _YoSearchBarState extends State<YoSearchBar> {
   String query = '';
   final TextEditingController _controller = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
 
   void _handleQueryChange(String newQuery) {
     setState(() {
@@ -37,14 +38,15 @@ class _YoSearchBarState extends State<YoSearchBar> {
       _controller.clear();
     });
 
-    FocusScope.of(context).unfocus();
+    // FocusNode üzerinden focus kaldır
+    widget.focusNode?.unfocus();
 
-    // Trigger the onClear callback if provided
+    // onClear callback tetikle
     if (widget.onClear != null) {
       widget.onClear!();
     }
 
-    // Trigger the new clear callback for additional actions (e.g., API call)
+    // Ek clear callback tetikle
     if (widget.onClearCallback != null) {
       widget.onClearCallback!();
     }
@@ -59,7 +61,7 @@ class _YoSearchBarState extends State<YoSearchBar> {
       child: Center(
         child: TextField(
           controller: _controller,
-          focusNode: _focusNode,
+          focusNode: widget.focusNode, // Dışarıdan gelen FocusNode kullanılıyor
           onChanged: _handleQueryChange,
           style: styleBlack12Bold,
           decoration: InputDecoration(
@@ -93,3 +95,4 @@ class _YoSearchBarState extends State<YoSearchBar> {
     );
   }
 }
+

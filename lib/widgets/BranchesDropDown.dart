@@ -15,6 +15,7 @@ class BranchesDropdown extends StatelessWidget {
     final uniqueBranches = branches.toSet().toList();
 
     return DropdownButtonFormField<Branches>(
+      isExpanded: true,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
@@ -30,12 +31,19 @@ class BranchesDropdown extends StatelessWidget {
           value: branch,
           child: Text(
             branch.value,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            maxLines: 1,
             style: styleBlack14Bold,
           ),
         );
       }).toList(),
       onChanged: onBranchSelected,
-      hint:  Text('Branş Seç',style: styleBlack14Bold.copyWith(color: Colors.grey)),
+      hint: Text('Branş Seç',
+          overflow: TextOverflow.ellipsis,
+          softWrap: false,
+          maxLines: 1,
+          style: styleBlack14W600.copyWith(color: Colors.grey)),
     );
   }
 }

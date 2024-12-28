@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import '../../../util/YOColors.dart';
 import '../../../widgets/PrimaryButton.dart';
+import '../../../widgets/PrimaryInputField.dart';
 
 class MailUpdatePage extends StatefulWidget {
   const MailUpdatePage({super.key});
@@ -59,45 +60,17 @@ class _MailUpdatePageState extends State<MailUpdatePage> {
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(
+                        child: PrimaryInputField(
                           controller: mailUpdateValidation.oldMailController,
-                          cursorColor: color1,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            hintText: 'Mevcut E-mail',
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: color2.withAlpha(75),
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(
-                                color: color1, fontWeight: FontWeight.bold),
-                            focusColor: color2,
-                            focusedBorder: const UnderlineInputBorder(),
-                          ),
+                        hintText: "Mevcut Email",
                         ),
                       ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: TextField(
-                          cursorColor: color1,
+                        child: PrimaryInputField(
                           controller: mailUpdateValidation.newMailController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            hintText: 'Yeni E-mail',
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: color2.withAlpha(75),
-                              fontWeight: FontWeight.w400,
-                            ),
-                            labelStyle: TextStyle(
-                                color: color1, fontWeight: FontWeight.bold),
-                            focusColor: color2,
-                            focusedBorder: const UnderlineInputBorder(),
-                          ),
+                          hintText: "Yeni Email",
                         ),
                       ),
                       const SizedBox(height: 32),

@@ -9,7 +9,6 @@ class RegisterValidation extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController =
       MaskedTextController(mask: '(000)-000-00-00');
-  TextEditingController schoolController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   RxBool isEmailValid = true.obs;
@@ -18,7 +17,6 @@ class RegisterValidation extends GetxController {
   RxBool isNameValid = true.obs;
   RxBool isSurnameValid = true.obs;
   RxBool isTcknValid = true.obs;
-  RxBool isSchoolValid = true.obs;
   RxBool isPrivacyPolicyAccepted = false.obs;
   RxBool isPolicyAccepted = false.obs;
 
@@ -28,7 +26,6 @@ class RegisterValidation extends GetxController {
     tcknController.clear();
     nameController.clear();
     phoneController.clear();
-    schoolController.clear();
     passwordController.clear();
     isEmailValid.value = true;
     isPasswordValid.value = true;
@@ -36,7 +33,6 @@ class RegisterValidation extends GetxController {
     isNameValid.value = true;
     isSurnameValid.value = true;
     isTcknValid.value = true;
-    isSchoolValid.value = true;
     isPrivacyPolicyAccepted.value = false;
     isPolicyAccepted.value = false;
   }
@@ -72,7 +68,6 @@ class RegisterValidation extends GetxController {
     String name = nameController.text.trim();
     String tckn = tcknController.text.trim();
     String phone = phoneController.text.trim();
-    String school = schoolController.text.trim();
 
     String errorMessage = '';
 
@@ -81,8 +76,7 @@ class RegisterValidation extends GetxController {
         password.isEmpty &&
         name.isEmpty &&
         tckn.isEmpty &&
-        phone.isEmpty &&
-        school.isEmpty) {
+        phone.isEmpty) {
       Get.snackbar(
         "Hata",
         "Lütfen tüm alanları doldurunuz.",
@@ -128,12 +122,6 @@ class RegisterValidation extends GetxController {
       isPhoneValid.value = true;
     }
 
-    if (school.isEmpty) {
-      isSchoolValid.value = false;
-      errorMessage += 'Okul alanı boş bırakılamaz. ';
-    } else {
-      isSchoolValid.value = true;
-    }
 
     if (!isPrivacyPolicyAccepted.value) {
       errorMessage += 'Gizlilik politikası kabul edilmelidir. ';

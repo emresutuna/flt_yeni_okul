@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:baykurs/ui/filter/FilterSchool.dart';
 import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/SearchBar.dart';
+import '../../widgets/infoWidget/InfoWidget.dart';
 import 'bloc/SchoolBloc.dart';
 import 'bloc/SchoolEvent.dart';
 import 'bloc/SchoolState.dart';
@@ -26,6 +28,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
   List<String> searchResults = [];
   SchoolFilter schoolFilter = SchoolFilter();
   String query = "";
+  bool hasLogin = false;
+  final FocusNode _searchFocusNode = FocusNode();
 
   void onQueryChanged(String query) {
     this.query = query;
@@ -45,7 +49,17 @@ class _CompanyListPageState extends State<CompanyListPage> {
   @override
   void initState() {
     super.initState();
+    loginController();
     context.read<SchoolBloc>().add(FetchSchool());
+  }
+
+  void loginController() async {
+    final token = await getToken();
+    if (token == null || token.isEmpty) {
+      hasLogin = false;
+    } else {
+      hasLogin = true;
+    }
   }
 
   void toggleFavorite(int index, List<SchoolItem> item) {
@@ -64,8 +78,9 @@ class _CompanyListPageState extends State<CompanyListPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _streamController.close();
+    _searchFocusNode.dispose(); // FocusNode temizlendi
+    super.dispose();
   }
 
   @override
@@ -76,12 +91,12 @@ class _CompanyListPageState extends State<CompanyListPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0, top: 24, right: 16),
-              child: Text(
-                "Dilediğin kurumun profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin. Favoriye eklediğin kurumların yayınladığı derslere, “Ders Bul” özelliğiyle kolayca erişebilirsin.",
-                style: styleBlack12Bold,
-                textAlign: TextAlign.start,
+            const Padding(
+              padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
+              child: InfoCardWidget(
+                title: "Kurumlar",
+                description:
+                "Dilediğin kurumun profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin. Favoriye aldığın kurumların eklediği ders ve kurslardan anında haberdar olabilirsin.",
               ),
             ),
             Row(
@@ -89,6 +104,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                 Expanded(
                   flex: 5,
                   child: YoSearchBar(
+                    focusNode: _searchFocusNode,
                     onQueryChanged: onQueryChanged,
                     onClearCallback: onQueryCleared,
                   ),
@@ -137,33 +153,38 @@ class _CompanyListPageState extends State<CompanyListPage> {
               ],
             ),
             Expanded(
-              child: BlocConsumer<SchoolBloc, SchoolState>(
-                listener: (context, state) {
-                  if (state is FavoriteError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text('Bir hata oluştu: ${state.error}')),
-                    );
-                  }
+              child: GestureDetector(
+                onPanDown: (_) {
+                  _searchFocusNode.unfocus();
                 },
-                buildWhen: (context, state) {
-                  return state is SchoolLoading ||
-                      state is SchoolSuccess ||
-                      state is SchoolError ||
-                      state is SchoolDefault;
-                },
-                builder: (context, state) {
-                  if (state is SchoolLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (state is SchoolSuccess) {
-                    updateSchoolList(state.schoolResponse.data.schools);
-                    return buildSchoolList();
-                  } else if (state is SchoolError) {
-                    return Center(child: Text('Error: ${state.error}'));
-                  } else {
-                    return const SizedBox();
-                  }
-                },
+                child: BlocConsumer<SchoolBloc, SchoolState>(
+                  listener: (context, state) {
+                    if (state is FavoriteError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('Bir hata oluştu: ${state.error}')),
+                      );
+                    }
+                  },
+                  buildWhen: (context, state) {
+                    return state is SchoolLoading ||
+                        state is SchoolSuccess ||
+                        state is SchoolError ||
+                        state is SchoolDefault;
+                  },
+                  builder: (context, state) {
+                    if (state is SchoolLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is SchoolSuccess) {
+                      updateSchoolList(state.schoolResponse.data.schools);
+                      return buildSchoolList();
+                    } else if (state is SchoolError) {
+                      return Center(child: Text('Error: ${state.error}'));
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
               ),
             ),
           ],
@@ -218,7 +239,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                         child: CompanyListItem(
                           icon: schoolList[index].photo ?? "",
                           name: schoolList[index].user.name,
-                          isFavorite: schoolList[index].isFav,
+                          isFavorite: hasLogin ? schoolList[index].isFav : null,
                           province: schoolList[index].city.province.name,
                           city: schoolList[index].city.name,
                           onFavoriteClick: () {

@@ -1,4 +1,3 @@
-import 'package:baykurs/ui/course/model/CourseModel.dart';
 import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
@@ -15,6 +14,7 @@ import '../course/bloc/LessonEvent.dart';
 import '../course/bloc/LessonState.dart';
 import '../course/model/CourseFilter.dart';
 import '../course/model/CourseTypeEnum.dart';
+import 'CourseBundleItem.dart';
 
 class CourseBundleListPage extends StatefulWidget {
   const CourseBundleListPage({super.key});
@@ -54,7 +54,7 @@ class _CourseListPageState extends State<CourseBundleListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Kurs(Paket Ders)"),
+      appBar: WhiteAppBar("Kurslar"),
       body: SafeArea(
         child: Stack(
           children: [
@@ -62,9 +62,9 @@ class _CourseListPageState extends State<CourseBundleListPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 24),
+                  padding: const EdgeInsets.only(left: 16.0, top: 8,right: 16),
                   child: Text(
-                    "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
+                    "Yayınlanan kursları incele ve ders programını oluştur.",
                     style: styleBlack12Bold,
                     textAlign: TextAlign.start,
                   ),
@@ -72,9 +72,10 @@ class _CourseListPageState extends State<CourseBundleListPage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                   child: InfoCardWidget(
-                      title: "Dersler",
+                      title: "Kurslar",
                       description:
-                          "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin."),
+                      "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
+                  ),
                 ),
                 Row(
                   children: [
@@ -131,28 +132,31 @@ class _CourseListPageState extends State<CourseBundleListPage> {
                       if (state is CourseBundleSuccess) {
                         courseList =
                             state.courseBundleResponse.data?.data ?? [];
-                        return Column(
-                          children: [
-                            Expanded(
-                                child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: courseList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, '/courseBundleDetail',
-                                        arguments: courseList[index].id);
-                                  },
-                                  child: CourseListItem(
-                                    courseModel:
-                                        courseList[index].toCourseList(),
-                                    colors: HexColor("#4A90E2"),
-                                  ),
-                                );
-                              },
-                            )),
-                          ],
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                  child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount: courseList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, '/courseBundleDetail',
+                                          arguments: courseList[index].id);
+                                    },
+                                    child: CourseBundleItem(
+                                      courseModel:
+                                          courseList[index].toCourseList(),
+                                      colors: HexColor("#4A90E2"),
+                                    ),
+                                  );
+                                },
+                              )),
+                            ],
+                          ),
                         );
                       } else if (state is LessonStateError) {
                         return Center(child: Text('Error: ${state.error}'));

@@ -33,146 +33,176 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
-      if (state is ProfileLoading) {
-        return profileShimmer();
-      } else if (state is ProfileSuccess) {
-        final userData = state.profileResponse.user;
-        return SafeArea(
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 1.05,
-                  width: MediaQuery.of(context).size.width,
-                  color: color5,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16.0, top: 16, bottom: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Profil",
-                              style: styleWhite16Bold,
-                            ),
-                            IconButton(onPressed: (){
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamed("/notificationPage");
-                            }, icon: const Icon(Icons.notifications,size: 24,color: Colors.white,))
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white,
-                              ),
-                              child: const Center(child: Text("EŞ")),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+      body: BlocListener<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is LogoutSuccess) {
+            clearSharedPreferences();
+            refreshApp();
+          } else if (state is LogoutError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+        },
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileLoading) {
+              return profileShimmer();
+            } else if (state is ProfileSuccess) {
+              final userData = state.profileResponse.user;
+              return SafeArea(
+                child: SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 1.05,
+                        width: MediaQuery.of(context).size.width,
+                        color: color5,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, top: 16, bottom: 32),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    userData?.name ?? "",
-                                    style: styleWhite14Regular,
+                                    "Profil",
+                                    style: styleWhite16Bold,
                                   ),
-                                  Text(
-                                    userData?.phone ?? "",
-                                    style: styleWhite14Regular,
-                                  ),
-                                  Text(
-                                    userData?.email ?? "",
-                                    style: styleWhite14Regular,
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pushNamed("/notificationPage");
+                                    },
+                                    icon: const Icon(
+                                      Icons.notifications,
+                                      size: 24,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 16),
-                              child: Icon(
-                                Icons.edit,
-                                size: 18,
-                                color: Colors.white,
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white,
+                                    ),
+                                    child: const Center(child: Text("EŞ")),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          userData?.name ?? "",
+                                          style: styleWhite14Regular,
+                                        ),
+                                        Text(
+                                          userData?.phone ?? "",
+                                          style: styleWhite14Regular,
+                                        ),
+                                        Text(
+                                          userData?.email ?? "",
+                                          style: styleWhite14Regular,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 16),
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      Positioned(
+                        top: 160,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 1.2,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              children: [
+                                profileItem("Ders Geçmişim", onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed("/timeSheetPage");
+                                }),
+                                profileItem("Ders Programı", onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed("/timeSheetPage");
+                                }),
+                                profileItem("Kullanıcı Bilgileri", onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed("/userEditSelection");
+                                }),
+                                profileItem("Favorilerim", onTap: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pushNamed("/favoriteSchool");
+                                }),
+                                profileItem("SSS", onTap: () {
+                                  openWebView('https://www.bykurs.com.tr',
+                                      'Sıkça Sorulan Sorular');
+                                }),
+                                profileItem("Yardım Merkezi", onTap: () {
+                                  openWebView('https://www.bykurs.com.tr',
+                                      'Yardım Merkezi');
+                                }),
+                                profileItem("Hesabımı Sil", onTap: () {}),
+                                profileItem(
+                                  "Çıkış Yap",
+                                  onTap: () {
+                                    context
+                                        .read<ProfileBloc>()
+                                        .add(ProfileLogoutRequested());
+                                  },
+                                  color: color6,
+                                  isLastItem: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Positioned(
-                  top: 160,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 1.2,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16),
-                        topRight: Radius.circular(16),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: Column(
-                        children: [
-                          profileItem("Ders Geçmişim", onTap: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed("/timeSheetPage");
-                          }),
-                          profileItem("Ders Programı", onTap: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed("/timeSheetPage");
-                          }),
-                          profileItem("Kullanıcı Bilgileri", onTap: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed("/userEditSelection");
-                          }),
-                          profileItem("Favorilerim", onTap: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed("/favoriteSchool");
-                          }),
-                          profileItem("SSS", onTap: () {
-                            openWebView('https://www.bykurs.com.tr',
-                                'Sıkça Sorulan Sorular');
-                          }),
-                          profileItem("Yardım Merkezi", onTap: () {
-                            openWebView(
-                                'https://www.bykurs.com.tr', 'Yardım Merkezi');
-                          }),
-                          profileItem("Hesabımı Sil", onTap: () {}),
-                          profileItem("Çıkış Yap", onTap: () {
-                            clearSharedPreferences();
-                            refreshApp();
-                          }, color: color6, isLastItem: true),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      } else if (state is ProfileError) {
-        return const UnLoginPage();
-      } else {
-        return const Center();
-      }
-    }));
+              );
+            } else if (state is ProfileError) {
+              return const UnLoginPage();
+            } else {
+              return const Center();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   Widget profileShimmer() {

@@ -69,11 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                         height: MediaQuery.of(context).size.height / 3.5,
                       ),
                       const SizedBox(height: 16),
-
                       PrimaryInputField(
                         padding: const EdgeInsets.all(0),
                         controller: loginValidation.emailController,
-                        hintText: 'Email',
+                        hintText: 'E-Posta',
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 8),

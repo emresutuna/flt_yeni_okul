@@ -42,9 +42,9 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
                     CrossAxisAlignment.center, // Centers horizontally
                 children: [
                   BkErrorWidget(
-                    title: "Hata",
-                    description: "Şuanda hiçbir ders satın almadınız",
-                  ),
+                      title: "Bu Hafta Boşsun",
+                      description:
+                          "Şu anda hiçbir ders satın almadığın için ders programın oluşturulamadı")
                 ],
               )
             : SfCalendar(

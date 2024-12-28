@@ -3,6 +3,7 @@ import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/PrimaryInputField.dart';
 
 class ForgotPasswordEmailPage extends StatefulWidget {
   const ForgotPasswordEmailPage({super.key});
@@ -67,23 +68,9 @@ class _ForgotPasswordEmailPageState extends State<ForgotPasswordEmailPage> {
               style: styleBlack14Regular,
             ),
             const SizedBox(height: 32),
-            TextField(
+            PrimaryInputField(
               controller: forgotPasswordValidation.emailController,
-              cursorColor: color1,
-              decoration: InputDecoration(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                hintText: 'Email',
-                hintStyle: TextStyle(
-                  fontSize: 16,
-                  color: color2.withAlpha(75),
-                  fontWeight: FontWeight.w400,
-                ),
-                labelStyle:
-                    TextStyle(color: color1, fontWeight: FontWeight.bold),
-                focusColor: color2,
-                focusedBorder: const UnderlineInputBorder(),
-              ),
+              hintText: "E-Posta",
             ),
             const SizedBox(height: 32),
             SizedBox(

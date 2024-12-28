@@ -97,17 +97,18 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                         ),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            8.toHeight,
                             Text(
-                              'Satın Aldığınız Ders',
+                              'Satın Alınan Ders',
                               style: styleBlack16Bold,
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Hemen Kayıt olarak eşsiz deneyimimize katılabilirsin ',
+                              'Satın aldığın dersleri, “Ders Programı” sekmesinde görüntüleyebilirsin.',
                               style: styleBlack14Regular,
                             ),
                             const SizedBox(height: 20),
@@ -170,7 +171,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          "${courseDetail!.price} ₺",
+                                          "₺${courseDetail!.price}",
                                           style: styleGreen18Bold,
                                         ),
                                       ],
@@ -179,7 +180,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            16.toHeight,
                             SizedBox(
                               height: 50,
                               width: double.maxFinite,
@@ -193,6 +194,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                 },
                               ),
                             ),
+                            16.toHeight
                           ],
                         ),
                       ),

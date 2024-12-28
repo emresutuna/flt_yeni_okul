@@ -2,6 +2,7 @@ import 'package:baykurs/ui/filter/FilterProvince.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
+import '../../widgets/PrimaryInputField.dart';
 import '../company/model/SchoolFilter.dart';
 import '../requestlesson/Region.dart';
 import 'FilterRegion.dart';
@@ -98,9 +99,6 @@ class _FilterSchoolState extends State<FilterSchool> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                          "Herhangi birini seçerek kullanıcı bilgilerini güncelleyebilirsiniz"),
-                      16.toHeight,
                       Text(
                         "İl",
                         style: styleBlack16Bold,
@@ -150,14 +148,9 @@ class _FilterSchoolState extends State<FilterSchool> {
         }
       },
       child: AbsorbPointer(
-        child: TextField(
+        child: PrimaryInputField(
           controller: controller,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
+        hintText: hint,
         ),
       ),
     );

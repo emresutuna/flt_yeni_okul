@@ -29,9 +29,6 @@ class _UserEditSelectionState extends State<UserEditSelection> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const SizedBox(
-                height: 24,
-              ),
               Text(
                 'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
                 style: styleBlack12Regular,

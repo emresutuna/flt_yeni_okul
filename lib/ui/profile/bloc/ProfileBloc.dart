@@ -18,5 +18,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileError('Failed to fetch users'));
       }
     });
+
+    on<ProfileLogoutRequested>((event, emit) async {
+      emit(ProfileLoading());
+      try {
+        final result = await userRepository.logout();
+        emit(LogoutSuccess(result.data!));
+      } catch (e) {
+        emit(LogoutError('Failed to Logout'));
+      }
+    });
   }
 }

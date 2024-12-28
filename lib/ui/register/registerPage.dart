@@ -110,15 +110,14 @@ class _RegisterPageState extends State<RegisterPage> {
               hintText: 'Soyad',
               keyboardType: TextInputType.name,
             ),
-
             PrimaryInputField(
               controller: registerValidation.emailController,
-              hintText: 'Email',
+              hintText: 'E-Posta',
               keyboardType: TextInputType.emailAddress,
             ),
             PrimaryInputField(
               controller: registerValidation.phoneController,
-              hintText: 'Telefon No',
+              hintText: 'Telefon Numarası',
               keyboardType: TextInputType.phone,
             ),
 

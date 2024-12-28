@@ -10,6 +10,7 @@ import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/LessonExtension.dart';
+import '../../widgets/PrimaryInputField.dart';
 import '../requestlesson/Region.dart';
 import 'FilterTopic.dart';
 
@@ -132,9 +133,6 @@ class _FilterLessonState extends State<FilterLesson> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                                "Herhangi birini seçerek kullanıcı bilgilerini güncelleyebilirsiniz"),
-                            16.toHeight,
                             Text("Fiyat", style: styleBlack18Bold),
                             16.toHeight,
                             priceRangeSlider(
@@ -144,7 +142,7 @@ class _FilterLessonState extends State<FilterLesson> {
                               currentRange: _currentRange,
                               onChanged: (newRange) {
                                 setState(() {
-                                  _currentRange = newRange; // Değeri güncelle
+                                  _currentRange = newRange;
                                 });
                               },
                               leftLabel:
@@ -292,12 +290,9 @@ class _FilterLessonState extends State<FilterLesson> {
         }
       },
       child: AbsorbPointer(
-        child: TextField(
+        child: PrimaryInputField(
           controller: controller,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          ),
+          hintText: hint,
         ),
       ),
     );

@@ -55,7 +55,7 @@ class _CourseListPageState extends State<CourseListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Dersler",canGoBack: widget.hasShowBackButton),
+      appBar: WhiteAppBar("Dersler", canGoBack: widget.hasShowBackButton),
       body: SafeArea(
         child: Stack(
           children: [
@@ -63,9 +63,9 @@ class _CourseListPageState extends State<CourseListPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 24),
+                  padding: const EdgeInsets.only(left: 16.0, top: 8, right: 16),
                   child: Text(
-                    "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
+                    "Yayılanan dersleri incele ve ders programını oluştur.",
                     style: styleBlack12Bold,
                     textAlign: TextAlign.start,
                   ),
@@ -73,9 +73,10 @@ class _CourseListPageState extends State<CourseListPage> {
                 const Padding(
                   padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
                   child: InfoCardWidget(
-                      title: "Dersler",
-                      description:
-                          "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin."),
+                    title: "Dersler",
+                    description:
+                        "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
+                  ),
                 ),
                 Row(
                   children: [
@@ -93,8 +94,10 @@ class _CourseListPageState extends State<CourseListPage> {
                           final filter = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  FilterLesson(courseFilter: courseFilter,courseTypeEnum: CourseTypeEnum.COURSE,),
+                              builder: (context) => FilterLesson(
+                                courseFilter: courseFilter,
+                                courseTypeEnum: CourseTypeEnum.COURSE,
+                              ),
                               fullscreenDialog: true,
                             ),
                           ) as CourseFilter?;
@@ -140,11 +143,11 @@ class _CourseListPageState extends State<CourseListPage> {
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: () {
-                                      Navigator.of(context, rootNavigator: !widget.hasShowBackButton).pushNamed(
-                                          '/courseDetail',
-                                          arguments: courseList[index].id
-                                      );
-
+                                    Navigator.of(context,
+                                            rootNavigator:
+                                                !widget.hasShowBackButton)
+                                        .pushNamed('/courseDetail',
+                                            arguments: courseList[index].id);
                                   },
                                   child: CourseListItem(
                                     courseModel: courseList[index],
