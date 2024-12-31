@@ -21,7 +21,7 @@ class FavoriteSchoolPage extends StatefulWidget {
 class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
   FavoriteSchoolResponse? favoriteSchoolResponse;
   final StreamController<List<SchoolList>> _streamController =
-  StreamController<List<SchoolList>>();
+      StreamController<List<SchoolList>>();
 
   @override
   void initState() {
@@ -71,7 +71,8 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                         _streamController.add(favoriteSchoolResponse!.data!);
                       }
                       return Padding(
-                        padding: const EdgeInsets.only(left: 0.0, right: 0, top: 8),
+                        padding:
+                            const EdgeInsets.only(left: 0.0, right: 0, top: 8),
                         child: StreamBuilder<List<SchoolList>>(
                           stream: _streamController.stream,
                           builder: (context, snapshot) {
@@ -81,15 +82,15 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                   child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
-                                child: Text(
-                                    'Bir hata oluştu: ${snapshot.error}'),
+                                child:
+                                    Text('Bir hata oluştu: ${snapshot.error}'),
                               );
                             } else if (!snapshot.hasData ||
                                 snapshot.data!.isEmpty) {
                               return const BkErrorWidget(
                                 title: "Bilgi",
                                 description:
-                                "Şuanda hiçbir kurumu favoriye almadınız",
+                                    "Şu anda hiçbir kurumu favoriye almadın.",
                               );
                             }
 
@@ -99,7 +100,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                               padding: EdgeInsets.zero,
                               itemCount: schoolList.length,
                               gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 mainAxisSpacing: 16,
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 24.0,
@@ -116,10 +117,9 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                   },
                                   child: CompanyListItem(
                                     icon: schoolList[index].school!.photo ?? "",
-                                    name:
-                                    schoolList[index].school!.user!.name!,
+                                    name: schoolList[index].school!.user!.name!,
                                     isFavorite:
-                                    schoolList[index].school!.isFav!,
+                                        schoolList[index].school!.isFav!,
                                     province: schoolList[index]
                                         .school!
                                         .cityId!

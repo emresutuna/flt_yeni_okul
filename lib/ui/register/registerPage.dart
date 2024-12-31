@@ -1,7 +1,9 @@
 import 'package:baykurs/ui/register/model/RegisterValidation.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/PhoneFormatter.dart';
 import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/SimpleStream.dart';
@@ -13,6 +15,7 @@ import '../login/UserRole.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import '../webViewPage/WebViewPage.dart';
 import 'bloc/RegisterBloc.dart';
 import 'bloc/RegisterEvent.dart';
 import 'bloc/RegisterState.dart';
@@ -57,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
               colorText: Colors.white,
               backgroundColor: Colors.green,
             );
-            Navigator.pushReplacementNamed(context, '/mainPage');
+            Navigator.pushReplacementNamed(context, '/emailActivationInfoPage');
           } else if (state is RegisterError) {
             Get.snackbar(
               "Hata",
@@ -90,16 +93,11 @@ class _RegisterPageState extends State<RegisterPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
-            YoText(
-              text:
-                  "Kayıt olarak özgün eğitim modeliyle tanış, başarıya doğru ilk adımını at.",
-              size: 12,
-              fontWeight: FontWeight.w500,
-              textAlign: TextAlign.start,
-              color: color2,
+            Text(
+              "Kayıt olarak özgün eğitim modeliyle tanış, başarıya doğru ilk adımını at.",
+              style: styleBlack14Regular,
             ),
-            const SizedBox(height: 16),
+            16.toHeight,
             PrimaryInputField(
               controller: registerValidation.nameController,
               hintText: 'Ad',
@@ -140,19 +138,33 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
                     children: [
-                      YoText(
-                        text:
-                            "Gizlilik Politikasını ve Kullanım Şartlarını kabul ediyorum.",
-                        size: 10,
-                        fontWeight: FontWeight.w500,
+                      Text.rich(
+                        TextSpan(
+                          text: "Gizlilik Politikası ",
+                          style: styleBlack10Regular.copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: color5,
+                              color: color5),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              openWebView('https://www.bykurs.com.tr/privacy',
+                                  'Gizlilik Politakası');
+                            },
+                          children: [
+                            TextSpan(
+                                text: "metnini okudum ve kabul ediyorum.",
+                                style: styleBlack10Regular.copyWith(
+                                    decoration: TextDecoration.none)),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
+                )
               ],
             ),
 
@@ -167,28 +179,38 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                 ),
-                const Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      alignment: WrapAlignment.start,
-                      children: [
-                        YoText(
-                          text:
-                              "Gizlilik Politikasını ve Kullanım Şartlarını kabul ediyorum.",
-                          size: 10,
-                          fontWeight: FontWeight.w500,
+                Expanded(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.start,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          text: "Kullanım Şartları ",
+                          style: styleBlack10Regular.copyWith(
+                              decoration: TextDecoration.underline,
+                              decorationColor: color5,
+                              color: color5),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              openWebView(
+                                  'https://www.bykurs.com.tr/personal-data',
+                                  'Kişisel Veriler');
+                            },
+                          children: [
+                            TextSpan(
+                                text: "metnini okudum ve kabul ediyorum.",
+                                style: styleBlack10Regular.copyWith(
+                                    decoration: TextDecoration.none)),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
+                )
               ],
             ),
 
             const SizedBox(height: 16),
-            // Kayıt Ol butonu
             PrimaryButton(
               text: "Kayıt Ol",
               onPress: () {
@@ -203,7 +225,6 @@ class _RegisterPageState extends State<RegisterPage> {
                                 registerValidation.phoneController.text),
                             password:
                                 registerValidation.passwordController.text,
-                            tckn: "12345678901",
                           ),
                         ),
                       );

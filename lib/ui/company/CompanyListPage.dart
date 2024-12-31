@@ -79,7 +79,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
   @override
   void dispose() {
     _streamController.close();
-    _searchFocusNode.dispose(); // FocusNode temizlendi
+    _searchFocusNode.dispose();
     super.dispose();
   }
 

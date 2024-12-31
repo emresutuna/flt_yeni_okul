@@ -49,7 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToLoginPage() {
-    Navigator.pushReplacementNamed(context, '/loginPage');
+    Navigator.pushReplacementNamed(context, '/guestPage');
   }
 
   @override

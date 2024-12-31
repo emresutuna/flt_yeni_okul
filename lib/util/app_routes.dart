@@ -3,12 +3,14 @@ import 'package:baykurs/ui/courseBundle/CourseBundle.dart';
 import 'package:baykurs/ui/courseBundleDetail/CourseBundleDetail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
+import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
 import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
 import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
+import 'package:baykurs/ui/register/EmailActivationInfoPage.dart';
 import 'package:baykurs/ui/register/bloc/RegisterBloc.dart';
 import 'package:baykurs/ui/requestlesson/bloc/RequestLessonBloc.dart';
 import 'package:baykurs/ui/teacherCoach/TeacherCoach.dart';
@@ -56,6 +58,8 @@ class AppRoutes {
               child: const FavoriteSchoolPage(),
             ),
         '/mainPage': (context) => const MyHomePage(title: ""),
+        '/emailActivationInfoPage': (context) => const EmailActivationInfoPage(),
+        '/guestPage': (context) => const GuestPage(),
         '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
         '/emailOtp': (context) => const EmailOtpPage(),
         '/userEditSelection': (context) => const UserEditSelection(),

@@ -25,13 +25,12 @@ class CourseBundleItem extends StatelessWidget {
     String teacherName = courseModel?.teacherFormatted ?? '';
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: double.infinity, // Maksimum genişlik
+        constraints: const BoxConstraints(
+          maxWidth: double.infinity,
         ),
         child: IntrinsicHeight(
-          // İçeriğe göre yükseklik ayarla
           child: Container(
             decoration: BoxDecoration(
               color: HexColor("#F7F9F9"),
@@ -85,7 +84,7 @@ class CourseBundleItem extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  flex: 1, // Kartın genişliğine göre esneklik sağlar
+                  flex: 1,
                   child: Container(
                     decoration: ShapeDecoration(
                       color: HexColor(BranchesExtension.getColorForBranch(

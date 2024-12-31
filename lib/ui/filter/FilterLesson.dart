@@ -18,17 +18,20 @@ class FilterLesson extends StatefulWidget {
   final CourseFilter courseFilter;
   final CourseTypeEnum courseTypeEnum;
 
-  const FilterLesson(
-      {super.key, required this.courseFilter, required this.courseTypeEnum});
+  const FilterLesson({
+    super.key,
+    required this.courseFilter,
+    required this.courseTypeEnum,
+  });
 
   @override
   _FilterLessonState createState() => _FilterLessonState();
 }
 
 class _FilterLessonState extends State<FilterLesson> {
-  final TextEditingController konuController = TextEditingController();
-  final TextEditingController ilController = TextEditingController();
-  final TextEditingController ilceController = TextEditingController();
+  final TextEditingController topicController = TextEditingController();
+  final TextEditingController cityController = TextEditingController();
+  final TextEditingController provinceController = TextEditingController();
 
   Region? selectedCity;
   Province? selectedProvince;
@@ -46,15 +49,20 @@ class _FilterLessonState extends State<FilterLesson> {
     super.initState();
     courseFilter = widget.courseFilter;
     courseType = widget.courseTypeEnum;
-    _currentRange = const RangeValues(0, 100.0);
+
+    double initialMinPrice = courseFilter.minPrice?.toDouble() ?? 0.0;
+    double initialMaxPrice = courseFilter.maxPrice?.toDouble() ?? 100.0;
+
+    _currentRange = RangeValues(initialMinPrice, initialMaxPrice);
+
     initializeFields();
     context.read<FilterBloc>().add(FetchMaxPrice(courseTypeEnum: courseType));
   }
 
   void initializeFields() {
-    konuController.text = courseFilter.query ?? '';
-    ilController.text = courseFilter.provinceName ?? '';
-    ilceController.text = courseFilter.cityName ?? '';
+    topicController.text = courseFilter.query ?? '';
+    cityController.text = courseFilter.provinceName ?? '';
+    provinceController.text = courseFilter.cityName ?? '';
 
     selectedCity = courseFilter.cityId != null
         ? Region(id: courseFilter.cityId!, name: courseFilter.cityName ?? "")
@@ -73,13 +81,24 @@ class _FilterLessonState extends State<FilterLesson> {
 
   void clearFilters() {
     setState(() {
-      konuController.clear();
-      ilController.clear();
-      ilceController.clear();
+      topicController.clear();
+      cityController.clear();
+      provinceController.clear();
       courseFilter = CourseFilter();
       selectedCity = null;
       selectedProvince = null;
       isSelected = List.generate(isSelected.length, (_) => false);
+      _currentRange = const RangeValues(0, 100.0);
+    });
+  }
+
+  void updateRange(RangeValues newRange) {
+    setState(() {
+      _currentRange = newRange;
+      courseFilter = courseFilter.copyWith(
+        minPrice: newRange.start.toInt(),
+        maxPrice: newRange.end.toInt(),
+      );
     });
   }
 
@@ -119,9 +138,14 @@ class _FilterLessonState extends State<FilterLesson> {
         } else if (state is FilterStateSuccess) {
           final maxPriceData =
               double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
-          if (_currentRange.start == 0.0 && _currentRange.end == 100.0) {
-            _currentRange = RangeValues(0.0, maxPriceData);
+
+          if (_currentRange.end == 100.0) {
+            _currentRange = RangeValues(
+              courseFilter.minPrice?.toDouble() ?? 0.0,
+              courseFilter.maxPrice?.toDouble() ?? maxPriceData,
+            );
           }
+
           return Stack(
             children: [
               Column(
@@ -140,41 +164,31 @@ class _FilterLessonState extends State<FilterLesson> {
                               minValue: 0.0,
                               maxValue: maxPriceData,
                               currentRange: _currentRange,
-                              onChanged: (newRange) {
-                                setState(() {
-                                  _currentRange = newRange;
-                                });
-                              },
+                              onChanged: updateRange,
                               leftLabel:
                                   "Min: ${_currentRange.start.toInt()} TL",
                               rightLabel:
                                   "Max: ${_currentRange.end.toInt()} TL",
-                              activeColor: Colors.orange,
-                              inactiveColor: Colors.grey[300]!,
                             ),
                             16.toHeight,
                             Text("İl", style: styleBlack16Bold),
-                            16.toHeight,
+                            8.toHeight,
                             _buildTextField(
-                                "İl Seç", ilController, context, true),
+                                "İl Seç", cityController, context, true),
                             16.toHeight,
                             Text("İlçe", style: styleBlack16Bold),
-                            16.toHeight,
+                            8.toHeight,
                             _buildTextField(
-                                "İlçe Seç", ilceController, context, false),
+                                "İlçe Seç", provinceController, context, false),
                             16.toHeight,
-                            if (courseType == CourseTypeEnum.COURSE ||
-                                courseType == CourseTypeEnum.COURSE_BUNDLE) ...[
-                              Text("Branş", style: styleBlack18Bold),
-                              16.toHeight,
-                              _buildBranches(),
-                              16.toHeight,
-                            ],
-                            if (courseType == CourseTypeEnum.COURSE) ...[
-                              Text("Konu", style: styleBlack18Bold),
-                              16.toHeight,
-                              _buildTopicSelector(),
-                            ]
+                            Text("Branşlar", style: styleBlack18Bold),
+                            8.toHeight,
+                            _buildBranches(),
+                            16.toHeight,
+                            Text("Konu", style: styleBlack18Bold),
+                            8.toHeight,
+                            _buildTopicSelector(),
+                            16.toHeight
                           ],
                         ),
                       ),
@@ -186,20 +200,44 @@ class _FilterLessonState extends State<FilterLesson> {
             ],
           );
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       }),
     );
   }
 
-  void updateRange(RangeValues newRange) {
-    setState(() {
-      _currentRange = newRange; // State'i güncelle
-      courseFilter = courseFilter.copyWith(
-        minPrice: newRange.start.toInt(),
-        maxPrice: newRange.end.toInt(),
-      );
-    });
+  Widget _buildFilterButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: () {
+          final updatedFilter = courseFilter.copyWith(
+            query:
+                topicController.text.isNotEmpty ? topicController.text : null,
+            provinceName:
+                cityController.text.isNotEmpty ? cityController.text : null,
+            cityName: provinceController.text.isNotEmpty
+                ? provinceController.text
+                : null,
+            provinceId: selectedProvince?.id,
+            cityId: selectedCity?.id,
+          );
+          Navigator.pop(context, updatedFilter);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color5,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: 8.circularRadius,
+              topRight: 8.circularRadius,
+            ),
+          ),
+        ),
+        child: Text("Filtrele", style: styleWhite14Bold),
+      ),
+    );
   }
 
   Widget _buildTopicSelector() {
@@ -230,15 +268,16 @@ class _FilterLessonState extends State<FilterLesson> {
         if (result != null && result is Map<String, dynamic>) {
           setState(() {
             courseFilter = courseFilter.copyWith(topicId: result['id']);
-            konuController.text = result['name'];
+            topicController.text = result['name'];
           });
         }
       },
       child: AbsorbPointer(
         child: TextField(
           controller: TextEditingController(
-            text:
-                courseFilter.topicId != null ? konuController.text : "Konu Seç",
+            text: courseFilter.topicId != null
+                ? topicController.text
+                : "Konu Seç",
           ),
           decoration: InputDecoration(
             hintText: "Konu Seç",
@@ -286,6 +325,11 @@ class _FilterLessonState extends State<FilterLesson> {
                 controller.text = result.name;
               });
             }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Lütfen önce bir il seçin.")),
+            );
+            return;
           }
         }
       },
@@ -310,13 +354,18 @@ class _FilterLessonState extends State<FilterLesson> {
         return ChoiceChip(
           label: Text(
             branch,
-            style: styleBlack12Bold.copyWith(color: color5),
+            style: styleBlack12Bold.copyWith(
+              color: isSelected[index] ? Colors.white : color5,
+            ),
           ),
           selected: isSelected[index],
           checkmarkColor: Colors.white,
           selectedColor: color5,
           backgroundColor: Colors.white,
-          side: BorderSide(color: color5, width: 1.0),
+          side: BorderSide(
+            color: isSelected[index] ? color5 : color5,
+            width: 1.0,
+          ),
           labelStyle: TextStyle(
             color: isSelected[index] ? Colors.white : color5,
             fontWeight: FontWeight.bold,
@@ -336,45 +385,13 @@ class _FilterLessonState extends State<FilterLesson> {
                   lessonId: index + 1,
                   topicId: null,
                 );
-                konuController.clear();
+                topicController.clear();
                 hasSelectableTopic = true;
               }
             });
           },
         );
       }).toList(),
-    );
-  }
-
-  Widget _buildFilterButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 60,
-      child: ElevatedButton(
-        onPressed: () {
-          final updatedFilter = courseFilter.copyWith(
-            query: konuController.text.isNotEmpty ? konuController.text : null,
-            provinceName:
-                ilController.text.isNotEmpty ? ilController.text : null,
-            cityName:
-                ilceController.text.isNotEmpty ? ilceController.text : null,
-            provinceId: selectedProvince?.id,
-            cityId: selectedCity?.id,
-          );
-          Navigator.pop(context, updatedFilter);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: color5,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: 8.circularRadius,
-              topRight: 8.circularRadius,
-            ),
-          ),
-        ),
-        child: Text("Filtrele", style: styleWhite14Bold),
-      ),
     );
   }
 }

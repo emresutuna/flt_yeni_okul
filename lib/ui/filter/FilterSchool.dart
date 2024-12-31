@@ -42,7 +42,8 @@ class _FilterSchoolState extends State<FilterSchool> {
         ? Region(id: schoolFilter.cityId!, name: schoolFilter.cityName ?? "")
         : null;
     selectedProvince = schoolFilter.provinceId != null
-        ? Province(id: schoolFilter.provinceId!, name: schoolFilter.provinceName ?? "")
+        ? Province(
+            id: schoolFilter.provinceId!, name: schoolFilter.provinceName ?? "")
         : null;
   }
 
@@ -145,12 +146,17 @@ class _FilterSchoolState extends State<FilterSchool> {
               controller.text = result.name;
             });
           }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Lütfen önce bir il seçin.")),
+          );
+          return;
         }
       },
       child: AbsorbPointer(
         child: PrimaryInputField(
           controller: controller,
-        hintText: hint,
+          hintText: hint,
         ),
       ),
     );
@@ -176,14 +182,9 @@ class _FilterSchoolState extends State<FilterSchool> {
         }
       },
       child: AbsorbPointer(
-        child: TextField(
+        child: PrimaryInputField(
           controller: controller,
-          decoration: InputDecoration(
-            hintText: hint,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
+          hintText: hint,
         ),
       ),
     );
@@ -196,12 +197,10 @@ class _FilterSchoolState extends State<FilterSchool> {
       child: ElevatedButton(
           onPressed: () {
             final updatedFilter = schoolFilter.copyWith(
-              cityName: ilceController.text.isNotEmpty
-                  ? ilceController.text
-                  : null,
-              provinceName: ilController.text.isNotEmpty
-                  ? ilController.text
-                  : null,
+              cityName:
+                  ilceController.text.isNotEmpty ? ilceController.text : null,
+              provinceName:
+                  ilController.text.isNotEmpty ? ilController.text : null,
               provinceId: selectedProvince?.id,
               cityId: selectedCity?.id,
             );
