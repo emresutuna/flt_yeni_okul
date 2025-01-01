@@ -7,7 +7,9 @@ import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
+import 'package:baykurs/ui/profile/bloc/EducationInformationBloc.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
+import 'package:baykurs/ui/profile/educationInformation/EducationInformationPage.dart';
 import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
 import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
 import 'package:baykurs/ui/register/EmailActivationInfoPage.dart';
@@ -45,12 +47,12 @@ import '../ui/timesheet/TimeSheetPage.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
-        '/onboardingPage': (context) =>  OnboardingScreen(),
+        '/onboardingPage': (context) => OnboardingScreen(),
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(
               create: (context) =>
                   FavoriteSchoolBloc(userRepository: UserRepository()),
-              child:  const NotificationPage(),
+              child: const NotificationPage(),
             ),
         '/favoriteSchool': (context) => BlocProvider(
               create: (context) =>
@@ -58,7 +60,8 @@ class AppRoutes {
               child: const FavoriteSchoolPage(),
             ),
         '/mainPage': (context) => const MyHomePage(title: ""),
-        '/emailActivationInfoPage': (context) => const EmailActivationInfoPage(),
+        '/emailActivationInfoPage': (context) =>
+            const EmailActivationInfoPage(),
         '/guestPage': (context) => const GuestPage(),
         '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
         '/emailOtp': (context) => const EmailOtpPage(),
@@ -73,6 +76,11 @@ class AppRoutes {
               create: (context) =>
                   PasswordUpdateBloc(userRepository: UserRepository()),
               child: const PasswordUpdatePage(),
+            ),
+        '/educationInformationPage': (context) => BlocProvider(
+              create: (context) =>
+                  EducationInformationBloc(userRepository: UserRepository()),
+              child: const EducationInformationPage(),
             ),
         '/mailUpdate': (context) => BlocProvider(
               create: (context) =>

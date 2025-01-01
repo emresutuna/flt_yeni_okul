@@ -33,14 +33,14 @@ class _CourseListPageState extends State<CourseListPage> {
   final ValueNotifier<bool> isPageLoading = ValueNotifier<bool>(true);
   final FocusNode _searchFocusNode = FocusNode();
 
-
   void onQueryChanged(String query) {
     this.query = query;
     if (query.length > 2) {
       isSearching.value = true;
       context.read<LessonBloc>().add(
-        FetchLessonWithFilter(courseFilter: courseFilter.copyWith(query: query)),
-      );
+            FetchLessonWithFilter(
+                courseFilter: courseFilter.copyWith(query: query)),
+          );
     }
   }
 
@@ -48,8 +48,9 @@ class _CourseListPageState extends State<CourseListPage> {
     query = "";
     isSearching.value = false;
     context.read<LessonBloc>().add(
-      FetchLessonWithFilter(courseFilter: courseFilter.copyWith(query: query)),
-    );
+          FetchLessonWithFilter(
+              courseFilter: courseFilter.copyWith(query: query)),
+        );
   }
 
   @override
@@ -98,7 +99,8 @@ class _CourseListPageState extends State<CourseListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 8, right: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, top: 8, right: 16),
                       child: Text(
                         "Yayılanan dersleri incele ve ders programını oluştur.",
                         style: styleBlack12Bold,
@@ -110,7 +112,7 @@ class _CourseListPageState extends State<CourseListPage> {
                       child: InfoCardWidget(
                         title: "Dersler",
                         description:
-                        "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
+                            "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
                       ),
                     ),
                     Row(
@@ -130,15 +132,15 @@ class _CourseListPageState extends State<CourseListPage> {
                                 builder: (context, value, child) {
                                   return value
                                       ? const Padding(
-                                    padding: EdgeInsets.only(right: 16.0),
-                                    child: SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ),
-                                    ),
-                                  )
+                                          padding: EdgeInsets.only(right: 16.0),
+                                          child: SizedBox(
+                                            width: 20,
+                                            height: 20,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                            ),
+                                          ),
+                                        )
                                       : const SizedBox.shrink();
                                 },
                               ),
@@ -165,7 +167,8 @@ class _CourseListPageState extends State<CourseListPage> {
                                 courseFilter = filter;
                                 lessonBloc.add(
                                   FetchLessonWithFilter(
-                                      courseFilter: courseFilter.copyWith(query: query)),
+                                      courseFilter:
+                                          courseFilter.copyWith(query: query)),
                                 );
                               }
                             },
@@ -190,7 +193,8 @@ class _CourseListPageState extends State<CourseListPage> {
                         child: BlocBuilder<LessonBloc, LessonState>(
                           builder: (context, state) {
                             if (state is LessonStateSuccess) {
-                              courseList = state.lessonResponse.data?.data ?? [];
+                              courseList =
+                                  state.lessonResponse.data?.data ?? [];
                               if (courseList.isEmpty) {
                                 return const Center(
                                   child: Text(
@@ -202,14 +206,24 @@ class _CourseListPageState extends State<CourseListPage> {
                               return ListView.builder(
                                 itemCount: courseList.length,
                                 itemBuilder: (context, index) {
-                                  return CourseListItem(
-                                    courseModel: courseList[index],
-                                    colors: HexColor("#4A90E2"),
+                                  return InkWell(
+                                    onTap: () {
+                                      Navigator.of(context,
+                                              rootNavigator:
+                                                  !widget.hasShowBackButton)
+                                          .pushNamed('/courseDetail',
+                                              arguments: courseList[index].id);
+                                    },
+                                    child: CourseListItem(
+                                      courseModel: courseList[index],
+                                      colors: HexColor("#4A90E2"),
+                                    ),
                                   );
                                 },
                               );
                             }
-                            return const Center(child: Text('No courses available'));
+                            return const Center(
+                                child: Text('No courses available'));
                           },
                         ),
                       ),

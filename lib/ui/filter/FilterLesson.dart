@@ -53,6 +53,12 @@ class _FilterLessonState extends State<FilterLesson> {
     double initialMinPrice = courseFilter.minPrice?.toDouble() ?? 0.0;
     double initialMaxPrice = courseFilter.maxPrice?.toDouble() ?? 100.0;
 
+    // Min ve Max değerlerin güvenli aralıkta olduğundan emin ol
+    if (initialMinPrice > initialMaxPrice) {
+      initialMinPrice = 0.0;
+      initialMaxPrice = 100.0;
+    }
+
     _currentRange = RangeValues(initialMinPrice, initialMaxPrice);
 
     initializeFields();
@@ -132,77 +138,95 @@ class _FilterLessonState extends State<FilterLesson> {
           ),
         ],
       ),
-      body: BlocBuilder<FilterBloc, FilterState>(builder: (context, state) {
-        if (state is FilterStateLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is FilterStateSuccess) {
-          final maxPriceData =
-              double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
+      body: BlocListener<FilterBloc, FilterState>(
+        listenWhen: (previous, current) =>
+        current is FilterStateSuccess, // Sadece başarılı state'i dinle
+        listener: (context, state) {
+          if (state is FilterStateSuccess) {
+            final maxPriceData =
+                double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
 
-          if (_currentRange.end == 100.0) {
-            _currentRange = RangeValues(
-              courseFilter.minPrice?.toDouble() ?? 0.0,
-              courseFilter.maxPrice?.toDouble() ?? maxPriceData,
-            );
+            setState(() {
+              // Servisten gelen max değer ile güncelle
+              _currentRange = RangeValues(
+                courseFilter.minPrice?.toDouble() ?? 0.0,
+                courseFilter.maxPrice?.toDouble() ?? maxPriceData,
+              );
+            });
           }
+        },
+        child: BlocBuilder<FilterBloc, FilterState>(
+          builder: (context, state) {
+            if (state is FilterStateLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is FilterStateSuccess) {
+              final maxPriceData =
+                  double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
 
-          return Stack(
-            children: [
-              Column(
+              return Stack(
                 children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Fiyat", style: styleBlack18Bold),
-                            16.toHeight,
-                            priceRangeSlider(
-                              ctx: context,
-                              minValue: 0.0,
-                              maxValue: maxPriceData,
-                              currentRange: _currentRange,
-                              onChanged: updateRange,
-                              leftLabel:
+                  Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Fiyat", style: styleBlack18Bold),
+                                16.toHeight,
+                                priceRangeSlider(
+                                  ctx: context,
+                                  minValue: 0.0,
+                                  maxValue: maxPriceData,
+                                  currentRange: _currentRange,
+                                  onChanged: (RangeValues newRange) {
+                                    if (newRange.start >= 0.0 &&
+                                        newRange.end <= maxPriceData) {
+                                      updateRange(newRange);
+                                    }
+                                  },
+                                  leftLabel:
                                   "Min: ${_currentRange.start.toInt()} TL",
-                              rightLabel:
+                                  rightLabel:
                                   "Max: ${_currentRange.end.toInt()} TL",
+                                ),
+                                16.toHeight,
+                                Text("İl", style: styleBlack16Bold),
+                                8.toHeight,
+                                _buildTextField(
+                                    "İl Seç", cityController, context, true),
+                                16.toHeight,
+                                Text("İlçe", style: styleBlack16Bold),
+                                8.toHeight,
+                                _buildTextField("İlçe Seç", provinceController,
+                                    context, false),
+                                16.toHeight,
+                                Text("Branşlar", style: styleBlack18Bold),
+                                8.toHeight,
+                                _buildBranches(),
+                                16.toHeight,
+                                Text("Konu", style: styleBlack18Bold),
+                                8.toHeight,
+                                _buildTopicSelector(),
+                                16.toHeight
+                              ],
                             ),
-                            16.toHeight,
-                            Text("İl", style: styleBlack16Bold),
-                            8.toHeight,
-                            _buildTextField(
-                                "İl Seç", cityController, context, true),
-                            16.toHeight,
-                            Text("İlçe", style: styleBlack16Bold),
-                            8.toHeight,
-                            _buildTextField(
-                                "İlçe Seç", provinceController, context, false),
-                            16.toHeight,
-                            Text("Branşlar", style: styleBlack18Bold),
-                            8.toHeight,
-                            _buildBranches(),
-                            16.toHeight,
-                            Text("Konu", style: styleBlack18Bold),
-                            8.toHeight,
-                            _buildTopicSelector(),
-                            16.toHeight
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                      _buildFilterButton(),
+                    ],
                   ),
-                  _buildFilterButton(),
                 ],
-              ),
-            ],
-          );
-        } else {
-          return const SizedBox();
-        }
-      }),
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -273,18 +297,9 @@ class _FilterLessonState extends State<FilterLesson> {
         }
       },
       child: AbsorbPointer(
-        child: TextField(
-          controller: TextEditingController(
-            text: courseFilter.topicId != null
-                ? topicController.text
-                : "Konu Seç",
-          ),
-          decoration: InputDecoration(
-            hintText: "Konu Seç",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
+        child: SelectableInputField(
+          controller: topicController,
+          hintText: "Konu Seç",
         ),
       ),
     );
@@ -334,7 +349,7 @@ class _FilterLessonState extends State<FilterLesson> {
         }
       },
       child: AbsorbPointer(
-        child: PrimaryInputField(
+        child: SelectableInputField(
           controller: controller,
           hintText: hint,
         ),
@@ -358,6 +373,7 @@ class _FilterLessonState extends State<FilterLesson> {
               color: isSelected[index] ? Colors.white : color5,
             ),
           ),
+          showCheckmark: false,
           selected: isSelected[index],
           checkmarkColor: Colors.white,
           selectedColor: color5,
@@ -429,7 +445,7 @@ Widget priceRangeSlider2({
           values: currentRange,
           min: minValue,
           max: maxValue,
-          onChanged: onChanged, // Güncellemeyi burada sağlıyoruz
+          onChanged: onChanged,
         ),
       ),
     ],

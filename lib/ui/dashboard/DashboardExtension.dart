@@ -5,7 +5,6 @@ import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
 import '../course/model/CourseModel.dart';
-import '../model/QuickActionModel.dart';
 import 'model/MobileHomeResponse.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
@@ -72,45 +71,13 @@ class HomeCarouselWidget extends StatelessWidget {
   }
 }
 
-class QuickActionsGrid extends StatelessWidget {
-  QuickActionsGrid({super.key});
+class QuickActionGrid extends StatelessWidget {
+  final List<QuickActionPage> quickActionList = QuickActionPage.values;
 
-  final List<QuickActionModel> quickActionList = [
-    QuickActionModel(name: "Ders Programı", icon: "assets/ic_time_sheet.png"),
-    QuickActionModel(name: "Ders Bul", icon: "assets/ic_find_course.png"),
-    QuickActionModel(name: "Kurs Bul", icon: "assets/ic_trial_club.png"),
-    QuickActionModel(name: "Kurum Bul", icon: "assets/ic_find_school.png"),
-    QuickActionModel(
-        name: "Ders Talep Et", icon: "assets/ic_request_course.png"),
-    QuickActionModel(name: "Eğitim Koçu", icon: "assets/ic_training_coach.png"),
-  ];
+  const QuickActionGrid({super.key});
 
-  void _handleQuickActionNavigation(BuildContext context, int index) {
-    switch (index) {
-      case 0: // Ders Programı
-        Navigator.of(context, rootNavigator: true).pushNamed("/timeSheetPage");
-        break;
-      case 1: // Ders Bul
-        Navigator.of(context, rootNavigator: true).pushNamed("/courseListPage");
-        break;
-      case 2: // Kurs Bul
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed("/courseBundleList");
-        break;
-      case 3: // Kurum Bul
-        Navigator.of(context, rootNavigator: true).pushNamed("/companyList");
-
-        break;
-      case 4: //Ders Talep ET
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed("/requestLessonPage");
-        break;
-      case 5: // Kurum Bul
-        Navigator.of(context, rootNavigator: true).pushNamed("/teacherCoach");
-        break;
-      default:
-        break;
-    }
+  void _handleQuickActionNavigation(BuildContext context, QuickActionPage action) {
+    Navigator.of(context, rootNavigator: true).pushNamed(action.routeName);
   }
 
   @override
@@ -124,15 +91,16 @@ class QuickActionsGrid extends StatelessWidget {
         crossAxisCount: 3,
         childAspectRatio: 1.1,
       ),
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {
-          _handleQuickActionNavigation(context, index);
-        },
-        child: QuickAction(
-          icon: quickActionList[index].icon,
-          name: quickActionList[index].name,
-        ),
-      ),
+      itemBuilder: (context, index) {
+        final action = quickActionList[index];
+        return InkWell(
+          onTap: () => _handleQuickActionNavigation(context, action),
+          child: QuickAction(
+            icon: action.icon,
+            name: action.displayName,
+          ),
+        );
+      },
     );
   }
 }
@@ -235,13 +203,12 @@ class CourseMapper {
               id: 0,
             )
           : null,
-      // String'i School nesnesine çevirir
       lesson: courseList.lesson != null
           ? Lesson(
               name: courseList.lesson?.name ?? courseList.lessonName ?? "",
               id: 0,
               color: "")
-          : null, // String'i User nesnesine çevirir
+          : null,
     );
   }
 
@@ -260,4 +227,66 @@ class CourseMapper {
       lessonName: incomingLesson.lesson?.name,
     );
   }
+}
+enum QuickActionPage {
+  timeSheet,
+  courseList,
+  courseBundleList,
+  companyList,
+  requestLesson,
+  teacherCoach,
+}
+
+extension QuickActionPageExtension on QuickActionPage {
+  String get routeName {
+    switch (this) {
+      case QuickActionPage.timeSheet:
+        return "/timeSheetPage";
+      case QuickActionPage.courseList:
+        return "/courseListPage";
+      case QuickActionPage.courseBundleList:
+        return "/courseBundleList";
+      case QuickActionPage.companyList:
+        return "/companyList";
+      case QuickActionPage.requestLesson:
+        return "/requestLessonPage";
+      case QuickActionPage.teacherCoach:
+        return "/teacherCoach";
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case QuickActionPage.timeSheet:
+        return "Ders Programı";
+      case QuickActionPage.courseList:
+        return "Ders Bul";
+      case QuickActionPage.courseBundleList:
+        return "Kurs Bul";
+      case QuickActionPage.companyList:
+        return "Kurum Bul";
+      case QuickActionPage.requestLesson:
+        return "Ders Talep Et";
+      case QuickActionPage.teacherCoach:
+        return "Eğitim Koçu";
+    }
+  }
+
+  String get icon {
+    switch (this) {
+      case QuickActionPage.timeSheet:
+        return "assets/ic_time_sheet.png";
+      case QuickActionPage.courseList:
+        return "assets/ic_find_course.png";
+      case QuickActionPage.courseBundleList:
+        return "assets/ic_trial_club.png";
+      case QuickActionPage.companyList:
+        return "assets/ic_find_school.png";
+      case QuickActionPage.requestLesson:
+        return "assets/ic_request_course.png";
+      case QuickActionPage.teacherCoach:
+        return "assets/ic_training_coach.png";
+    }
+  }
+
 }

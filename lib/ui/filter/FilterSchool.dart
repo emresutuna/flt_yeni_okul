@@ -154,7 +154,7 @@ class _FilterSchoolState extends State<FilterSchool> {
         }
       },
       child: AbsorbPointer(
-        child: PrimaryInputField(
+        child: SelectableInputField(
           controller: controller,
           hintText: hint,
         ),

@@ -23,13 +23,13 @@ class CourseFilter {
 
   Map<String, String> toQueryParams() {
     final Map<String, String> params = {};
-    if (query != null && query!.isNotEmpty) params['name'] = query!;
+    if (query != null && query!.isNotEmpty) params['title'] = query!;
     if (provinceId != null) params['city_id'] = provinceId.toString();
     if (cityId != null) params['province_id'] = cityId.toString();
     if (lessonId != null) params['lesson_id'] = lessonId.toString();
     if (topicId != null) params['topic_id'] = topicId.toString();
-    if (minPrice != null) params['minPrice'] = minPrice.toString();
-    if (maxPrice != null) params['maxPrice'] = maxPrice.toString();
+    if (minPrice != null) params['min_price'] = minPrice.toString();
+    if (maxPrice != null) params['max_price'] = maxPrice.toString();
     return params;
   }
 

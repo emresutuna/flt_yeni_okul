@@ -16,7 +16,7 @@ class _UserEditSelectionState extends State<UserEditSelection> {
   @override
   Widget build(BuildContext context) {
     final List<UserEditSelectionItem> userEditSelectionItems = [
-      UserEditSelectionItem(name: "Eğitim Bilgileri", route: "/profileInfo"),
+      UserEditSelectionItem(name: "Eğitim Bilgileri", route: "/educationInformationPage"),
       UserEditSelectionItem(name: "Email Değiştir", route: "/mailUpdate"),
       UserEditSelectionItem(name: "Şifre Değiştir", route: "/passwordUpdate"),
     ];

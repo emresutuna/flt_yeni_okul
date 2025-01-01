@@ -20,7 +20,7 @@ class PasswordUpdateValidation extends GetxController {
     rePasswordError.value = '';
 
     bool isValid =
-        true; // Tüm alanların geçerli olup olmadığını kontrol etmek için
+        true;
 
     if (oldPassword.isEmpty) {
       oldPasswordError.value = 'Eski şifre boş olamaz.';
