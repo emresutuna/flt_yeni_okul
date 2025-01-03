@@ -3,10 +3,12 @@ import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/BkMapWidget.dart';
 import '../../widgets/WhiteAppBar.dart';
 import 'DateTimeSelectorWidget.dart';
 import 'model/CourseCoachDetailResponse.dart';
@@ -24,7 +26,6 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
   String selectedDate = "";
   String? selectedTime;
   String selectedClassroom = "-";
-
 
   @override
   void initState() {
@@ -49,9 +50,12 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
   List<AvailableHour> getLessonsForSelectedDate() {
     return courseDetail.availableDates[selectedDate] ?? [];
   }
+
   void updateClassroom(String? selectedTime) {
-    final selectedLesson = getLessonsForSelectedDate()
-        .firstWhere((lesson) => lesson.hour == selectedTime, orElse: () => AvailableHour(id: 0, hour: "", classroom: "Bilinmiyor", price: 0));
+    final selectedLesson = getLessonsForSelectedDate().firstWhere(
+        (lesson) => lesson.hour == selectedTime,
+        orElse: () =>
+            AvailableHour(id: 0, hour: "", classroom: "Bilinmiyor", price: 0));
     setState(() {
       selectedClassroom = selectedLesson.classroom;
     });
@@ -100,11 +104,10 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 // Course Title and Price
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text(
-                                          "Title DEneme",
+                                      child: Text("Title DEneme",
                                           style: styleBlack14Bold),
                                     ),
                                   ],
@@ -128,7 +131,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                           children: [
                                             Text("Derslik: ",
                                                 style: styleBlack12Bold),
-                                            Text( selectedClassroom,
+                                            Text(selectedClassroom,
                                                 style: styleBlack12Regular),
                                           ],
                                         ),
@@ -143,10 +146,8 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                         ),
                                       ],
                                     )
-
                                   ],
                                 ),
-
 
                                 const SizedBox(height: 8),
                                 // Lesson Badge and Description
@@ -156,10 +157,12 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),
                                       decoration: BoxDecoration(
-                                        color:
-                                        HexColor( BranchesExtension.getColorForBranch(
-                                          courseDetail.lesson ?? "Ders bulunamadı",
-                                        ) ?? DEFAULT_LESSON_COLOR),
+                                        color: HexColor(
+                                            BranchesExtension.getColorForBranch(
+                                                  courseDetail.lesson ??
+                                                      "Ders bulunamadı",
+                                                ) ??
+                                                DEFAULT_LESSON_COLOR),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
@@ -240,10 +243,9 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 ),
                                 const SizedBox(height: 8),
 
-                                Text(
-                                    courseDetail!.school.name,
+                                Text(courseDetail.school.name,
                                     style: styleBlack12Bold),
-                                Text('Fatih Mahallesi No:20 Fatih/İstanbul',
+                                Text(courseDetail.school.address,
                                     style: styleBlack12Regular),
                                 const SizedBox(height: 16),
                                 // Placeholder for the map image
@@ -251,12 +253,17 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                   height: 150,
                                   decoration: BoxDecoration(
                                     border:
-                                    Border.all(color: Colors.grey.shade300),
+                                        Border.all(color: Colors.grey.shade300),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Center(
-                                      child: Icon(Icons.map,
-                                          size: 50, color: Colors.grey)),
+                                  child: BkMapWidget(
+                                    latitude: courseDetail.school.latitude,
+                                    longitude: courseDetail.school.longitude,
+                                    zoom: 15,
+                                    schoolName: courseDetail.school.name,
+                                    onMapCreated:
+                                        (GoogleMapController controller) {},
+                                  ),
                                 ),
                               ],
                             ),

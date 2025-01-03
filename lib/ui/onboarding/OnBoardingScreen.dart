@@ -3,13 +3,20 @@ import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/widgets/IconButton.dart';
 import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../util/AuthController.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final AuthController authController = Get.find<AuthController>();
+
   PageController _pageController = PageController();
   int _currentPage = 0;
 
@@ -49,6 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _goToLoginPage() {
+    authController.completeOnboarding();
     Navigator.pushReplacementNamed(context, '/guestPage');
   }
 

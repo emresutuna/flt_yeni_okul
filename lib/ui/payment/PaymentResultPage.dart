@@ -26,7 +26,7 @@ class PaymentResultPage extends StatelessWidget {
             if (isSuccess) {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: "")),
+                    builder: (context) => const MyApp()),
                 (Route<dynamic> route) => false,
               );
             } else {
@@ -39,7 +39,7 @@ class PaymentResultPage extends StatelessWidget {
             } else {
               Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: "")),
+                    builder: (context) => const MyApp()),
                 (Route<dynamic> route) => false,
               );
             }

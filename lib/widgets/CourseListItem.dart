@@ -38,7 +38,7 @@ class CourseListItem extends StatelessWidget {
     String price = '₺${courseModel?.price ?? 0}';
 
     return Padding(
-      padding: const EdgeInsets.only(left:16.0,right: 16,top: 8,bottom: 8),
+      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 8, bottom: 8),
       child: Container(
         height: MediaQuery.of(context).size.height / 4.0,
         decoration: BoxDecoration(
@@ -124,17 +124,6 @@ class CourseListItem extends StatelessWidget {
                           SizedBox(
                             width: MediaQuery.of(context).size.width / 8,
                           ),
-                          TertiaryButton(
-                            width: MediaQuery.of(context).size.width / 2.5,
-                            height: 40,
-                            borderRadius: 8,
-                            text: "Satın Al",
-                            textColor: null,
-                            onPress: () {
-                              Navigator.pushNamed(context, '/paymentPreview',
-                                  arguments: mapCourseListToDetail(courseModel!));
-                            },
-                          ),
                         ],
                       ),
                     ),
@@ -163,10 +152,14 @@ class CourseListItem extends StatelessWidget {
                 child: Center(
                   child: RotatedBox(
                     quarterTurns: 3,
-                    child: Text(
-                     "5.Sınıf  ${lessonName}" ,
-                      textAlign: TextAlign.center,
-                      style: styleWhite12Bold,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        lessonName,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: styleWhite12Bold,
+                      ),
                     ),
                   ),
                 ),
@@ -178,6 +171,7 @@ class CourseListItem extends StatelessWidget {
     );
   }
 }
+
 CourseDetailData mapCourseListToDetail(CourseList courseList) {
   return CourseDetailData(
     id: courseList.id,
@@ -190,8 +184,10 @@ CourseDetailData mapCourseListToDetail(CourseList courseList) {
     schoolName: courseList.schoolName,
     school: courseList.school,
     topics: courseList.topics,
-    classroom: null, // Varsayılan değer atanıyor
-    teacherName: null, // Varsayılan değer atanıyor
+    classroom: null,
+    // Varsayılan değer atanıyor
+    teacherName: null,
+    // Varsayılan değer atanıyor
     teacherSurname: null, // Varsayılan değer atanıyor
   );
 }

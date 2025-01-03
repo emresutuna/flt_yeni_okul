@@ -13,35 +13,26 @@ import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
-import 'package:baykurs/util/FcmUtil.dart';
-import 'package:baykurs/util/NotificationHelper.dart';
+import 'package:baykurs/util/AuthController.dart';
 import 'package:baykurs/util/NotificationPermissionHelper.dart';
-import 'package:baykurs/util/SharedPref.dart';
 import 'package:baykurs/util/Theme.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/util/app_routes.dart';
 import 'package:baykurs/util/constants.dart';
-import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-SharedPreferences? sharedPreferences;
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  PreferenceUtils.init();
-  await GoogleFonts.pendingFonts([
-    GoogleFonts.poppins(),
-  ]);  await Firebase.initializeApp();
-  FCMMethods.initFCM();
-  FirebaseMessaging.instance;
-  await NotificationHelper.instance.initialize();
+
+  await GoogleFonts.pendingFonts([GoogleFonts.poppins()]);
+  await Firebase.initializeApp();
+
+  final authController = Get.put(AuthController());
 
   runApp(
     MultiBlocProvider(
@@ -53,12 +44,10 @@ void main() async {
           create: (context) => SchoolBloc(schoolRepository: SchoolRepository()),
         ),
         BlocProvider(
-          create: (context) =>
-              SchoolDetailBloc(schoolRepository: SchoolRepository()),
+          create: (context) => SchoolDetailBloc(schoolRepository: SchoolRepository()),
         ),
         BlocProvider(
-          create: (context) =>
-              LessonBloc(lectureRepository: LectureRepository()),
+          create: (context) => LessonBloc(lectureRepository: LectureRepository()),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(userRepository: UserRepository()),
@@ -67,15 +56,12 @@ void main() async {
           create: (context) => DashboardBloc(userRepository: UserRepository()),
         ),
         BlocProvider(
-          create: (context) =>
-              FilterBloc(lectureRepository: LectureRepository()),
+          create: (context) => FilterBloc(lectureRepository: LectureRepository()),
         ),
-        // Add other BlocProviders as needed
       ],
       child: const MyApp(),
     ),
-  );
-}
+  );}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -85,64 +71,43 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? initialRoute;
-
   @override
   void initState() {
     super.initState();
-    _checkOnboardingAndToken();
-    NotificationPermissionHelper.instance.requestPermission(context);
-  }
 
-  Future<void> _checkOnboardingAndToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-
-    String userToken = prefs.getString('auth_token') ?? "";
-
-    if (isFirstTime) {
-      setState(() {
-        initialRoute = '/onboardingPage';
-      });
-      prefs.setBool('isFirstTime', false);
-    } else if (userToken.isEmpty) {
-      setState(() {
-        initialRoute = '/loginPage';
-      });
-    } else {
-      setState(() {
-        initialRoute = '/mainPage';
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await NotificationPermissionHelper.instance.handleNotificationPermissions();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (initialRoute == null) {
-      return  MaterialApp(
-        theme: appTheme,
-        debugShowCheckedModeBanner: false,
-        home: const Scaffold(
-          body: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      );
-    }
+    final AuthController authController = Get.find<AuthController>();
 
-    return GetMaterialApp(
-      navigatorObservers: [ChuckerFlutter.navigatorObserver],
-      title: AppStrings.appName,
-      debugShowCheckedModeBanner: false,
-      color: Colors.white,
-      theme: appTheme,
-      initialRoute: initialRoute,
-      routes: AppRoutes.routes,
-    );
+    return Obx(() {
+      if (authController.isFirstTime.value == null) {
+        return const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          ),
+        );
+      }
+
+      String initialRoute = authController.isFirstTime.value
+          ? '/onboardingPage'
+          : '/mainPage';
+
+      return GetMaterialApp(
+        title: 'Baykurs',
+        debugShowCheckedModeBanner: false,
+        theme: appTheme,
+        initialRoute: initialRoute,
+        routes:AppRoutes.routes
+      );
+    });
   }
 }
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -154,7 +119,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  PersistentTabController(initialIndex: 0);
 
   @override
   void initState() {

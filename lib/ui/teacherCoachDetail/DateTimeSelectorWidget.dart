@@ -27,7 +27,7 @@ class DateTimeSelectorWidget extends StatelessWidget {
         Text("Tarih Seçin:", style: styleBlack14Bold),
         const SizedBox(height: 8),
         SizedBox(
-          height: 50,
+          height: 40,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: dates.length,
@@ -38,14 +38,14 @@ class DateTimeSelectorWidget extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                   decoration: BoxDecoration(
                     color: isSelected ? color5 : Colors.grey.shade200,
                     border: Border.all(
-                      color: isSelected ? color5 : Colors.grey.shade400,
+                      color: color5,
                       width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   child: Center(
                     child: Text(
@@ -80,11 +80,11 @@ class DateTimeSelectorWidget extends StatelessWidget {
               selectedColor: color5,
               backgroundColor: Colors.white,
               side: BorderSide(
-                color: isSelected ? color5 : Colors.grey.shade400,
+                color:color5,
                 width: 1.0,
               ),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
+                borderRadius: BorderRadius.circular(8.0),
               ),
               labelStyle: styleBlack12Bold.copyWith(
                 color: isSelected ? Colors.white : color5,

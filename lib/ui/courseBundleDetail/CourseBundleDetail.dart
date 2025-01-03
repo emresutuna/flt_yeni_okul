@@ -4,9 +4,11 @@ import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
+import '../../widgets/BkMapWidget.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
 import '../coursedetail/bloc/CourseDetailState.dart';
 import 'CourseBundleExpandableItem.dart';
@@ -222,9 +224,16 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                       Border.all(color: Colors.grey.shade300),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Center(
-                                    child: Icon(Icons.map,
-                                        size: 50, color: Colors.grey)),
+                                child: BkMapWidget(
+                                  latitude: courseDetail!.courses.first.school?.latitude??"",
+                                  longitude:  courseDetail!.courses.first.school?.longitude??"",
+                                  zoom: 15,
+                                  schoolName: courseDetail!.courses.first.school?.name ??
+                                      courseDetail!.courses.first.schoolName ??
+                                      "",
+                                  onMapCreated: (GoogleMapController controller) {
+                                  },
+                                ),
                               ),
                             ],
                           ),
