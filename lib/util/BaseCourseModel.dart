@@ -73,6 +73,9 @@ class BaseCourse {
         schoolName = json['school'];
       }
     }
+    if(json['school_name']is String){
+    schoolName = json['school_name'];
+    }
 
     if (json['lesson'] != null) {
       if (json['lesson'] is Map<String, dynamic>) {

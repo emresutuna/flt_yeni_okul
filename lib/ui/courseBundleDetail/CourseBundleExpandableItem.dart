@@ -69,7 +69,7 @@ class _ExpandableCourseDetailItemState
                       Row(
                         children: [
                           Text("Öğretmen: ", style: styleBlack14Bold),
-                          Text(widget.teacher, style: styleBlack14Regular),
+                          Expanded(child: Text(widget.teacher, style: styleBlack14Regular,overflow: TextOverflow.ellipsis,)),
                         ],
                       ),
                     if (widget.teacher.isNotEmpty) const SizedBox(height: 4),
@@ -99,9 +99,18 @@ class _ExpandableCourseDetailItemState
                     if (widget.location.isNotEmpty) const SizedBox(height: 4),
                     if (widget.price.isNotEmpty) const SizedBox(height: 8),
                     if (widget.description.isNotEmpty)
-                      Text(
-                        widget.description,
-                        style: const TextStyle(fontSize: 14),
+                      Row(
+                        children: [
+                          Text("Açıklama: ", style: styleBlack14Bold),
+                          Wrap(
+                            children: [
+                              Text(
+                                widget.description,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                            ]
+                          ),
+                        ],
                       ),
                     8.toHeight
                   ],

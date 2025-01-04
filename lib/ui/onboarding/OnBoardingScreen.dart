@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../util/AuthController.dart';
+import '../../util/SharedPrefHelper.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,29 +16,27 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final AuthController authController = Get.find<AuthController>();
 
   PageController _pageController = PageController();
   int _currentPage = 0;
-
 
   final List<Map<String, String>> onboardingData = [
     {
       'title': 'En İyisini Yakala!',
       'description':
-      'Sadece ders satın alarak hiçbir kuruma bağlı kalma, en iyi dersi sana en uygun kurumdan alarak başarıyı yakala!',
+          'Sadece ders satın alarak hiçbir kuruma bağlı kalma, en iyi dersi sana en uygun kurumdan alarak başarıyı yakala!',
       'imageAsset': 'assets/first_slide.jpg',
     },
     {
       'title': 'Yüz Yüze Eğitimin Özgün Modeli',
       'description':
-      'Başarıya ulaşmak için eksiklerini belirle ve sadece ihtiyacın olan derslerle sınava hazırlanarak yüz yüze eğitimin özgün modeliyle tanış!',
+          'Başarıya ulaşmak için eksiklerini belirle ve sadece ihtiyacın olan derslerle sınava hazırlanarak yüz yüze eğitimin özgün modeliyle tanış!',
       'imageAsset': 'assets/second_slide_alternative.jpg',
     },
     {
       'title': 'İyi Eğitim İyi Hocayla Alınır',
       'description':
-      'Dersini satın aldığın kurum ya da öğretmeni beğenmediysen sonraki dersi başka kurum ya da başka öğretmenden alarak sevimsiz eğitim yılı geçirmekten kurtul!',
+          'Dersini satın aldığın kurum ya da öğretmeni beğenmediysen sonraki dersi başka kurum ya da başka öğretmenden alarak sevimsiz eğitim yılı geçirmekten kurtul!',
       'imageAsset': 'assets/third_slide.jpg',
     },
   ];
@@ -55,9 +54,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
-  void _goToLoginPage() {
-    authController.completeOnboarding();
-    Navigator.pushReplacementNamed(context, '/guestPage');
+  void _goToLoginPage() async {
+    await saveIsFirstTime();
+    Get.offAllNamed('/guestPage');
   }
 
   @override
@@ -127,7 +126,6 @@ class OnboardingPage extends StatelessWidget {
   final bool isLastPage;
   final String imageAsset;
 
-
   const OnboardingPage({
     Key? key,
     required this.title,
@@ -150,7 +148,7 @@ class OnboardingPage extends StatelessWidget {
               color: Color(0xFFB3E5FC),
             ),
             child: Center(
-              child:  Image.asset(
+              child: Image.asset(
                 imageAsset,
                 fit: BoxFit.cover,
                 width: double.infinity,

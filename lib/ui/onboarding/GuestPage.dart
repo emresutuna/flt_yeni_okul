@@ -1,6 +1,5 @@
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/SecondaryButton.dart';
-import 'package:baykurs/widgets/TertiaryButton.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/YOColors.dart';

@@ -22,7 +22,7 @@ class ApiUrls {
   static const String getCoursesById2 =
       "?order[id]=desc&load[0]=school:id,user_id&load[1]=school.user:id,name&load[2]=lesson:id,name,color&load[3]=teacher:id,user_id&load[4]=teacher.user:id,name";
 
-  static String buyCourse(int id) => "/course/$id/buy";
+  static String buyCourse(int id) => "/mobile/course/$id/buy";
 
   static String courseCoachDetail(int id) => "/mobile/courseCoach/$id";
   static String getCoursesById(int id) => "/mobile/course/$id";

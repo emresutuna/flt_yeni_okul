@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +14,14 @@ Future<void> saveToken(String? token) async {
 Future<String?> getToken() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getString('auth_token');
+}
+Future<bool?> getIsFirstTime() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('isFirstTime');
+}
+Future<void> saveIsFirstTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false);
 }
 
 Future<void> saveData(String? data, String name) async {

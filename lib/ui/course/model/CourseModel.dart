@@ -133,6 +133,7 @@ class CourseList extends BaseCourse {
   Map<String, dynamic> toJson() {
     final data = super.toJson();
     data['lesson'] = lesson;
+    data['school_name'] = schoolName;
     return data;
   }
 }

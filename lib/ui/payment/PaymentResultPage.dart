@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../main.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PrimaryButton.dart';
@@ -37,11 +37,8 @@ class PaymentResultPage extends StatelessWidget {
             if (isSuccess) {
               Navigator.of(context).pushReplacementNamed('/timeSheetPage');
             } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => const MyApp()),
-                (Route<dynamic> route) => false,
-              );
+              Get.offAllNamed('/mainPage');
+
             }
           },
         ),

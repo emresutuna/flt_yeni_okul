@@ -21,7 +21,9 @@ class CourseBundleItem extends StatelessWidget {
         courseModel?.lessonName ??
         'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
-    String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
+    String schoolName =  courseModel!.school?.name ??
+        courseModel?.schoolName ??
+        "";
     String teacherName = courseModel?.teacherFormatted ?? '';
 
     return Padding(
@@ -63,14 +65,7 @@ class CourseBundleItem extends StatelessWidget {
                             style: styleBlack12Bold,
                           ),
                         ),
-                        if (teacherName.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              "Eğitmen: $teacherName",
-                              style: styleBlack12Regular,
-                            ),
-                          ),
+
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
