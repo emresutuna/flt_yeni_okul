@@ -3,6 +3,7 @@ import '../ui/course/model/CourseTypeEnum.dart';
 class ApiUrls {
   static const String loginUrl = "/login";
   static const String register = "/register";
+  static const String forgotPassword = "/forgot-password";
   static const String logout = "/logout";
   static const String lectures = "/lecture";
   static const String school = "/mobile/school";

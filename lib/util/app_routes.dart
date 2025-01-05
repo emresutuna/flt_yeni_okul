@@ -3,6 +3,7 @@ import 'package:baykurs/ui/courseBundle/CourseBundle.dart';
 import 'package:baykurs/ui/courseBundleDetail/CourseBundleDetail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
+import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordBloc.dart';
 import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
@@ -45,12 +46,12 @@ import '../ui/timesheet/TimeSheetPage.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
-        '/onboardingPage': (context) =>  OnboardingScreen(),
+        '/onboardingPage': (context) => OnboardingScreen(),
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(
               create: (context) =>
                   FavoriteSchoolBloc(userRepository: UserRepository()),
-              child:  const NotificationPage(),
+              child: const NotificationPage(),
             ),
         '/favoriteSchool': (context) => BlocProvider(
               create: (context) =>
@@ -58,9 +59,14 @@ class AppRoutes {
               child: const FavoriteSchoolPage(),
             ),
         '/mainPage': (context) => const MyHomePage(title: ""),
-        '/emailActivationInfoPage': (context) => const EmailActivationInfoPage(),
+        '/emailActivationInfoPage': (context) =>
+            const EmailActivationInfoPage(),
         '/guestPage': (context) => const GuestPage(),
-        '/forgotPasswordEmail': (context) => const ForgotPasswordEmailPage(),
+        '/forgotPasswordEmail': (context) => BlocProvider(
+              create: (context) =>
+                  ForgotPasswordBloc(userRepository: UserRepository()),
+              child: const ForgotPasswordEmailPage(),
+            ),
         '/emailOtp': (context) => const EmailOtpPage(),
         '/userEditSelection': (context) => const UserEditSelection(),
         '/newPasswordPage': (context) => const NewPasswordPage(),
