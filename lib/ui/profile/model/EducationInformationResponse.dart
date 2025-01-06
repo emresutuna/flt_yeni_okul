@@ -6,8 +6,8 @@ class EducationInformationResponse {
 
   EducationInformationResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    educationInfo = json['educationInfo'] != null
-        ? EducationInfo.fromJson(json['educationInfo'])
+    educationInfo = json['data'] != null
+        ? EducationInfo.fromJson(json['data'])
         : null;
   }
 
@@ -15,7 +15,7 @@ class EducationInformationResponse {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['success'] = success;
     if (educationInfo != null) {
-      data['educationInfo'] = educationInfo!.toJson();
+      data['data'] = educationInfo!.toJson();
     }
     return data;
   }

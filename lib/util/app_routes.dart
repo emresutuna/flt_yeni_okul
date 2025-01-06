@@ -8,7 +8,9 @@ import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
+import 'package:baykurs/ui/profile/bloc/EducationInformationBloc.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
+import 'package:baykurs/ui/profile/educationInformation/EducationInformationPage.dart';
 import 'package:baykurs/ui/profile/passwordUpdate/PasswordUpdatePage.dart';
 import 'package:baykurs/ui/profile/userEdit/MailUpdatePage.dart';
 import 'package:baykurs/ui/register/EmailActivationInfoPage.dart';
@@ -66,6 +68,11 @@ class AppRoutes {
               create: (context) =>
                   ForgotPasswordBloc(userRepository: UserRepository()),
               child: const ForgotPasswordEmailPage(),
+            ),
+        '/educationInformationPage': (context) => BlocProvider(
+              create: (context) =>
+                  EducationInformationBloc(userRepository: UserRepository()),
+              child: const EducationInformationPage(),
             ),
         '/emailOtp': (context) => const EmailOtpPage(),
         '/userEditSelection': (context) => const UserEditSelection(),

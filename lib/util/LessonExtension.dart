@@ -15,14 +15,18 @@ enum Branches {
 }
 
 enum ClassTypes {
-  FifthGrade,
-  SixthGrade,
-  SeventhGrade,
-  EighthGrade,
-  NinthGrade,
-  TenthGrade,
-  EleventhGrade,
-  TwelfthGrade,
+  FifthGrade(5),
+  SixthGrade(6),
+  SeventhGrade(7),
+  EighthGrade(8),
+  NinthGrade(9),
+  TenthGrade(10),
+  EleventhGrade(11),
+  TwelfthGrade(12);
+
+  final int gradeValue;
+
+  const ClassTypes(this.gradeValue);
 }
 
 extension ClassTypesExtension on ClassTypes {
@@ -45,6 +49,33 @@ extension ClassTypesExtension on ClassTypes {
       case ClassTypes.TwelfthGrade:
         return "12. Sınıf";
     }
+  }
+  static ClassTypes? fromDisplay(String displayValue) {
+    for (var grade in ClassTypes.values) {
+      if (grade.value == displayValue) {
+        return grade;
+      }
+    }
+    return null; // Eşleşme yoksa null döner
+  }
+
+  /// Sayısal değerden enum'a dönüşüm
+  static ClassTypes? fromGradeValue(int gradeValue) {
+    try {
+      return ClassTypes.values.firstWhere(
+            (grade) => grade.gradeValue == gradeValue,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+  static int? getGradeValueFromDisplay(String displayValue) {
+    for (var grade in ClassTypes.values) {
+      if (grade.value == displayValue) {
+        return grade.gradeValue;
+      }
+    }
+    return null;
   }
 }
 

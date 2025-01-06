@@ -7,9 +7,9 @@ class EducationInformationStateDefault extends EducationInformationState {}
 class EducationInformationStateLoading extends EducationInformationState {}
 
 class EducationInformationStateSuccess extends EducationInformationState {
-  final EducationInformationResponse profileResponse;
+  final EducationInformationResponse educationInformationResponse;
 
-  EducationInformationStateSuccess(this.profileResponse);
+  EducationInformationStateSuccess(this.educationInformationResponse);
 }
 class EducationInformationStateUpdateSuccess extends EducationInformationState {
   final EducationInformationResponse profileResponse;

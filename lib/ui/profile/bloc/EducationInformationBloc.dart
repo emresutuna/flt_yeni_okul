@@ -1,8 +1,7 @@
 import 'package:baykurs/ui/profile/bloc/EducationInformationState.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-
 import '../../../repository/userRepository.dart';
+import '../../../service/HandleApiException.dart';
 import 'EducationInformationEvent.dart';
 
 class EducationInformationBloc
@@ -10,30 +9,34 @@ class EducationInformationBloc
   final UserRepository userRepository;
 
   EducationInformationBloc({required this.userRepository})
-      : super(EducationInformationStateDefault()) {
+      : super(EducationInformationStateLoading()) {
     on<FetchEducationInformation>((event, emit) async {
       emit(EducationInformationStateLoading());
       try {
-        /*
-        final result = await userRepository.updateUserInfo(event.request);
+        final result = await userRepository.getEducationInfo();
 
         if (result.error != null) {
-          emit(UserUpdateError(result.error ?? "Bir hata oluştu"));
+          emit(EducationInformationStateError(
+              result.error ?? "Bir hata oluştu"));
         } else {
-
           emit(EducationInformationStateSuccess(result.data!));
         }
-
-         */
       } catch (e) {
-        String errorMessage;
-        if (e is DioException && e.response?.data != null) {
-          errorMessage = e.response?.data['message'] ?? "Bir hata oluştu";
+        emit(EducationInformationStateError(handleGeneralException(e)));
+      }
+    });
+    on<UpdateEducationInformation>((event, emit) async {
+      emit(EducationInformationStateLoading());
+      try {
+        final result = await userRepository.updateEducationInfo(event.request);
+        if (result.error != null) {
+          emit(EducationInformationStateError(
+              result.error ?? "Bir hata oluştu"));
         } else {
-          errorMessage = "Bir hata oluştu";
+          emit(EducationInformationStateUpdateSuccess(result.data!));
         }
-
-        emit(EducationInformationStateUpdateError(errorMessage));
+      } catch (e) {
+        emit(EducationInformationStateUpdateError(handleGeneralException(e)));
       }
     });
   }

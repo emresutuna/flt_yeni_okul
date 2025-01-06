@@ -4,6 +4,8 @@ import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordRequest.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
+import 'package:baykurs/ui/profile/model/EducationInformationRequest.dart';
+import 'package:baykurs/ui/profile/model/EducationInformationResponse.dart';
 import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';
 import 'package:baykurs/ui/register/model/RegisterRequest.dart';
@@ -14,6 +16,7 @@ import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:dio/dio.dart';
 
 import '../service/APIService.dart';
+import '../service/HandleApiException.dart';
 import '../service/ResultResponse.dart';
 import '../service/apiUrls.dart';
 import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
@@ -192,10 +195,11 @@ class UserRepository {
       UserUpdateRequestModel request) async {
     try {
       final response = await APIService.instance.request(
-          ApiUrls.updateUser,
-          param: request.toJson(),
-          DioMethod.patch,
-          includeHeaders: true);
+        ApiUrls.updateUser,
+        param: request.toJson(),
+        DioMethod.patch,
+        includeHeaders: true,
+      );
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -209,13 +213,57 @@ class UserRepository {
       }
     } catch (e) {
       if (e is DioException) {
-        print('DioError: ${e.response?.data}');
-        if (e.response != null && e.response!.data is Map<String, dynamic>) {
-          String errorMessage =
-              e.response!.data['message'] ?? 'Bir hata oluştu.';
-          return ResultResponse.failure(errorMessage);
-        }
+        return handleDioException<UserUpdateResponse>(e);
       }
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<EducationInformationResponse>> updateEducationInfo(
+      EducationInformationRequest request) async {
+    try {
+      final response = await APIService.instance.request(
+        ApiUrls.updateEducationInfo,
+        param: request.toJson(),
+        DioMethod.patch,
+        includeHeaders: true,
+      );
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        EducationInformationResponse educationInformationResponse =
+            EducationInformationResponse.fromJson(body);
+
+        return ResultResponse.success(educationInformationResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        return handleDioException<EducationInformationResponse>(e);
+      }
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<EducationInformationResponse>>
+      getEducationInfo() async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.getEducationInfo, DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        EducationInformationResponse educationInformationResponse =
+            EducationInformationResponse.fromJson(body);
+
+        return ResultResponse.success(educationInformationResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
       print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }

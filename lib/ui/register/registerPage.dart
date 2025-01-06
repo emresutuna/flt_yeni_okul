@@ -75,7 +75,10 @@ class _RegisterPageState extends State<RegisterPage> {
             return Stack(
               children: [
                 _buildForm(context),
-                const Center(child: CircularProgressIndicator()),
+                Center(
+                    child: CircularProgressIndicator(
+                  color: color5,
+                )),
               ],
             );
           }
@@ -118,7 +121,6 @@ class _RegisterPageState extends State<RegisterPage> {
               hintText: 'Telefon Numarası',
               keyboardType: TextInputType.phone,
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: PasswordField(
@@ -167,7 +169,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
               ],
             ),
-
             Row(
               children: [
                 Obx(
@@ -209,7 +210,6 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
               ],
             ),
-
             const SizedBox(height: 16),
             PrimaryButton(
               text: "Kayıt Ol",

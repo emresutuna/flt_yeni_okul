@@ -4,6 +4,8 @@ import 'package:baykurs/ui/profile/bloc/UserUpdateState.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../service/HandleApiException.dart';
+
 class PasswordUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
   final UserRepository userRepository;
 
@@ -21,14 +23,7 @@ class PasswordUpdateBloc extends Bloc<UserUpdateEvent, UserUpdateState> {
           emit(UserUpdateSuccess(result.data!));
         }
       } catch (e) {
-        String errorMessage;
-        if (e is DioException && e.response?.data != null) {
-          errorMessage = e.response?.data['message'] ?? "Bir hata oluştu";
-        } else {
-          errorMessage = "Bir hata oluştu";
-        }
-
-        emit(UserUpdateError(errorMessage));
+        emit(UserUpdateError(handleGeneralException(e)));
       }
     });
 
