@@ -12,7 +12,8 @@ class PaymentPreviewBloc
     on<BuyCourse>((event, emit) async {
       emit(PaymentPreviewLoadingState());
       try {
-        final result = await paymentRepository.postBuyCourse(event.courseId);
+        final result = await paymentRepository.postBuyCourse(
+            event.courseId, event.courseType);
         emit(PaymentPreviewSuccess(result.data!));
       } catch (e) {
         emit(PaymentPreviewError('Failed to fetch courseDetail'));

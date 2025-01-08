@@ -1,6 +1,8 @@
+import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewEvent.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
+import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
@@ -20,7 +22,7 @@ class PaymentPreviewPage extends StatefulWidget {
 }
 
 class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
-  CourseDetailData? courseDetail;
+  PaymentPreview? paymentPreview;
 
   @override
   void initState() {
@@ -28,8 +30,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context) != null) {
         setState(() {
-          courseDetail =
-              ModalRoute.of(context)!.settings.arguments as CourseDetailData;
+          paymentPreview =
+              ModalRoute.of(context)!.settings.arguments as PaymentPreview;
         });
       }
     });
@@ -124,7 +126,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'YKS HAZIRLIK – MATEMATİK – Fonksiyon 8 – Karma Soru Çözümleriyle Genel Tekrar',
+                                      paymentPreview?.title??"",
                                       style: styleBlack14Bold,
                                     ),
                                     const SizedBox(height: 4),
@@ -134,36 +136,32 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                       decoration: BoxDecoration(
                                         color: HexColor(
                                             BranchesExtension.getColorForBranch(
-                                                  courseDetail?.lesson?.name ??
-                                                      courseDetail
-                                                          ?.lessonName ??
+                                                  paymentPreview?.lessonName ??
                                                       "Ders bulunamadı",
                                                 ) ??
                                                 DEFAULT_LESSON_COLOR),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Text(
-                                        courseDetail!.lesson?.name ??
-                                            courseDetail!.lessonName ??
+                                        paymentPreview?.lessonName ??
                                             "Ders bulunamadı",
                                         style: styleWhite12Bold,
                                       ),
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      courseDetail!.school?.name ??
-                                          courseDetail!.schoolName ??
+                                      paymentPreview?.schoolName ??
                                           "Kurum ismi bulunamadı",
                                       style: styleBlack12Bold,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      courseDetail!.formattedDateRange ?? "",
+                                      paymentPreview?.startDate ?? "",
                                       style: styleBlack12Regular,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      courseDetail!.classroom ?? "-",
+                                      paymentPreview?.classroom ?? "",
                                       style: styleBlack12Regular,
                                     ),
                                     const SizedBox(height: 16),
@@ -171,7 +169,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Text(
-                                          "₺${courseDetail!.price}",
+                                          "₺${paymentPreview?.price ?? ""}",
                                           style: styleGreen18Bold,
                                         ),
                                       ],
@@ -188,9 +186,10 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                 text: "Devam Et",
                                 onPress: () {
                                   context.read<PaymentPreviewBloc>().add(
-                                        BuyCourse(
-                                            courseId: courseDetail!.id ?? 0),
-                                      );
+                                      BuyCourse(
+                                          courseId: paymentPreview?.id ?? 0,
+                                          courseType:
+                                              paymentPreview!.courseType!));
                                 },
                               ),
                             ),

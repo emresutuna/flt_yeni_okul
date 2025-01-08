@@ -1,5 +1,6 @@
 import 'DateExtension.dart';
 
+
 class BaseCourse {
   int? id;
   String? title;
@@ -14,7 +15,17 @@ class BaseCourse {
   String? lessonName;
   Lesson? lesson;
   List<Topics>? topics;
+  int? courseType;
+
+  /// Öğretmen bilgisi
+  Teacher? teacher;
+  String? teacherName;
+  String? teacherSurname;
+
+  /// Formatlanmış alanlar
   String? teacherFormatted;
+  String? formattedLesson;
+  String? formattedSchool;
 
   /// Lazy-loaded formatted start date
   String? get formattedStartDate =>
@@ -43,19 +54,17 @@ class BaseCourse {
     this.lessonName,
     this.lesson,
     this.topics,
-    String? teacherName,
-    String? teacherSurname,
-    Teacher? teacher,
+    this.courseType,
+    this.teacher,
+    this.teacherName,
+    this.teacherSurname,
   }) {
-    if (teacher != null) {
-      teacherFormatted = teacher.user.name;
-    } else if (teacherName != null && teacherSurname != null) {
-      teacherFormatted = "$teacherName $teacherSurname";
-    } else {
-      teacherFormatted = "Öğretmen bilgisi mevcut değil";
-    }
+    teacherFormatted = _getFormattedTeacherName();
+    formattedLesson = _getFormattedLesson();
+    formattedSchool = _getFormattedSchool();
   }
 
+  /// JSON'dan oluşturucu
   BaseCourse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
@@ -64,6 +73,7 @@ class BaseCourse {
     endDate = json['end_date'];
     price = json['price'];
     quota = json['quota'];
+    courseType = json['course_type'];
     classroom = json['classroom'];
 
     if (json['school'] != null) {
@@ -73,8 +83,8 @@ class BaseCourse {
         schoolName = json['school'];
       }
     }
-    if(json['school_name']is String){
-    schoolName = json['school_name'];
+    if (json['school_name'] is String) {
+      schoolName = json['school_name'];
     }
 
     if (json['lesson'] != null) {
@@ -97,30 +107,67 @@ class BaseCourse {
 
     // Teacher kontrolü
     if (json['teacher'] != null && json['teacher'] is Map<String, dynamic>) {
-      Teacher teacher = Teacher.fromJson(json['teacher']);
-      teacherFormatted = teacher.user.name;
-    } else if (json['teacher_name'] != null &&
-        json['teacher_surname'] != null) {
-      teacherFormatted = "${json['teacher_name']} ${json['teacher_surname']}";
+      teacher = Teacher.fromJson(json['teacher']);
+    }
+    teacherName = json['teacher_name'];
+    teacherSurname = json['teacher_surname'];
+
+    teacherFormatted = _getFormattedTeacherName();
+    formattedLesson = _getFormattedLesson();
+    formattedSchool = _getFormattedSchool();
+  }
+
+  /// JSON'a dönüştürücü
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'description': description,
+    'start_date': startDate,
+    'end_date': endDate,
+    'price': price,
+    'quota': quota,
+    'classroom': classroom,
+    'course_type': courseType,
+    'school': school?.toJson() ?? schoolName,
+    'lesson': lesson?.toJson() ?? lessonName,
+    'topics': topics?.map((topic) => topic.toJson()).toList(),
+    'teacher_formatted': teacherFormatted,
+    'formatted_lesson': formattedLesson,
+    'formatted_school': formattedSchool,
+  };
+
+  /// Öğretmen adını formatlayan yardımcı fonksiyon
+  String _getFormattedTeacherName() {
+    if (teacher != null && teacher!.user.name.isNotEmpty) {
+      return teacher!.user.name;
+    } else if (teacherName != null && teacherSurname != null) {
+      return "$teacherName $teacherSurname";
     } else {
-      teacherFormatted = "Öğretmen bilgisi mevcut değil";
+      return "Öğretmen bilgisi mevcut değil";
     }
   }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'start_date': startDate,
-        'end_date': endDate,
-        'price': price,
-        'quota': quota,
-        'classroom': classroom,
-        'school': school?.toJson() ?? schoolName,
-        'lesson': lesson?.toJson() ?? lessonName,
-        'topics': topics?.map((topic) => topic.toJson()).toList(),
-        'teacher_formatted': teacherFormatted,
-      };
+  /// Ders bilgisini formatlayan yardımcı fonksiyon
+  String _getFormattedLesson() {
+    if (lesson != null) {
+      return "${lesson!.name} - ${lesson!.color}";
+    } else if (lessonName != null) {
+      return lessonName!;
+    } else {
+      return "Ders bilgisi mevcut değil";
+    }
+  }
+
+  /// Okul bilgisini formatlayan yardımcı fonksiyon
+  String _getFormattedSchool() {
+    if (school != null && school!.name != null && school!.name!.isNotEmpty) {
+      return school!.name!;
+    } else if (schoolName != null && schoolName!.isNotEmpty) {
+      return schoolName!;
+    } else {
+      return "Okul bilgisi mevcut değil";
+    }
+  }
 }
 
 class Topics {

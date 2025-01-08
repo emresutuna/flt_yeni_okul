@@ -1,6 +1,8 @@
+import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
+import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -26,6 +28,8 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
   String selectedDate = "";
   String? selectedTime;
   String selectedClassroom = "-";
+  String selectedPrice = "-";
+  int selectedCourse = -1;
 
   @override
   void initState() {
@@ -58,6 +62,8 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
             AvailableHour(id: 0, hour: "", classroom: "Bilinmiyor", price: 0));
     setState(() {
       selectedClassroom = selectedLesson.classroom;
+      selectedPrice = selectedLesson.price.toString();
+      selectedCourse = selectedLesson.id;
     });
   }
 
@@ -107,7 +113,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: Text("Title DEneme",
+                                      child: Text(courseDetail.title,
                                           style: styleBlack14Bold),
                                     ),
                                   ],
@@ -119,7 +125,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                     Positioned(
                                       top: 10,
                                       right: 10,
-                                      child: Text("₺500}",
+                                      child: Text("₺$selectedPrice",
                                           textAlign: TextAlign.end,
                                           style: styleBlack22Bold.copyWith(
                                               color: greenButton)),
@@ -140,7 +146,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                           children: [
                                             Text("Kontenjan: ",
                                                 style: styleBlack12Bold),
-                                            Text("30 Deneme",
+                                            Text(courseDetail.quota.toString(),
                                                 style: styleBlack12Regular),
                                           ],
                                         ),
@@ -159,9 +165,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                       decoration: BoxDecoration(
                                         color: HexColor(
                                             BranchesExtension.getColorForBranch(
-                                                  courseDetail.lesson ??
-                                                      "Ders bulunamadı",
-                                                ) ??
+                                                    courseDetail.lesson) ??
                                                 DEFAULT_LESSON_COLOR),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
@@ -291,8 +295,22 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, '/paymentPreview',
-                              arguments: courseDetail);
+                          if (selectedCourse != -1) {
+                            Navigator.pushNamed(context, '/paymentPreview',
+                                arguments: PaymentPreview(
+                                    title: courseDetail.title,
+                                    id: selectedCourse,
+                                    courseType: CourseTypeEnum.COURSE_COACH,
+                                    desc: courseDetail.description,
+                                    price: selectedPrice,
+                                    teacherName:
+                                        "${courseDetail.teacherName} ${courseDetail.teacherSurname}",
+                                    schoolName: courseDetail.school.name,
+                                    classroom: selectedClassroom,
+                                    startDate: "",
+                                    endDate: "",
+                                    lessonName: courseDetail.lesson));
+                          }
                         },
                         child: Text(
                           "Satın Al",
@@ -307,7 +325,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
           } else if (state is CourseDetailStateError) {
             return Center(child: Text('Error: ${state.error}'));
           } else {
-            return SizedBox();
+            return const SizedBox();
           }
         },
       ),

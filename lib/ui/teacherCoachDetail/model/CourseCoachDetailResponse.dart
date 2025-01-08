@@ -6,13 +6,23 @@ class CourseCoachDetailResponse {
 
   factory CourseCoachDetailResponse.fromJson(Map<String, dynamic> json) {
     return CourseCoachDetailResponse(
-      status: json['status'],
-      data: CourseData.fromJson(json['data']),
+      status: json['status'] ?? false,
+      data: CourseData.fromJson(json['data'] ?? {}),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'data': data.toJson(),
+    };
   }
 }
 
 class CourseData {
+  final String title;
+  final String description;
+  final int quota;
   final String lesson;
   final String teacherName;
   final String teacherSurname;
@@ -21,6 +31,9 @@ class CourseData {
   final Map<String, List<AvailableHour>> availableDates;
 
   CourseData({
+    required this.title,
+    required this.description,
+    required this.quota,
     required this.lesson,
     required this.teacherName,
     required this.teacherSurname,
@@ -31,11 +44,14 @@ class CourseData {
 
   factory CourseData.fromJson(Map<String, dynamic> json) {
     return CourseData(
-      lesson: json['lesson'],
-      teacherName: json['teacher_name'],
-      teacherSurname: json['teacher_surname'],
-      courseType: json['course_type'],
-      school: School.fromJson(json['school']),
+      title: json['title'] ?? "Başlık mevcut değil",
+      description: json['description'] ?? "Açıklama mevcut değil",
+      quota: json['quota'] ?? 0,
+      lesson: json['lesson'] ?? "Ders bilgisi mevcut değil",
+      teacherName: json['teacher_name'] ?? "Öğretmen adı mevcut değil",
+      teacherSurname: json['teacher_surname'] ?? "Öğretmen soyadı mevcut değil",
+      courseType: json['course_type'] ?? 0,
+      school: School.fromJson(json['school'] ?? {}),
       availableDates: (json['availableDates'] as Map<String, dynamic>).map(
             (date, hours) => MapEntry(
           date,
@@ -45,6 +61,21 @@ class CourseData {
         ),
       ),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'quota': quota,
+      'lesson': lesson,
+      'teacher_name': teacherName,
+      'teacher_surname': teacherSurname,
+      'course_type': courseType,
+      'school': school.toJson(),
+      'availableDates': availableDates.map((key, value) => MapEntry(
+          key, value.map((hour) => hour.toJson()).toList())),
+    };
   }
 }
 
@@ -69,14 +100,26 @@ class School {
 
   factory School.fromJson(Map<String, dynamic> json) {
     return School(
-      id: json['id'],
-      name: json['name'],
-      address: json['address'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      cityName: json['city_name'],
-      provinceName: json['province_name'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? "Okul adı mevcut değil",
+      address: json['address'] ?? "Adres mevcut değil",
+      latitude: json['latitude'] ?? "0.0",
+      longitude: json['longitude'] ?? "0.0",
+      cityName: json['city_name'] ?? "Şehir bilgisi mevcut değil",
+      provinceName: json['province_name'] ?? "İl bilgisi mevcut değil",
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'address': address,
+      'latitude': latitude,
+      'longitude': longitude,
+      'city_name': cityName,
+      'province_name': provinceName,
+    };
   }
 }
 
@@ -95,10 +138,19 @@ class AvailableHour {
 
   factory AvailableHour.fromJson(Map<String, dynamic> json) {
     return AvailableHour(
-      id: json['id'],
-      hour: json['hour'],
-      classroom: json['classroom'],
-      price: json['price'],
+      id: json['id'] ?? 0,
+      hour: json['hour'] ?? "Saat bilgisi mevcut değil",
+      classroom: json['classroom'] ?? "Sınıf bilgisi mevcut değil",
+      price: json['price'] ?? 0,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'hour': hour,
+      'classroom': classroom,
+      'price': price,
+    };
   }
 }

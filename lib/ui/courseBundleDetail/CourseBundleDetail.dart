@@ -11,6 +11,7 @@ import '../../util/YOColors.dart';
 import '../../widgets/BkMapWidget.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
 import '../coursedetail/bloc/CourseDetailState.dart';
+import '../payment/model/PaymentPreview.dart';
 import 'CourseBundleExpandableItem.dart';
 
 class CourseBundleDetailPage extends StatefulWidget {
@@ -262,7 +263,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/paymentPreview',
-                            arguments: courseDetail);
+                            arguments:  PaymentPreview.fromObject(courseDetail));
                       },
                       child: Text(
                         "Satın Al",

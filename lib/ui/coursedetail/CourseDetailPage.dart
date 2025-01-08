@@ -1,5 +1,6 @@
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
+import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:baykurs/widgets/BkMapWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/infoWidget/InfoWidget.dart';
 import 'bloc/CourseDetailState.dart';
 import 'model/CourseDetailResponseModel.dart';
 
@@ -261,7 +261,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/paymentPreview',
-                            arguments: courseDetail);
+                            arguments: PaymentPreview.fromObject(courseDetail));
                       },
                       child: Text(
                         "Satın Al",

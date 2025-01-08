@@ -15,7 +15,13 @@ extension NullableIntExtension on int? {
     return this ?? defaultValue;
   }
 }
+extension DynamicToStringExtension on dynamic {
+  String? toSafeString() {
+    if (this == null) return null;
+    return toString();
+  }
 
+}
 extension SizedBoxExtensionWidth on int {
   Widget get toWidth {
     return SizedBox(
