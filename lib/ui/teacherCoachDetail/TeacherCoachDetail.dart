@@ -5,6 +5,7 @@ import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../util/HexColor.dart';
@@ -310,6 +311,12 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                     startDate: "",
                                     endDate: "",
                                     lessonName: courseDetail.lesson));
+                          }else{
+                            Get.snackbar(
+                              "Hata", "Lütfen önce tarih ve saat seçin",
+                              colorText: Colors.white,
+                              backgroundColor: Colors.red,
+                            );
                           }
                         },
                         child: Text(
