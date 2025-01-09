@@ -89,7 +89,7 @@ class QuickActionGrid extends StatelessWidget {
       itemCount: quickActionList.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        childAspectRatio: 1.1,
+        childAspectRatio: 0.98,
       ),
       itemBuilder: (context, index) {
         final action = quickActionList[index];

@@ -6,7 +6,6 @@ import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
 import '../util/HexColor.dart';
 import '../util/LessonExtension.dart';
 import '../util/YOColors.dart';
-import 'TertiaryButton.dart';
 
 class CourseListItem extends StatelessWidget {
   final CourseList? courseModel;
@@ -25,7 +24,7 @@ class CourseListItem extends StatelessWidget {
     String teacherName = courseModel?.teacherFormatted ?? '';
 
     String dateString =
-        courseModel?.startDate != null ? courseModel!.startDate! : '-';
+    courseModel?.startDate != null ? courseModel!.startDate! : '-';
 
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
@@ -38,29 +37,29 @@ class CourseListItem extends StatelessWidget {
     String price = '₺${courseModel?.price ?? 0}';
 
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16, top: 8, bottom: 8),
-      child: Container(
-        height: MediaQuery.of(context).size.height / 4.0,
-        decoration: BoxDecoration(
-          color: HexColor("#F7F9F9"),
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            width: 0.5,
-            color: HexColor("#222831").withAlpha(60),
-          ),
-        ),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: IntrinsicHeight(
         child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               flex: 11,
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: HexColor("#F7F9F9"),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                  border: Border.all(
+                    width: 0.5,
+                    color: HexColor("#222831").withAlpha(60),
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,
@@ -73,15 +72,14 @@ class CourseListItem extends StatelessWidget {
                         style: styleBlack12Bold,
                       ),
                     ),
-                    teacherName.isEmpty
-                        ? const SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              "Eğitmen: $teacherName",
-                              style: styleBlack12Regular,
-                            ),
-                          ),
+                    if (teacherName.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          "Eğitmen: $teacherName",
+                          style: styleBlack12Regular,
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
@@ -89,30 +87,29 @@ class CourseListItem extends StatelessWidget {
                         style: styleBlack12Regular,
                       ),
                     ),
-                    courseModel?.topics != null &&
-                            courseModel!.topics!.isNotEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Konular: ",
-                                    style: styleBlack12Regular.copyWith(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  TextSpan(
-                                    text: courseModel?.topics
-                                            ?.map((e) => e.name)
-                                            .join(" - ") ??
-                                        "",
-                                    style: styleBlack12Regular,
-                                  ),
-                                ],
+                    if (courseModel?.topics != null &&
+                        courseModel!.topics!.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Konular: ",
+                                style: styleBlack12Regular.copyWith(
+                                    fontWeight: FontWeight.bold),
                               ),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                              TextSpan(
+                                text: courseModel?.topics
+                                    ?.map((e) => e.name)
+                                    .join(" - ") ??
+                                    "",
+                                style: styleBlack12Regular,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Row(
@@ -121,9 +118,7 @@ class CourseListItem extends StatelessWidget {
                             price,
                             style: styleGreen18Bold,
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width / 8,
-                          ),
+                          const Spacer(),
                         ],
                       ),
                     ),
@@ -131,36 +126,30 @@ class CourseListItem extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                height: double.maxFinite,
-                decoration: ShapeDecoration(
-                  color: HexColor(BranchesExtension.getColorForBranch(
-                        courseModel?.lesson?.name ??
-                            courseModel?.lessonName ??
-                            DEFAULT_LESSON_COLOR,
-                      ) ??
-                      DEFAULT_LESSON_COLOR),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
-                  ),
+            Container(
+              width: 32, // Sabit genişlikte kenar sütunu
+              decoration: BoxDecoration(
+                color: HexColor(
+                  BranchesExtension.getColorForBranch(
+                    courseModel?.lesson?.name ??
+                        courseModel?.lessonName ??
+                        DEFAULT_LESSON_COLOR,
+                  ) ??
+                      DEFAULT_LESSON_COLOR,
                 ),
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: RotatedBox(
+                quarterTurns: 3,
                 child: Center(
-                  child: RotatedBox(
-                    quarterTurns: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        lessonName,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: styleWhite12Bold,
-                      ),
-                    ),
+                  child: Text(
+                    lessonName,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    style: styleWhite12Bold,
                   ),
                 ),
               ),
@@ -185,9 +174,7 @@ CourseDetailData mapCourseListToDetail(CourseList courseList) {
     school: courseList.school,
     topics: courseList.topics,
     classroom: null,
-    // Varsayılan değer atanıyor
     teacherName: null,
-    // Varsayılan değer atanıyor
-    teacherSurname: null, // Varsayılan değer atanıyor
+    teacherSurname: null,
   );
 }

@@ -53,7 +53,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           sliderData: sliderData, controller: controller)
                       : const SizedBox(),
                   const SectionTitle(title: "Kolay İşlemler"),
-                  QuickActionGrid(),
+                  const QuickActionGrid(),
                   incomingLessons.isNotEmpty
                       ? const SectionTitle(title: "Yaklaşan Dersler")
                       : const SizedBox(),

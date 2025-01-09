@@ -1,3 +1,4 @@
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -47,7 +48,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
       body: BlocBuilder<SchoolDetailBloc, SchoolDetailState>(
           builder: (context, state) {
         if (state is SchoolDetailLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return  Center(child: CircularProgressIndicator(color: color5,));
         } else if (state is SchoolDetailSuccess) {
           teacherList = state.schoolResponse.data?.teachers ?? [];
           return SafeArea(
@@ -58,7 +59,6 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 16.0, top: 8),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
                           child: const Icon(Icons.arrow_back_ios),
@@ -66,20 +66,23 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                             Navigator.pop(context);
                           },
                         ),
-                        Text(
-                          state.schoolResponse.data?.user?.name ?? "",
-                          style: styleBlack16Bold,
-                        ),
-                        const Spacer(flex: 2),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: InkWell(
-                            child: const Icon(Icons.favorite_outline),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
+                        8.toWidth,
+                        Expanded(
+                          child: Text(
+                            state.schoolResponse.data?.user?.name ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: styleBlack14Bold,
                           ),
                         ),
+                        8.toWidth,
+                        InkWell(
+                          child: const Icon(Icons.favorite_outline),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        16.toWidth
                       ],
                     ),
                   ),

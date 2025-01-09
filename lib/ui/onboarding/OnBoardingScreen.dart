@@ -4,8 +4,6 @@ import 'package:baykurs/widgets/IconButton.dart';
 import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../util/AuthController.dart';
 import '../../util/SharedPrefHelper.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -158,7 +156,7 @@ class OnboardingPage extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.5,
+          top: MediaQuery.of(context).size.height * 0.45,
           left: 0,
           right: 0,
           bottom: 0,
@@ -172,8 +170,7 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -182,9 +179,15 @@ class OnboardingPage extends StatelessWidget {
                   Text(title,
                       textAlign: TextAlign.center, style: styleBlack22Bold),
                   16.toHeight,
-                  Text(description,
+                  Flexible(
+                    child: Text(
+                      description,
                       textAlign: TextAlign.center,
-                      style: style54Black14Regular),
+                      style: style54Black14Regular,
+                      overflow: TextOverflow.ellipsis, // Gerektiğinde taşan metni keser
+                      maxLines: 5, // Gösterilecek maksimum satır sayısı
+                    ),
+                  ),
                 ],
               ),
             ),

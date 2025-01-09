@@ -112,7 +112,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                   onTap: () {
                                     setState(() {
                                       selectedDate = dates[index];
-                                      selectedTime = null; // Saat sıfırlanır
+                                      selectedTime = null;
                                     });
                                   },
                                   child: AnimatedContainer(

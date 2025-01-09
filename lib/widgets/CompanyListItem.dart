@@ -36,7 +36,7 @@ class CompanyListItem extends StatelessWidget {
           Stack(
             children: [
               Container(
-                height: 150,
+                height: MediaQuery.of(context).size.height * 0.2,
                 width: double.maxFinite,
                 decoration: const ShapeDecoration(
                   shape: RoundedRectangleBorder(
@@ -64,36 +64,42 @@ class CompanyListItem extends StatelessWidget {
               ),
               isFavorite != null
                   ? Positioned(
-                      right: 3,
-                      top: 3,
-                      child: InkWell(
-                        onTap: onFavoriteClick,
-                        child: Icon(
-                          !isFavorite! ? Icons.favorite_outline : Icons.favorite,
-                          color: color5,
-                        ),
-                      ),
-                    )
+                right: 3,
+                top: 3,
+                child: InkWell(
+                  onTap: onFavoriteClick,
+                  child: Icon(
+                    !isFavorite!
+                        ? Icons.favorite_outline
+                        : Icons.favorite,
+                    color: color5,
+                  ),
+                ),
+              )
                   : const SizedBox()
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
+            padding: const EdgeInsets.only(top: 8.0,left: 4,right: 4),
+            child: Flexible(
               child: Text(
                 name,
                 textAlign: TextAlign.center,
                 style: styleBlack14Bold,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 6.0),
-            child: SizedBox(
+            child: Flexible(
               child: Text(
                 "$province/$city",
                 textAlign: TextAlign.center,
                 style: styleGray12Bold,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

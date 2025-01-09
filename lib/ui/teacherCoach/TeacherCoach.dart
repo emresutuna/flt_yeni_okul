@@ -90,7 +90,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
                 onNotification: (notification) {
                   if (notification is ScrollStartNotification) {
                     FocusScope.of(context)
-                        .unfocus(); // Scroll sırasında focus kaldır
+                        .unfocus();
                   }
                   return false;
                 },
@@ -181,8 +181,8 @@ class _TeacherCoachState extends State<TeacherCoach> {
                         child: BlocBuilder<LessonBloc, LessonState>(
                           builder: (context, state) {
                             if (isSearching.value) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
+                              return  Center(
+                                child: CircularProgressIndicator(color: color5,),
                               );
                             }
 
@@ -198,21 +198,23 @@ class _TeacherCoachState extends State<TeacherCoach> {
                                   ),
                                 );
                               }
-                              return ListView.builder(
-                                itemCount: courseList.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: (){
-                                      Navigator.pushNamed(
-                                          context, '/teacherCoachDetail',
-                                          arguments: courseList[index].teacherId);
-                                    },
-                                    child: CoachCourseListItem(
-                                      courseModel: courseList[index],
-                                      colors: HexColor("#4A90E2"),
-                                    ),
-                                  );
-                                },
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: courseList.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: (){
+                                        Navigator.pushNamed(
+                                            context, '/teacherCoachDetail',
+                                            arguments: courseList[index].teacherId);
+                                      },
+                                      child: CoachCourseListItem(
+                                        courseModel: courseList[index],
+                                        colors: HexColor("#4A90E2"),
+                                      ),
+                                    );
+                                  },
+                                ),
                               );
                             }
                             return const Center(
