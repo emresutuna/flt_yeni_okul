@@ -174,7 +174,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   },
                   builder: (context, state) {
                     if (state is SchoolLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return  Center(child: CircularProgressIndicator(color: color5,));
                     } else if (state is SchoolSuccess) {
                       updateSchoolList(state.schoolResponse.data.schools);
                       return buildSchoolList();
@@ -205,7 +205,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                 stream: _streamController.stream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return  Center(child: CircularProgressIndicator(color: color5,));
                   } else if (snapshot.hasError) {
                     return Center(
                         child: Text('Bir hata oluştu: ${snapshot.error}'));
@@ -224,7 +224,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisSpacing: 16,
                       crossAxisCount: 2,
-                      crossAxisSpacing: 24.0,
+                      crossAxisSpacing: 16.0,
                       childAspectRatio: 2 / 2.7,
                     ),
                     itemBuilder: (context, index) {

@@ -43,7 +43,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
-          return const Center(child: CircularProgressIndicator());
+          return  Center(child: CircularProgressIndicator(color: color5,));
         } else if (state is CourseDetailStateSuccess) {
           courseDetail = state.courseResponseModel.data;
           return SafeArea(

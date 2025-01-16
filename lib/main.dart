@@ -1,5 +1,6 @@
 import 'package:baykurs/repository/SchoolRepository.dart';
 import 'package:baykurs/repository/lectureRepository.dart';
+import 'package:baykurs/repository/paymentReposityory.dart';
 import 'package:baykurs/repository/userRepository.dart';
 import 'package:baykurs/ui/company/bloc/SchoolBloc.dart';
 import 'package:baykurs/ui/companyDetail/bloc/SchoolDetailBloc.dart';
@@ -10,6 +11,7 @@ import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
+import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
@@ -62,6 +64,10 @@ void main() async {
           create: (context) =>
               FilterBloc(lectureRepository: LectureRepository()),
         ),
+        BlocProvider(
+          create: (context) =>
+              PaymentPreviewBloc(paymentRepository: PaymentRepository()),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -111,9 +117,9 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           theme: appTheme,
           debugShowCheckedModeBanner: false,
-          home: const Scaffold(
+          home:  Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: color5,),
             ),
           ),
         );

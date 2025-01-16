@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/dashboard/incomingCourse.dart';
 import 'package:flutter/material.dart';
 import '../../util/BaseCourseModel.dart';
 import '../../util/HexColor.dart';
@@ -112,23 +113,26 @@ class IncomingLessonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CourseList> courses =
-        lessons.map((lesson) => CourseMapper.toCourseList(lesson)).toList();
-
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height / 4.4,
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height /3.5, // Maksimum yükseklik
+        ),
         child: ListView.builder(
-          shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: lessons.length,
           itemBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 0.96,
-              child: CourseListItem(
-                courseModel: courses[index],
-                colors: HexColor("#4A90E2"),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.96,
+                ),
+                child: IncomingCourse(
+                  courseModel: lessons[index],
+                  colors: HexColor("#4A90E2"),
+                ),
               ),
             );
           },
@@ -137,7 +141,6 @@ class IncomingLessonsWidget extends StatelessWidget {
     );
   }
 }
-
 class InterestedLessonsWidget extends StatelessWidget {
   final List<dynamic> lessons;
 
@@ -185,49 +188,6 @@ class SectionTitle extends StatelessWidget {
   }
 }
 
-class CourseMapper {
-  /// CourseList -> IncomingLesson
-  static IncomingLesson toIncomingLesson(CourseList courseList) {
-    return IncomingLesson(
-      id: courseList.id,
-      title: courseList.title,
-      description: courseList.description,
-      startDate: courseList.startDate,
-      endDate: courseList.endDate,
-      price: courseList.price,
-      quota: courseList.quota,
-      topics: courseList.topics,
-      school: courseList.school != null
-          ? School(
-              name: courseList.schoolName ?? "",
-              id: 0,
-            )
-          : null,
-      lesson: courseList.lesson != null
-          ? Lesson(
-              name: courseList.lesson?.name ?? courseList.lessonName ?? "",
-              id: 0,
-              color: "")
-          : null,
-    );
-  }
-
-  /// IncomingLesson -> CourseList
-  static CourseList toCourseList(IncomingLesson incomingLesson) {
-    return CourseList(
-      id: incomingLesson.id,
-      title: incomingLesson.title,
-      description: incomingLesson.description,
-      startDate: incomingLesson.startDate,
-      endDate: incomingLesson.endDate,
-      price: incomingLesson.price,
-      quota: incomingLesson.quota,
-      topics: incomingLesson.topics,
-      schoolName: incomingLesson.school?.name,
-      lessonName: incomingLesson.lesson?.name,
-    );
-  }
-}
 enum QuickActionPage {
   timeSheet,
   courseList,

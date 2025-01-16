@@ -1,20 +1,16 @@
 import 'package:baykurs/ui/register/model/RegisterValidation.dart';
 import 'package:baykurs/util/AllExtension.dart';
-import 'package:baykurs/util/PhoneFormatter.dart';
 import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import '../../util/SimpleStream.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
-import '../../widgets/YOText.dart';
 import '../login/UserRole.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import '../webViewPage/WebViewPage.dart';
 import 'bloc/RegisterBloc.dart';
 import 'bloc/RegisterEvent.dart';
@@ -154,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               openWebView('https://www.bykurs.com.tr/privacy',
-                                  'Gizlilik Politakası');
+                                  'Gizlilik Politikası');
                             },
                           children: [
                             TextSpan(

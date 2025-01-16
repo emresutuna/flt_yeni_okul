@@ -19,6 +19,7 @@ Color color3 = HexColor("#7DCB70");
 Color color4 = HexColor("#F6F6F6");
 Color color5 = HexColor("#F4951E");
 Color color6 = HexColor("#FF3A44");
+Color paymentBorder = HexColor("#DDE5ED");
 
 Color renkMatematik = HexColor("#4A90E2");
 Color renkTurkce = HexColor("#FFA500");

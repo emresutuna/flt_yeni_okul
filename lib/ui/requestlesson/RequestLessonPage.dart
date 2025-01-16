@@ -110,6 +110,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
+          'X-Requested-From': 'baykursmobileapp'
         },
       );
       if (response.statusCode == 200) {

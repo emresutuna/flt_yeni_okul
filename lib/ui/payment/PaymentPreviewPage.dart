@@ -2,6 +2,8 @@ import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewEvent.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
+import 'package:baykurs/ui/payment/makePayment/MakePaymentPage.dart';
+import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/LessonExtension.dart';
@@ -62,7 +64,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
           return Stack(
             children: [
               _buildWidget(context),
-              const Center(child: CircularProgressIndicator()),
+               Center(child: CircularProgressIndicator(color: color5,)),
             ],
           );
         }
@@ -126,7 +128,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      paymentPreview?.title??"",
+                                      paymentPreview?.title ?? "",
                                       style: styleBlack14Bold,
                                     ),
                                     const SizedBox(height: 4),
@@ -185,11 +187,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                               child: GreenPrimaryButton(
                                 text: "Devam Et",
                                 onPress: () {
-                                  context.read<PaymentPreviewBloc>().add(
-                                      BuyCourse(
-                                          courseId: paymentPreview?.id ?? 0,
-                                          courseType:
-                                              paymentPreview!.courseType!));
+                                  Navigator.pushNamed(context, '/makePayment',
+                                      arguments: paymentPreview);
                                 },
                               ),
                             ),

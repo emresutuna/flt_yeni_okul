@@ -158,7 +158,7 @@ class _FilterLessonState extends State<FilterLesson> {
         child: BlocBuilder<FilterBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterStateLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: CircularProgressIndicator(color: color5,));
             } else if (state is FilterStateSuccess) {
               final maxPriceData =
                   double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;

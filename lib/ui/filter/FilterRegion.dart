@@ -74,7 +74,7 @@ class _FilterRegionState extends State<FilterRegion> {
         },
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ?  Center(child: CircularProgressIndicator(color: color5,))
           : Column(
         children: [
           Expanded(

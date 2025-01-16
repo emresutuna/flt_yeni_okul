@@ -7,6 +7,7 @@ import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordBloc.dart';
 import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
+import 'package:baykurs/ui/payment/makePayment/MakePaymentPage.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
 import 'package:baykurs/ui/profile/bloc/EducationInformationBloc.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
@@ -128,6 +129,11 @@ class AppRoutes {
               create: (context) =>
                   PaymentPreviewBloc(paymentRepository: PaymentRepository()),
               child: const PaymentPreviewPage(),
+            ),
+        '/makePayment': (context) => BlocProvider(
+              create: (context) =>
+                  PaymentPreviewBloc(paymentRepository: PaymentRepository()),
+              child: const MakePaymentPage(),
             ),
         '/timeSheetPage': (context) => BlocProvider(
               create: (context) =>

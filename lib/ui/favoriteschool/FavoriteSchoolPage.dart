@@ -139,7 +139,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                         ),
                       );
                     } else if (state is FavoriteSchoolLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return  Center(child: CircularProgressIndicator(color: color5,));
                     } else if (state is FavoriteSchoolError) {
                       return const BkErrorWidget(
                         title: "Hata",

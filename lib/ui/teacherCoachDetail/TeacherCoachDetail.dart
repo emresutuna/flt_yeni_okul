@@ -76,7 +76,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
         builder: (context, state) {
           if (state is CourseDetailStateLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgressIndicator(color: color5,));
           } else if (state is CourseCoachDetailSuccess) {
             courseDetail = state.courseCoachResponse.data;
             extractDates();

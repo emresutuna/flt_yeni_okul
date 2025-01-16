@@ -11,3 +11,5 @@ class BuyCourse extends PaymentPreviewEvent {
     required this.courseType,
   });
 }
+class LoadPaymentBill extends PaymentPreviewEvent {}
+

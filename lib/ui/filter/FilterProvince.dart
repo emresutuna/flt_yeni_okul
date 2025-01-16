@@ -80,7 +80,7 @@ class _FilterProvinceState extends State<FilterProvince> {
         },
       ),
       body: isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ?  Center(child: CircularProgressIndicator(color: color5,))
           : Column(
         children: [
           Expanded(

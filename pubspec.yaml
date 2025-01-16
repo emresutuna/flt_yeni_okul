@@ -130,6 +130,8 @@ flutter:
     - assets/second_slide.jpg
     - assets/second_slide_alternative.jpg
     - assets/third_slide.jpg
+    - assets/logo_band.png
+    - assets/iyzico_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

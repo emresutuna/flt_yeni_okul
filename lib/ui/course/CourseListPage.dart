@@ -84,8 +84,10 @@ class _CourseListPageState extends State<CourseListPage> {
             valueListenable: isPageLoading,
             builder: (context, isLoading, child) {
               if (isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: color5,
+                  ),
                 );
               }
               return NotificationListener<ScrollNotification>(

@@ -104,7 +104,9 @@ class CoachCourseListItem extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          // Detayları gör butonu için işlem
+                          Navigator.pushNamed(
+                              context, '/teacherCoachDetail',
+                              arguments: courseModel?.teacherId);
                         },
                         child:  Text(
                           "Detayı Gör",

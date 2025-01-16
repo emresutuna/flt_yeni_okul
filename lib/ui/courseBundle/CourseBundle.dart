@@ -37,8 +37,9 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
     if (query.length > 2) {
       isSearching.value = true;
       context.read<LessonBloc>().add(
-        FetchCourseBundleWithFilter(courseFilter: courseFilter.copyWith(query: query)),
-      );
+            FetchCourseBundleWithFilter(
+                courseFilter: courseFilter.copyWith(query: query)),
+          );
     }
   }
 
@@ -46,8 +47,9 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
     query = "";
     isSearching.value = false;
     context.read<LessonBloc>().add(
-      FetchCourseBundleWithFilter(courseFilter: courseFilter.copyWith(query: query)),
-    );
+          FetchCourseBundleWithFilter(
+              courseFilter: courseFilter.copyWith(query: query)),
+        );
   }
 
   @override
@@ -81,14 +83,17 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
             valueListenable: isPageLoading,
             builder: (context, isLoading, child) {
               if (isLoading) {
-                return  Center(
-                  child: CircularProgressIndicator(color: color5,),
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: color5,
+                  ),
                 );
               }
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollStartNotification) {
-                    FocusScope.of(context).unfocus(); // Scroll sırasında focus kaldır
+                    FocusScope.of(context)
+                        .unfocus(); // Scroll sırasında focus kaldır
                   }
                   return false;
                 },
@@ -96,7 +101,8 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 8, right: 16),
+                      padding:
+                          const EdgeInsets.only(left: 16.0, top: 8, right: 16),
                       child: Text(
                         "Yayınlanan kursları incele ve ders programını oluştur.",
                         style: styleBlack12Bold,
@@ -108,7 +114,7 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                       child: InfoCardWidget(
                         title: "Kurslar",
                         description:
-                        "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
+                            "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
                       ),
                     ),
                     Row(
@@ -142,7 +148,8 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                                 MaterialPageRoute(
                                   builder: (context) => FilterLesson(
                                     courseFilter: courseFilter,
-                                    courseTypeEnum: CourseTypeEnum.COURSE_BUNDLE,
+                                    courseTypeEnum:
+                                        CourseTypeEnum.COURSE_BUNDLE,
                                   ),
                                   fullscreenDialog: true,
                                 ),
@@ -152,7 +159,8 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                                 courseFilter = filter;
                                 lessonBloc.add(
                                   FetchCourseBundleWithFilter(
-                                      courseFilter: courseFilter.copyWith(query: query)),
+                                      courseFilter:
+                                          courseFilter.copyWith(query: query)),
                                 );
                               }
                             },
@@ -183,7 +191,8 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                             }
 
                             if (state is CourseBundleSuccess) {
-                              courseList = state.courseBundleResponse.data?.data ?? [];
+                              courseList =
+                                  state.courseBundleResponse.data?.data ?? [];
                               if (courseList.isEmpty) {
                                 return const Center(
                                   child: Text(
@@ -196,20 +205,22 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
                                 itemCount: courseList.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
-                                    onTap: (){
+                                    onTap: () {
                                       Navigator.pushNamed(
                                           context, '/courseBundleDetail',
                                           arguments: courseList[index].id);
                                     },
                                     child: CourseBundleItem(
-                                      courseModel: courseList[index].toCourseList(),
+                                      courseModel:
+                                          courseList[index].toCourseList(),
                                       colors: HexColor("#4A90E2"),
                                     ),
                                   );
                                 },
                               );
                             }
-                            return const Center(child: Text('No courses available'));
+                            return const Center(
+                                child: Text('No courses available'));
                           },
                         ),
                       ),

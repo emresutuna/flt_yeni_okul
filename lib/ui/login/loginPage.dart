@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (context, state) {
             if (state is LoginLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: CircularProgressIndicator(color: color5,));
             }
             return Center(
               child: SingleChildScrollView(
