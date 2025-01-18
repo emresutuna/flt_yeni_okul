@@ -1,5 +1,3 @@
-
-
 import '../model/SchoolDetailResponse.dart';
 
 abstract class SchoolDetailState {}
@@ -18,4 +16,10 @@ class SchoolDetailError extends SchoolDetailState {
   final String error;
 
   SchoolDetailError(this.error);
+}
+
+class FavoriteError extends SchoolDetailState {
+  final String error;
+
+  FavoriteError(this.error);
 }

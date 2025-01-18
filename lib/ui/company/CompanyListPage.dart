@@ -75,7 +75,11 @@ class _CompanyListPageState extends State<CompanyListPage> {
     _streamController = StreamController<List<SchoolItem>>();
     _streamController.sink.add(schools);
   }
-
+@override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<SchoolBloc>().add(FetchSchool());
+}
   @override
   void dispose() {
     _streamController.close();
@@ -234,8 +238,11 @@ class _CompanyListPageState extends State<CompanyListPage> {
                             context,
                             '/companyDetail',
                             arguments: schoolList[index].id,
-                          );
+                          ).then((value) {
+                            context.read<SchoolBloc>().add(FetchSchool());
+                          });
                         },
+
                         child: CompanyListItem(
                           icon: schoolList[index].photo ?? "",
                           name: schoolList[index].user.name,

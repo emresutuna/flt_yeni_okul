@@ -34,6 +34,7 @@ class SchoolDetail {
   String? photo;
   String? description;
   List<Teachers>? teachers;
+  bool? isFav;
 
   SchoolDetail(
       {this.id,
@@ -49,6 +50,7 @@ class SchoolDetail {
         this.city,
         this.photo,
         this.description,
+        this.isFav,
         this.teachers});
 
   SchoolDetail.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class SchoolDetail {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
+    isFav = json['isFav'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
     province = json['province'] != null
         ? Province.fromJson(json['province'])

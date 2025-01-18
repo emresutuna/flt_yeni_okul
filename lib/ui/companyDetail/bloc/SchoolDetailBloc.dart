@@ -18,5 +18,12 @@ class SchoolDetailBloc extends Bloc<SchoolDetailEvent, SchoolDetailState> {
         emit(SchoolDetailError('Failed to fetch users'));
       }
     });
+    on<ToggleFavorite>((event, emit) async {
+      try {
+        final result = await schoolRepository.toggleFav(event.schoolId);
+      } catch (e) {
+        emit(FavoriteError('Failed to Favorite'));
+      }
+    });
   }
 }

@@ -8,3 +8,8 @@ class FetchSchoolById extends SchoolDetailEvent {
     required this.id,
   });
 }
+class ToggleFavorite extends SchoolDetailEvent {
+  final int schoolId;
+
+  ToggleFavorite({required this.schoolId});
+}
