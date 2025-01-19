@@ -76,8 +76,18 @@ class _ExpandableCourseDetailItemState
                     if (widget.date.isNotEmpty)
                       Row(
                         children: [
-                          Text("Tarih: ", style: styleBlack14Bold),
-                          Text(widget.date, style: styleBlack14Regular),
+                          Text(
+                            "Tarih: ",
+                            style: styleBlack14Bold,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Flexible(
+                            child: Text(
+                              widget.date,
+                              style: styleBlack14Regular,
+                            ),
+                          ),
                         ],
                       ),
                     if (widget.date.isNotEmpty) const SizedBox(height: 4),

@@ -261,11 +261,19 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   ),
                   8.toHeight,
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Dikey hizalamayı başa çeker
                     children: [
-                      Text("Detay: ", style: styleBlack14Bold),
                       Text(
-                        "${paymentPreview?.title ?? ""} - ${paymentPreview?.lessonName ?? "-"}",
-                        style: styleBlack14Regular,
+                        "Detay: ",
+                        style: styleBlack14Bold,
+                      ),
+                      Expanded( // Çok satırlı metinlerin düzgün sarılması için Expanded kullanılır
+                        child: Text(
+                          "${paymentPreview?.title ?? ""} - ${paymentPreview?.lessonName ?? "-"}",
+                          style: styleBlack14Regular,
+                          maxLines: 3, // İsteğe bağlı olarak maksimum satır sayısı ayarlanabilir
+                          overflow: TextOverflow.ellipsis, // Uzun metinlerde kesme ekler
+                        ),
                       ),
                     ],
                   ),

@@ -118,25 +118,26 @@ class _TeacherCoachState extends State<TeacherCoach> {
                       children: [
                         Expanded(
                           flex: 5,
-                          child: Stack(
-                            alignment: Alignment.centerRight,
-                            children: [
-                              YoSearchBar(
-                                onQueryChanged: onQueryChanged,
-                                onClearCallback: onQueryCleared,
-                                focusNode: _searchFocusNode,
-                              ),
-                              ValueListenableBuilder<bool>(
-                                valueListenable: isSearching,
-                                builder: (context, value, child) {
-                                  return const SizedBox.shrink();
-                                },
-                              ),
-                            ],
+                          child: Container(
+                            child: Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                YoSearchBar(
+                                  onQueryChanged: onQueryChanged,
+                                  onClearCallback: onQueryCleared,
+                                  focusNode: _searchFocusNode,
+                                ),
+                                ValueListenableBuilder<bool>(
+                                  valueListenable: isSearching,
+                                  builder: (context, value, child) {
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         Expanded(
-                          flex: 1,
                           child: InkWell(
                             onTap: () async {
                               final lessonBloc = context.read<LessonBloc>();
@@ -198,23 +199,21 @@ class _TeacherCoachState extends State<TeacherCoach> {
                                   ),
                                 );
                               }
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: courseList.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: (){
-                                        Navigator.pushNamed(
-                                            context, '/teacherCoachDetail',
-                                            arguments: courseList[index].teacherId);
-                                      },
-                                      child: CoachCourseListItem(
-                                        courseModel: courseList[index],
-                                        colors: HexColor("#4A90E2"),
-                                      ),
-                                    );
-                                  },
-                                ),
+                              return ListView.builder(
+                                itemCount: courseList.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(
+                                          context, '/teacherCoachDetail',
+                                          arguments: courseList[index].teacherId);
+                                    },
+                                    child: CoachCourseListItem(
+                                      courseModel: courseList[index],
+                                      colors: HexColor("4A90E2"),
+                                    ),
+                                  );
+                                },
                               );
                             }
                             return const Center(

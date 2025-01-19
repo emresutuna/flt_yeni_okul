@@ -81,14 +81,6 @@ class CreditCardInputController extends GetxController {
       );
       return false;
     }
-
-    Get.snackbar(
-      "Başarılı",
-      "Ödeme Başarıyla Yapıldı",
-      colorText: Colors.white,
-      backgroundColor: Colors.green,
-      snackPosition: SnackPosition.TOP,
-    );
     return true;
   }
 }

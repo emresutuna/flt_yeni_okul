@@ -21,13 +21,12 @@ class CourseBundleItem extends StatelessWidget {
         courseModel?.lessonName ??
         'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
-    String schoolName =  courseModel!.school?.name ??
-        courseModel?.schoolName ??
-        "";
+    String schoolName =
+        courseModel!.school?.name ?? courseModel?.schoolName ?? "";
     String teacherName = courseModel?.teacherFormatted ?? '';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
       child: ConstrainedBox(
         constraints: const BoxConstraints(
           maxWidth: double.infinity,
@@ -65,7 +64,6 @@ class CourseBundleItem extends StatelessWidget {
                             style: styleBlack12Bold,
                           ),
                         ),
-
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
@@ -73,7 +71,13 @@ class CourseBundleItem extends StatelessWidget {
                             style: styleBlack12Regular,
                           ),
                         ),
-
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "₺${courseModel?.price ?? ""}",
+                            style: styleGreen18Bold,
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -83,10 +87,11 @@ class CourseBundleItem extends StatelessWidget {
                   child: Container(
                     decoration: ShapeDecoration(
                       color: HexColor(BranchesExtension.getColorForBranch(
-                        courseModel?.lesson?.name ??
-                            courseModel?.lessonName ??
-                            DEFAULT_LESSON_COLOR,
-                      ) ?? DEFAULT_LESSON_COLOR),
+                            courseModel?.lesson?.name ??
+                                courseModel?.lessonName ??
+                                DEFAULT_LESSON_COLOR,
+                          ) ??
+                          DEFAULT_LESSON_COLOR),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(8),
@@ -98,10 +103,10 @@ class CourseBundleItem extends StatelessWidget {
                       child: RotatedBox(
                         quarterTurns: 3,
                         child: FittedBox(
-                          fit: BoxFit.scaleDown, // Metnin alana sığmasını sağlar
+                          fit: BoxFit.scaleDown,
                           child: Container(
                             margin: const EdgeInsets.symmetric(
-                              vertical: 8.0, // Üst ve alt boşluk eklendi
+                              vertical: 8.0,
                             ),
                             child: Text(
                               lessonName,

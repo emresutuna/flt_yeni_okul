@@ -6,7 +6,6 @@ import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
 import '../course/bloc/LessonBloc.dart';
 import '../course/bloc/LessonEvent.dart';
