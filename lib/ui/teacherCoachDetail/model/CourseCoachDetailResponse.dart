@@ -53,15 +53,33 @@ class CourseData {
       courseType: json['course_type'] ?? 0,
       school: School.fromJson(json['school'] ?? {}),
       availableDates: (json['availableDates'] as Map<String, dynamic>).map(
-            (date, hours) => MapEntry(
-          date,
-          (hours['availableHours'] as List)
-              .map((hour) => AvailableHour.fromJson(hour))
-              .toList(),
-        ),
+            (date, hours) {
+          if (hours['availableHours'] is List) {
+            // Eğer availableHours bir List ise
+            return MapEntry(
+              date,
+              (hours['availableHours'] as List)
+                  .map((hour) => AvailableHour.fromJson(hour))
+                  .toList(),
+            );
+          } else if (hours['availableHours'] is Map) {
+            // Eğer availableHours bir Map ise
+            return MapEntry(
+              date,
+              (hours['availableHours'] as Map<String, dynamic>)
+                  .values
+                  .map((hour) => AvailableHour.fromJson(hour))
+                  .toList(),
+            );
+          } else {
+            // Eğer yapı tanımlı değilse boş bir liste döndür
+            return MapEntry(date, []);
+          }
+        },
       ),
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

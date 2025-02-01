@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:ffi';
 
+import 'package:baykurs/ui/notification/model/NotificationResponse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
+
+import '../ui/dashboard/model/MobileHomeResponse.dart';
 
 
 Future<void> saveToken(String? token) async {
@@ -9,6 +13,24 @@ Future<void> saveToken(String? token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('auth_token', token);
   }
+}
+
+Future<void> saveNotification(Notifications notificationModel) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String jsonData = jsonEncode(notificationModel.toJson());
+  await prefs.setString('notification', jsonData);
+}
+Future<Notifications?> getNotification() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  String? jsonData = prefs.getString('notification');
+
+  if (jsonData != null) {
+    Map<String, dynamic> jsonMap = jsonDecode(jsonData);
+    return Notifications.fromJson(jsonMap);
+  }
+
+  return null;
 }
 
 Future<String?> getToken() async {

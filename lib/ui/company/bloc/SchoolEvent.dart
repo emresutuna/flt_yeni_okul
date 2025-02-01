@@ -2,7 +2,8 @@ import 'package:baykurs/ui/company/model/SchoolFilter.dart';
 
 abstract class SchoolEvent {}
 
-class FetchSchool extends SchoolEvent {}
+class FetchSchool extends SchoolEvent {
+}
 
 class ToggleFavorite extends SchoolEvent {
   final int schoolId;

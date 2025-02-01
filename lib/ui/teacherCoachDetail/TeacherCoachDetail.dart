@@ -217,7 +217,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 const SizedBox(height: 8),
 
                                 Text(
-                                  'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
+                                  courseDetail.description,
                                   style: styleBlack12Regular,
                                 ),
                                 const SizedBox(height: 12),

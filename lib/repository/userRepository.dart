@@ -4,6 +4,7 @@ import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordRequest.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationRequest.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationResponse.dart';
 import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
@@ -243,6 +244,26 @@ class UserRepository {
       if (e is DioException) {
         return handleDioException<EducationInformationResponse>(e);
       }
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<PaymentBillResponse>> getPaymentBills() async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.getBillAddress, DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        PaymentBillResponse billResponse = PaymentBillResponse.fromJson(body);
+
+        return ResultResponse.success(billResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }

@@ -1,4 +1,6 @@
 import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillEvent.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -228,9 +230,9 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.asset(
-                      'assets/iyzico_logo.png',
+                      'assets/credit_card_logos.png',
                       height: 50,
-                      width: MediaQuery.of(context).size.width * 0.70,
+                      width: MediaQuery.of(context).size.width * 0.30,
                     ),
                   ),
                 ],

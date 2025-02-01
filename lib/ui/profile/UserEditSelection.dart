@@ -1,4 +1,5 @@
 import 'package:baykurs/ui/profile/model/UserEditSelectionItem.dart';
+import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
@@ -13,11 +14,15 @@ class UserEditSelection extends StatefulWidget {
 }
 
 class _UserEditSelectionState extends State<UserEditSelection> {
+
   @override
   Widget build(BuildContext context) {
     final List<UserEditSelectionItem> userEditSelectionItems = [
-      UserEditSelectionItem(name: "Eğitim Bilgileri", route: "/educationInformationPage"),
+      UserEditSelectionItem(
+          name: "Eğitim Bilgileri", route: "/educationInformationPage"),
       UserEditSelectionItem(name: "Email Değiştir", route: "/mailUpdate"),
+      UserEditSelectionItem(
+          name: "Telefon Numarası Değiştir", route: "/phoneUpdate"),
       UserEditSelectionItem(name: "Şifre Değiştir", route: "/passwordUpdate"),
     ];
 
@@ -29,13 +34,6 @@ class _UserEditSelectionState extends State<UserEditSelection> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Text(
-                'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
-                style: styleBlack12Regular,
-              ),
-              const SizedBox(
-                height: 24,
-              ),
               ListView.builder(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,

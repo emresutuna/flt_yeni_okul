@@ -1,38 +1,59 @@
-import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
-import 'package:baykurs/ui/profile/bloc/UserUpdateEvent.dart';
-import 'package:baykurs/ui/profile/bloc/UserUpdateState.dart';
-import 'package:baykurs/ui/profile/model/MailUpdateValidation.dart';
-import 'package:baykurs/ui/profile/model/UserUpdateRequest.dart';
-import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../util/SharedPrefHelper.dart';
 import '../../../util/YOColors.dart';
 import '../../../widgets/PrimaryButton.dart';
 import '../../../widgets/PrimaryInputField.dart';
+import '../../../widgets/WhiteAppBar.dart';
+import '../bloc/PasswordUpdateBloc.dart';
+import '../bloc/UserUpdateEvent.dart';
+import '../bloc/UserUpdateState.dart';
+import '../model/MailUpdateValidation.dart';
+import '../model/PhoneUpdateValidation.dart';
+import '../model/UserUpdateRequest.dart';
 
-class MailUpdatePage extends StatefulWidget {
-  const MailUpdatePage({super.key});
+class PhoneUpdatePage extends StatefulWidget {
+  const PhoneUpdatePage({super.key});
 
   @override
-  State<MailUpdatePage> createState() => _MailUpdatePageState();
+  State<PhoneUpdatePage> createState() => _PhoneUpdatePageState();
 }
 
-class _MailUpdatePageState extends State<MailUpdatePage> {
-  MailUpdateValidation mailUpdateValidation = MailUpdateValidation();
+class _PhoneUpdatePageState extends State<PhoneUpdatePage> {
+  PhoneUpdateValidation mailUpdateValidation = PhoneUpdateValidation();
+  String? phoneNumber = "";
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        phoneNumber = prefs.getString('user_phone') ?? "";
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("E-posta Güncelle"),
+      appBar: WhiteAppBar("Telefon Numarası Güncelle"),
       body: SafeArea(
         child: BlocConsumer<PasswordUpdateBloc, UserUpdateState>(
           listener: (context, state) {
             if (state is UserUpdateSuccess) {
+              saveData(
+                mailUpdateValidation.formatPhoneNumber(
+                    mailUpdateValidation.phoneController.text),
+                "user_phone",
+              );
               Get.snackbar(
                 "Başarılı",
-                "Mail Adresi Güncellendi, e-postanıza gelen aktivasyon ile birlikte  aktivasyon yapınız",
+                "Telefon Numarası Güncellendi",
                 colorText: Colors.white,
                 backgroundColor: Colors.green,
               );
@@ -51,26 +72,18 @@ class _MailUpdatePageState extends State<MailUpdatePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 24),
                       Text(
-                        'E-mail adresini güncelledikten sonra aktivasyon işlemini gerçekleştirmeyi unutma!',
+                        'Telefon numaranı değiştirerek güncelleyebilirsin.',
                         style: styleBlack12Regular,
                       ),
-                      const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: PrimaryInputField(
-                          controller: mailUpdateValidation.oldMailController,
-                          hintText: "Mevcut Email",
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: PrimaryInputField(
-                          controller: mailUpdateValidation.newMailController,
-                          hintText: "Yeni Email",
+                          controller: mailUpdateValidation.phoneController,
+                          hintText: "$phoneNumber",
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -81,11 +94,13 @@ class _MailUpdatePageState extends State<MailUpdatePage> {
                             context.read<PasswordUpdateBloc>().add(
                                 UserUpdateRequest(
                                     request: UserUpdateRequestModel(
-                                        email: mailUpdateValidation
-                                            .newMailController.text,
+                                        email: null,
                                         password: null,
                                         name: null,
-                                        phone: null)));
+                                        phone: mailUpdateValidation
+                                            .formatPhoneNumber(
+                                                mailUpdateValidation
+                                                    .phoneController.text))));
                           }
                         },
                       ),

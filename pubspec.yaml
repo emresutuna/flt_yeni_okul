@@ -72,6 +72,7 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   permission_handler: ^11.3.1
   url_launcher: ^6.2.6
+  uni_links: ^0.5.1
 
 flutter_launcher_icons:
   image_path: "assets/baykurs_main_logo.png"
@@ -132,6 +133,7 @@ flutter:
     - assets/third_slide.jpg
     - assets/logo_band.png
     - assets/iyzico_logo.png
+    - assets/credit_card_logos.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

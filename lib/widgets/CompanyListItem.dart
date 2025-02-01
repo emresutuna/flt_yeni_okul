@@ -40,17 +40,14 @@ class CompanyListItem extends StatelessWidget {
               Container(
                 height: MediaQuery.of(context).size.height * 0.2,
                 width: double.maxFinite,
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(2),
-                      topRight: Radius.circular(2),
-                    ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(8), // Adjust the radius as needed
+                    topRight: Radius.circular(8),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(4.0),
                   child: CachedNetworkImage(
+                    fadeInDuration: Duration.zero,
+                    fadeOutDuration: Duration.zero,
                     imageUrl: icon,
                     fit: BoxFit.fill,
                     placeholder: (context, url) => Image.asset(
@@ -93,7 +90,7 @@ class CompanyListItem extends StatelessWidget {
             child: Text(
               "$province/$city",
               textAlign: TextAlign.center,
-              style: styleGray12Bold,
+              style: styleBlack12Regular,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

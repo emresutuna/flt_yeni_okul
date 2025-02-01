@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:baykurs/ui/filter/FilterSchool.dart';
-import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
@@ -23,34 +22,116 @@ class CompanyListPage extends StatefulWidget {
 }
 
 class _CompanyListPageState extends State<CompanyListPage> {
-  StreamController<List<SchoolItem>> _streamController =
+  final StreamController<List<SchoolItem>> _streamController =
       StreamController<List<SchoolItem>>.broadcast();
-  List<String> searchResults = [];
+  final ScrollController _scrollController = ScrollController();
+  final List<SchoolItem> _schoolList = [];
   SchoolFilter schoolFilter = SchoolFilter();
   String query = "";
   bool hasLogin = false;
+  bool isLoading = false;
+  bool hasMoreData = true;
+  int currentPage = 1;
+  final int pageSize = 10;
   final FocusNode _searchFocusNode = FocusNode();
-
-  void onQueryChanged(String query) {
-    this.query = query;
-    if (query.length > 2) {
-      context
-          .read<SchoolBloc>()
-          .add(SearchSchool(schoolFilter: schoolFilter.copyWith(query: query)));
-    }
-  }
-
-  void onQueryCleared() {
-    query = "";
-    schoolFilter.copyWith(query: query);
-    context.read<SchoolBloc>().add(FetchSchool());
-  }
+  Timer? _debounceTimer;
 
   @override
   void initState() {
     super.initState();
     loginController();
-    context.read<SchoolBloc>().add(FetchSchool());
+    fetchSchools();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 100 &&
+          !isLoading &&
+          hasMoreData) {
+        _debounce(() {
+          fetchSchools();
+        }, const Duration(milliseconds: 400));
+      }
+    });
+  }
+
+  void _debounce(VoidCallback action, Duration delay) {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
+    _debounceTimer = Timer(delay, action);
+  }
+
+  void onQueryChanged(String query) {
+    this.query = query;
+    if (query.length > 2) {
+      currentPage = 1;
+      schoolFilter = schoolFilter.copyWith(
+          query: query, currentPage: currentPage.toString());
+      resetPagination();
+      fetchSchools(isSearch: true);
+    }
+  }
+
+  Future<void> fetchSchools(
+      {bool isSearch = false, bool isFilter = false}) async {
+    if (isLoading || !hasMoreData)
+      return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    context.read<SchoolBloc>().add(SearchSchool(
+          schoolFilter:
+              schoolFilter.copyWith(currentPage: currentPage.toString()),
+        ));
+
+    context.read<SchoolBloc>().stream.listen((state) {
+      if (state is SchoolSuccess) {
+        final newSchools = state.schoolResponse.data.schools;
+        final apiCurrentPage =
+            state.schoolResponse.data.currentPage;
+
+        if (newSchools.isEmpty) {
+          hasMoreData = false;
+        } else {
+          if (isSearch || isFilter) {
+            _schoolList.clear();
+            _streamController.sink.add([]);
+            hasMoreData = true;
+          }
+
+          _schoolList.addAll(newSchools);
+          _streamController.sink
+              .add(_schoolList);
+
+          if (apiCurrentPage == currentPage) {
+            currentPage++;
+          }
+        }
+      } else if (state is SchoolError) {
+        _streamController.addError(state.error);
+      }
+
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
+  void onQueryCleared() {
+    query = "";
+    currentPage = 1;
+    schoolFilter = schoolFilter.copyWith(query: query);
+    resetPagination();
+    fetchSchools();
+  }
+
+  void resetPagination() {
+    currentPage = 1;
+    hasMoreData = true;
+    _schoolList.clear();
+    _streamController.sink.add([]);
+    if (_scrollController.hasClients) {
+      _scrollController.jumpTo(0);
+    }
   }
 
   void loginController() async {
@@ -62,27 +143,20 @@ class _CompanyListPageState extends State<CompanyListPage> {
     }
   }
 
-  void toggleFavorite(int index, List<SchoolItem> item) {
-    item[index].isFav = !item[index].isFav!;
-    _streamController.add(List<SchoolItem>.from(item));
-    context.read<SchoolBloc>().add(ToggleFavorite(schoolId: item[index].id));
+  void toggleFavorite(int index) {
+    _schoolList[index].isFav = !_schoolList[index].isFav!;
+    _streamController.sink.add(List<SchoolItem>.from(_schoolList));
+    context
+        .read<SchoolBloc>()
+        .add(ToggleFavorite(schoolId: _schoolList[index].id));
   }
 
-  void updateSchoolList(List<SchoolItem> schools) {
-    if (!_streamController.isClosed) {
-      _streamController.sink.close();
-    }
-    _streamController = StreamController<List<SchoolItem>>();
-    _streamController.sink.add(schools);
-  }
-@override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    context.read<SchoolBloc>().add(FetchSchool());
-}
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _streamController.close();
+    _scrollController.removeListener(() {});
+    _scrollController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -100,7 +174,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
               child: InfoCardWidget(
                 title: "Kurumlar",
                 description:
-                "Dilediğin kurumun profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin. Favoriye aldığın kurumların eklediği ders ve kurslardan anında haberdar olabilirsin.",
+                    "Dilediğin kurumun profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin. Favoriye aldığın kurumların eklediği ders ve kurslardan anında haberdar olabilirsin.",
               ),
             ),
             Row(
@@ -120,20 +194,23 @@ class _CompanyListPageState extends State<CompanyListPage> {
                       final filter = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FilterSchool(
-                                  currentFilter: schoolFilter,
-                                ),
-                            fullscreenDialog: true),
+                          builder: (context) => FilterSchool(
+                            currentFilter: schoolFilter,
+                          ),
+                          fullscreenDialog: true,
+                        ),
                       ) as SchoolFilter?;
 
                       if (filter != null) {
                         schoolFilter = filter;
-                        if (mounted) {
-                          context.read<SchoolBloc>().add(SearchSchool(
-                              schoolFilter:
-                                  schoolFilter.copyWith(query: query)));
-                        }
+                        resetPagination();
+                        fetchSchools(
+                            isFilter: true);
+                        print("MEVCUT SAYFA: ${currentPage}");
+                      } else {
+                        resetPagination();
                       }
+                      print("MEVCUT SAYFA: ${currentPage}");
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -161,32 +238,20 @@ class _CompanyListPageState extends State<CompanyListPage> {
                 onPanDown: (_) {
                   _searchFocusNode.unfocus();
                 },
-                child: BlocConsumer<SchoolBloc, SchoolState>(
-                  listener: (context, state) {
-                    if (state is FavoriteError) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Bir hata oluştu: ${state.error}')),
-                      );
+                child: StreamBuilder<List<SchoolItem>>(
+                  stream: _streamController.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting &&
+                        _schoolList.isEmpty) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Bir hata oluştu: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('Veri bulunamadı'));
                     }
-                  },
-                  buildWhen: (context, state) {
-                    return state is SchoolLoading ||
-                        state is SchoolSuccess ||
-                        state is SchoolError ||
-                        state is SchoolDefault;
-                  },
-                  builder: (context, state) {
-                    if (state is SchoolLoading) {
-                      return  Center(child: CircularProgressIndicator(color: color5,));
-                    } else if (state is SchoolSuccess) {
-                      updateSchoolList(state.schoolResponse.data.schools);
-                      return buildSchoolList();
-                    } else if (state is SchoolError) {
-                      return Center(child: Text('Error: ${state.error}'));
-                    } else {
-                      return const SizedBox();
-                    }
+
+                    return buildSchoolList(snapshot.data!);
                   },
                 ),
               ),
@@ -197,71 +262,47 @@ class _CompanyListPageState extends State<CompanyListPage> {
     );
   }
 
-  Widget buildSchoolList() {
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16, top: 8),
-              child: StreamBuilder<List<SchoolItem>>(
-                stream: _streamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return  Center(child: CircularProgressIndicator(color: color5,));
-                  } else if (snapshot.hasError) {
-                    return Center(
-                        child: Text('Bir hata oluştu: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Veri bulunamadı'));
-                  }
+  Widget buildSchoolList(List<SchoolItem> schoolList) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: GridView.builder(
+        controller: _scrollController,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: 2 / 2.7,
+        ),
+        itemCount: schoolList.length + (isLoading ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == schoolList.length) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                  List<SchoolItem> schoolList = snapshot.data!;
-
-                  return GridView.builder(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    primary: true,
-                    itemCount: schoolList.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 16,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16.0,
-                      childAspectRatio: 2 / 2.7,
-                    ),
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/companyDetail',
-                            arguments: schoolList[index].id,
-                          ).then((value) {
-                            context.read<SchoolBloc>().add(FetchSchool());
-                          });
-                        },
-
-                        child: CompanyListItem(
-                          icon: schoolList[index].photo ?? "",
-                          name: schoolList[index].user.name,
-                          isFavorite: hasLogin ? schoolList[index].isFav : null,
-                          province: schoolList[index].city.province.name,
-                          city: schoolList[index].city.name,
-                          onFavoriteClick: () {
-                            toggleFavorite(index, schoolList);
-                          },
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+          final school = schoolList[index];
+          return InkWell(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                '/companyDetail',
+                arguments: school.id,
+              ).then((value) {
+                resetPagination();
+                fetchSchools();
+              });
+            },
+            child: CompanyListItem(
+              icon: school.photo ?? "",
+              name: school.user.name,
+              isFavorite: hasLogin ? school.isFav : null,
+              province: school.city.province.name,
+              city: school.city.name,
+              onFavoriteClick: () {
+                toggleFavorite(index);
+              },
             ),
-          ),
-          24.toHeight
-        ],
+          );
+        },
       ),
     );
   }

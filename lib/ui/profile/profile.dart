@@ -1,11 +1,14 @@
 import 'package:baykurs/ui/login/UnLoginPage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../util/HexColor.dart';
 import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/YOText.dart';
+import '../dashboard/model/MobileHomeResponse.dart';
 import '../webViewPage/WebViewPage.dart';
 import 'bloc/ProfileBloc.dart';
 import 'bloc/ProfileEvent.dart';
@@ -19,9 +22,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Notifications? notifications;
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      notifications = await getNotification();
+    });
+
     context.read<ProfileBloc>().add(FetchUserProfile());
   }
 
@@ -50,6 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
               return profileShimmer();
             } else if (state is ProfileSuccess) {
               final userData = state.profileResponse.user;
+              saveData(userData?.phone ?? "", "user_phone");
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Stack(
@@ -77,11 +87,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                       Navigator.of(context, rootNavigator: true)
                                           .pushNamed("/notificationPage");
                                     },
-                                    icon: const Icon(
-                                      Icons.notifications,
-                                      size: 24,
+                                    icon: Icon(
+                                      (notifications != null && (notifications?.count ?? 0) > 0)
+                                          ? Icons.notifications_active
+                                          : Icons.notifications,
+                                      size: 22,
                                       color: Colors.white,
-                                    ),
+                                    )
+
+
                                   ),
                                 ],
                               ),
@@ -95,7 +109,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                       shape: BoxShape.circle,
                                       color: Colors.white,
                                     ),
-                                    child: const Center(child: Text("EŞ")),
+                                    child: Center(
+                                        child: Text(
+                                            "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}")),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16.0),
@@ -118,12 +134,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ],
                                     ),
                                   ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 16),
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 18,
-                                      color: Colors.white,
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 16),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushNamed("/userEditSelection");
+                                      },
+                                      child: const Icon(
+                                        Icons.edit,
+                                        size: 18,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -170,9 +193,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   openWebView('https://www.bykurs.com.tr',
                                       'Sıkça Sorulan Sorular');
                                 }),
-                                profileItem("Yardım Merkezi", onTap: () {
-                                  openWebView('https://www.bykurs.com.tr',
-                                      'Yardım Merkezi');
+                                profileItem("İletişim", onTap: () {
+                                  openWebView(
+                                      'https://www.bykurs.com.tr', 'İletişim');
                                 }),
                                 profileItem("Hesabımı Sil", onTap: () {}),
                                 profileItem(

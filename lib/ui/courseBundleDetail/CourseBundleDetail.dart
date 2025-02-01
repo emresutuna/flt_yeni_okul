@@ -120,7 +120,6 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
 
  */
                               const SizedBox(height: 8),
-                              // Lesson Badge and Description
                               Row(
                                 children: [
                                   Container(

@@ -15,12 +15,17 @@ class GlobalWebViewPage extends StatefulWidget {
   State<GlobalWebViewPage> createState() => _GlobalWebViewPageState();
 }
 
-void openWebView(String url, String pageTitle) {
+void openWebView(String url, String pageTitle, {bool hasShowMenu = false}) {
+  if (!hasShowMenu) {
+    url = url.contains('?') ? '$url&ref=app' : '$url?ref=app';
+  }
+
   Get.to(() => GlobalWebViewPage(
-        url: url,
-        pageTitle: pageTitle,
-      ));
+    url: url,
+    pageTitle: pageTitle,
+  ));
 }
+
 
 class _GlobalWebViewPageState extends State<GlobalWebViewPage> {
   late final WebViewController _controller;

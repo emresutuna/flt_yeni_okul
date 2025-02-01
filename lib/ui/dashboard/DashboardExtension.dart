@@ -1,11 +1,10 @@
 import 'package:baykurs/ui/dashboard/incomingCourse.dart';
+import 'package:baykurs/util/LessonExtension.dart';
 import 'package:flutter/material.dart';
-import '../../util/BaseCourseModel.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
-import '../course/model/CourseModel.dart';
 import 'model/MobileHomeResponse.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
@@ -142,7 +141,7 @@ class IncomingLessonsWidget extends StatelessWidget {
   }
 }
 class InterestedLessonsWidget extends StatelessWidget {
-  final List<dynamic> lessons;
+  final List<InterestedLesson> lessons;
 
   const InterestedLessonsWidget({super.key, required this.lessons});
 
@@ -159,9 +158,18 @@ class InterestedLessonsWidget extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.96,
-              child: CourseListItem(
-                courseModel: lessons[index],
-                colors: HexColor(lessons[index].lesson!.color!),
+              child: InkWell(
+                onTap: (){
+                  Navigator.of(context,
+                      rootNavigator:true
+                  )
+                      .pushNamed('/courseDetail',
+                      arguments: lessons[index].id);
+                },
+                child: InterestedLessonWidget(
+                  courseModel: lessons[index],
+                  colors: HexColor(DEFAULT_LESSON_COLOR),
+                ),
               ),
             );
           },
@@ -226,7 +234,7 @@ extension QuickActionPageExtension on QuickActionPage {
       case QuickActionPage.companyList:
         return "Kurum Bul";
       case QuickActionPage.requestLesson:
-        return "Ders Talep Et";
+        return "Ders/Kurs Talep Et";
       case QuickActionPage.teacherCoach:
         return "Eğitim Koçu";
     }

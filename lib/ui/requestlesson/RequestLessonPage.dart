@@ -155,7 +155,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Ders Talep Et"),
+      appBar: WhiteAppBar("Ders/Kurs Talep Et"),
       body: BlocConsumer<RequestLessonBloc, RequestLessonState>(
         listener: (BuildContext context, RequestLessonState state) {
           if (state is RequestLessonSuccess) {

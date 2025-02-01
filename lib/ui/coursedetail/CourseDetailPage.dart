@@ -43,7 +43,10 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
-          return  Center(child: CircularProgressIndicator(color: color5,));
+          return Center(
+              child: CircularProgressIndicator(
+            color: color5,
+          ));
         } else if (state is CourseDetailStateSuccess) {
           courseDetail = state.courseResponseModel.data;
           return SafeArea(
@@ -74,14 +77,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Course Title and Price
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                        courseDetail!.title??"",
+                                    child: Text(courseDetail!.title ?? "",
                                         style: styleBlack14Bold),
                                   ),
                                 ],
@@ -107,11 +108,11 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                             style: styleBlack12Bold,
                                           ),
                                           Text(
-                                            courseDetail!.formattedStartDate ?? "",
+                                            courseDetail!.formattedStartDate ??
+                                                "",
                                             style: styleBlack12Regular,
                                           ),
                                           const Spacer(),
-
                                         ],
                                       ),
                                       const SizedBox(height: 4),
@@ -119,7 +120,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                         children: [
                                           Text("Derslik: ",
                                               style: styleBlack12Bold),
-                                          Text(courseDetail!.classroom ?? "Bilinmiyor",
+                                          Text(
+                                              courseDetail!.classroom ??
+                                                  "Bilinmiyor",
                                               style: styleBlack12Regular),
                                         ],
                                       ),
@@ -134,10 +137,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                       ),
                                     ],
                                   )
-
                                 ],
                               ),
-
 
                               const SizedBox(height: 8),
                               // Lesson Badge and Description
@@ -147,10 +148,13 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color:
-                                          HexColor( BranchesExtension.getColorForBranch(
-                                            courseDetail?.lesson?.name ?? courseDetail?.lessonName ?? "Ders bulunamadı",
-                                          ) ?? DEFAULT_LESSON_COLOR),
+                                      color: HexColor(
+                                          BranchesExtension.getColorForBranch(
+                                                courseDetail?.lesson?.name ??
+                                                    courseDetail?.lessonName ??
+                                                    "Ders bulunamadı",
+                                              ) ??
+                                              DEFAULT_LESSON_COLOR),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Text(
@@ -173,9 +177,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 style: styleBlack14Bold,
                               ),
                               const SizedBox(height: 8),
-
                               Text(
-                                'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
+                                courseDetail?.description ?? "",
                                 style: styleBlack12Regular,
                               ),
                               const SizedBox(height: 12),
@@ -191,9 +194,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                               ),
                               const SizedBox(height: 8),
 
-                              Text(
-                                  courseDetail!.teacherFormatted??""
-                                     ,
+                              Text(courseDetail!.teacherFormatted ?? "",
                                   style: styleBlack12Regular),
                               const SizedBox(height: 8),
                               Divider(
@@ -230,8 +231,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                   schoolName: courseDetail!.school?.name ??
                                       courseDetail!.schoolName ??
                                       "",
-                                  onMapCreated: (GoogleMapController controller) {
-                                  },
+                                  onMapCreated:
+                                      (GoogleMapController controller) {},
                                 ),
                               ),
                             ],

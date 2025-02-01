@@ -51,7 +51,7 @@ class _FilterSchoolState extends State<FilterSchool> {
     setState(() {
       ilController.clear();
       ilceController.clear();
-      schoolFilter = SchoolFilter();
+      schoolFilter = SchoolFilter(currentPage: "1");
       selectedCity = null;
       selectedProvince = null;
     });

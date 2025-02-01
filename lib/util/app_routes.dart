@@ -42,6 +42,7 @@ import '../ui/login/loginPage.dart';
 import '../ui/login/newPasswordPage.dart';
 import '../ui/notification/NotificationPage.dart';
 import '../ui/onboarding/OnBoardingScreen.dart';
+import '../ui/profile/userEdit/PhoneUpdatePage.dart';
 import '../ui/purchasehistory/PurchaseHistoryPage.dart';
 import '../ui/register/registerPage.dart';
 import '../ui/requestlesson/RequestLessonPage.dart';
@@ -92,6 +93,11 @@ class AppRoutes {
               create: (context) =>
                   PasswordUpdateBloc(userRepository: UserRepository()),
               child: const MailUpdatePage(),
+            ),
+        '/phoneUpdate': (context) => BlocProvider(
+              create: (context) =>
+                  PasswordUpdateBloc(userRepository: UserRepository()),
+              child: const PhoneUpdatePage(),
             ),
         '/courseListPage': (context) => BlocProvider(
               create: (context) =>

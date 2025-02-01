@@ -21,6 +21,7 @@ class ApiUrls {
   static const String updateUser = "/me/update";
   static const String updateEducationInfo = "/mobile/educationInfo/update";
   static const String getEducationInfo = "/mobile/educationInfo";
+  static const String getBillAddress = "/mobile/address";
   static const String courseRequestURL = "/mobile/courseRequest";
   static const String getCoursesById2 =
       "?order[id]=desc&load[0]=school:id,user_id&load[1]=school.user:id,name&load[2]=lesson:id,name,color&load[3]=teacher:id,user_id&load[4]=teacher.user:id,name";

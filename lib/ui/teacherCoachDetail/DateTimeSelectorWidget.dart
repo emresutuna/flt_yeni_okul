@@ -40,7 +40,7 @@ class DateTimeSelectorWidget extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 4.0),
                   padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                   decoration: BoxDecoration(
-                    color: isSelected ? color5 : Colors.grey.shade200,
+                    color: isSelected ? color5 : Colors.white,
                     border: Border.all(
                       color: color5,
                       width: 1.0,

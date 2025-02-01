@@ -51,9 +51,11 @@ class _ExpandableCourseDetailItemState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    widget.title,
-                    style: styleBlack14Bold,
+                  Flexible(
+                    child: Text(
+                      widget.title,
+                      style: styleBlack14Bold,
+                    ),
                   ),
                   Icon(isExpanded ? Icons.expand_less : Icons.expand_more),
                 ],
@@ -112,13 +114,11 @@ class _ExpandableCourseDetailItemState
                       Row(
                         children: [
                           Text("Açıklama: ", style: styleBlack14Bold),
-                          Wrap(
-                            children: [
-                              Text(
-                                widget.description,
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            ]
+                          Flexible(
+                            child: Text(
+                              widget.description,
+                              style: styleBlack14Regular,
+                            ),
                           ),
                         ],
                       ),

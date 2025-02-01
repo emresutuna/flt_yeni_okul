@@ -12,9 +12,11 @@ import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
+import 'package:baykurs/util/AppDeeplinkHandler.dart';
 import 'package:baykurs/util/NotificationPermissionHelper.dart';
 import 'package:baykurs/util/SharedPref.dart';
 import 'package:baykurs/util/Theme.dart';
@@ -68,6 +70,10 @@ void main() async {
           create: (context) =>
               PaymentPreviewBloc(paymentRepository: PaymentRepository()),
         ),
+        BlocProvider(
+          create: (context) =>
+              PaymentBillBloc(userRepository:UserRepository()),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -83,6 +89,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final RxString initialRoute = ''.obs;
+  late AppDeeplinkHandler deeplinkHandler;
 
   Future<void> _checkOnboardingAndToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -105,9 +112,17 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkOnboardingAndToken();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      deeplinkHandler = AppDeeplinkHandler(context);
+      deeplinkHandler.startListening();
       await NotificationPermissionHelper.instance
           .handleNotificationPermissions();
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    deeplinkHandler.stopListening();
   }
 
   @override
@@ -117,9 +132,11 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           theme: appTheme,
           debugShowCheckedModeBanner: false,
-          home:  Scaffold(
+          home: Scaffold(
             body: Center(
-              child: CircularProgressIndicator(color: color5,),
+              child: CircularProgressIndicator(
+                color: color5,
+              ),
             ),
           ),
         );

@@ -111,7 +111,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
                       child: InfoCardWidget(
                         title: "Dersler",
                         description:
-                            "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders Talep Et özelliğini kullanabilirsin.",
+                            "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders/Kurs Talep Et özelliğini kullanabilirsin.",
                       ),
                     ),
                     Row(
