@@ -4,6 +4,7 @@ import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/SearchBar.dart';
@@ -82,11 +83,7 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
             valueListenable: isPageLoading,
             builder: (context, isLoading, child) {
               if (isLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: color5,
-                  ),
-                );
+                return const GlobalFadeAnimation();
               }
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {

@@ -4,6 +4,9 @@ import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/SearchBar.dart';
@@ -65,6 +68,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
       schoolFilter = schoolFilter.copyWith(
           query: query, currentPage: currentPage.toString());
       resetPagination();
+      FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.school_search);
       fetchSchools(isSearch: true);
     }
   }
@@ -191,6 +195,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   flex: 1,
                   child: InkWell(
                     onTap: () async {
+                      FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.school_filter);
                       final filter = await Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -243,7 +248,7 @@ class _CompanyListPageState extends State<CompanyListPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting &&
                         _schoolList.isEmpty) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const GlobalFadeAnimation();
                     } else if (snapshot.hasError) {
                       return Center(
                           child: Text('Bir hata oluştu: ${snapshot.error}'));
@@ -276,12 +281,16 @@ class _CompanyListPageState extends State<CompanyListPage> {
         itemCount: schoolList.length + (isLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == schoolList.length) {
-            return const Center(child: CircularProgressIndicator());
+            return const GlobalFadeAnimation();
           }
 
           final school = schoolList[index];
           return InkWell(
             onTap: () {
+              FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.school_detail_click, parameters: {
+                "schoolName": school.user.name,
+                "schoolId": school.user.id,
+              });
               Navigator.pushNamed(
                 context,
                 '/companyDetail',

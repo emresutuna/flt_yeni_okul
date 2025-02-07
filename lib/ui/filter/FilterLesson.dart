@@ -9,6 +9,8 @@ import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/LessonExtension.dart';
 import '../../widgets/PrimaryInputField.dart';
 import '../requestlesson/Region.dart';
@@ -140,14 +142,13 @@ class _FilterLessonState extends State<FilterLesson> {
       ),
       body: BlocListener<FilterBloc, FilterState>(
         listenWhen: (previous, current) =>
-        current is FilterStateSuccess, // Sadece başarılı state'i dinle
+        current is FilterStateSuccess,
         listener: (context, state) {
           if (state is FilterStateSuccess) {
             final maxPriceData =
                 double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
 
             setState(() {
-              // Servisten gelen max değer ile güncelle
               _currentRange = RangeValues(
                 courseFilter.minPrice?.toDouble() ?? 0.0,
                 courseFilter.maxPrice?.toDouble() ?? maxPriceData,
@@ -236,6 +237,15 @@ class _FilterLessonState extends State<FilterLesson> {
       height: 60,
       child: ElevatedButton(
         onPressed: () {
+          if (courseType == CourseTypeEnum.COURSE) {
+            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_filter_apply);
+          } else if (courseType == CourseTypeEnum.COURSE_BUNDLE) {
+            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_bundle_filter_apply);
+          } else if(courseType == CourseTypeEnum.COURSE_COACH){
+            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.teacher_coach_filter_apply);
+
+          }
+
           final updatedFilter = courseFilter.copyWith(
             query:
                 topicController.text.isNotEmpty ? topicController.text : null,

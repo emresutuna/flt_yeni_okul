@@ -4,6 +4,8 @@ import 'package:baykurs/widgets/IconButton.dart';
 import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/SharedPrefHelper.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -48,6 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _pageController.nextPage(
           duration: const Duration(milliseconds: 300), curve: Curves.ease);
     } else {
+      FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.first_time);
       _goToLoginPage();
     }
   }

@@ -7,6 +7,7 @@ import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../util/GlobalLoading.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/WhiteAppBar.dart';
@@ -139,7 +140,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                         ),
                       );
                     } else if (state is FavoriteSchoolLoading) {
-                      return  Center(child: CircularProgressIndicator(color: color5,));
+                      return  const GlobalFadeAnimation();
                     } else if (state is FavoriteSchoolError) {
                       return const BkErrorWidget(
                         title: "Hata",

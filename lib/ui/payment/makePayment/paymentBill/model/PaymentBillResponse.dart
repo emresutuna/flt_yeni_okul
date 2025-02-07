@@ -35,6 +35,7 @@ class BillList {
   String? postalCode;
   int? cityId;
   bool? isDefault;
+  City? city;
 
   BillList(
       {this.id,
@@ -46,7 +47,8 @@ class BillList {
       this.flatNo,
       this.postalCode,
       this.cityId,
-      this.isDefault});
+      this.isDefault,
+      this.city});
 
   BillList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,6 +61,7 @@ class BillList {
     postalCode = json['postal_code'];
     cityId = json['city_id'];
     isDefault = json['is_default'];
+    city = json['city'] != null ? new City.fromJson(json['city']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -73,6 +76,57 @@ class BillList {
     data['postal_code'] = postalCode;
     data['city_id'] = cityId;
     data['is_default'] = isDefault;
+    if (this.city != null) {
+      data['city'] = this.city!.toJson();
+    }
+    return data;
+  }
+}
+
+class City {
+  int? id;
+  String? name;
+  int? provinceId;
+  Province? province;
+
+  City({this.id, this.name, this.provinceId, this.province});
+
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    provinceId = json['province_id'];
+    province =
+        json['province'] != null ? Province.fromJson(json['province']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['province_id'] = provinceId;
+    if (province != null) {
+      data['province'] = province!.toJson();
+    }
+
+    return data;
+  }
+}
+
+class Province {
+  int? id;
+  String? name;
+
+  Province({this.id, this.name});
+
+  Province.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
     return data;
   }
 }

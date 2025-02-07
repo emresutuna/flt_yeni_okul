@@ -2,6 +2,8 @@ import 'package:baykurs/ui/filter/FilterProvince.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../widgets/PrimaryInputField.dart';
 import '../company/model/SchoolFilter.dart';
 import '../requestlesson/Region.dart';
@@ -196,6 +198,9 @@ class _FilterSchoolState extends State<FilterSchool> {
       height: 60,
       child: ElevatedButton(
           onPressed: () {
+            FirebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsConstants.school_filter_apply);
+
             final updatedFilter = schoolFilter.copyWith(
               cityName:
                   ilceController.text.isNotEmpty ? ilceController.text : null,

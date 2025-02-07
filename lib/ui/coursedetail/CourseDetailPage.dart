@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../util/GlobalLoading.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/YOColors.dart';
@@ -43,10 +44,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
       body: BlocBuilder<CourseDetailBloc, CourseDetailState>(
           builder: (context, state) {
         if (state is CourseDetailStateLoading) {
-          return Center(
-              child: CircularProgressIndicator(
-            color: color5,
-          ));
+          return const GlobalFadeAnimation();
         } else if (state is CourseDetailStateSuccess) {
           courseDetail = state.courseResponseModel.data;
           return SafeArea(

@@ -1,12 +1,14 @@
+import 'package:baykurs/util/FirebaseAnalyticsManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/PrimaryInputField.dart';
-import '../../widgets/YOText.dart';
 import 'loginBloc/LoginBloc.dart';
 import 'loginBloc/LoginEvent.dart';
 import 'loginBloc/LoginState.dart';
@@ -15,7 +17,9 @@ import 'model/LoginValidation.dart';
 import 'model/UserLoginModel.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final bool showClose;
+
+  const LoginPage({super.key, required this.showClose});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -37,6 +41,35 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white, // Beyaz arka plan
+        elevation: 0, // Gölgelendirme yok
+        automaticallyImplyLeading: false, // Geri butonunu kaldır
+        actions: widget.showClose
+            ? [
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(30)),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(Icons.clear,size: 16,),
+                      )),
+                ),
+              ),
+            ),
+              ]
+            : null,
+      ),
       body: SafeArea(
         child: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
@@ -53,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
           },
           builder: (context, state) {
             if (state is LoginLoading) {
-              return  Center(child: CircularProgressIndicator(color: color5,));
+              return const GlobalFadeAnimation();
             }
             return Center(
               child: SingleChildScrollView(
@@ -135,6 +168,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () {
                               Navigator.pushNamed(context, '/registerPage');
+                              FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.user_register);
+
                             },
                             child: Text(
                               "Kayıt Ol",

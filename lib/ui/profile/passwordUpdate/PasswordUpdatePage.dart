@@ -52,11 +52,6 @@ class _PasswordUpdatePageState extends State<PasswordUpdatePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     children: [
-                      const SizedBox(height: 24),
-                      Text(
-                        'Lorem ipsum dolar sit amet amet lorem ipsum dolar amet lorem ipsum amet dolar sit amet.',
-                        style: styleBlack12Regular,
-                      ),
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

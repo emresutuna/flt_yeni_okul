@@ -274,7 +274,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const PaymentBillPage()),
+                                       PaymentBillList(paymentBillList: paymentBillList,)),
                             );
                             if (result != null && result is BillList) {
                               defaultBill = result;

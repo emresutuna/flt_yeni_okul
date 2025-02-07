@@ -50,7 +50,7 @@ import '../ui/timesheet/TimeSheetPage.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
-        '/onboardingPage': (context) => OnboardingScreen(),
+        '/onboardingPage': (context) => const OnboardingScreen(),
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(
               create: (context) =>
@@ -154,7 +154,7 @@ class AppRoutes {
             ),
         '/loginPage': (context) => BlocProvider(
               create: (context) => LoginBloc(userRepository: UserRepository()),
-              child: const LoginPage(),
+              child:  const LoginPage(showClose: false,),
             ),
         '/registerPage': (context) => BlocProvider(
               create: (context) =>

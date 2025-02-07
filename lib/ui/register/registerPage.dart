@@ -4,6 +4,7 @@ import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/SimpleStream.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
@@ -69,13 +70,7 @@ class _RegisterPageState extends State<RegisterPage> {
         builder: (context, state) {
           if (state is RegisterLoading) {
             return Stack(
-              children: [
-                _buildForm(context),
-                Center(
-                    child: CircularProgressIndicator(
-                  color: color5,
-                )),
-              ],
+              children: [_buildForm(context), const GlobalFadeAnimation()],
             );
           }
           return _buildForm(context);

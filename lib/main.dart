@@ -11,12 +11,15 @@ import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/login/loginBloc/LoginBloc.dart';
+import 'package:baykurs/ui/login/loginPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/bloc/ProfileEvent.dart';
 import 'package:baykurs/ui/profile/profile.dart';
 import 'package:baykurs/util/AppDeeplinkHandler.dart';
+import 'package:baykurs/util/FirebaseAnalyticsConstants.dart';
+import 'package:baykurs/util/FirebaseAnalyticsManager.dart';
 import 'package:baykurs/util/NotificationPermissionHelper.dart';
 import 'package:baykurs/util/SharedPref.dart';
 import 'package:baykurs/util/Theme.dart';
@@ -72,7 +75,7 @@ void main() async {
         ),
         BlocProvider(
           create: (context) =>
-              PaymentBillBloc(userRepository:UserRepository()),
+              PaymentBillBloc(userRepository: UserRepository()),
         ),
       ],
       child: const MyApp(),
@@ -164,53 +167,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  late PersistentTabController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
-    _controller.addListener(() {
-      if (_controller.index == 2) {
-        context.read<ProfileBloc>().add(FetchUserProfile());
+    _controller.addListener(_handleTabChange);
+  }
+
+  Future<void> _handleTabChange() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final token = sharedPreferences.getString("auth_token");
+    if (!mounted) return;
+
+    if (_controller.index == 2) {
+      if (token == null || token.isEmpty) {
+        _controller.index = 0;
+        FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.user_login);
+
+        Navigator.of(context)
+            .push(_createPageRoute(const LoginPage(showClose: true)));
+        return;
       }
-      if (_controller.index == 1) {
-        context.read<LessonBloc>().add(FetchLesson());
-      }
-    });
+      context.read<ProfileBloc>().add(FetchUserProfile());
+    }
+
+    if (_controller.index == 1) {
+      context.read<LessonBloc>().add(FetchLesson());
+    }
   }
 
   List<Widget> _buildScreens() {
     return [
       const DashboardPage(),
-      const CourseListPage(
-        hasShowBackButton: false,
-      ),
-      const ProfilePage()
+      const CourseListPage(hasShowBackButton: false),
+      const ProfilePage(),
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
-          title: (AppStrings.homeTitle),
-          activeColorPrimary: color5,
-          inactiveColorPrimary: Colors.grey,
-          textStyle: styleBlack12Bold.copyWith(color: color5)),
+        icon: const Icon(Icons.home),
+        title: (AppStrings.homeTitle),
+        activeColorPrimary: color5,
+        inactiveColorPrimary: Colors.grey,
+        textStyle: styleBlack12Bold.copyWith(color: color5),
+      ),
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.search),
-          title: (AppStrings.searchTitle),
-          activeColorPrimary: color5,
-          inactiveColorPrimary: Colors.grey,
-          textStyle: styleBlack12Bold.copyWith(color: color5)),
+        icon: const Icon(Icons.search),
+        title: (AppStrings.searchTitle),
+        activeColorPrimary: color5,
+        inactiveColorPrimary: Colors.grey,
+        textStyle: styleBlack12Bold.copyWith(color: color5),
+      ),
       PersistentBottomNavBarItem(
-          icon: const Icon(Icons.person),
-          title: (AppStrings.profileTitle),
-          activeColorPrimary: color5,
-          inactiveColorPrimary: Colors.grey,
-          textStyle: styleBlack12Bold.copyWith(color: color5)),
+        icon: const Icon(Icons.person),
+        title: (AppStrings.profileTitle),
+        activeColorPrimary: color5,
+        inactiveColorPrimary: Colors.grey,
+        textStyle: styleBlack12Bold.copyWith(color: color5),
+      ),
     ];
   }
 
@@ -238,6 +256,24 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       navBarStyle: NavBarStyle.style1,
+    );
+  }
+
+  PageRouteBuilder _createPageRoute(Widget page) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
     );
   }
 }

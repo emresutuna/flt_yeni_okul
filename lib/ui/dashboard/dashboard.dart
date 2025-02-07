@@ -8,6 +8,7 @@ import 'package:baykurs/util/YOColors.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/SharedPrefHelper.dart';
 import 'model/MobileHomeResponse.dart';
 
@@ -40,10 +41,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: BlocBuilder<DashboardBloc, DashboardState>(
           builder: (context, state) {
             if (state is DashboardLoading) {
-              return Center(
-                  child: CircularProgressIndicator(
-                color: color5,
-              ));
+              return const GlobalFadeAnimation();
             }
             if (state is DashboardSuccess) {
               sliderData = state.mobileHomeResponse.sliderData ?? [];

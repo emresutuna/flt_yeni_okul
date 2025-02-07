@@ -4,6 +4,9 @@ import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/filter/FilterLesson.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
@@ -37,6 +40,7 @@ class _CourseListPageState extends State<CourseListPage> {
     this.query = query;
     if (query.length > 2) {
       isSearching.value = true;
+      FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_search);
       context.read<LessonBloc>().add(
             FetchLessonWithFilter(
                 courseFilter: courseFilter.copyWith(query: query)),
@@ -84,16 +88,12 @@ class _CourseListPageState extends State<CourseListPage> {
             valueListenable: isPageLoading,
             builder: (context, isLoading, child) {
               if (isLoading) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: color5,
-                  ),
-                );
+                return const GlobalFadeAnimation();
               }
               return NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollStartNotification) {
-                    FocusScope.of(context).unfocus(); // Focus'u kaldır
+                    FocusScope.of(context).unfocus();
                   }
                   return false;
                 },
@@ -153,6 +153,8 @@ class _CourseListPageState extends State<CourseListPage> {
                           flex: 1,
                           child: InkWell(
                             onTap: () async {
+                              FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_filter);
+
                               final lessonBloc = context.read<LessonBloc>();
                               final filter = await Navigator.push(
                                 context,
@@ -197,6 +199,7 @@ class _CourseListPageState extends State<CourseListPage> {
                             if (state is LessonStateSuccess) {
                               courseList =
                                   state.lessonResponse.data?.data ?? [];
+
                               if (courseList.isEmpty) {
                                 return const Center(
                                   child: Text(
@@ -208,8 +211,15 @@ class _CourseListPageState extends State<CourseListPage> {
                               return ListView.builder(
                                 itemCount: courseList.length,
                                 itemBuilder: (context, index) {
+                                  String schoolName = courseList[index].schoolName ?? 'Kurum bilgisi yok';
+
                                   return InkWell(
                                     onTap: () {
+                                      FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_detail_click, parameters: {
+                                        "lesson": courseList[index].lesson?.name ??
+                                      courseList[index].lessonName ??"",
+                                        "schoolName": schoolName,
+                                      });
                                       Navigator.of(context,
                                               rootNavigator:
                                                   !widget.hasShowBackButton)

@@ -1,10 +1,14 @@
 import 'package:baykurs/ui/dashboard/incomingCourse.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
+import '../login/loginPage.dart';
 import 'model/MobileHomeResponse.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
@@ -76,8 +80,71 @@ class QuickActionGrid extends StatelessWidget {
 
   const QuickActionGrid({super.key});
 
-  void _handleQuickActionNavigation(BuildContext context, QuickActionPage action) {
-    Navigator.of(context, rootNavigator: true).pushNamed(action.routeName);
+  void _handleQuickActionNavigation(
+      BuildContext context, QuickActionPage action) async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final token = sharedPreferences.getString("auth_token");
+    _logQuickActionEvent(action.index);
+    if (!context.mounted) return;
+
+    if ((action.index == 0 || action.index == 4) &&
+        (token == null || token.isEmpty)) {
+      Navigator.of(context, rootNavigator: true).push(
+        _createPageRoute(const LoginPage(showClose: true)),
+      );
+    } else {
+      Navigator.of(context, rootNavigator: true).pushNamed(action.routeName);
+    }
+  }
+
+  void _logQuickActionEvent(int actionIndex) {
+    switch (actionIndex) {
+      case 0:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_timesheet);
+        break;
+      case 1:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_course);
+        break;
+      case 2:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_course_bundle);
+        break;
+      case 3:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_school);
+        break;
+      case 4:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_request_course);
+        break;
+      case 5:
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.quick_action_teach_coach);
+        break;
+      default:
+        FirebaseAnalyticsManager.logEvent("unknown_quick_action",
+            parameters: {"action_index": actionIndex});
+    }
+  }
+
+  PageRouteBuilder _createPageRoute(Widget page) {
+    return PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+    );
   }
 
   @override
@@ -116,7 +183,8 @@ class IncomingLessonsWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height /3.5, // Maksimum yükseklik
+          maxHeight:
+              MediaQuery.of(context).size.height / 3.5,
         ),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -128,9 +196,18 @@ class IncomingLessonsWidget extends StatelessWidget {
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.96,
                 ),
-                child: IncomingCourse(
-                  courseModel: lessons[index],
-                  colors: HexColor("#4A90E2"),
+                child: InkWell(
+                  onTap: () {
+                    FirebaseAnalyticsManager.logEvent(
+                        FirebaseAnalyticsConstants.incoming_course_click);
+                    Navigator.of(context, rootNavigator: true).pushNamed(
+                        '/courseDetail',
+                        arguments: lessons[index].id);
+                  },
+                  child: IncomingCourse(
+                    courseModel: lessons[index],
+                    colors: HexColor("#4A90E2"),
+                  ),
                 ),
               ),
             );
@@ -140,6 +217,7 @@ class IncomingLessonsWidget extends StatelessWidget {
     );
   }
 }
+
 class InterestedLessonsWidget extends StatelessWidget {
   final List<InterestedLesson> lessons;
 
@@ -159,12 +237,11 @@ class InterestedLessonsWidget extends StatelessWidget {
             return SizedBox(
               width: MediaQuery.of(context).size.width * 0.96,
               child: InkWell(
-                onTap: (){
-                  Navigator.of(context,
-                      rootNavigator:true
-                  )
-                      .pushNamed('/courseDetail',
-                      arguments: lessons[index].id);
+                onTap: () {
+                  FirebaseAnalyticsManager.logEvent(
+                      FirebaseAnalyticsConstants.interested_course_click);
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamed('/courseDetail', arguments: lessons[index].id);
                 },
                 child: InterestedLessonWidget(
                   courseModel: lessons[index],
@@ -256,5 +333,4 @@ extension QuickActionPageExtension on QuickActionPage {
         return "assets/ic_training_coach.png";
     }
   }
-
 }

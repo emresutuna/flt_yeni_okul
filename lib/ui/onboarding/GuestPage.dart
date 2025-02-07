@@ -2,6 +2,8 @@ import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/SecondaryButton.dart';
 import 'package:flutter/material.dart';
 
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PrimaryButton.dart';
 
@@ -36,6 +38,7 @@ class GuestPage extends StatelessWidget {
                 PrimaryButton(
                   text: "Kayıt Ol",
                   onPress: () {
+                    FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.user_register);
                     Navigator.pushReplacementNamed(context, '/registerPage');
                   },
                 ),
@@ -43,6 +46,7 @@ class GuestPage extends StatelessWidget {
                 SecondaryButton(
                   text: "Giriş Yap",
                   onPress: () {
+                    FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.user_login);
                     Navigator.pushReplacementNamed(context, '/loginPage');
                   },
                 ),
@@ -53,6 +57,7 @@ class GuestPage extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
+                        FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.guest_click);
                         Navigator.pushReplacementNamed(context, '/mainPage');
                       },
                       child: Text(

@@ -25,12 +25,6 @@ class CourseListItem extends StatelessWidget {
     String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
     String teacherName = courseModel?.teacherFormatted ?? '';
 
-    String dateString =
-    courseModel?.startDate != null ? courseModel!.startDate! : '-';
-
-    String timeString = courseModel?.startDate != null
-        ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
-        : '-';
 
     String endTime = courseModel?.endDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
@@ -50,7 +44,7 @@ class CourseListItem extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: HexColor("#F7F9F9"),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                   ),
@@ -218,7 +212,7 @@ class InterestedLessonWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: HexColor("#F7F9F9"),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                   ),

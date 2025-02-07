@@ -2,6 +2,7 @@ import 'package:baykurs/ui/timesheet/bloc/TimeSheetBloc.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetEvent.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetState.dart';
 import 'package:baykurs/ui/timesheet/model/TimeSheetResponse.dart';
+import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:baykurs/widgets/ErrorWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,20 +34,19 @@ class _TimeSheetPageState extends State<TimeSheetPage> {
       child:
           BlocBuilder<TimeSheetBloc, TimeSheetState>(builder: (context, state) {
         if (state is TimeSheetLoadingState) {
-          return Scaffold(
-            body: Container(
-              child: Center(child: CircularProgressIndicator()),
-            ),
-          );
+          return const Scaffold(body: GlobalFadeAnimation());
         }
         if (state is TimeSheetError) {
           return Scaffold(
             body: Container(
-              child: Center(child: BkErrorWidget(onPress: (){
-                Navigator.pop(context);
-              },)),
+              child: Center(child: BkErrorWidget(
+                onPress: () {
+                  Navigator.pop(context);
+                },
+              )),
             ),
-          );        }
+          );
+        }
         if (state is TimeSheetSuccess) {
           timeSheet = state.timeSheetResponse.data!;
           return Scaffold(

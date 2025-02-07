@@ -1,76 +1,174 @@
+import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/YOColors.dart';
+import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../widgets/PrimaryButton.dart';
+import 'model/PaymentBillResponse.dart';
+
 class PaymentBillList extends StatefulWidget {
-  const PaymentBillList({super.key});
+  final List<BillList> paymentBillList;
+
+  const PaymentBillList({super.key, required this.paymentBillList});
 
   @override
   State<PaymentBillList> createState() => _PaymentBillListState();
 }
 
 class _PaymentBillListState extends State<PaymentBillList> {
-  List<String> bills = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Fatura Adresleri")),
-      body: bills.isEmpty
-          ? Center(
+      appBar: WhiteAppBar("Fatura Adreslerim"),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Lütfen bir fatura adresi ekleyin",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            Text(
+              "Fatura adreslerini kolayca görüntüleyebilir, düzenleyebilir ve silebilirsin",
+              style: styleBlack14Regular,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => _addNewBill(),
-              child: const Text("Yeni Fatura Adresi Ekle"),
+            16.toHeight,
+            Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                border: Border.all(color: paymentBorder),
+                shape: BoxShape.rectangle,
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Fatura Adresi Ekle",
+                            style: styleBlack14Bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    8.toHeight,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Mevcut fatura bilginiz yoksa bir fatura adresi ekleyerek satın alma işlemi yapabilir, ya da güncel bilgilerinizle yeni bir fatura adresi ekleyebilirsin.",
+                            style: styleBlack12Regular,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: PrimaryButton(
+                          text: 'Fatura Adresi Ekle',
+                          onPress: () {
+                            _addNewBill();
+                          },
+                        )),
+                  ],
+                ),
+              ),
             ),
+            widget.paymentBillList.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      itemCount: widget.paymentBillList.length,
+                      itemBuilder: (context, index) {
+                        final data = widget.paymentBillList[index];
+                        return Container(
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: (data.isDefault ?? false)
+                                    ? color3
+                                    : paymentBorder),
+                            shape: BoxShape.rectangle,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "Adres Adı: ",
+                                              style: styleBlack12Bold,
+                                            ),
+                                            TextSpan(
+                                              text: data.title ??
+                                                  "Adres Bilgisi Eksik",
+                                              style: styleBlack12Regular,
+                                            ),
+                                          ],
+                                        ),
+                                        softWrap: true,
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () => _removeBill(index),
+                                      child: const Icon(Icons.delete,
+                                          color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: "Adres Detayı: ",
+                                        style: styleBlack12Bold,
+                                      ),
+                                      TextSpan(
+                                        text: data.district ??
+                                            "Adres Bilgisi Eksik",
+                                        style: styleBlack12Regular,
+                                      ),
+                                    ],
+                                  ),
+                                  softWrap: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                : const SizedBox.shrink()
           ],
         ),
-      )
-          : Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              itemCount: bills.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(bills[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _removeBill(index),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ElevatedButton(
-              onPressed: () => _addNewBill(),
-              child: const Text("Yeni Bir Fatura Adresi Ekle"),
-            ),
-          ),
-        ],
       ),
     );
   }
 
   void _addNewBill() {
     setState(() {
-      bills.add("Yeni Fatura ${bills.length + 1}");
+      // widget.paymentBillList.add("Yeni Fatura ${bills.length + 1}");
     });
   }
 
   void _removeBill(int index) {
     setState(() {
-      bills.removeAt(index);
+      widget.paymentBillList.removeAt(index);
     });
   }
 }

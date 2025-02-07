@@ -1,15 +1,14 @@
 import 'dart:async';
-
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../util/GlobalLoading.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/ExpandedWidget.dart';
 import '../../widgets/TeacherListItem.dart';
-import '../../widgets/YOText.dart';
 import 'bloc/SchoolDetailBloc.dart';
 import 'bloc/SchoolDetailEvent.dart';
 import 'bloc/SchoolDetailState.dart';
@@ -72,10 +71,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
       body: BlocBuilder<SchoolDetailBloc, SchoolDetailState>(
           builder: (context, state) {
         if (state is SchoolDetailLoading) {
-          return Center(
-              child: CircularProgressIndicator(
-            color: color5,
-          ));
+          return const GlobalFadeAnimation();
         } else if (state is SchoolDetailSuccess) {
           teacherList = state.schoolResponse.data?.teachers ?? [];
           updateSchoolList(state.schoolResponse.data?.isFav ?? false);
@@ -173,9 +169,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                           imageUrl: state.schoolResponse.data?.photo ?? "",
                           fit: BoxFit.fill,
                           fadeInDuration: Duration.zero,
-                          // Animasyonu devre dışı bırakır
                           fadeOutDuration: Duration.zero,
-                          // Çıkış animasyonunu devre dışı bırakır
                           placeholder: (context, url) => Center(
                             child: Image.asset(
                               "assets/placeholder.png",
