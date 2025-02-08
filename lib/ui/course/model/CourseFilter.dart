@@ -8,6 +8,8 @@ class CourseFilter {
   final int? topicId;
   final int? maxPrice;
   final int? minPrice;
+  final int? schoolId;
+  final String? currentPage;
 
   CourseFilter({
     this.query,
@@ -18,7 +20,9 @@ class CourseFilter {
     this.lessonId,
     this.topicId,
     this.maxPrice,
-    this.minPrice
+    this.minPrice,
+    this.schoolId,
+    this.currentPage,
   });
 
   Map<String, String> toQueryParams() {
@@ -30,6 +34,8 @@ class CourseFilter {
     if (topicId != null) params['topic_id'] = topicId.toString();
     if (minPrice != null) params['min_price'] = minPrice.toString();
     if (maxPrice != null) params['max_price'] = maxPrice.toString();
+    if (schoolId != null) params['school_id'] = schoolId.toString();
+    if (currentPage != null) params['page'] = currentPage.toString();
     return params;
   }
 
@@ -42,7 +48,9 @@ class CourseFilter {
       int? lessonId,
       int? topicId,
       int? minPrice,
-      int? maxPrice}) {
+      int? maxPrice,
+      int? schoolId,
+      String? currentPage}) {
     return CourseFilter(
       query: query ?? this.query,
       cityName: cityName ?? this.cityName,
@@ -53,10 +61,14 @@ class CourseFilter {
       topicId: topicId ?? this.topicId,
       minPrice: minPrice ?? this.minPrice,
       maxPrice: maxPrice ?? this.maxPrice,
+      schoolId: schoolId ?? this.schoolId,
+      currentPage: currentPage ?? this.currentPage,
     );
   }
 }
+
 String buildUrlWithFilter(String baseUrl, CourseFilter filter) {
-  final uri = Uri.parse(baseUrl).replace(queryParameters: filter.toQueryParams());
+  final uri =
+      Uri.parse(baseUrl).replace(queryParameters: filter.toQueryParams());
   return uri.toString();
 }

@@ -76,22 +76,13 @@ class CompanyListItem extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 4, right: 4),
+            padding:
+                const EdgeInsets.only(top: 8.0, left: 4, right: 4, bottom: 8),
             child: Text(
               name,
               textAlign: TextAlign.center,
               style: styleBlack14Bold,
               maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 6.0),
-            child: Text(
-              "$province/$city",
-              textAlign: TextAlign.center,
-              style: styleBlack12Regular,
-              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),

@@ -184,16 +184,21 @@ class _MyHomePageState extends State<MyHomePage> {
     if (_controller.index == 2) {
       if (token == null || token.isEmpty) {
         _controller.index = 0;
-        FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.user_login);
+        FirebaseAnalyticsManager.logEvent(
+            FirebaseAnalyticsConstants.user_login);
 
         Navigator.of(context)
             .push(_createPageRoute(const LoginPage(showClose: true)));
         return;
       }
+      FirebaseAnalyticsManager.logEvent(
+          FirebaseAnalyticsConstants.profile_click);
       context.read<ProfileBloc>().add(FetchUserProfile());
     }
 
     if (_controller.index == 1) {
+      FirebaseAnalyticsManager.logEvent(
+          FirebaseAnalyticsConstants.find_course_click);
       context.read<LessonBloc>().add(FetchLesson());
     }
   }

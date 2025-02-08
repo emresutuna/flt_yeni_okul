@@ -275,7 +275,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
         } else if (state is CourseDetailStateError) {
           return Center(child: Text('Error: ${state.error}'));
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       }),
     );

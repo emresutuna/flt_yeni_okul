@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../coursedetail/model/CourseDetailResponseModel.dart';
 import 'PaymentResultPage.dart';
 import 'PaymentWebView.dart';
 import 'makePayment/paymentBill/PaymentBillList.dart';

@@ -42,13 +42,16 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
     _streamController.sink.add(schools);
   }
 
+
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (ModalRoute.of(context) != null) {
-      companyId = ModalRoute.of(context)!.settings.arguments as int;
-      context.read<SchoolDetailBloc>().add(FetchSchoolById(id: companyId));
-    }
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (ModalRoute.of(context) != null) {
+        companyId = ModalRoute.of(context)!.settings.arguments as int;
+        context.read<SchoolDetailBloc>().add(FetchSchoolById(id: companyId));
+      }
+    });
   }
 
   @override
@@ -104,13 +107,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                         StreamBuilder<bool>(
                             stream: _streamController.stream,
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator(
-                                  color: color5,
-                                ));
-                              } else if (snapshot.hasError) {
+                              if (snapshot.hasError) {
                                 return Center(
                                     child: Text(
                                         'Bir hata oluştu: ${snapshot.error}'));
@@ -209,7 +206,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, "/courseListPage");
+                            Navigator.pushNamed(context, "/courseListPage",
+                                arguments: companyId);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,7 +251,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, "/courseListPage");
+                            Navigator.pushNamed(context, "/courseBundleList",
+                                arguments: companyId);
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

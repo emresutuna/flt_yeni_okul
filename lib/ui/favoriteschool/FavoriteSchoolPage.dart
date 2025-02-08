@@ -50,7 +50,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
             children: [
               Text(
                 textAlign: TextAlign.start,
-                "Favori kurumları görüntüleyebilir detayına tıklayarak kuruma ait ders programını görüntüleyebilirsin.",
+                "Favori kurumları görüntüleyebilir detayına tıklayarak kuruma ait ders programını inceleyebilirsin.",
                 style: styleBlack14Regular,
               ),
               16.toHeight,

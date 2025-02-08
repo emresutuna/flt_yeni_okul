@@ -1,19 +1,22 @@
+import 'dart:async';
+import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:baykurs/ui/filter/FilterLesson.dart';
-import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
-import '../../util/GlobalLoading.dart';
+import '../../util/FirebaseAnalyticsConstants.dart';
+import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
-import '../../widgets/CoachCourseListItem.dart';
 import '../../widgets/SearchBar.dart';
+import '../../widgets/CoachCourseListItem.dart';
 import '../course/bloc/LessonBloc.dart';
-import '../course/bloc/LessonEvent.dart';
 import '../course/bloc/LessonState.dart';
 import '../course/model/CourseFilter.dart';
 import '../course/model/CourseTypeEnum.dart';
+import '../filter/FilterLesson.dart';
+import 'model/TeacherCoachManager.dart';
+import 'model/TeacherCoachNotifier.dart';
 
 class TeacherCoach extends StatefulWidget {
   const TeacherCoach({super.key});
@@ -23,46 +26,85 @@ class TeacherCoach extends StatefulWidget {
 }
 
 class _TeacherCoachState extends State<TeacherCoach> {
-  late List<CourseCoach> courseList;
-
-  CourseFilter courseFilter = CourseFilter();
-  String query = "";
-
-  final ValueNotifier<bool> isSearching = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isPageLoading = ValueNotifier<bool>(true);
+  late TeacherCoachManager teacherCoachManager;
+  final TeacherCoachNotifier notifier = TeacherCoachNotifier();
+  final ScrollController _scrollController = ScrollController();
   final FocusNode _searchFocusNode = FocusNode();
-
-  void onQueryChanged(String query) {
-    this.query = query;
-    if (query.length > 2) {
-      isSearching.value = true;
-      context.read<LessonBloc>().add(
-            FetchCourseCoachWithFilter(
-                courseFilter: courseFilter.copyWith(query: query)),
-          );
-    }
-  }
-
-  void onQueryCleared() {
-    query = "";
-    isSearching.value = false;
-    context.read<LessonBloc>().add(
-          FetchCourseCoachWithFilter(
-              courseFilter: courseFilter.copyWith(query: query)),
-        );
-  }
+  CourseFilter courseFilter = CourseFilter();
+  Timer? _searchDebounce;
 
   @override
   void initState() {
     super.initState();
-    context.read<LessonBloc>().add(FetchCourseCoach());
+    teacherCoachManager = TeacherCoachManager(
+      lessonBloc: context.read<LessonBloc>(),
+      setState: setState,
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchInitialData();
+    });
+
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _fetchInitialData() {
+    teacherCoachManager.fetchCourses(filter: courseFilter, searchQuery: "");
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      teacherCoachManager.loadMoreCourses(courseFilter);
+    }
+  }
+
+  void _onSearchChangedWithDebounce(String query) {
+    if (_searchDebounce?.isActive ?? false) _searchDebounce!.cancel();
+
+    _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+      _onSearchChanged(query);
+    });
+  }
+
+  void _onSearchChanged(String query) {
+    if (query.length < 3) return;
+
+    setState(() {
+      notifier.setLoading(true);
+      teacherCoachManager.resetPagination();
+      teacherCoachManager.courseList.clear();
+    });
+
+    FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_search);
+    teacherCoachManager.fetchCourses(filter: courseFilter, searchQuery: query);
+  }
+
+  void _onSearchCleared() {
+    setState(() {
+      notifier.setLoading(true);
+      teacherCoachManager.resetPagination();
+      teacherCoachManager.courseList.clear();
+    });
+
+    teacherCoachManager.fetchCourses(filter: courseFilter, searchQuery: "");
+  }
+
+  void _handleFilterChange(CourseFilter newFilter) {
+    setState(() {
+      notifier.setLoading(true);
+      courseFilter = newFilter;
+      teacherCoachManager.resetPagination();
+      teacherCoachManager.courseList.clear();
+    });
+
+    teacherCoachManager.fetchCourses(filter: courseFilter, searchQuery: teacherCoachManager.query);
   }
 
   @override
   void dispose() {
-    isSearching.dispose();
-    isPageLoading.dispose();
+    _scrollController.dispose();
     _searchFocusNode.dispose();
+    notifier.dispose();
     super.dispose();
   }
 
@@ -74,160 +116,112 @@ class _TeacherCoachState extends State<TeacherCoach> {
       body: SafeArea(
         child: BlocListener<LessonBloc, LessonState>(
           listener: (context, state) {
-            if (state is CourseCoachSuccess || state is LessonStateError) {
-              isPageLoading.value = false;
-              isSearching.value = false;
+            if (state is CourseCoachSuccess) {
+              teacherCoachManager.updateCourseList(state.courseCoachResponse.data?.courseCoachList ?? []);
+              notifier.setLoading(false);
             }
           },
-          child: ValueListenableBuilder<bool>(
-            valueListenable: isPageLoading,
-            builder: (context, isLoading, child) {
-              if (isLoading) {
-                return const GlobalFadeAnimation();
-              }
-              return NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is ScrollStartNotification) {
-                    FocusScope.of(context)
-                        .unfocus();
-                  }
-                  return false;
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16.0, top: 8, right: 16),
-                      child: Text(
-                        "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
-                        style: styleBlack12Bold,
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 16.0, right: 16, top: 16),
-                      child: InfoCardWidget(
-                        title: "Dersler",
-                        description:
-                            "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin. Dilersen, üst menüden seçim yaparak sadece favori kurumlarının yayınladığı dersleri görüntüleyebilirsin. Almak istediğin ders yayında yoksa Ders/Kurs Talep Et özelliğini kullanabilirsin.",
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Container(
-                            child: Stack(
-                              alignment: Alignment.centerRight,
-                              children: [
-                                YoSearchBar(
-                                  onQueryChanged: onQueryChanged,
-                                  onClearCallback: onQueryCleared,
-                                  focusNode: _searchFocusNode,
-                                ),
-                                ValueListenableBuilder<bool>(
-                                  valueListenable: isSearching,
-                                  builder: (context, value, child) {
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              final lessonBloc = context.read<LessonBloc>();
-                              final filter = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FilterLesson(
-                                    courseFilter: courseFilter,
-                                    courseTypeEnum: CourseTypeEnum.COURSE_COACH,
-                                  ),
-                                  fullscreenDialog: true,
-                                ),
-                              ) as CourseFilter?;
-
-                              if (filter != null) {
-                                courseFilter = filter;
-                                lessonBloc.add(
-                                  FetchCourseCoachWithFilter(
-                                      courseFilter:
-                                          courseFilter.copyWith(query: query)),
-                                );
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              margin: const EdgeInsets.only(left: 0, right: 16),
-                              height: 45,
-                              width: 45,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: color5,
-                              ),
-                              child: Image.asset("assets/ic_filter.png"),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onPanDown: (_) => _searchFocusNode.unfocus(),
-                        child: BlocBuilder<LessonBloc, LessonState>(
-                          builder: (context, state) {
-                            if (isSearching.value) {
-                              return  Center(
-                                child: CircularProgressIndicator(color: color5,),
-                              );
-                            }
-
-                            if (state is CourseCoachSuccess) {
-                              courseList = state.courseCoachResponse.data
-                                      ?.courseCoachList ??
-                                  [];
-                              if (courseList.isEmpty) {
-                                return const Center(
-                                  child: Text(
-                                    'Sonuç bulunamadı.',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                );
-                              }
-                              return ListView.builder(
-                                itemCount: courseList.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: (){
-                                      Navigator.pushNamed(
-                                          context, '/teacherCoachDetail',
-                                          arguments: courseList[index].teacherId);
-                                    },
-                                    child: CoachCourseListItem(
-                                      courseModel: courseList[index],
-                                      colors: HexColor("4A90E2"),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            return const Center(
-                                child: Text('No courses available'));
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+          child: Column(
+            children: [
+              _buildHeader(),
+              _buildSearchBar(),
+              Expanded(
+                child: ListenableBuilder(
+                  listenable: notifier,
+                  builder: (context, child) {
+                    return _buildCourseList();
+                  },
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
+            style: styleBlack12Bold,
+            textAlign: TextAlign.start,
+          ),
+          const SizedBox(height: 8),
+          const InfoCardWidget(
+            title: "Dersler",
+            description: "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin.",
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 5,
+          child: YoSearchBar(
+            onQueryChanged: _onSearchChangedWithDebounce,
+            onClearCallback: _onSearchCleared,
+            focusNode: _searchFocusNode,
+          ),
+        ),
+        InkWell(
+          onTap: () async {
+            final filter = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FilterLesson(
+                  courseFilter: courseFilter,
+                  courseTypeEnum: CourseTypeEnum.COURSE_COACH,
+                ),
+                fullscreenDialog: true,
+              ),
+            ) as CourseFilter?;
+
+            if (filter != null) {
+              _handleFilterChange(filter);
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.only(left: 8, right: 16),
+            height: 45,
+            width: 45,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: color5,
+            ),
+            child: Image.asset("assets/ic_filter.png"),
+          ),
+        ),
+
+      ],
+    );
+  }
+
+  Widget _buildCourseList() {
+    if (notifier.isPageLoading) {
+      return const Center(child: GlobalFadeAnimation());
+    }
+
+    if (teacherCoachManager.courseList.isEmpty) {
+      return const Center(child: Text('Aktif ders bulunamadı.', style: TextStyle(fontSize: 16)));
+    }
+
+    return ListView.builder(
+      controller: _scrollController,
+      itemCount: teacherCoachManager.courseList.length,
+      itemBuilder: (context, index) {
+        final course = teacherCoachManager.courseList[index];
+        return CoachCourseListItem(courseModel: course, colors: HexColor("#4A90E2"));
+      },
     );
   }
 }
