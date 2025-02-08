@@ -30,7 +30,8 @@ class CourseListManager {
     query = searchQuery;
 
     lessonBloc.add(FetchLessonWithFilter(
-        courseFilter: filter.copyWith(currentPage: currentPage.toString())));
+        courseFilter: filter.copyWith(
+            currentPage: currentPage.toString(), query: searchQuery)));
   }
 
   void loadMoreData(CourseFilter filter) {

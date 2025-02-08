@@ -123,7 +123,27 @@ extension BranchesExtension on Branches {
   static List<Branches> get allBranches {
     return Branches.values;
   }
+  static String getBranchNameByLessonId(int? lessonId) {
+    if (lessonId == null) return "Bilinmeyen Ders";
 
+    Map<int, String> lessonIdToBranchName = {
+      1: "Matematik",
+      2: "Türkçe",
+      3: "Fizik",
+      4: "Kimya",
+      5: "Biyoloji",
+      6: "Geometri",
+      7: "Tarih",
+      8: "Coğrafya",
+      9: "Türk Dili ve Edebiyatı",
+      10: "Fen ve Teknoloji",
+      11: "Sosyal Bilgiler",
+      12: "İnkılap Tarihi ve Atatürkçülük",
+      13: "İngilizce",
+    };
+
+    return lessonIdToBranchName[lessonId] ?? "Bilinmeyen Ders";
+  }
   static const Map<String, String> branchColors = {
     "Matematik": "#4A90E2",
     "Türkçe": "#FFA500",

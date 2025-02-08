@@ -93,7 +93,8 @@ class _CourseListPageState extends State<CourseListPage> {
 
     FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_search);
 
-    courseListManager.fetchLessons(filter: courseFilter.copyWith(query: query), searchQuery: query);
+    courseListManager.fetchLessons(
+        filter: courseFilter.copyWith(query: query), searchQuery: query);
   }
 
   @override
@@ -148,7 +149,7 @@ class _CourseListPageState extends State<CourseListPage> {
       courseListManager.courseList.clear();
     });
 
-    courseListManager.fetchLessons(filter: courseFilter, searchQuery: "");
+    courseListManager.fetchLessons(filter: courseFilter, searchQuery: courseListManager.query);
   }
 
   Widget _buildHeader() {
@@ -162,7 +163,14 @@ class _CourseListPageState extends State<CourseListPage> {
             style: styleBlack12Bold,
             textAlign: TextAlign.start,
           ),
-          const SizedBox(height: 8),
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: InfoCardWidget(
+              title: "Dersler",
+              description:
+                  "Baykursta bir ders 80 dakika sürer. Tek bir derse katılmak için 'Ders Bul', tüm konuya ulaşmak için 'Kurs Bul' özelliğini kullanabilirsin. İlgili içerik yoksa 'Ders/Kurs Talep Et' seçeneğiyle talepte bulunabilirsin.",
+            ),
+          ),
         ],
       ),
     );

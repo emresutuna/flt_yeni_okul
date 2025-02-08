@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/GlobalLoading.dart';
+import '../../util/LessonExtension.dart';
+import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/ExpandedWidget.dart';
@@ -42,15 +44,24 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
     _streamController.sink.add(schools);
   }
 
+  bool hasLogin = false;
 
   @override
   void initState() {
     super.initState();
+    _checkLoginStatus();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (ModalRoute.of(context) != null) {
         companyId = ModalRoute.of(context)!.settings.arguments as int;
         context.read<SchoolDetailBloc>().add(FetchSchoolById(id: companyId));
       }
+    });
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final token = await getToken();
+    setState(() {
+      hasLogin = token != null && token.isNotEmpty;
     });
   }
 
@@ -105,42 +116,32 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                         ),
                         8.toWidth,
                         StreamBuilder<bool>(
-                            stream: _streamController.stream,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Center(
-                                    child: Text(
-                                        'Bir hata oluştu: ${snapshot.error}'));
-                              } else if (!snapshot.hasData || snapshot.data!) {
-                                return InkWell(
-                                  child: Icon(
-                                    snapshot.data == true
-                                        ? Icons.favorite
-                                        : Icons.favorite_outline,
-                                    color: color5,
-                                  ),
-                                  onTap: () {
-                                    toggleFavorite(
-                                        state.schoolResponse.data?.id ?? -1,
-                                        snapshot.data ?? false);
-                                  },
+                          stream: _streamController.stream,
+                          builder: (context, snapshot) {
+                            if (!hasLogin) {
+                              return const SizedBox.shrink();
+                            }
+
+                            if (snapshot.hasError) {
+                              return Center(child: Text(' ${snapshot.error}'));
+                            }
+
+                            return InkWell(
+                              child: Icon(
+                                snapshot.data == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                                color: color5,
+                              ),
+                              onTap: () {
+                                toggleFavorite(
+                                  state.schoolResponse.data?.id ?? -1,
+                                  snapshot.data ?? false,
                                 );
-                              } else {
-                                return InkWell(
-                                  child: Icon(
-                                    snapshot.data == true
-                                        ? Icons.favorite
-                                        : Icons.favorite_outline,
-                                    color: color5,
-                                  ),
-                                  onTap: () {
-                                    toggleFavorite(
-                                        state.schoolResponse.data?.id ?? -1,
-                                        snapshot.data ?? false);
-                                  },
-                                );
-                              }
-                            }),
+                              },
+                            );
+                          },
+                        ),
                         16.toWidth
                       ],
                     ),
@@ -281,31 +282,83 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                     ),
                   ),
                   ExpandedWidget(
-                      title: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Öğretmenler",
-                            style: styleBlack14Bold,
-                          )),
-                      children: GridView.builder(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          primary: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: teacherList.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            mainAxisSpacing: 0,
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 4.0,
-                            childAspectRatio: 1.2,
+                    title: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Öğretmenler",
+                        style: styleBlack14Bold,
+                      ),
+                    ),
+                    children: ListView.builder(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: teacherList.length,
+                      itemBuilder: (context, index) {
+                        final teacher = teacherList[index];
+                        final teacherName =
+                            "${teacher.user?.name ?? ""} ${teacher.user?.surname ?? ""}";
+                        final lessonName =
+                            BranchesExtension.getBranchNameByLessonId(
+                                teacher.lessonId);
+
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 6, horizontal: 8),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: color2, width: 0.5),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                          itemBuilder: (context, index) => TeacherListItem(
-                                teacherName:
-                                    "${teacherList[index].userId!} ${teacherList[index].schoolId!}",
-                                teacherBranch:
-                                    teacherList[index].userId.toString(),
-                              ))),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color5.withOpacity(0.3),
+                                ),
+                                child: Icon(Icons.person,
+                                    color: Colors.grey.shade600),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      teacherName,
+                                      style: styleBlack14Bold,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      lessonName,
+                                      style: styleBlack12Regular.copyWith(
+                                          color: Colors.grey[700]),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: ExpandedWidget(

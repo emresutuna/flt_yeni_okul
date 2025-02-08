@@ -105,58 +105,6 @@ class SchoolDetail {
   }
 }
 
-class User {
-  int? id;
-  int? roleId;
-  String? name;
-  String? tckn;
-  String? email;
-  String? phone;
-  String? emailVerifiedAt;
-  String? createdAt;
-  String? updatedAt;
-  String? deletedAt;
-
-  User(
-      {this.id,
-        this.roleId,
-        this.name,
-        this.tckn,
-        this.email,
-        this.phone,
-        this.emailVerifiedAt,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
-
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    roleId = json['role_id'];
-    name = json['name'];
-    tckn = json['tckn'];
-    email = json['email'];
-    phone = json['phone'];
-    emailVerifiedAt = json['email_verified_at'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    deletedAt = json['deleted_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['role_id'] = roleId;
-    data['name'] = name;
-    data['tckn'] = tckn;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['email_verified_at'] = emailVerifiedAt;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['deleted_at'] = deletedAt;
-    return data;
-  }
-}
 
 class Province {
   int? id;
@@ -236,22 +184,79 @@ class Teachers {
   int? id;
   int? userId;
   int? schoolId;
+  int? lessonId;
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
+  User? user;
 
-  Teachers(
-      {this.id,
-        this.userId,
-        this.schoolId,
-        this.createdAt,
-        this.updatedAt,
-        this.deletedAt});
+  Teachers({
+    this.id,
+    this.userId,
+    this.schoolId,
+    this.lessonId,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+    this.user,
+  });
 
   Teachers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
     schoolId = json['school_id'];
+    lessonId = json['lesson_id'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    deletedAt = json['deleted_at'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['school_id'] = schoolId;
+    data['lesson_id'] = lessonId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['deleted_at'] = deletedAt;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    return data;
+  }
+}
+class User {
+  int? id;
+  String? name;
+  String? surname;
+  String? email;
+  String? phone;
+  String? emailVerifiedAt;
+  String? createdAt;
+  String? updatedAt;
+  String? deletedAt;
+
+  User({
+    this.id,
+    this.name,
+    this.surname,
+    this.email,
+    this.phone,
+    this.emailVerifiedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
+  });
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    surname = json['surname'];
+    email = json['email'];
+    phone = json['phone'];
+    emailVerifiedAt = json['email_verified_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     deletedAt = json['deleted_at'];
@@ -260,11 +265,15 @@ class Teachers {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['user_id'] = userId;
-    data['school_id'] = schoolId;
+    data['name'] = name;
+    data['surname'] = surname;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['email_verified_at'] = emailVerifiedAt;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['deleted_at'] = deletedAt;
     return data;
   }
 }
+
