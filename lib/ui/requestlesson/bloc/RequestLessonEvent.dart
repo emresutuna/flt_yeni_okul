@@ -1,4 +1,4 @@
-import 'package:baykurs/ui/requestlesson/CourseRequest.dart';
+import 'package:baykurs/ui/requestlesson/model/CourseRequest.dart';
 
 abstract class RequestLessonEvent {}
 

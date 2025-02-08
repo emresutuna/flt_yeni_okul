@@ -1,5 +1,5 @@
 
-import '../CourseRequestResponse.dart';
+import '../model/CourseRequestResponse.dart';
 
 abstract class RequestLessonState {}
 

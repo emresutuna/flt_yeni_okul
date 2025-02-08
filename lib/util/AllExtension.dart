@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../ui/requestlesson/CourseRequestSchool.dart';
+import '../ui/requestlesson/model/CourseRequestSchool.dart';
 import '../ui/requestlesson/Region.dart';
 
 extension SizedBoxExtension on int {

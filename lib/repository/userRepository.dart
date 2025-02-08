@@ -11,7 +11,7 @@ import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
 import 'package:baykurs/ui/profile/model/UserUpdateResponse.dart';
 import 'package:baykurs/ui/register/model/RegisterRequest.dart';
 import 'package:baykurs/ui/register/model/RegisterResponse.dart';
-import 'package:baykurs/ui/requestlesson/CourseRequest.dart';
+import 'package:baykurs/ui/requestlesson/model/CourseRequest.dart';
 import 'package:baykurs/ui/timesheet/model/TimeSheetResponse.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:dio/dio.dart';
@@ -25,7 +25,7 @@ import '../ui/login/model/LoginRequest.dart';
 import '../ui/login/model/LoginResponse.dart';
 import '../ui/profile/model/ProfileResponse.dart';
 import '../ui/profile/model/UserUpdateRequest.dart';
-import '../ui/requestlesson/CourseRequestResponse.dart';
+import '../ui/requestlesson/model/CourseRequestResponse.dart';
 
 class UserRepository {
   Future<ResultResponse<LoginResponse>> postLogin(LoginRequest request) async {

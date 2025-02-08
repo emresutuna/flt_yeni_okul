@@ -22,7 +22,8 @@ enum ClassTypes {
   NinthGrade(9),
   TenthGrade(10),
   EleventhGrade(11),
-  TwelfthGrade(12);
+  TwelfthGrade(12),
+  Grade(13);
 
   final int gradeValue;
 
@@ -48,6 +49,8 @@ extension ClassTypesExtension on ClassTypes {
         return "11. Sınıf";
       case ClassTypes.TwelfthGrade:
         return "12. Sınıf";
+      case ClassTypes.Grade:
+        return "Mezun";
     }
   }
   static ClassTypes? fromDisplay(String displayValue) {
@@ -3991,6 +3994,29 @@ Map<String, List<BranchTopic>> filterByBranch(Branches branchEnum) {
 
   return branchMap;
 }
+
+List<BranchTopic> filterBranchTopics(
+    List<ClassLevelBranch> branches, {
+      required Branches branch,  // Artık branch null olamaz
+      required ClassTypes classLevel, // ClassType zorunlu
+    }) {
+
+  var filteredBranches = branches.where((b) {
+    bool branchMatch = b.branch == branch;
+    bool classMatch = b.classLevel == classLevel.value; // String karşılaştırması
+
+    return branchMatch && classMatch;
+  }).toList();
+
+  var result = filteredBranches.expand((b) => b.topics).toList();
+
+  print("Seçili Branş: $branch, Seçili Sınıf: ${classLevel.value}");
+  print("Bulunan konu sayısı: ${result.length}");
+
+  return result;
+}
+
+
 
 Map<String, Map<String, List<BranchTopic>>> filterByClassAndBranch(
     List<ClassLevelBranch> classLevelBranches) {
