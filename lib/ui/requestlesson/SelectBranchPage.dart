@@ -9,12 +9,16 @@ class SelectBranchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Branş Seç")),
-      body: ListView.separated(
+      body: ListView.builder(
         itemCount: branches.length,
-        separatorBuilder: (_, __) => const Divider(),
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(branches[index].value, style: const TextStyle(fontSize: 16)),
+            title: Text(
+              branches[index].value,
+              style: styleBlack14Bold,
+            ),
+            trailing: Icon(Icons.arrow_forward_ios, color: color5, size: 16),
+
             onTap: () {
               Navigator.pop(context, branches[index]);
             },

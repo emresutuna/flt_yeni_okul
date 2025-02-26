@@ -7,7 +7,7 @@ class BaseCourse {
   String? description;
   String? startDate;
   String? endDate;
-  int? price;
+  num? price;
   int? quota;
   String? schoolName;
   String? classroom;

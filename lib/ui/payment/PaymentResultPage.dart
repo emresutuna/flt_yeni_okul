@@ -37,8 +37,11 @@ class PaymentResultPage extends StatelessWidget {
             if (isSuccess) {
               Navigator.of(context).pushReplacementNamed('/timeSheetPage');
             } else {
-              Get.offAllNamed('/mainPage');
-
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const MyApp()),
+                    (Route<dynamic> route) => false,
+              );
             }
           },
         ),

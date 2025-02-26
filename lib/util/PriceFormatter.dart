@@ -1,16 +1,16 @@
 import 'package:intl/intl.dart';
 
 String formatPrice(dynamic price) {
-  // Eğer price zaten int ise direkt formatla
-  if (price is int) {
-    return _formatIntPrice(price);
+  // Eğer price zaten double veya int ise formatla
+  if (price is int || price is double) {
+    return _formatDoublePrice(price.toDouble());
   }
 
-  // Eğer price String olarak geliyorsa, int'e çevir
+  // Eğer price String olarak geliyorsa, double'a çevir
   if (price is String) {
-    int? parsedPrice = int.tryParse(price.replaceAll(RegExp(r'[^0-9]'), ''));
+    double? parsedPrice = double.tryParse(price.replaceAll(RegExp(r'[^0-9.]'), ''));
     if (parsedPrice != null) {
-      return _formatIntPrice(parsedPrice);
+      return _formatDoublePrice(parsedPrice);
     }
   }
 
@@ -19,7 +19,7 @@ String formatPrice(dynamic price) {
 }
 
 // Asıl formatlayan yardımcı metod
-String _formatIntPrice(int price) {
+String _formatDoublePrice(double price) {
   final NumberFormat currencyFormatter = NumberFormat.currency(
     locale: 'tr_TR', // Türkçe format
     symbol: '₺',     // TL sembolü

@@ -229,8 +229,15 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
       itemCount: courseBundleManager.courseList.length,
       itemBuilder: (context, index) {
         final course = courseBundleManager.courseList[index];
-        return CourseBundleItem(
-            courseModel: course.toCourseList(), colors: HexColor("#4A90E2"));
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+                context, '/courseBundleDetail',
+                arguments: course.id);
+          },
+          child: CourseBundleItem(
+              courseModel: course.toCourseList(), colors: HexColor("#4A90E2")),
+        );
       },
     );
   }

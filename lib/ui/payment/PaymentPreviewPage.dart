@@ -226,11 +226,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                       );
                                     }
 
-                                    /*
-                                    Navigator.pushNamed(context, '/makePayment',
-                                        arguments: paymentPreview);
-
-                                     */
                                   },
                                 ),
                               ),
@@ -244,7 +239,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                 ),
               ],
             ),
-            8.toHeight,
             Container(
               margin: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -261,7 +255,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Fatura Bilgisi ",
+                          "Kayıtlı Fatura Adresi ",
                           style: styleBlack16Bold,
                         ),
                         IconButton(
@@ -280,6 +274,11 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                           icon: Icon(Icons.edit_note, color: color5),
                         ),
                       ],
+                    ),
+                    8.toHeight,
+                    Text(
+                      defaultBill!= null ?"Yapacağınız işlemde varsayılan kayıtlı fatura adresiniz kullanılacaktır.":"Kayıtlı fatura adresin bulunmuyor. Lütfen bir fatura adresi ekle.",
+                      style: styleBlack14Regular,
                     ),
                     8.toHeight,
                     defaultBill != null
@@ -316,10 +315,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                           )
                         : Column(
                             children: [
-                              Text(
-                                "Fatura bilgisi bulunmuyor. Lütfen bir fatura ekle.",
-                                style: styleBlack12Bold,
-                              ),
                               16.toHeight,
                               PrimaryButton(
                                   text: "Fatura Ekle",

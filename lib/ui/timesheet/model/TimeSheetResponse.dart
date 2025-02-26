@@ -36,7 +36,7 @@ class TimeSheet {
   String? endDate;
   String? classroom;
   String? deadline;
-  int? price;
+  num? price;
   int? quota;
   String? createdAt;
   String? updatedAt;

@@ -17,6 +17,8 @@ import '../../widgets/infoWidget/InfoWidget.dart';
 import 'SelectClassPage.dart';
 import 'SelectCourseTypePage.dart';
 import 'SelectTopicPage.dart';
+import 'bloc/RequestLessonEvent.dart';
+import 'model/CourseRequest.dart';
 import 'model/CourseRequestSchool.dart';
 import 'Region.dart';
 import 'model/RequestLessonService.dart';
@@ -81,7 +83,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
 
   Future<void> _onRegionAndProvinceSelected() async {
     final selectedRegion =
-    await Get.to(() => SelectRegionPage(regions: regions.value));
+        await Get.to(() => SelectRegionPage(regions: regions.value));
 
     if (selectedRegion != null) {
       setState(() {
@@ -93,7 +95,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
       await _fetchProvinces(selectedRegion.id);
 
       final selectedProvince =
-      await Get.to(() => SelectProvincePage(provinces: provinces.value));
+          await Get.to(() => SelectProvincePage(provinces: provinces.value));
 
       if (selectedProvince != null) {
         setState(() {
@@ -106,7 +108,6 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
       }
     }
   }
-
 
   void _onSchoolSelected(CourseRequestSchool school) {
     setState(() {
@@ -242,7 +243,22 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           width: double.infinity,
                           child: PrimaryButton(
                             text: "Ders/Kurs Talep Et",
-                            onPress: () {},
+                            onPress: () {
+                              if (selectedBranch != null &&
+                                  selectedTopic != null &&
+                                  selectedSchool != null) {
+                                context
+                                    .read<RequestLessonBloc>()
+                                    .add(RequestLesson(
+                                      request: CourseRequest(
+                                        topicId: selectedTopic!.id,
+                                        cityId: selectedProvince!.id,
+                                        schoolId: selectedSchool!.id.toInt(),
+                                        subject: selectedTopic!.name,
+                                      ),
+                                    ));
+                              }
+                            },
                           ),
                         ),
                       ],

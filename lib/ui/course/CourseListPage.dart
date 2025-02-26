@@ -72,8 +72,10 @@ class _CourseListPageState extends State<CourseListPage> {
     if (args is int) {
       courseFilter = courseFilter.copyWith(schoolId: args);
     }
+    print("Dersler yükleniyor..."); // Debugging için ekle
     courseListManager.fetchLessons(filter: courseFilter, searchQuery: "");
   }
+
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
@@ -122,7 +124,7 @@ class _CourseListPageState extends State<CourseListPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildHeader(), // ✅ Top text and filter button restored
+              _buildHeader(),
               _buildSearchBar(),
               Expanded(
                 child: ListenableBuilder(

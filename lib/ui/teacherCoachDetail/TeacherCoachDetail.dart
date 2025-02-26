@@ -3,6 +3,7 @@ import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
+import 'package:baykurs/util/PriceFormatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -89,15 +90,6 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16.0, top: 0, bottom: 16),
-                            child: Text(
-                              "Derse ait tüm detayları incele.",
-                              style: styleBlack12Bold,
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
@@ -126,9 +118,9 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                     Positioned(
                                       top: 10,
                                       right: 10,
-                                      child: Text("₺$selectedPrice",
+                                      child: Text(formatPrice(selectedPrice),
                                           textAlign: TextAlign.end,
-                                          style: styleBlack22Bold.copyWith(
+                                          style: styleBlack20Bold.copyWith(
                                               color: greenButton)),
                                     ),
                                     Column(

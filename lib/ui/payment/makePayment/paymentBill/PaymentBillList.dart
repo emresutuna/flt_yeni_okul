@@ -4,6 +4,7 @@ import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../widgets/PrimaryButton.dart';
+import '../PaymentBillPage.dart';
 import 'model/PaymentBillResponse.dart';
 
 class PaymentBillList extends StatefulWidget {
@@ -160,10 +161,18 @@ class _PaymentBillListState extends State<PaymentBillList> {
     );
   }
 
-  void _addNewBill() {
-    setState(() {
-      // widget.paymentBillList.add("Yeni Fatura ${bills.length + 1}");
-    });
+  void _addNewBill() async{
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+          const PaymentBillPage()),
+    );
+      if (result != null && result is BillList) {
+
+      }
+
   }
 
   void _removeBill(int index) {

@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/GlobalLoading.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
+import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import 'bloc/CourseDetailState.dart';
 import 'model/CourseDetailResponseModel.dart';
@@ -92,9 +93,9 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                   Positioned(
                                     top: 10,
                                     right: 10,
-                                    child: Text("₺${courseDetail!.price}",
+                                    child: Text(formatPrice(courseDetail!.price),
                                         textAlign: TextAlign.end,
-                                        style: styleBlack22Bold.copyWith(
+                                        style: styleBlack20Bold.copyWith(
                                             color: greenButton)),
                                   ),
                                   Column(

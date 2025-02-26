@@ -60,6 +60,8 @@ TextStyle styleBlack16Bold = GoogleFonts.poppins(
     fontSize: 16, fontWeight: FontWeight.bold, color: color1);
 TextStyle styleBlack18Bold = GoogleFonts.poppins(
     fontSize: 18, fontWeight: FontWeight.bold, color: color1);
+TextStyle styleBlack20Bold = GoogleFonts.poppins(
+    fontSize: 20, fontWeight: FontWeight.bold, color: color1);
 TextStyle styleBlack22Bold = GoogleFonts.poppins(
     fontSize: 22, fontWeight: FontWeight.bold, color: color1);
 
