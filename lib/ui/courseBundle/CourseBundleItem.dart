@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
+import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import '../course/model/CourseModel.dart';
 
@@ -74,7 +75,7 @@ class CourseBundleItem extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Text(
-                            "₺${courseModel?.price ?? ""}",
+                            formatPrice(courseModel?.price ?? ""),
                             style: styleGreen18Bold,
                           ),
                         ),

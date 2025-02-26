@@ -5,6 +5,7 @@ import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillState
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
 import 'package:baykurs/widgets/PrimaryButton.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import '../../util/HexColor.dart';
+import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import 'PaymentResultPage.dart';
 import 'PaymentWebView.dart';
@@ -69,13 +71,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
       }, builder: (context, state) {
         if (state is PaymentBillStateLoading) {
           return Stack(
-            children: [
-              _buildWidget(context),
-              Center(
-                  child: CircularProgressIndicator(
-                color: color5,
-              )),
-            ],
+            children: [_buildWidget(context), const GlobalFadeAnimation()],
           );
         }
         if (state is PaymentBillStateSuccess) {
@@ -195,7 +191,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            "₺${paymentPreview?.price ?? ""}",
+                                            formatPrice(
+                                                paymentPreview?.price ?? ""),
                                             style: styleGreen18Bold,
                                           ),
                                         ],
@@ -272,8 +269,9 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                             final result = await Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                       PaymentBillList(paymentBillList: paymentBillList,)),
+                                  builder: (context) => PaymentBillList(
+                                        paymentBillList: paymentBillList,
+                                      )),
                             );
                             if (result != null && result is BillList) {
                               defaultBill = result;

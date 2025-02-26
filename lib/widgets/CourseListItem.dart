@@ -7,6 +7,7 @@ import '../ui/dashboard/model/MobileHomeResponse.dart';
 import '../util/DateExtension.dart';
 import '../util/HexColor.dart';
 import '../util/LessonExtension.dart';
+import '../util/PriceFormatter.dart';
 import '../util/YOColors.dart';
 
 class CourseListItem extends StatelessWidget {
@@ -25,12 +26,10 @@ class CourseListItem extends StatelessWidget {
     String schoolName = courseModel?.schoolName ?? 'Kurum bilgisi yok';
     String teacherName = courseModel?.teacherFormatted ?? '';
 
-
     String endTime = courseModel?.endDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
         : '-';
-
-    String price = '₺${courseModel?.price ?? 0}';
+    String price = formatPrice(courseModel?.price ?? 0);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -97,8 +96,8 @@ class CourseListItem extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: courseModel?.topics
-                                    ?.map((e) => e.name)
-                                    .join(" - ") ??
+                                        ?.map((e) => e.name)
+                                        .join(" - ") ??
                                     "",
                                 style: styleBlack12Regular,
                               ),
@@ -127,10 +126,10 @@ class CourseListItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: HexColor(
                   BranchesExtension.getColorForBranch(
-                    courseModel?.lesson?.name ??
-                        courseModel?.lessonName ??
-                        DEFAULT_LESSON_COLOR,
-                  ) ??
+                        courseModel?.lesson?.name ??
+                            courseModel?.lessonName ??
+                            DEFAULT_LESSON_COLOR,
+                      ) ??
                       DEFAULT_LESSON_COLOR,
                 ),
                 borderRadius: const BorderRadius.only(
@@ -174,6 +173,7 @@ CourseDetailData mapCourseListToDetail(CourseList courseList) {
     teacherSurname: null,
   );
 }
+
 class InterestedLessonWidget extends StatelessWidget {
   final InterestedLesson? courseModel;
   final Color colors;
@@ -185,10 +185,11 @@ class InterestedLessonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String lessonName = courseModel?.lesson?.name ?? 'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
-    String schoolName = courseModel?.school?.user?.name?? 'Kurum bilgisi yok';
+    String schoolName = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
 
-    String dateString =
-    formatDateRange(DateTime.parse(courseModel?.startDate??""), DateTime.parse(courseModel?.endDate??""));
+    String dateString = formatDateRange(
+        DateTime.parse(courseModel?.startDate ?? ""),
+        DateTime.parse(courseModel?.endDate ?? ""));
 
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
@@ -198,7 +199,7 @@ class InterestedLessonWidget extends StatelessWidget {
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
         : '-';
 
-    String price = '₺${courseModel?.price ?? 0}';
+    String price = formatPrice(courseModel?.price ??"");
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -239,7 +240,7 @@ class InterestedLessonWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Tarih: ${dateString?? ""}",
+                        "Tarih: ${dateString ?? ""}",
                         style: styleBlack12Regular,
                       ),
                     ),
@@ -257,8 +258,8 @@ class InterestedLessonWidget extends StatelessWidget {
                               ),
                               TextSpan(
                                 text: courseModel?.topics
-                                    ?.map((e) => e.name)
-                                    .join(" - ") ??
+                                        ?.map((e) => e.name)
+                                        .join(" - ") ??
                                     "",
                                 style: styleBlack12Regular,
                               ),
@@ -287,9 +288,8 @@ class InterestedLessonWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: HexColor(
                   BranchesExtension.getColorForBranch(
-                    courseModel?.lesson?.name ??
-                        DEFAULT_LESSON_COLOR,
-                  ) ??
+                        courseModel?.lesson?.name ?? DEFAULT_LESSON_COLOR,
+                      ) ??
                       DEFAULT_LESSON_COLOR,
                 ),
                 borderRadius: const BorderRadius.only(

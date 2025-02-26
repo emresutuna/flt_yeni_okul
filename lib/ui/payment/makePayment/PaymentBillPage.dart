@@ -1,14 +1,16 @@
+import 'package:baykurs/ui/payment/makePayment/model/AddressController.dart';
+import 'package:baykurs/ui/payment/makePayment/model/PaymentBillService.dart';
+import 'package:baykurs/ui/requestlesson/SelectAllCitiesPage.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../util/YOColors.dart';
 import '../../../widgets/GreenPrimaryButton.dart';
-import '../../webViewPage/WebViewPage.dart';
-import 'PaymentBillController.dart';
+import '../../requestlesson/AllCities.dart';
+import '../../requestlesson/Region.dart';
+import '../../requestlesson/SelectRegionPage.dart';
 
 class PaymentBillPage extends StatefulWidget {
   const PaymentBillPage({super.key});
@@ -18,7 +20,13 @@ class PaymentBillPage extends StatefulWidget {
 }
 
 class _PaymentBillPageState extends State<PaymentBillPage> {
-  final FormController controller = Get.put(FormController());
+  final PaymentBillService _service = PaymentBillService();
+
+  final AddressController controller = Get.put(AddressController());
+  final ValueNotifier<List<Region>> regions = ValueNotifier([]);
+  final ValueNotifier<List<AllCities>> provinces = ValueNotifier([]);
+  Region? selectedRegion;
+  AllCities? selectedProvince;
 
   @override
   void dispose() {
@@ -26,149 +34,199 @@ class _PaymentBillPageState extends State<PaymentBillPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _fetchRegions();
+  }
+
+  Future<void> _fetchRegions() async {
+    regions.value = await _service.fetchRegions();
+  }
+
+  Future<void> _fetchProvinces(int regionId) async {
+    final provinceList = await _service.fetchProvinces(regionId);
+
+    if (provinceList.isNotEmpty) {
+      provinces.value = provinceList;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WhiteAppBar("Fatura Bilgileri"),
+      appBar: WhiteAppBar("Fatura Adresi Ekle"),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  border: Border.all(color: paymentBorder),
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    8.toHeight,
-                    Text(
-                      "Faturanız e-posta olarak gönderilecektir. Faturanızı incelemek için mail adresinizi kontrol edin. ",
-                      style: styleBlack14Regular,
-                    ),
-                    8.toHeight,
-                    PaymentInputField(
-                      controller: controller.adController,
-                      hintText: "Ad",
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      controller: controller.soyadController,
-                      hintText: "Soyad",
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      controller: controller.emailController,
-                      hintText: "E-posta",
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      controller: controller.tcKimlikController,
-                      hintText: "TC Kimlik No",
-                      maxLength: 11,
-                      keyboardType: TextInputType.number,
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      maxLength: 4,
-                      controller: controller.dogumYiliController,
-                      hintText: "Doğum Yılı",
-                      keyboardType: TextInputType.number,
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      controller: controller.addressController,
-                      hintText: "Adres",
-                    ),
-                    12.toHeight,
-                    PaymentInputField(
-                      controller: controller.billNameController,
-                      hintText: "Fatura Adı",
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Obx(
-                          () => Checkbox(
-                            activeColor: color3,
-                            value: controller.isCheckboxChecked.value,
-                            onChanged: (bool? value) {
-                              controller.isCheckboxChecked.value =
-                                  value ?? false;
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.start,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: "Ön Bilgilendirme Formu ",
-                                  style: styleBlack12Regular.copyWith(
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: color3,
-                                      color: color3),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      openWebView(
-                                          'https://www.bykurs.com.tr/privacy',
-                                          'Gizlilik Politikası');
-                                    },
-                                  children: [
-                                    TextSpan(
-                                        text: "'nu ve ",
-                                        style: styleBlack12Regular.copyWith(
-                                            decoration: TextDecoration.none)),
-                                    TextSpan(
-                                      text: "Mesafeli Satış Sözleşmesi",
-                                      style: styleBlack12Regular.copyWith(
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: color3,
-                                          color: color3),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          openWebView(
-                                              'https://www.bykurs.com.tr/privacy',
-                                              'Gizlilik Politikası');
-                                        },
-                                    ),
-                                    TextSpan(
-                                        text: "'ni okudum, onaylıyorum.",
-                                        style: styleBlack12Regular.copyWith(
-                                            decoration: TextDecoration.none)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                    24.toHeight,
-                    SizedBox(
-                      height: 50,
-                      width: double.maxFinite,
-                      child: GreenPrimaryButton(
-                        text: "Devam Et",
-                        onPress: () async {
-                          if (controller.validateAndSubmit()) {
-                            final paymentBill = controller.setupPaymentBill(); // Yeni fatura bilgisi
-                            Future.delayed(const Duration(milliseconds: 500), () {
-                              Navigator.pop(context, paymentBill); // Fatura bilgisini geri döndür
-                            });
-                          }
-                        },
+            Text(
+              "Faturanız e-posta olarak gönderilecektir. Faturanızı incelemek için mail adresinizi kontrol edin.",
+              style: styleBlack14Regular,
+            ),
+            16.toHeight,
+            PaymentInputField(
+              controller: controller.billNameController,
+              hintText: "Fatura Adı",
+            ),
+            12.toHeight,
+            PaymentInputField(
+              controller: controller.adController,
+              hintText: "Ad",
+            ),
+            12.toHeight,
+            PaymentInputField(
+              controller: controller.soyadController,
+              hintText: "Soyad",
+            ),
+            12.toHeight,
+
+            /// 📌 TC Kimlik No
+            PaymentInputField(
+              controller: controller.tcKimlikController,
+              hintText: "TC Kimlik No",
+              maxLength: 11,
+              keyboardType: TextInputType.number,
+            ),
+            12.toHeight,
+            PaymentInputField(
+              controller: controller.streetController,
+              hintText: "Cadde/Sokak",
+            ),
+            12.toHeight,
+            PaymentInputField(
+              controller: controller.districtController,
+              hintText: "Mahalle",
+            ),
+            12.toHeight,
+
+            /// 📌 Adres
+            Row(
+              children: [
+                /// 📌 Şehir Seçimi
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      final selectedRegion = await Get.to(
+                          () => SelectRegionPage(regions: regions.value));
+
+                      if (selectedRegion != null) {
+                        setState(() {
+                          this.selectedRegion = selectedRegion;
+                          print(this.selectedRegion?.id);
+                          selectedProvince = null;
+                          provinces.value = [];
+                          controller.selectedRegion.value = this.selectedRegion;
+
+                        });
+                      }
+                    },
+                    child: AbsorbPointer(
+                      // Kullanıcının input girmesini engellemek için
+                      child: PaymentInputField(
+                        controller: TextEditingController(
+                            text: selectedRegion?.name ?? "İl Seç"),
+                        hintText: "İl",
+                        // Sağ tarafa ikon ekler
                       ),
                     ),
-                    const SizedBox(height: 20),
-                  ],
+                  ),
                 ),
+                8.toWidth,
+
+                /// 📌 İlçe Seçimi
+                Expanded(
+                  child: InkWell(
+                    onTap: () async {
+                      await _fetchProvinces(selectedRegion?.id ?? 0);
+                      if (selectedRegion == null) {
+                        Get.snackbar("Uyarı", "Lütfen önce bir il seçin.",
+                            colorText: Colors.white,
+                            backgroundColor: Colors.red);
+                        return;
+                      }
+
+                      final selectedDistrict = await Get.to(() =>
+                          SelectAllCitiesPage(provinces: provinces.value));
+
+                      if (selectedDistrict != null) {
+                        setState(() {
+                          selectedProvince = selectedDistrict;
+                          controller.selectedProvince.value = this.selectedProvince;
+                        });
+                      }
+                    },
+                    child: AbsorbPointer(
+                      // Kullanıcının input girmesini engellemek için
+                      child: PaymentInputField(
+                        controller: TextEditingController(
+                            text: selectedProvince?.name ?? "İlçe Seç"),
+                        hintText: "İlçe",
+                        // Sağ tarafa ikon ekler
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+            12.toHeight,
+            Row(
+              children: [
+                Expanded(
+                  child: PaymentInputField(
+                    controller: controller.apartmentNoController,
+                    hintText: "Bina No",
+                  ),
+                ),
+                8.toWidth,
+                Expanded(
+                  child: PaymentInputField(
+                    controller: controller.flatNoController,
+                    hintText: "Daire No",
+                  ),
+                ),
+              ],
+            ),
+            12.toHeight,
+            PaymentInputField(
+              controller: controller.postalCodeController,
+              hintText: "Posta Kodu",
+            ),
+
+
+            8.toHeight,
+            Obx(
+              () => CheckboxListTile(
+                title: Text(
+                  "Bu adresi varsayılan yap",
+                  style: styleBlack14Regular,
+                ),
+                activeColor: Colors.green,
+                value: controller.isDefaultAddress.value,
+                onChanged: (bool? value) {
+                  controller.isDefaultAddress.value = value ?? false;
+                },
               ),
             ),
+            8.toHeight,
+
+            SizedBox(
+              height: 50,
+              width: double.maxFinite,
+              child: GreenPrimaryButton(
+                text: "Devam Et",
+                onPress: () async {
+                  if (controller.validateAndSubmit()) {
+                    await controller.saveAddress();
+                    Future.delayed(const Duration(milliseconds: 500), () {
+                      Navigator.pop(context, controller.setupAddress());
+                    });
+                  }
+                },
+              ),
+            ),
+            20.toHeight
           ],
         ),
       ),

@@ -29,7 +29,7 @@ class _FilterRegionState extends State<FilterRegion> {
 
   Future<void> fetchRegions() async {
     try {
-      final response = await http.get(Uri.parse(ApiUrls.getProvinceAllURL));
+      final response = await http.get(Uri.parse(ApiUrls.getProvince));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);

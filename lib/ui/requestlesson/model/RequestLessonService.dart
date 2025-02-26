@@ -8,7 +8,7 @@ import '../Region.dart';
 
 class RequestLessonService {
   Future<List<Region>> fetchRegions() async {
-    final response = await http.get(Uri.parse(ApiUrls.getProvinceAllURL));
+    final response = await http.get(Uri.parse(ApiUrls.getProvince));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -23,7 +23,7 @@ class RequestLessonService {
 
   Future<List<Province>> fetchProvinces(int regionId) async {
     final response =
-        await http.get(Uri.parse(ApiUrls.getAllDistrictsAllURL(regionId)));
+        await http.get(Uri.parse(ApiUrls.getAllDistricts(regionId)));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);

@@ -1,12 +1,10 @@
 import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
-import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
-import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillEvent.dart';
 import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import '../../../util/YOColors.dart';
 import '../../../widgets/GreenPrimaryButton.dart';
 import '../../../widgets/PrimaryInputField.dart';
@@ -73,13 +71,7 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
       }, builder: (context, state) {
         if (state is PaymentPreviewLoadingState) {
           return Stack(
-            children: [
-              _buildWidget(),
-              Center(
-                  child: CircularProgressIndicator(
-                color: color5,
-              )),
-            ],
+            children: [_buildWidget(), const GlobalFadeAnimation()],
           );
         }
         if (state is PaymentBillLoadedState) {
@@ -263,18 +255,22 @@ class _MakePaymentPageState extends State<MakePaymentPage> {
                   ),
                   8.toHeight,
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Dikey hizalamayı başa çeker
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    // Dikey hizalamayı başa çeker
                     children: [
                       Text(
                         "Detay: ",
                         style: styleBlack14Bold,
                       ),
-                      Expanded( // Çok satırlı metinlerin düzgün sarılması için Expanded kullanılır
+                      Expanded(
+                        // Çok satırlı metinlerin düzgün sarılması için Expanded kullanılır
                         child: Text(
                           "${paymentPreview?.title ?? ""} - ${paymentPreview?.lessonName ?? "-"}",
                           style: styleBlack14Regular,
-                          maxLines: 3, // İsteğe bağlı olarak maksimum satır sayısı ayarlanabilir
-                          overflow: TextOverflow.ellipsis, // Uzun metinlerde kesme ekler
+                          maxLines: 3,
+                          // İsteğe bağlı olarak maksimum satır sayısı ayarlanabilir
+                          overflow: TextOverflow
+                              .ellipsis, // Uzun metinlerde kesme ekler
                         ),
                       ),
                     ],

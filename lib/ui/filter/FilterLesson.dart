@@ -141,12 +141,12 @@ class _FilterLessonState extends State<FilterLesson> {
         ],
       ),
       body: BlocListener<FilterBloc, FilterState>(
-        listenWhen: (previous, current) =>
-        current is FilterStateSuccess,
+        listenWhen: (previous, current) => current is FilterStateSuccess,
         listener: (context, state) {
           if (state is FilterStateSuccess) {
             final maxPriceData =
-                double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
+                double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ??
+                    0.0;
 
             setState(() {
               _currentRange = RangeValues(
@@ -159,10 +159,14 @@ class _FilterLessonState extends State<FilterLesson> {
         child: BlocBuilder<FilterBloc, FilterState>(
           builder: (context, state) {
             if (state is FilterStateLoading) {
-              return  Center(child: CircularProgressIndicator(color: color5,));
+              return Center(
+                  child: CircularProgressIndicator(
+                color: color5,
+              ));
             } else if (state is FilterStateSuccess) {
               final maxPriceData =
-                  double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ?? 0.0;
+                  double.tryParse(state.priceModel.data?.maxPrice ?? "0.0") ??
+                      0.0;
 
               return Stack(
                 children: [
@@ -189,9 +193,9 @@ class _FilterLessonState extends State<FilterLesson> {
                                     }
                                   },
                                   leftLabel:
-                                  "Min: ${_currentRange.start.toInt()} TL",
+                                      "Min: ${_currentRange.start.toInt()} TL",
                                   rightLabel:
-                                  "Max: ${_currentRange.end.toInt()} TL",
+                                      "Max: ${_currentRange.end.toInt()} TL",
                                 ),
                                 16.toHeight,
                                 Text("İl", style: styleBlack16Bold),
@@ -204,7 +208,8 @@ class _FilterLessonState extends State<FilterLesson> {
                                 _buildTextField("İlçe Seç", provinceController,
                                     context, false),
                                 16.toHeight,
-                                if (courseType != CourseTypeEnum.COURSE_COACH) ...[
+                                if (courseType !=
+                                    CourseTypeEnum.COURSE_COACH) ...[
                                   Text("Branşlar", style: styleBlack18Bold),
                                   8.toHeight,
                                   _buildBranches(),
@@ -240,12 +245,14 @@ class _FilterLessonState extends State<FilterLesson> {
       child: ElevatedButton(
         onPressed: () {
           if (courseType == CourseTypeEnum.COURSE) {
-            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_filter_apply);
+            FirebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsConstants.course_filter_apply);
           } else if (courseType == CourseTypeEnum.COURSE_BUNDLE) {
-            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.course_bundle_filter_apply);
-          } else if(courseType == CourseTypeEnum.COURSE_COACH){
-            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.teacher_coach_filter_apply);
-
+            FirebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsConstants.course_bundle_filter_apply);
+          } else if (courseType == CourseTypeEnum.COURSE_COACH) {
+            FirebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsConstants.teacher_coach_filter_apply);
           }
 
           final updatedFilter = courseFilter.copyWith(

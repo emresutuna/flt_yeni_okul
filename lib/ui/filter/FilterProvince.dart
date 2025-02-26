@@ -35,7 +35,7 @@ class _FilterProvinceState extends State<FilterProvince> {
 
   Future<void> fetchProvince(int cityId) async {
     try {
-      final response = await http.get(Uri.parse(ApiUrls.getAllDistrictsAllURL(cityId)));
+      final response = await http.get(Uri.parse(ApiUrls.getAllDistricts(cityId)));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);

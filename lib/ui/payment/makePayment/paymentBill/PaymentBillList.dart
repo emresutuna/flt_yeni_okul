@@ -37,7 +37,7 @@ class _PaymentBillListState extends State<PaymentBillList> {
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left:8.0,right: 8,top: 16,bottom: 16),
                 child: Column(
                   children: [
                     Row(
@@ -47,7 +47,7 @@ class _PaymentBillListState extends State<PaymentBillList> {
                         Expanded(
                           child: Text(
                             "Fatura Adresi Ekle",
-                            style: styleBlack14Bold,
+                            style: styleBlack16Bold,
                           ),
                         ),
                       ],

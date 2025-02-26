@@ -34,11 +34,13 @@ class ApiUrls {
   static const String getFavorites = "/mobile/favorites";
   static const String getHomePage = "/mobile/homepage";
   static const String getHomePageWithLogin = "/mobile/homepage";
-  static const String getProvinceAllURL =
-      "https://api.bykurs.com.tr/api/v1/mobile/province/inuse";
+  static const String getProvince = "https://api.bykurs.com.tr/api/v1/mobile/province/inuse";
+  static const String getProvinceAll = "https://api.bykurs.com.tr/api/v1/mobile/province/";
 
-  static String getAllDistrictsAllURL(int id) =>
+  static String getAllDistricts(int id) =>
       "https://api.bykurs.com.tr/api/v1/mobile/city/inuse?province_id=$id";
+  static String getAllDistrictsAll(int id) =>
+      "https://api.bykurs.com.tr/api/v1/mobile/city?province_id=$id";
 
   static String getCourseRequestSchoolsById(int cityId, int provinceId) {
     String baseUrl =

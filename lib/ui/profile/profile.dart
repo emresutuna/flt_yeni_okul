@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         color: color5,
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              left: 16.0, top: 16, bottom: 32),
+                              left: 16.0, top: 8, bottom: 32),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -83,23 +83,22 @@ class _ProfilePageState extends State<ProfilePage> {
                                     style: styleWhite16Bold,
                                   ),
                                   IconButton(
-                                    onPressed: () {
-                                      Navigator.of(context, rootNavigator: true)
-                                          .pushNamed("/notificationPage");
-                                    },
-                                    icon: Icon(
-                                      (notifications != null && (notifications?.count ?? 0) > 0)
-                                          ? Icons.notifications_active
-                                          : Icons.notifications,
-                                      size: 22,
-                                      color: Colors.white,
-                                    )
-
-
-                                  ),
+                                      onPressed: () {
+                                        Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pushNamed("/notificationPage");
+                                      },
+                                      icon: Icon(
+                                        (notifications != null &&
+                                                (notifications?.count ?? 0) > 0)
+                                            ? Icons.notifications_active
+                                            : Icons.notifications,
+                                        size: 22,
+                                        color: Colors.white,
+                                      )),
                                 ],
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   Container(
@@ -111,7 +110,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     child: Center(
                                         child: Text(
-                                            "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}")),
+                                      "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}",
+                                      style: styleBlack16Bold,
+                                    )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16.0),
@@ -197,7 +198,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   openWebView(
                                       'https://www.bykurs.com.tr', 'İletişim');
                                 }),
-                                profileItem("Hesabımı Sil", onTap: () {}),
+                                profileItem("Hesabımı Sil", onTap: () {
+                                  showDeleteAccountDialog(context);
+                                }),
                                 profileItem(
                                   "Çıkış Yap",
                                   onTap: () {
@@ -225,6 +228,54 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),
       ),
+    );
+  }
+
+  void showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: Text(
+            "Hesabını Silmek İstiyor musun?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: color5, // Uygulamanın renklerinden biri
+            ),
+          ),
+          content: Text(
+              "Hesabını silerek Baykurs uygulaması içindeki bütün verilerin kaybolacaktır. Onaylıyor musun?",
+              style: styleBlack14Regular.copyWith(color: Colors.black87)),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dialog'u kapat
+              },
+              child: const Text(
+                "Vazgeç",
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Dialog'u kapat
+                //Hesabımoı sil servis isteği
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color5, // Silme butonu için uygun renk
+              ),
+              child: Text(
+                "Hesabımı Sil",
+                style: styleBlack14Bold.copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

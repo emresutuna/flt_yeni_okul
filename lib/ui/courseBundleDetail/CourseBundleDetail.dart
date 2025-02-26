@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../util/GlobalLoading.dart';
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
+import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/BkMapWidget.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
@@ -91,7 +92,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text(courseDetail!.title ?? "",
+                                    child: Text(courseDetail?.title ?? "",
                                         style: styleBlack14Bold),
                                   ),
                                 ],
@@ -106,7 +107,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                     style: styleBlack12Regular,
                                   ),
                                   const Spacer(),
-                                  Text("₺${courseDetail!.price}",
+                                  Text(formatPrice(courseDetail?.price ?? ""),
                                       style: styleBlack16Bold.copyWith(
                                           color: greenButton)),
                                 ],
@@ -223,14 +224,19 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: BkMapWidget(
-                                  latitude: courseDetail!.courses.first.school?.latitude??"",
-                                  longitude:  courseDetail!.courses.first.school?.longitude??"",
+                                  latitude: courseDetail!
+                                          .courses.first.school?.latitude ??
+                                      "",
+                                  longitude: courseDetail!
+                                          .courses.first.school?.longitude ??
+                                      "",
                                   zoom: 15,
-                                  schoolName: courseDetail!.courses.first.school?.name ??
+                                  schoolName: courseDetail!
+                                          .courses.first.school?.name ??
                                       courseDetail!.courses.first.schoolName ??
                                       "",
-                                  onMapCreated: (GoogleMapController controller) {
-                                  },
+                                  onMapCreated:
+                                      (GoogleMapController controller) {},
                                 ),
                               ),
                             ],
@@ -260,7 +266,7 @@ class _CourseDetailPageState extends State<CourseBundleDetailPage> {
                       ),
                       onPressed: () {
                         Navigator.pushNamed(context, '/paymentPreview',
-                            arguments:  PaymentPreview.fromObject(courseDetail));
+                            arguments: PaymentPreview.fromObject(courseDetail));
                       },
                       child: Text(
                         "Satın Al",
