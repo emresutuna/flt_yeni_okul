@@ -1,4 +1,3 @@
-import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/requestlesson/SelectBranchPage.dart';
 import 'package:baykurs/ui/requestlesson/SelectProvincePage.dart';
 import 'package:baykurs/ui/requestlesson/SelectRegionPage.dart';
@@ -181,6 +180,9 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                                   if (classLevel != null) {
                                     setState(() {
                                       selectedClassLevel = classLevel;
+                                      selectedBranch = null; // Branşı sıfırla
+                                      selectedTopic = null;  // Konuyu sıfırla
+                                      branchTopics.value = []; // Konu listesini de sıfırla
                                     });
                                   }
                                 },
@@ -189,14 +191,20 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                         _buildSelectionTile(
                           title: "Branş Seç",
                           value: selectedBranch?.value ?? "Seç",
-                          onTap: (selectedCourseType == null ||
-                                  selectedClassLevel == null)
+                          onTap: selectedClassLevel == null
                               ? () {}
                               : () async {
-                                  final branch =
-                                      await Get.to(() => SelectBranchPage());
-                                  if (branch != null) _onBranchSelected(branch);
-                                },
+                            final availableBranches =
+                            getBranchesForClassType(selectedClassLevel!);
+                            final branch = await Get.to(
+                                    () => SelectBranchPage(branches: availableBranches));
+                            if (branch != null) {
+                              setState(() {
+                                selectedBranch = branch;
+                                _onBranchSelected(branch);
+                              });
+                            }
+                          },
                         ),
 
                         ValueListenableBuilder<List<BranchTopic>>(

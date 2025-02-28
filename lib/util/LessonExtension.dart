@@ -30,6 +30,80 @@ enum ClassTypes {
   const ClassTypes(this.gradeValue);
 }
 
+List<Branches> getBranchesForClassType(ClassTypes classType) {
+  switch (classType) {
+    case ClassTypes.FifthGrade:
+    case ClassTypes.SixthGrade:
+    case ClassTypes.SeventhGrade:
+      return [
+        Branches.Turkish,
+        Branches.Mathematics,
+        Branches.ScienceAndTechnology,
+        Branches.SocialStudies,
+        Branches.English,
+      ];
+    case ClassTypes.EighthGrade:
+      return [
+        Branches.Turkish,
+        Branches.Mathematics,
+        Branches.ScienceAndTechnology,
+        Branches.HistoryOfRevolutionAndKemalism,
+        Branches.English,
+      ];
+    case ClassTypes.NinthGrade:
+      return [
+        Branches.TurkishLanguageAndLiterature,
+        Branches.Mathematics,
+        Branches.Physics,
+        Branches.Chemistry,
+        Branches.Biology,
+        Branches.History,
+        Branches.Geography,
+      ];
+    case ClassTypes.TenthGrade:
+      return [
+        Branches.TurkishLanguageAndLiterature,
+        Branches.Mathematics,
+        Branches.Physics,
+        Branches.Chemistry,
+        Branches.Biology,
+        Branches.History,
+        Branches.Geography,
+      ];
+    case ClassTypes.EleventhGrade:
+      return [
+        Branches.TurkishLanguageAndLiterature,
+        Branches.Mathematics,
+        Branches.Physics,
+        Branches.Chemistry,
+        Branches.Biology,
+        Branches.Geometry,
+        Branches.History,
+        Branches.Geography,
+      ];
+    case ClassTypes.TwelfthGrade:
+      return [
+        Branches.TurkishLanguageAndLiterature,
+        Branches.Mathematics,
+        Branches.Physics,
+        Branches.Chemistry,
+        Branches.Biology,
+        Branches.Geometry,
+        Branches.History,
+        Branches.Geography,
+      ];
+    case ClassTypes.Grade:
+      return {
+        ...getBranchesForClassType(ClassTypes.NinthGrade),
+        ...getBranchesForClassType(ClassTypes.TenthGrade),
+        ...getBranchesForClassType(ClassTypes.EleventhGrade),
+        ...getBranchesForClassType(ClassTypes.TwelfthGrade),
+      }.toList();
+    default:
+      return [];
+  }
+}
+
 extension ClassTypesExtension on ClassTypes {
   String get value {
     switch (this) {
@@ -53,6 +127,7 @@ extension ClassTypesExtension on ClassTypes {
         return "Mezun";
     }
   }
+
   static ClassTypes? fromDisplay(String displayValue) {
     for (var grade in ClassTypes.values) {
       if (grade.value == displayValue) {
@@ -66,12 +141,13 @@ extension ClassTypesExtension on ClassTypes {
   static ClassTypes? fromGradeValue(int gradeValue) {
     try {
       return ClassTypes.values.firstWhere(
-            (grade) => grade.gradeValue == gradeValue,
+        (grade) => grade.gradeValue == gradeValue,
       );
     } catch (e) {
       return null;
     }
   }
+
   static int? getGradeValueFromDisplay(String displayValue) {
     for (var grade in ClassTypes.values) {
       if (grade.value == displayValue) {
@@ -126,6 +202,7 @@ extension BranchesExtension on Branches {
   static List<Branches> get allBranches {
     return Branches.values;
   }
+
   static String getBranchNameByLessonId(int? lessonId) {
     if (lessonId == null) return "Bilinmeyen Ders";
 
@@ -147,6 +224,7 @@ extension BranchesExtension on Branches {
 
     return lessonIdToBranchName[lessonId] ?? "Bilinmeyen Ders";
   }
+
   static const Map<String, String> branchColors = {
     "Matematik": "#4A90E2",
     "Türkçe": "#FFA500",
@@ -167,7 +245,6 @@ extension BranchesExtension on Branches {
   static String? getColorForBranch(String branchName) {
     return branchColors[branchName];
   }
-
 
   static Branches? fromTurkishName(String turkishName) {
     Map<String, Branches> nameToBranchMap = {
@@ -3996,27 +4073,42 @@ Map<String, List<BranchTopic>> filterByBranch(Branches branchEnum) {
 }
 
 List<BranchTopic> filterBranchTopics(
-    List<ClassLevelBranch> branches, {
-      required Branches branch,  // Artık branch null olamaz
-      required ClassTypes classLevel, // ClassType zorunlu
-    }) {
+  List<ClassLevelBranch> branches, {
+  required Branches branch,
+  required ClassTypes classLevel,
+}) {
+  List<String> classLevelsToFilter;
+
+  if (classLevel == ClassTypes.Grade) {
+    classLevelsToFilter = [
+      ClassTypes.NinthGrade.value,
+      ClassTypes.TenthGrade.value,
+      ClassTypes.EleventhGrade.value,
+      ClassTypes.TwelfthGrade.value
+    ];
+  } else {
+    classLevelsToFilter = [classLevel.value];
+  }
 
   var filteredBranches = branches.where((b) {
     bool branchMatch = b.branch == branch;
-    bool classMatch = b.classLevel == classLevel.value; // String karşılaştırması
+    bool classMatch = classLevelsToFilter.contains(b.classLevel);
 
     return branchMatch && classMatch;
   }).toList();
 
-  var result = filteredBranches.expand((b) => b.topics).toList();
-
-  print("Seçili Branş: $branch, Seçili Sınıf: ${classLevel.value}");
-  print("Bulunan konu sayısı: ${result.length}");
+  var result = filteredBranches
+      .expand((b) => b.topics.map((topic) => BranchTopic(
+            id: topic.id,
+            name: "${topic.name} - ${b.classLevel}",
+            classType: int.tryParse(b.classLevel) ?? 0,
+            className: b.classLevel,
+            parentId: topic.parentId,
+          )))
+      .toList();
 
   return result;
 }
-
-
 
 Map<String, Map<String, List<BranchTopic>>> filterByClassAndBranch(
     List<ClassLevelBranch> classLevelBranches) {
@@ -4080,4 +4172,5 @@ class BranchTopic {
   @override
   int get hashCode => id.hashCode;
 }
- const DEFAULT_LESSON_COLOR="#4A90E2";
+
+const DEFAULT_LESSON_COLOR = "#4A90E2";
