@@ -25,7 +25,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         final result = await userRepository.logout();
         emit(LogoutSuccess(result.data!));
       } catch (e) {
-        emit(LogoutError('Failed to Logout'));
+        emit(LogoutError('Bir Hata Oluştu'));
+      }
+    });
+    on<DeleteAccount>((event, emit) async {
+      emit(ProfileLoading());
+      try {
+        final result = await userRepository.deleteAccount();
+        emit(DeleteAccountSuccess(result.data!));
+      } catch (e) {
+        emit(DeleteAccountError('Bir Hata Oluştu'));
       }
     });
   }

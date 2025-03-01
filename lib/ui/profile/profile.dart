@@ -23,6 +23,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Notifications? notifications;
+  ProfileSuccess? lastProfileState; // Store last successful profile state
 
   @override
   void initState() {
@@ -32,11 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
     });
 
     context.read<ProfileBloc>().add(FetchUserProfile());
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -52,14 +48,29 @@ class _ProfilePageState extends State<ProfilePage> {
               SnackBar(content: Text(state.error)),
             );
           }
+
+          if (state is DeleteAccountSuccess) {
+            clearSharedPreferences();
+            refreshApp();
+          } else if (state is DeleteAccountError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
         },
         child: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is ProfileLoading) {
+            if (state is ProfileLoading && lastProfileState == null) {
               return profileShimmer();
-            } else if (state is ProfileSuccess) {
-              final userData = state.profileResponse.user;
-              saveData(userData?.phone ?? "", "user_phone");
+            }
+
+            if (state is ProfileSuccess) {
+              lastProfileState = state; // Store last successful profile state
+            }
+
+            if (lastProfileState != null) {
+              final userData = lastProfileState!.profileResponse.user;
+
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Stack(
@@ -76,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Profil",
@@ -85,12 +96,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   IconButton(
                                       onPressed: () {
                                         Navigator.of(context,
-                                                rootNavigator: true)
+                                            rootNavigator: true)
                                             .pushNamed("/notificationPage");
                                       },
                                       icon: Icon(
                                         (notifications != null &&
-                                                (notifications?.count ?? 0) > 0)
+                                            (notifications?.count ?? 0) > 0)
                                             ? Icons.notifications_active
                                             : Icons.notifications,
                                         size: 22,
@@ -110,15 +121,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     child: Center(
                                         child: Text(
-                                      "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}",
-                                      style: styleBlack16Bold,
-                                    )),
+                                          "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}",
+                                          style: styleBlack16Bold,
+                                        )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           userData?.name ?? "",
@@ -140,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.of(context,
-                                                rootNavigator: true)
+                                            rootNavigator: true)
                                             .pushNamed("/userEditSelection");
                                       },
                                       child: const Icon(
@@ -220,17 +231,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
               );
-            } else if (state is ProfileError) {
-              return const UnLoginPage();
-            } else {
-              return const Center();
             }
+
+            if (state is ProfileError) {
+              return const UnLoginPage();
+            }
+
+            return const Center(); // Default state if nothing is available
           },
         ),
       ),
     );
   }
-
   void showDeleteAccountDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -244,7 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: color5, // Uygulamanın renklerinden biri
+              color: color5,
             ),
           ),
           content: Text(
@@ -253,7 +265,7 @@ class _ProfilePageState extends State<ProfilePage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Dialog'u kapat
+                Navigator.of(context).pop();
               },
               child: const Text(
                 "Vazgeç",
@@ -262,11 +274,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Dialog'u kapat
-                //Hesabımoı sil servis isteği
+                Navigator.pop(context);
+                context.read<ProfileBloc>().add(DeleteAccount());
+
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: color5, // Silme butonu için uygun renk
+                backgroundColor: color5,
               ),
               child: Text(
                 "Hesabımı Sil",
@@ -386,7 +399,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Column(
                     children:
-                        List.generate(8, (index) => profileItemSkeleton()),
+                    List.generate(8, (index) => profileItemSkeleton()),
                   ),
                 ),
               ),
@@ -414,8 +427,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget profileItem(String title,
       {Color color = const Color(0xFF222831),
-      bool isLastItem = false,
-      VoidCallback? onTap}) {
+        bool isLastItem = false,
+        VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap ?? () {},
       child: Padding(
@@ -445,9 +458,9 @@ class _ProfilePageState extends State<ProfilePage> {
             isLastItem
                 ? const SizedBox.shrink()
                 : Divider(
-                    height: 1,
-                    color: color.withAlpha(50),
-                  ),
+              height: 1,
+              color: color.withAlpha(50),
+            ),
           ],
         ),
       ),
@@ -455,7 +468,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget profileCircleWithTitle(
-          String title, IconData icons, HexColor bgColor) =>
+      String title, IconData icons, HexColor bgColor) =>
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,

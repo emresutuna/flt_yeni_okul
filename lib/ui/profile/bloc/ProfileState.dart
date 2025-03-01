@@ -1,4 +1,5 @@
 
+import 'package:baykurs/ui/profile/model/DeleteAccountResponse.dart';
 import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
 
 import '../model/ProfileResponse.dart';
@@ -19,6 +20,11 @@ class LogoutSuccess extends ProfileState {
 
   LogoutSuccess(this.profileResponse);
 }
+class DeleteAccountSuccess extends ProfileState {
+  final DeleteAccountResponse deleteAccountResponse;
+
+  DeleteAccountSuccess(this.deleteAccountResponse);
+}
 
 class ProfileError extends ProfileState {
   final String error;
@@ -29,4 +35,9 @@ class LogoutError extends ProfileState {
   final String error;
 
   LogoutError(this.error);
+}
+class DeleteAccountError extends ProfileState {
+  final String error;
+
+  DeleteAccountError(this.error);
 }

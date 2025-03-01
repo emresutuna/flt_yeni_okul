@@ -5,6 +5,7 @@ import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordRequest.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
+import 'package:baykurs/ui/profile/model/DeleteAccountResponse.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationRequest.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationResponse.dart';
 import 'package:baykurs/ui/profile/model/LogoutResponse.dart';
@@ -98,6 +99,37 @@ class UserRepository {
             ForgotPasswordResponse.fromJson(body);
 
         return ResultResponse.success(forgotPasswordResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        print('DioError: ${e.response?.data}');
+        if (e.response != null && e.response!.data is Map<String, dynamic>) {
+          String errorMessage =
+              e.response!.data['message'] ?? 'Bir hata oluştu.';
+          return ResultResponse.failure(errorMessage);
+        }
+      }
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<DeleteAccountResponse>> deleteAccount() async {
+    try {
+      final response = await APIService.instance.request(
+          ApiUrls.deleteAccount,
+          DioMethod.post,
+          includeHeaders: true);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        DeleteAccountResponse deleteAccountResponse =
+        DeleteAccountResponse.fromJson(body);
+
+        return ResultResponse.success(deleteAccountResponse);
       } else {
         return ResultResponse.failure(
             'API call failed with status code ${response.statusCode}');
