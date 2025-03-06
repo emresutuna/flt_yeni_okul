@@ -908,7 +908,7 @@ List<ClassLevelBranch> classLevelBranches = [
     ],
   ),
   ClassLevelBranch(
-    classLevel: "5.Sınıf",
+    classLevel: "5. Sınıf",
     branch: Branches.Turkish,
     topics: [
       BranchTopic(
@@ -4091,11 +4091,14 @@ List<BranchTopic> filterBranchTopics(
   }
 
   var filteredBranches = branches.where((b) {
+
     bool branchMatch = b.branch == branch;
     bool classMatch = classLevelsToFilter.contains(b.classLevel);
 
+
     return branchMatch && classMatch;
   }).toList();
+
 
   var result = filteredBranches
       .expand((b) => b.topics.map((topic) => BranchTopic(
@@ -4106,6 +4109,7 @@ List<BranchTopic> filterBranchTopics(
             parentId: topic.parentId,
           )))
       .toList();
+
 
   return result;
 }

@@ -42,6 +42,7 @@ import '../ui/login/loginPage.dart';
 import '../ui/login/newPasswordPage.dart';
 import '../ui/notification/NotificationPage.dart';
 import '../ui/onboarding/OnBoardingScreen.dart';
+import '../ui/paymentHistory/PaymentHistoryPage.dart';
 import '../ui/profile/userEdit/PhoneUpdatePage.dart';
 import '../ui/purchasehistory/PurchaseHistoryPage.dart';
 import '../ui/register/registerPage.dart';
@@ -51,6 +52,7 @@ import '../ui/timesheet/TimeSheetPage.dart';
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
         '/onboardingPage': (context) => const OnboardingScreen(),
+        '/paymentHistoryPage': (context) => const PaymentHistoryPage(),
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(
               create: (context) =>

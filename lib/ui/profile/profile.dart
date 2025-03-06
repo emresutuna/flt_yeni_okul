@@ -185,9 +185,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Column(
                               children: [
-                                profileItem("Ders Geçmişim", onTap: () {
+                                profileItem("Satın Alma Geçmişi", onTap: () {
                                   Navigator.of(context, rootNavigator: true)
-                                      .pushNamed("/timeSheetPage");
+                                      .pushNamed("/paymentHistoryPage");
                                 }),
                                 profileItem("Ders Programı", onTap: () {
                                   Navigator.of(context, rootNavigator: true)

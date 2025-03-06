@@ -162,7 +162,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                             if (courseType != null) {
                               setState(() {
                                 selectedCourseType = courseType;
-                                selectedClassLevel = null; // Reset class level
+                                selectedClassLevel = null;
                               });
                             }
                           },
@@ -180,9 +180,9 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                                   if (classLevel != null) {
                                     setState(() {
                                       selectedClassLevel = classLevel;
-                                      selectedBranch = null; // Branşı sıfırla
-                                      selectedTopic = null;  // Konuyu sıfırla
-                                      branchTopics.value = []; // Konu listesini de sıfırla
+                                      selectedBranch = null;
+                                      selectedTopic = null;
+                                      branchTopics.value = [];
                                     });
                                   }
                                 },
