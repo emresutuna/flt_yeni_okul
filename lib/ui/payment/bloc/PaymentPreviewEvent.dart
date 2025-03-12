@@ -1,4 +1,4 @@
-import '../../course/model/CourseTypeEnum.dart';
+import '../../course/model/course_type_enum.dart';
 
 abstract class PaymentPreviewEvent {}
 

@@ -1,8 +1,8 @@
 import 'dart:ui';
 import '../bloc/lesson_bloc.dart';
 import '../bloc/lesson_event.dart';
-import 'CourseFilter.dart';
-import 'CourseModel.dart';
+import 'course_filter.dart';
+import 'course_model.dart';
 
 class CourseListManager {
   final LessonBloc lessonBloc;

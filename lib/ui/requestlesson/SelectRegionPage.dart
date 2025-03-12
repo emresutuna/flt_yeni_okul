@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../util/YOColors.dart';
-import 'Region.dart';
+import 'region.dart';
 
 class SelectRegionPage extends StatelessWidget {
   final List<Region> regions;

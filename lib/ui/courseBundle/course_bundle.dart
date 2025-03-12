@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:baykurs/ui/filter/FilterLesson.dart';
+import 'package:baykurs/ui/filter/filter_lesson.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import '../../util/FirebaseAnalyticsConstants.dart';
@@ -10,13 +10,13 @@ import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/SearchBar.dart';
-import 'CourseBundleItem.dart';
+import 'course_bundle_item.dart';
 import '../course/bloc/lesson_bloc.dart';
 import '../course/bloc/lesson_state.dart';
-import '../course/model/CourseFilter.dart';
-import '../course/model/CourseTypeEnum.dart';
-import 'model/CourseBundleManager.dart';
-import 'model/CourseBundleNotifier.dart';
+import '../course/model/course_filter.dart';
+import '../course/model/course_type_enum.dart';
+import 'model/course_bundle_manager.dart';
+import 'model/course_bundle_notifier.dart';
 
 class CourseBundleListPage extends StatefulWidget {
   const CourseBundleListPage({super.key});
@@ -187,7 +187,7 @@ class _CourseBundleListPageState extends State<CourseBundleListPage> {
               MaterialPageRoute(
                 builder: (context) => FilterLesson(
                   courseFilter: courseFilter,
-                  courseTypeEnum: CourseTypeEnum.COURSE_BUNDLE,
+                  courseTypeEnum: CourseTypeEnum.courseBundle,
                 ),
                 fullscreenDialog: true,
               ),

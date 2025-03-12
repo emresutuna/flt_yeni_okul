@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolBloc.dart';
-import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolEvent.dart';
-import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolState.dart';
-import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_bloc.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_event.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_state.dart';
+import 'package:baykurs/ui/favoriteschool/model/favorite_school_response.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';

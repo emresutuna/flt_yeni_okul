@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../ui/requestlesson/model/CourseRequestSchool.dart';
-import '../ui/requestlesson/Region.dart';
+import '../ui/requestlesson/region.dart';
 
 extension SizedBoxExtension on int {
   Widget get toHeight {

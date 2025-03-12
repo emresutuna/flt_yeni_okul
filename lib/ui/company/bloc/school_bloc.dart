@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 
 import '../../../repository/school_repository.dart';
-import 'SchoolEvent.dart';
-import 'SchoolState.dart';
+import 'school_event.dart';
+import 'school_state.dart';
 
 class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
   final SchoolRepository schoolRepository;

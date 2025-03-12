@@ -1,4 +1,4 @@
-import '../../course/model/CourseModel.dart';
+import '../../course/model/course_model.dart';
 import 'TimeSheetResponse.dart';
 
 extension TimeSheetToCourse on TimeSheet {

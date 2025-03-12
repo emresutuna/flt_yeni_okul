@@ -1,4 +1,4 @@
-import 'package:baykurs/ui/company/model/SchoolFilter.dart';
+import 'package:baykurs/ui/company/model/school_filter.dart';
 
 abstract class SchoolEvent {}
 

@@ -1,4 +1,4 @@
-import '../model/SchoolDetailResponse.dart';
+import '../model/school_detail_response.dart';
 
 abstract class SchoolDetailState {}
 

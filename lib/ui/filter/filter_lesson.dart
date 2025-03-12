@@ -1,7 +1,7 @@
-import 'package:baykurs/ui/course/model/CourseFilter.dart';
-import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
-import 'package:baykurs/ui/filter/FilterProvince.dart';
-import 'package:baykurs/ui/filter/FilterRegion.dart';
+import 'package:baykurs/ui/course/model/course_filter.dart';
+import 'package:baykurs/ui/course/model/course_type_enum.dart';
+import 'package:baykurs/ui/filter/filter_province.dart';
+import 'package:baykurs/ui/filter/filter_region.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/filter/bloc/FilterEvent.dart';
 import 'package:baykurs/ui/filter/bloc/FilterState.dart';
@@ -13,8 +13,8 @@ import '../../util/FirebaseAnalyticsConstants.dart';
 import '../../util/FirebaseAnalyticsManager.dart';
 import '../../util/LessonExtension.dart';
 import '../../widgets/PrimaryInputField.dart';
-import '../requestlesson/Region.dart';
-import 'FilterTopic.dart';
+import '../requestlesson/region.dart';
+import 'filter_topic.dart';
 
 class FilterLesson extends StatefulWidget {
   final CourseFilter courseFilter;
@@ -27,10 +27,12 @@ class FilterLesson extends StatefulWidget {
   });
 
   @override
-  _FilterLessonState createState() => _FilterLessonState();
+  FilterLessonState createState() {
+    return FilterLessonState();
+  }
 }
 
-class _FilterLessonState extends State<FilterLesson> {
+class FilterLessonState extends State<FilterLesson> {
   final TextEditingController topicController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController provinceController = TextEditingController();
@@ -209,7 +211,7 @@ class _FilterLessonState extends State<FilterLesson> {
                                     context, false),
                                 16.toHeight,
                                 if (courseType !=
-                                    CourseTypeEnum.COURSE_COACH) ...[
+                                    CourseTypeEnum.courseCoach) ...[
                                   Text("Branşlar", style: styleBlack18Bold),
                                   8.toHeight,
                                   _buildBranches(),
@@ -244,13 +246,13 @@ class _FilterLessonState extends State<FilterLesson> {
       height: 60,
       child: ElevatedButton(
         onPressed: () {
-          if (courseType == CourseTypeEnum.COURSE) {
+          if (courseType == CourseTypeEnum.course) {
             FirebaseAnalyticsManager.logEvent(
                 FirebaseAnalyticsConstants.course_filter_apply);
-          } else if (courseType == CourseTypeEnum.COURSE_BUNDLE) {
+          } else if (courseType == CourseTypeEnum.courseBundle) {
             FirebaseAnalyticsManager.logEvent(
                 FirebaseAnalyticsConstants.course_bundle_filter_apply);
-          } else if (courseType == CourseTypeEnum.COURSE_COACH) {
+          } else if (courseType == CourseTypeEnum.courseCoach) {
             FirebaseAnalyticsManager.logEvent(
                 FirebaseAnalyticsConstants.teacher_coach_filter_apply);
           }

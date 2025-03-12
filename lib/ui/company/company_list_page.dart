@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:baykurs/ui/filter/FilterSchool.dart';
+import 'package:baykurs/ui/filter/filter_school.dart';
 import 'package:baykurs/util/FirebaseAnalyticsConstants.dart';
 import 'package:baykurs/util/FirebaseAnalyticsManager.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
@@ -10,11 +10,11 @@ import '../../widgets/SearchBar.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/WhiteAppBar.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
-import 'bloc/SchoolBloc.dart';
-import 'bloc/SchoolState.dart';
-import 'model/CompanyListManager.dart';
-import 'model/CompanyListNotifier.dart';
-import 'model/SchoolFilter.dart';
+import 'bloc/school_bloc.dart';
+import 'bloc/school_state.dart';
+import 'model/company_list_manager.dart';
+import 'model/company_list_notifier.dart';
+import 'model/school_filter.dart';
 
 class CompanyListPage extends StatefulWidget {
   const CompanyListPage({super.key});

@@ -8,7 +8,7 @@ import '../../util/HexColor.dart';
 import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/YOText.dart';
-import '../dashboard/model/MobileHomeResponse.dart';
+import '../dashboard/model/mobile_home_response.dart';
 import '../webViewPage/WebViewPage.dart';
 import 'bloc/ProfileBloc.dart';
 import 'bloc/ProfileEvent.dart';

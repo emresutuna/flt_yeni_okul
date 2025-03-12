@@ -1,6 +1,6 @@
-import '../../course/model/CourseTypeEnum.dart';
-import '../../courseBundleDetail/model/CourseBundleDetailResponse.dart';
-import '../../coursedetail/model/CourseDetailResponseModel.dart';
+import '../../course/model/course_type_enum.dart';
+import '../../courseBundleDetail/model/course_bundle_detail_response.dart';
+import '../../coursedetail/model/course_detail_response_model.dart';
 
 class PaymentPreview {
   final int? id;
@@ -47,7 +47,7 @@ class PaymentPreview {
     } else if (source is CourseBundleData) {
       return PaymentPreview(
           id: source.id,
-          courseType: CourseTypeEnum.COURSE_BUNDLE,
+          courseType: CourseTypeEnum.courseBundle,
           title: source.title,
           desc: source.description,
           price: _convertToString(source.price),

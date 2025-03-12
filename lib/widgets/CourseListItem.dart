@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../ui/course/model/CourseModel.dart';
-import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
-import '../ui/dashboard/model/MobileHomeResponse.dart';
+import '../ui/course/model/course_model.dart';
+import '../ui/coursedetail/model/course_detail_response_model.dart';
+import '../ui/dashboard/model/mobile_home_response.dart';
 import '../util/DateExtension.dart';
 import '../util/HexColor.dart';
 import '../util/LessonExtension.dart';

@@ -1,15 +1,14 @@
 import '../../../util/BaseCourseModel.dart';
-import '../../course/model/CourseModel.dart';
 
-class CourseBundleResponse {
+class CourseResponse {
   bool? status;
-  CourseBundleData? data;
+  CourseData? data;
 
-  CourseBundleResponse({this.status, this.data});
+  CourseResponse({this.status, this.data});
 
-  CourseBundleResponse.fromJson(Map<String, dynamic> json) {
+  CourseResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? CourseBundleData.fromJson(json['data']) : null;
+    data = json['data'] != null ? CourseData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,56 +21,42 @@ class CourseBundleResponse {
   }
 }
 
-class CourseBundleData {
-  int? id;
-  String? title;
-  String? description;
-  double? price;
+class CourseData {
   int? currentPage;
-  List<CourseBundle>? data;
+  List<CourseList>? data;
   String? firstPageUrl;
   int? from;
   int? lastPage;
   String? lastPageUrl;
   List<Links>? links;
-  String? nextPageUrl;
+  Null? nextPageUrl;
   String? path;
   int? perPage;
-  String? prevPageUrl;
+  Null? prevPageUrl;
   int? to;
   int? total;
 
-  CourseBundleData({
-    this.id,
-    this.title,
-    this.description,
-    this.price,
-    this.currentPage,
-    this.data,
-    this.firstPageUrl,
-    this.from,
-    this.lastPage,
-    this.lastPageUrl,
-    this.links,
-    this.nextPageUrl,
-    this.path,
-    this.perPage,
-    this.prevPageUrl,
-    this.to,
-    this.total,
-  });
+  CourseData(
+      {this.currentPage,
+      this.data,
+      this.firstPageUrl,
+      this.from,
+      this.lastPage,
+      this.lastPageUrl,
+      this.links,
+      this.nextPageUrl,
+      this.path,
+      this.perPage,
+      this.prevPageUrl,
+      this.to,
+      this.total});
 
-  // JSON'dan veri oluşturma
-  CourseBundleData.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    title = json['title'];
-    description = json['description'];
-    price = json['price'] != null ? json['price'].toDouble() : null;
+  CourseData.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
     if (json['data'] != null) {
-      data = <CourseBundle>[];
+      data = <CourseList>[];
       json['data'].forEach((v) {
-        data!.add(CourseBundle.fromJson(v));
+        data!.add(CourseList.fromJson(v));
       });
     }
     firstPageUrl = json['first_page_url'];
@@ -92,13 +77,8 @@ class CourseBundleData {
     total = json['total'];
   }
 
-  // JSON'a veri dönüştürme
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['title'] = title;
-    data['description'] = description;
-    data['price'] = price;
     data['current_page'] = currentPage;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
@@ -120,9 +100,8 @@ class CourseBundleData {
   }
 }
 
-
-class CourseBundle extends BaseCourse {
-  CourseBundle({
+class CourseList extends BaseCourse {
+  CourseList({
     int? id,
     String? title,
     String? description,
@@ -132,41 +111,28 @@ class CourseBundle extends BaseCourse {
     int? quota,
     String? schoolName,
     School? school,
+    List<Topics>? topics,
     String? lessonName,
-    Lesson? lesson,
   }) : super(
-    id: id,
-    title: title,
-    description: description,
-    startDate: startDate,
-    endDate: endDate,
-    price: price,
-    quota: quota,
-    schoolName: schoolName,
-    school: school,
-    lessonName: lessonName,
-    lesson: lesson,
-  );
+            id: id,
+            title: title,
+            description: description,
+            startDate: startDate,
+            endDate: endDate,
+            price: price,
+            quota: quota,
+            schoolName: schoolName,
+            school: school,
+            topics: topics,
+            lessonName: lessonName);
 
-  CourseBundle.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+  CourseList.fromJson(Map<String, dynamic> json) : super.fromJson(json);
 
   @override
   Map<String, dynamic> toJson() {
-    return super.toJson();
-  }
-  CourseList toCourseList() {
-    return CourseList(
-      id: id,
-      title: title,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
-      price: price,
-      quota: quota,
-      schoolName: schoolName ?? school?.name,
-      school: school,
-      topics: topics,
-      lessonName: lessonName,
-    );
+    final data = super.toJson();
+    data['lesson'] = lesson;
+    data['school_name'] = schoolName;
+    return data;
   }
 }

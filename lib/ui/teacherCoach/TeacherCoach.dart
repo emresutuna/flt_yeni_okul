@@ -12,9 +12,9 @@ import '../../widgets/SearchBar.dart';
 import '../../widgets/CoachCourseListItem.dart';
 import '../course/bloc/lesson_bloc.dart';
 import '../course/bloc/lesson_state.dart';
-import '../course/model/CourseFilter.dart';
-import '../course/model/CourseTypeEnum.dart';
-import '../filter/FilterLesson.dart';
+import '../course/model/course_filter.dart';
+import '../course/model/course_type_enum.dart';
+import '../filter/filter_lesson.dart';
 import 'model/TeacherCoachManager.dart';
 import 'model/TeacherCoachNotifier.dart';
 
@@ -179,7 +179,7 @@ class _TeacherCoachState extends State<TeacherCoach> {
               MaterialPageRoute(
                 builder: (context) => FilterLesson(
                   courseFilter: courseFilter,
-                  courseTypeEnum: CourseTypeEnum.COURSE_COACH,
+                  courseTypeEnum: CourseTypeEnum.courseCoach,
                 ),
                 fullscreenDialog: true,
               ),

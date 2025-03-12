@@ -13,7 +13,7 @@ import 'loginBloc/login_bloc.dart';
 import 'loginBloc/login_event.dart';
 import 'loginBloc/login_state.dart';
 import 'model/login_request.dart';
-import 'model/LoginValidation.dart';
+import 'model/login_validation.dart';
 import 'model/user_login_model.dart';
 
 class LoginPage extends StatefulWidget {

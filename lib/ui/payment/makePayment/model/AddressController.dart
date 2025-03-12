@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:baykurs/ui/payment/makePayment/model/AddressModelRequest.dart';
-import 'package:baykurs/ui/requestlesson/Region.dart';
-import 'package:baykurs/ui/requestlesson/AllCities.dart';
+import 'package:baykurs/ui/requestlesson/region.dart';
+import 'package:baykurs/ui/requestlesson/all_cities.dart';
 import 'package:baykurs/ui/payment/makePayment/model/PaymentBillService.dart';
 
 class AddressController extends GetxController {

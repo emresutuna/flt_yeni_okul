@@ -3,7 +3,7 @@ import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
-import '../course/model/CourseModel.dart';
+import '../course/model/course_model.dart';
 
 class CourseBundleItem extends StatelessWidget {
   final CourseList? courseModel;

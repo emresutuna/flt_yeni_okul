@@ -1,4 +1,4 @@
-import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
+import 'package:baykurs/ui/dashboard/model/mobile_home_response.dart';
 
 abstract class DashboardState {}
 

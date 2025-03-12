@@ -1,7 +1,7 @@
 import 'dart:ui';
 import '../../course/bloc/lesson_bloc.dart';
 import '../../course/bloc/lesson_event.dart';
-import '../../course/model/CourseFilter.dart';
+import '../../course/model/course_filter.dart';
 import 'CourseCoachResponse.dart';
 
 class TeacherCoachManager {

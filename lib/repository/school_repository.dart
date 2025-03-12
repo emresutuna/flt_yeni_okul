@@ -1,12 +1,12 @@
 import 'dart:io';
-import 'package:baykurs/ui/company/model/SchoolFilter.dart';
+import 'package:baykurs/ui/company/model/school_filter.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import '../service/api_service.dart';
 import '../service/result_response.dart';
 import '../service/api_urls.dart';
-import '../ui/company/model/SchoolResponse.dart';
-import '../ui/companyDetail/model/SchoolDetailResponse.dart';
-import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
+import '../ui/company/model/school_response.dart';
+import '../ui/companyDetail/model/school_detail_response.dart';
+import '../ui/favoriteschool/model/favorite_toggle_response.dart';
 
 class SchoolRepository {
   Future<ResultResponse<SchoolResponse>> getSchool() async {

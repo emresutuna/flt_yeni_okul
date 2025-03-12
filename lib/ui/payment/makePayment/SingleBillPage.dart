@@ -2,8 +2,8 @@ import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../util/YOColors.dart';
-import '../../requestlesson/AllCities.dart';
-import '../../requestlesson/Region.dart';
+import '../../requestlesson/all_cities.dart';
+import '../../requestlesson/region.dart';
 import '../../requestlesson/SelectRegionPage.dart';
 import 'model/PaymentBillService.dart';
 

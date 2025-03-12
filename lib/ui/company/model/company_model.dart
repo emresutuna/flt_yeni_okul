@@ -35,16 +35,16 @@ class CompanyModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['companyId'] = this.companyId;
-    data['companyName'] = this.companyName;
-    data['companyDesc'] = this.companyDesc;
-    data['companyTitle'] = this.companyTitle;
-    data['companyPhoto'] = this.companyPhoto;
-    data['companyLocation'] = this.companyLocation;
-    if (this.teacherList != null) {
-      data['teacherList'] = this.teacherList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['companyId'] = companyId;
+    data['companyName'] = companyName;
+    data['companyDesc'] = companyDesc;
+    data['companyTitle'] = companyTitle;
+    data['companyPhoto'] = companyPhoto;
+    data['companyLocation'] = companyLocation;
+    if (teacherList != null) {
+      data['teacherList'] = teacherList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -67,11 +67,11 @@ class Teacher {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = this.id;
-    data['teacherName'] = this.teacherName;
-    data['teacherSurname'] = this.teacherSurname;
-    data['teacherBranch'] = this.teacherBranch;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['teacherName'] = teacherName;
+    data['teacherSurname'] = teacherSurname;
+    data['teacherBranch'] = teacherBranch;
     return data;
   }
 }

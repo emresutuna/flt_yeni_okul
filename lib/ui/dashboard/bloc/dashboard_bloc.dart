@@ -1,6 +1,6 @@
 import 'package:baykurs/repository/user_repository.dart';
-import 'package:baykurs/ui/dashboard/bloc/DashboardEvent.dart';
-import 'package:baykurs/ui/dashboard/bloc/DashboardState.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_event.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_state.dart';
 import 'package:bloc/bloc.dart';
 
 

@@ -20,7 +20,7 @@ import '../../service/result_response.dart';
 import '../../util/HexColor.dart';
 import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
-import '../course/model/CourseTypeEnum.dart';
+import '../course/model/course_type_enum.dart';
 import 'PaymentResultPage.dart';
 import 'PaymentWebView.dart';
 import 'makePayment/paymentBill/bloc/PaymentBillEvent.dart';
@@ -269,7 +269,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                     try {
                                       final result = await postBuyCourse(
                                         paymentPreview?.id ?? 0,
-                                        paymentPreview?.courseType ?? CourseTypeEnum.COURSE,
+                                        paymentPreview?.courseType ?? CourseTypeEnum.course,
                                       );
 
                                       Navigator.pop(context);

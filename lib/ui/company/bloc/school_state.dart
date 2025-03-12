@@ -1,6 +1,6 @@
 
-import '../../favoriteschool/model/FavoriteToggleResponse.dart';
-import '../model/SchoolResponse.dart';
+import '../../favoriteschool/model/favorite_toggle_response.dart';
+import '../model/school_response.dart';
 
 sealed class SchoolState {}
 

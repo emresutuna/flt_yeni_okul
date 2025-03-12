@@ -1,53 +1,57 @@
-import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
-import '../../service/api_urls.dart';
-import '../../util/YOColors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../service/api_urls.dart';
+import '../../util/YOColors.dart';
+import '../../widgets/WhiteAppBar.dart';
+import '../requestlesson/region.dart';
 
-import '../requestlesson/Region.dart';
-
-class FilterRegion extends StatefulWidget {
-  final Region? initialSelectedCity;
-  const FilterRegion({super.key, this.initialSelectedCity});
+class FilterProvince extends StatefulWidget {
+  final int selectedCityId;
+  final Province? initialSelectedProvince;
+  const FilterProvince({
+    super.key,
+    required this.selectedCityId,
+    this.initialSelectedProvince,
+  });
 
   @override
-  State<FilterRegion> createState() => _FilterRegionState();
+  State<FilterProvince> createState() => _FilterProvinceState();
 }
 
-class _FilterRegionState extends State<FilterRegion> {
-  Region? selectedCity;
-  List<Region> regions = [];
+class _FilterProvinceState extends State<FilterProvince> {
+  Province? selectedProvince;
+  List<Province> provinces = [];
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    selectedCity = widget.initialSelectedCity;
-    fetchRegions();
+    selectedProvince = widget.initialSelectedProvince;
+    fetchProvince(widget.selectedCityId);
   }
 
-  Future<void> fetchRegions() async {
+  Future<void> fetchProvince(int cityId) async {
     try {
-      final response = await http.get(Uri.parse(ApiUrls.getProvince));
+      final response = await http.get(Uri.parse(ApiUrls.getAllDistricts(cityId)));
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         if (responseData['status'] == true) {
-          final List<dynamic> regionsData = responseData['data'];
-          final List<Region> regionList = regionsData.map((regionJson) {
-            return Region.fromJson(regionJson);
+          final List<dynamic> districtsData = responseData['data'];
+          final List<Province> provinceList = districtsData.map((districtJson) {
+            return Province.fromJson(districtJson);
           }).toList();
 
           setState(() {
-            regions = regionList;
-            isLoading = false; // Veri yüklendi
+            provinces = provinceList;
+            isLoading = false;
           });
         } else {
           throw Exception('Invalid response data');
         }
       } else {
-        throw Exception('Failed to load regions');
+        throw Exception('Failed to load districts');
       }
     } catch (e) {
       setState(() {
@@ -57,9 +61,9 @@ class _FilterRegionState extends State<FilterRegion> {
     }
   }
 
-  void selectCity(Region city) {
+  void selectProvince(Province province) {
     setState(() {
-      selectedCity = city;
+      selectedProvince = province;
     });
   }
 
@@ -68,9 +72,9 @@ class _FilterRegionState extends State<FilterRegion> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: WhiteAppBar(
-        "İl Seç",
+        "İlçe Seç",
         onTap: () {
-          Navigator.pop(context, selectedCity);
+          Navigator.pop(context);
         },
       ),
       body: isLoading
@@ -79,24 +83,24 @@ class _FilterRegionState extends State<FilterRegion> {
         children: [
           Expanded(
             child: ListView.separated(
-              itemCount: regions.length,
+              itemCount: provinces.length,
               separatorBuilder: (context, index) => const Divider(),
               itemBuilder: (context, index) {
-                final city = regions[index].name;
+                final province = provinces[index];
                 return ListTile(
-                  title: Text(city),
-                  trailing: selectedCity?.name == city
+                  title: Text(province.name),
+                  trailing: selectedProvince?.name == province.name
                       ? Icon(Icons.check, color: greenButton)
                       : null,
                   onTap: () {
-                    selectCity(regions[index]);
+                    selectProvince(province);
                   },
                 );
               },
             ),
           ),
           _buildFilterButton(() {
-            Navigator.of(context).pop(selectedCity);
+            Navigator.of(context).pop(selectedProvince);
           }),
         ],
       ),

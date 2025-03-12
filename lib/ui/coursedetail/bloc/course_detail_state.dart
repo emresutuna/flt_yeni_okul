@@ -1,5 +1,5 @@
-import 'package:baykurs/ui/courseBundleDetail/model/CourseBundleDetailResponse.dart';
-import 'package:baykurs/ui/coursedetail/model/CourseDetailResponseModel.dart';
+import 'package:baykurs/ui/courseBundleDetail/model/course_bundle_detail_response.dart';
+import 'package:baykurs/ui/coursedetail/model/course_detail_response_model.dart';
 import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';
 
 

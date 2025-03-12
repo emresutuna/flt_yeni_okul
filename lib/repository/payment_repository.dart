@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
+import 'package:baykurs/ui/course/model/course_type_enum.dart';
 
 import '../service/api_service.dart';
 import '../service/result_response.dart';
@@ -32,11 +32,11 @@ class PaymentRepository {
 
 String buyCourse(int id, CourseTypeEnum courseType) {
   switch (courseType) {
-    case CourseTypeEnum.COURSE_BUNDLE:
+    case CourseTypeEnum.courseBundle:
       return "/mobile/courseBundle/$id/buy";
-    case CourseTypeEnum.COURSE_COACH:
+    case CourseTypeEnum.courseCoach:
       return "/mobile/courseCoach/$id/buy";
-    case CourseTypeEnum.COURSE:
+    case CourseTypeEnum.course:
     default:
       return "/mobile/course/$id/buy";
   }

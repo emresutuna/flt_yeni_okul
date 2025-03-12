@@ -1,4 +1,4 @@
-import '../ui/course/model/CourseTypeEnum.dart';
+import '../ui/course/model/course_type_enum.dart';
 
 class ApiUrls {
   static const String loginUrl = "/login";
@@ -11,7 +11,7 @@ class ApiUrls {
   static const String getSchoolWithLogin = "/mobile/school";
   static const String schoolDetail = "/school";
   static const String teacher = "/teacher";
-  static const String mainUrl = "https://api.baykurs.com.tr/api/v1";
+  static const String mainUrl = "https://api.bykurs.com.tr/api/v1";
   static const String gateway = "/api";
   static const String userProfile = "/me";
   static const String getCourses = "/mobile/course";
@@ -62,11 +62,11 @@ class UrlHelper {
     const baseUrl = '${ApiUrls.mainUrl}/mobile';
 
     switch (courseType) {
-      case CourseTypeEnum.COURSE:
+      case CourseTypeEnum.course:
         return '$baseUrl/course/maxPrice';
-      case CourseTypeEnum.COURSE_BUNDLE:
+      case CourseTypeEnum.courseBundle:
         return '$baseUrl/courseBundle/maxPrice';
-      case CourseTypeEnum.COURSE_COACH:
+      case CourseTypeEnum.courseCoach:
         return '$baseUrl/courseCoach/maxPrice';
       default:
         throw Exception('Invalid Course Type');

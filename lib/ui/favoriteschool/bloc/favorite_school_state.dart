@@ -1,4 +1,4 @@
-import '../model/FavoriteSchoolResponse.dart';
+import '../model/favorite_school_response.dart';
 
 abstract class FavoriteSchoolState {}
 

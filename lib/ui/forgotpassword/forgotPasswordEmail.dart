@@ -1,4 +1,4 @@
-import 'package:baykurs/ui/forgotpassword/ForgotPasswordRequest.dart';
+import 'package:baykurs/ui/forgotpassword/forgot_password_request.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordValidation.dart';
 import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordBloc.dart';
 import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordEvent.dart';

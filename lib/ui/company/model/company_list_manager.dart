@@ -1,8 +1,8 @@
 import 'dart:ui';
-import '../bloc/SchoolBloc.dart';
-import '../bloc/SchoolEvent.dart';
-import 'SchoolFilter.dart';
-import 'SchoolResponse.dart';
+import '../bloc/school_bloc.dart';
+import '../bloc/school_event.dart';
+import 'school_filter.dart';
+import 'school_response.dart';
 
 class CompanyListManager {
   final SchoolBloc schoolBloc;

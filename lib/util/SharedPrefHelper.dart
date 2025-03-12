@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 
-import '../ui/dashboard/model/MobileHomeResponse.dart';
+import '../ui/dashboard/model/mobile_home_response.dart';
 
 
 Future<void> saveToken(String? token) async {

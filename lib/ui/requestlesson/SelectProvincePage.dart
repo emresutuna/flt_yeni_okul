@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../util/YOColors.dart';
-import 'Region.dart';
+import 'region.dart';
 
 class SelectProvincePage extends StatelessWidget {
   final List<Province> provinces;

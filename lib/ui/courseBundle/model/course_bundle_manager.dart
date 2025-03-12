@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import '../../course/bloc/lesson_bloc.dart';
 import '../../course/bloc/lesson_event.dart';
-import '../../course/model/CourseFilter.dart';
-import '../model/CourseBundleResponse.dart';
+import '../../course/model/course_filter.dart';
+import '../model/course_bundle_response.dart';
 
 class CourseBundleManager {
   final LessonBloc lessonBloc;

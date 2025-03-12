@@ -1,4 +1,4 @@
-import 'package:baykurs/ui/dashboard/incomingCourse.dart';
+import 'package:baykurs/ui/dashboard/incoming_course.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +9,7 @@ import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
 import '../login/loginPage.dart';
-import 'model/MobileHomeResponse.dart';
+import 'model/mobile_home_response.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
 class HomeCarouselWidget extends StatelessWidget {

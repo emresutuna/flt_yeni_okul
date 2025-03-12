@@ -1,13 +1,13 @@
-import 'package:baykurs/ui/filter/FilterProvince.dart';
+import 'package:baykurs/ui/filter/filter_province.dart';
 import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import '../../util/FirebaseAnalyticsConstants.dart';
 import '../../util/FirebaseAnalyticsManager.dart';
 import '../../widgets/PrimaryInputField.dart';
-import '../company/model/SchoolFilter.dart';
-import '../requestlesson/Region.dart';
-import 'FilterRegion.dart';
+import '../company/model/school_filter.dart';
+import '../requestlesson/region.dart';
+import 'filter_region.dart';
 
 class FilterSchool extends StatefulWidget {
   final SchoolFilter currentFilter;

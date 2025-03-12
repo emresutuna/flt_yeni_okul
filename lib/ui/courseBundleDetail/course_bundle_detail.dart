@@ -1,6 +1,6 @@
-import 'package:baykurs/ui/courseBundleDetail/model/CourseBundleDetailResponse.dart';
-import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
-import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
+import 'package:baykurs/ui/courseBundleDetail/model/course_bundle_detail_response.dart';
+import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
+import 'package:baykurs/ui/coursedetail/bloc/course_detail_event.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +12,9 @@ import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/BkMapWidget.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
-import '../coursedetail/bloc/CourseDetailState.dart';
+import '../coursedetail/bloc/course_detail_state.dart';
 import '../payment/model/PaymentPreview.dart';
-import 'CourseBundleExpandableItem.dart';
+import 'course_bundle_expandable_item.dart';
 
 class CourseBundleDetailPage extends StatefulWidget {
   const CourseBundleDetailPage({super.key});

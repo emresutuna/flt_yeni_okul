@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../util/YOColors.dart';
 import '../../../widgets/GreenPrimaryButton.dart';
-import '../../requestlesson/AllCities.dart';
-import '../../requestlesson/Region.dart';
+import '../../requestlesson/all_cities.dart';
+import '../../requestlesson/region.dart';
 import '../../requestlesson/SelectRegionPage.dart';
 
 class PaymentBillPage extends StatefulWidget {

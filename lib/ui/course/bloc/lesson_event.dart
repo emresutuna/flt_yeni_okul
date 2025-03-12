@@ -1,4 +1,4 @@
-import '../model/CourseFilter.dart';
+import '../model/course_filter.dart';
 
 abstract class LessonEvent {}
 

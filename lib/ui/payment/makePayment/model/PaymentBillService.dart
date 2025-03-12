@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:baykurs/ui/payment/makePayment/model/AddressModelRequest.dart';
-import 'package:baykurs/ui/requestlesson/AllCities.dart';
+import 'package:baykurs/ui/requestlesson/all_cities.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 
 import '../../../../service/api_service.dart';
 import '../../../../service/result_response.dart';
 import '../../../../service/api_urls.dart';
-import '../../../requestlesson/Region.dart';
+import '../../../requestlesson/region.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

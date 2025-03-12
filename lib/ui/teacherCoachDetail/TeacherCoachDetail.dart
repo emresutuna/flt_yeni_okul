@@ -1,7 +1,7 @@
-import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
-import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
-import 'package:baykurs/ui/coursedetail/bloc/CourseDetailEvent.dart';
-import 'package:baykurs/ui/coursedetail/bloc/CourseDetailState.dart';
+import 'package:baykurs/ui/course/model/course_type_enum.dart';
+import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
+import 'package:baykurs/ui/coursedetail/bloc/course_detail_event.dart';
+import 'package:baykurs/ui/coursedetail/bloc/course_detail_state.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
 import 'package:baykurs/util/PriceFormatter.dart';
 import 'package:flutter/material.dart';
@@ -293,7 +293,7 @@ class _TeacherCoachDetailState extends State<TeacherCoachDetail> {
                                 arguments: PaymentPreview(
                                     title: courseDetail.title,
                                     id: selectedCourse,
-                                    courseType: CourseTypeEnum.COURSE_COACH,
+                                    courseType: CourseTypeEnum.courseCoach,
                                     desc: courseDetail.description,
                                     price: selectedPrice,
                                     teacherName:

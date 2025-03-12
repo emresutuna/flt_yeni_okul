@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../util/HexColor.dart';
 import '../../widgets/CourseListItem.dart';
-import '../course/model/CourseModel.dart';
+import '../course/model/course_model.dart';
 import 'model/TimeSheetResponse.dart';
 
 class TimeSheetCourseList extends StatefulWidget {

@@ -4,7 +4,7 @@ import '../../../service/api_urls.dart';
 import '../../../util/LessonExtension.dart';
 import '../../../util/SharedPrefHelper.dart';
 import 'CourseRequestSchool.dart';
-import '../Region.dart';
+import '../region.dart';
 
 class RequestLessonService {
   Future<List<Region>> fetchRegions() async {

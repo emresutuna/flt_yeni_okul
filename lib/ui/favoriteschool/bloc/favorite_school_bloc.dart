@@ -1,6 +1,6 @@
 import 'package:baykurs/repository/user_repository.dart';
-import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolEvent.dart';
-import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolState.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_event.dart';
+import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_state.dart';
 import 'package:bloc/bloc.dart';
 
 class FavoriteSchoolBloc

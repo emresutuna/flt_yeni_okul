@@ -13,7 +13,7 @@ import '../../widgets/ExpandedWidget.dart';
 import 'bloc/school_detail_bloc.dart';
 import 'bloc/school_detail_event.dart';
 import 'bloc/school_detail_state.dart';
-import 'model/SchoolDetailResponse.dart';
+import 'model/school_detail_response.dart';
 
 class CompanyDetailPage extends StatefulWidget {
   const CompanyDetailPage({super.key});

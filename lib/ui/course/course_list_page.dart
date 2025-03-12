@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
-import 'package:baykurs/ui/filter/FilterLesson.dart';
+import 'package:baykurs/ui/course/model/course_type_enum.dart';
+import 'package:baykurs/ui/filter/filter_lesson.dart';
 import 'package:baykurs/widgets/infoWidget/InfoWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import '../../util/FirebaseAnalyticsConstants.dart';
@@ -13,11 +13,11 @@ import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
-import 'model/CourseListManager.dart';
-import 'model/CourseListNotifier.dart';
+import 'model/course_list_manager.dart';
+import 'model/course_list_notifier.dart';
 import 'bloc/lesson_bloc.dart';
 import 'bloc/lesson_state.dart';
-import 'model/CourseFilter.dart';
+import 'model/course_filter.dart';
 
 class CourseListPage extends StatefulWidget {
   final bool hasShowBackButton;
@@ -72,7 +72,6 @@ class _CourseListPageState extends State<CourseListPage> {
     if (args is int) {
       courseFilter = courseFilter.copyWith(schoolId: args);
     }
-    print("Dersler yükleniyor..."); // Debugging için ekle
     courseListManager.fetchLessons(filter: courseFilter, searchQuery: "");
   }
 
@@ -198,7 +197,7 @@ class _CourseListPageState extends State<CourseListPage> {
               MaterialPageRoute(
                 builder: (context) => FilterLesson(
                   courseFilter: courseFilter,
-                  courseTypeEnum: CourseTypeEnum.COURSE,
+                  courseTypeEnum: CourseTypeEnum.course,
                 ),
                 fullscreenDialog: true,
               ),

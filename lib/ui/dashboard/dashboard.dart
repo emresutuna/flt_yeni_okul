@@ -1,13 +1,13 @@
-import 'package:baykurs/ui/dashboard/DashboardExtension.dart';
-import 'package:baykurs/ui/dashboard/bloc/DashboardBloc.dart';
-import 'package:baykurs/ui/dashboard/bloc/DashboardEvent.dart';
-import 'package:baykurs/ui/dashboard/bloc/DashboardState.dart';
+import 'package:baykurs/ui/dashboard/dashboard_extension.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_bloc.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_event.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_state.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../util/GlobalLoading.dart';
 import '../../util/SharedPrefHelper.dart';
-import 'model/MobileHomeResponse.dart';
+import 'model/mobile_home_response.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

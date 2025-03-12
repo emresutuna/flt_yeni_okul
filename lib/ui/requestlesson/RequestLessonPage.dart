@@ -19,7 +19,7 @@ import 'SelectTopicPage.dart';
 import 'bloc/RequestLessonEvent.dart';
 import 'model/CourseRequest.dart';
 import 'model/CourseRequestSchool.dart';
-import 'Region.dart';
+import 'region.dart';
 import 'model/RequestLessonService.dart';
 
 class RequestLessonPage extends StatefulWidget {
