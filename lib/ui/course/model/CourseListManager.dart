@@ -1,6 +1,6 @@
 import 'dart:ui';
-import '../bloc/LessonBloc.dart';
-import '../bloc/LessonEvent.dart';
+import '../bloc/lesson_bloc.dart';
+import '../bloc/lesson_event.dart';
 import 'CourseFilter.dart';
 import 'CourseModel.dart';
 

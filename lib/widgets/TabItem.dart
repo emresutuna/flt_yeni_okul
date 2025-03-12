@@ -19,7 +19,7 @@ class TabItem extends StatelessWidget {
             title,
             overflow: TextOverflow.ellipsis,
             style:
-                GoogleFonts.notoSans(fontSize: 12, fontWeight: FontWeight.w600),
+                GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w600),
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import '../../../repository/school_repository.dart';
-import 'SchoolDetailEvent.dart';
-import 'SchoolDetailState.dart';
+import 'school_detail_event.dart';
+import 'school_detail_state.dart';
 
 class SchoolDetailBloc extends Bloc<SchoolDetailEvent, SchoolDetailState> {
   final SchoolRepository schoolRepository;
@@ -19,7 +19,7 @@ class SchoolDetailBloc extends Bloc<SchoolDetailEvent, SchoolDetailState> {
     });
     on<ToggleFavorite>((event, emit) async {
       try {
-        final result = await schoolRepository.toggleFav(event.schoolId);
+       await schoolRepository.toggleFav(event.schoolId);
       } catch (e) {
         emit(FavoriteError('Failed to Favorite'));
       }

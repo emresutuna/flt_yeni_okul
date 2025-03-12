@@ -15,8 +15,8 @@ import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
 import 'model/CourseListManager.dart';
 import 'model/CourseListNotifier.dart';
-import 'bloc/LessonBloc.dart';
-import 'bloc/LessonState.dart';
+import 'bloc/lesson_bloc.dart';
+import 'bloc/lesson_state.dart';
 import 'model/CourseFilter.dart';
 
 class CourseListPage extends StatefulWidget {

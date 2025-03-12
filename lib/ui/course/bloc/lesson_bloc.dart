@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 
 import '../../../repository/lecture_repository.dart';
-import 'LessonEvent.dart';
-import 'LessonState.dart';
+import 'lesson_event.dart';
+import 'lesson_state.dart';
 
 class LessonBloc extends Bloc<LessonEvent, LessonState> {
   final LectureRepository lectureRepository;

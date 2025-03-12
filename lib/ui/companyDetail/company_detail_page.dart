@@ -11,8 +11,8 @@ import '../../util/YOColors.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/ExpandedWidget.dart';
 import 'bloc/school_detail_bloc.dart';
-import 'bloc/SchoolDetailEvent.dart';
-import 'bloc/SchoolDetailState.dart';
+import 'bloc/school_detail_event.dart';
+import 'bloc/school_detail_state.dart';
 import 'model/SchoolDetailResponse.dart';
 
 class CompanyDetailPage extends StatefulWidget {
