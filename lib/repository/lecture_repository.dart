@@ -1,15 +1,13 @@
 import 'dart:io';
-
 import 'package:baykurs/ui/course/model/CourseFilter.dart';
 import 'package:baykurs/ui/course/model/CourseTypeEnum.dart';
 import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/filter/model/PriceModel.dart';
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
 import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';
-
-import '../service/APIService.dart';
-import '../service/ResultResponse.dart';
-import '../service/apiUrls.dart';
+import '../service/api_service.dart';
+import '../service/result_response.dart';
+import '../service/api_urls.dart';
 import '../ui/course/model/CourseModel.dart';
 import '../ui/courseBundleDetail/model/CourseBundleDetailResponse.dart';
 import '../ui/coursedetail/model/CourseDetailResponseModel.dart';
@@ -34,7 +32,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -59,7 +56,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -84,7 +80,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -110,7 +105,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -135,7 +129,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -161,7 +154,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -186,7 +178,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -208,7 +199,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -229,7 +219,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -250,7 +239,6 @@ class LectureRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }

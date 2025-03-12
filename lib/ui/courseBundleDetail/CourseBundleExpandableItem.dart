@@ -70,8 +70,8 @@ class _ExpandableCourseDetailItemState
                     if (widget.teacher.isNotEmpty)
                       Row(
                         children: [
-                          Text("Öğretmen: ", style: styleBlack14Bold),
-                          Expanded(child: Text(widget.teacher, style: styleBlack14Regular,overflow: TextOverflow.ellipsis,)),
+                          Text("Öğretmen: ", style: styleBlack14Regular),
+                          Expanded(child: Text(widget.teacher, style: styleBlack14Bold,overflow: TextOverflow.ellipsis,)),
                         ],
                       ),
                     if (widget.teacher.isNotEmpty) const SizedBox(height: 4),
@@ -80,14 +80,14 @@ class _ExpandableCourseDetailItemState
                         children: [
                           Text(
                             "Tarih: ",
-                            style: styleBlack14Bold,
+                            style: styleBlack14Regular,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Flexible(
                             child: Text(
                               widget.date,
-                              style: styleBlack14Regular,
+                              style: styleBlack14Bold,
                             ),
                           ),
                         ],
@@ -96,16 +96,16 @@ class _ExpandableCourseDetailItemState
                     if (widget.time.isNotEmpty)
                       Row(
                         children: [
-                          Text("Konu: ", style: styleBlack14Bold),
-                          Text(widget.time, style: styleBlack14Regular),
+                          Text("Konu: ", style: styleBlack14Regular),
+                          Text(widget.time, style: styleBlack14Bold),
                         ],
                       ),
                     if (widget.time.isNotEmpty) const SizedBox(height: 4),
                     if (widget.location.isNotEmpty)
                       Row(
                         children: [
-                          Text("Sınıf: ", style: styleBlack14Bold),
-                          Text(widget.location, style: styleBlack14Regular),
+                          Text("Sınıf: ", style: styleBlack14Regular),
+                          Text(widget.location, style: styleBlack14Bold),
                         ],
                       ),
                     if (widget.location.isNotEmpty) const SizedBox(height: 4),
@@ -113,11 +113,11 @@ class _ExpandableCourseDetailItemState
                     if (widget.description.isNotEmpty)
                       Row(
                         children: [
-                          Text("Açıklama: ", style: styleBlack14Bold),
+                          Text("Açıklama: ", style: styleBlack14Regular),
                           Flexible(
                             child: Text(
                               widget.description,
-                              style: styleBlack14Regular,
+                              style: styleBlack14Bold,
                             ),
                           ),
                         ],

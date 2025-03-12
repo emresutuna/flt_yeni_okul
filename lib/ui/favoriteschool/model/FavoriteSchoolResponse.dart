@@ -16,7 +16,7 @@ class FavoriteSchoolResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = this.status;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -52,13 +52,13 @@ class SchoolList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['student_id'] = this.studentId;
-    data['school_id'] = this.schoolId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.school != null) {
-      data['school'] = this.school!.toJson();
+    data['id'] = id;
+    data['student_id'] = studentId;
+    data['school_id'] = schoolId;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (school != null) {
+      data['school'] = school!.toJson();
     }
     return data;
   }
@@ -106,18 +106,18 @@ class School {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['city_id'] = this.cityId;
-    data['address'] = this.address;
-    data['description'] = this.description;
-    data['photo'] = this.photo;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
-    data['isFav'] = this.isFav;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['city_id'] = cityId;
+    data['address'] = address;
+    data['description'] = description;
+    data['photo'] = photo;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['deleted_at'] = deletedAt;
+    data['isFav'] = isFav;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -162,16 +162,16 @@ class User {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['role_id'] = this.roleId;
-    data['name'] = this.name;
-    data['surname'] = this.surname;
-    data['email'] = this.email;
-    data['phone'] = this.phone;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['deleted_at'] = this.deletedAt;
+    data['id'] = id;
+    data['role_id'] = roleId;
+    data['name'] = name;
+    data['surname'] = surname;
+    data['email'] = email;
+    data['phone'] = phone;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['deleted_at'] = deletedAt;
     return data;
   }
 }

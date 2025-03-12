@@ -9,7 +9,6 @@ class AppDeeplinkHandler extends BaseDeeplinkHandler {
 
   @override
   void handleDeepLink(Uri uri) {
-    print("Deeplink received: ${uri.toString()}");
 
     // Örnek: Ürün sayfasına yönlendirme
     /*

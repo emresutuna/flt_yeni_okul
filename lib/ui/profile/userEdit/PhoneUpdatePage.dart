@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../util/SharedPrefHelper.dart';
 import '../../../util/YOColors.dart';
 import '../../../widgets/PrimaryButton.dart';
@@ -11,7 +10,6 @@ import '../../../widgets/WhiteAppBar.dart';
 import '../bloc/PasswordUpdateBloc.dart';
 import '../bloc/UserUpdateEvent.dart';
 import '../bloc/UserUpdateState.dart';
-import '../model/MailUpdateValidation.dart';
 import '../model/PhoneUpdateValidation.dart';
 import '../model/UserUpdateRequest.dart';
 

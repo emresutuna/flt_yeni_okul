@@ -3,7 +3,7 @@ import 'package:baykurs/ui/register/bloc/RegisterState.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 
-import '../../../repository/userRepository.dart';
+import '../../../repository/user_repository.dart';
 import '../../../util/SharedPrefHelper.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {

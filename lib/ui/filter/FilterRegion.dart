@@ -1,6 +1,6 @@
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
-import '../../service/apiUrls.dart';
+import '../../service/api_urls.dart';
 import '../../util/YOColors.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;

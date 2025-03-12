@@ -166,9 +166,6 @@ showCompanyFilterBottomSheet(BuildContext context) {
                 minLimit: 0,
                 maxLimit: 50000,
                 onApply: (minValue, maxValue) {
-                  // Seçilen fiyat aralığı güncellendiğinde yapılacak işlemler
-                  print('Güncellenen Min Fiyat: $minValue TL');
-                  print('Güncellenen Max Fiyat: $maxValue TL');
                 },
               ),
               const SizedBox(

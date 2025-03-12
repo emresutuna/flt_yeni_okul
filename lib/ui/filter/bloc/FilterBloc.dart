@@ -2,7 +2,7 @@ import 'package:baykurs/ui/filter/bloc/FilterEvent.dart';
 import 'package:baykurs/ui/filter/bloc/FilterState.dart';
 import 'package:bloc/bloc.dart';
 
-import '../../../repository/lectureRepository.dart';
+import '../../../repository/lecture_repository.dart';
 
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
   final LectureRepository lectureRepository;

@@ -1,13 +1,39 @@
+import 'dart:io';
+
 import 'package:baykurs/ui/payment/makePayment/model/AddressModelRequest.dart';
 import 'package:baykurs/ui/requestlesson/AllCities.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 
-import '../../../../service/apiUrls.dart';
+import '../../../../service/api_service.dart';
+import '../../../../service/result_response.dart';
+import '../../../../service/api_urls.dart';
 import '../../../requestlesson/Region.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../paymentBill/model/SingleBillResponse.dart';
+
 class PaymentBillService {
+
+  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(int id) async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.singleBil(id), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        SingleBillResponse billResponse = SingleBillResponse.fromJson(body);
+
+        return ResultResponse.success(billResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
   Future<List<Region>> fetchRegions() async {
     final response = await http.get(Uri.parse(ApiUrls.getProvinceAll));
 
@@ -40,10 +66,8 @@ class PaymentBillService {
   Future<AddressResponse> submitAddress(
       AddressModelRequest addressModelRequest) async {
     try {
-      String? token = await getToken(); // Token çek
-      print("JSON: ${addressModelRequest.toJson()}");
+      String? token = await getToken();
       if (token == null) {
-        print("HATA: Token alınamadı!"); // Log
         return AddressResponse(
           success: false,
           data: null,
@@ -51,10 +75,9 @@ class PaymentBillService {
         );
       }
 
-      print("Token: $token"); // Log
 
       final response = await http.post(
-        Uri.parse("https://api.bykurs.com.tr/api/v1/mobile/address"),
+        Uri.parse("${ApiUrls.mainUrl}/mobile/address"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $token",
@@ -62,9 +85,6 @@ class PaymentBillService {
         },
         body: jsonEncode(addressModelRequest.toJson()),
       );
-
-      print("API Response Code: ${response.statusCode}"); // Log
-      print("API Response Body: ${response.body}"); // Log
 
       final Map<String, dynamic> responseData = json.decode(response.body);
 

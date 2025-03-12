@@ -9,14 +9,14 @@ class AllCitiesResponse {
     if (json['data'] != null) {
       data = <AllCities>[];
       json['data'].forEach((v) {
-        data!.add(new AllCities.fromJson(v));
+        data!.add(AllCities.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -50,13 +50,13 @@ class AllCities {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['province_id'] = this.provinceId;
-    data['name'] = this.name;
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
-    data['order'] = this.order;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['province_id'] = provinceId;
+    data['name'] = name;
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
+    data['order'] = order;
     return data;
   }
 }

@@ -93,7 +93,8 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                   Positioned(
                                     top: 10,
                                     right: 10,
-                                    child: Text(formatPrice(courseDetail!.price),
+                                    child: Text(
+                                        formatPrice(courseDetail!.price),
                                         textAlign: TextAlign.end,
                                         style: styleBlack20Bold.copyWith(
                                             color: greenButton)),
@@ -104,12 +105,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                         children: [
                                           Text(
                                             "Tarih: ",
-                                            style: styleBlack12Bold,
+                                            style: styleBlack12Regular,
                                           ),
                                           Text(
                                             courseDetail!.formattedStartDate ??
                                                 "",
-                                            style: styleBlack12Regular,
+                                            style: styleBlack12Bold,
                                           ),
                                           const Spacer(),
                                         ],
@@ -118,20 +119,20 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                       Row(
                                         children: [
                                           Text("Derslik: ",
-                                              style: styleBlack12Bold),
+                                              style: styleBlack12Regular),
                                           Text(
                                               courseDetail!.classroom ??
                                                   "Bilinmiyor",
-                                              style: styleBlack12Regular),
+                                              style: styleBlack12Bold),
                                         ],
                                       ),
                                       const SizedBox(height: 4),
                                       Row(
                                         children: [
                                           Text("Kontenjan: ",
-                                              style: styleBlack12Bold),
-                                          Text("${courseDetail!.quota}",
                                               style: styleBlack12Regular),
+                                          Text("${courseDetail!.quota}",
+                                              style: styleBlack12Bold),
                                         ],
                                       ),
                                     ],
@@ -276,7 +277,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
         } else if (state is CourseDetailStateError) {
           return Center(child: Text('Error: ${state.error}'));
         } else {
-          return SizedBox();
+          return const SizedBox();
         }
       }),
     );

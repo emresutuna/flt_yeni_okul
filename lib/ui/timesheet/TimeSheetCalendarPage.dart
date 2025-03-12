@@ -23,8 +23,8 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
     for (var data in widget.timeSheetList) {
       DateTime startTime = DateTime.parse(data.startDate!);
       DateTime endTime = DateTime.parse(data.endDate!);
-      meetings.add(Meeting(data.lesson!.name!, startTime, endTime,
-          HexColor(data.lesson!.color!), false, data.id!));
+      meetings.add(Meeting(data.lesson!.name, startTime, endTime,
+          HexColor(data.lesson!.color), false, data.id!));
     }
 
     return meetings;

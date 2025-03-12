@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../util/HexColor.dart';
 import 'YOText.dart';
 
 class YoCircleItem extends StatelessWidget {

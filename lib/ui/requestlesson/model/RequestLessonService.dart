@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../../service/apiUrls.dart';
+import '../../../service/api_urls.dart';
 import '../../../util/LessonExtension.dart';
 import '../../../util/SharedPrefHelper.dart';
 import 'CourseRequestSchool.dart';

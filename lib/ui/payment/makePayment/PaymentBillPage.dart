@@ -56,7 +56,7 @@ class _PaymentBillPageState extends State<PaymentBillPage> {
     return Scaffold(
       appBar: WhiteAppBar("Fatura Adresi Ekle"),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -152,7 +152,7 @@ class _PaymentBillPageState extends State<PaymentBillPage> {
                       if (selectedDistrict != null) {
                         setState(() {
                           selectedProvince = selectedDistrict;
-                          controller.selectedProvince.value = this.selectedProvince;
+                          controller.selectedProvince.value = selectedProvince;
                         });
                       }
                     },

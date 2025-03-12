@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:baykurs/ui/company/model/SchoolFilter.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
-
-import '../service/APIService.dart';
-import '../service/ResultResponse.dart';
-import '../service/apiUrls.dart';
+import '../service/api_service.dart';
+import '../service/result_response.dart';
+import '../service/api_urls.dart';
 import '../ui/company/model/SchoolResponse.dart';
 import '../ui/companyDetail/model/SchoolDetailResponse.dart';
 import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
@@ -29,7 +27,6 @@ class SchoolRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -50,7 +47,6 @@ class SchoolRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -72,7 +68,6 @@ class SchoolRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -93,7 +88,6 @@ class SchoolRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }

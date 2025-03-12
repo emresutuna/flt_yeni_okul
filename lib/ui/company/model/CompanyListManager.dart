@@ -1,9 +1,6 @@
 import 'dart:ui';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/SchoolBloc.dart';
 import '../bloc/SchoolEvent.dart';
-
 import 'SchoolFilter.dart';
 import 'SchoolResponse.dart';
 

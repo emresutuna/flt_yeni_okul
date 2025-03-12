@@ -1,7 +1,5 @@
 import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/teacherCoach/model/CourseCoachResponse.dart';
-import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';
-
 import '../model/CourseModel.dart';
 
 abstract class LessonState {}

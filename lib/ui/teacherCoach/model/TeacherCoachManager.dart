@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../course/bloc/LessonBloc.dart';
 import '../../course/bloc/LessonEvent.dart';
 import '../../course/model/CourseFilter.dart';

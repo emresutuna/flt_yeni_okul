@@ -17,6 +17,6 @@ class PreferenceUtils {
 
   static Future<bool> setString(String key, String value) async {
     var prefs = await _instance;
-    return prefs.setString(key, value) ?? Future.value(false);
+    return prefs.setString(key, value);
   }
 }

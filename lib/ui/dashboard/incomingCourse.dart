@@ -22,10 +22,6 @@ class IncomingCourse extends StatelessWidget {
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String schoolName = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
     String teacherName = 'Öğretmen Bilgisi Bulunamadı';
-
-    String dateString =
-    courseModel?.startDate != null ? courseModel!.startDate! : '-';
-
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
         : '-';
@@ -35,104 +31,92 @@ class IncomingCourse extends StatelessWidget {
         : '-';
 
     String price = '₺${courseModel?.price ?? 0}';
+    final now = DateTime.now();
+    final startDate = courseModel?.startDate != null
+        ? DateTime.parse(courseModel!.startDate!)
+        : null;
+
+    final isWithinOneHour = startDate != null
+        ? startDate.difference(now).inMinutes <= 60 && startDate.isAfter(now)
+        : false;
+
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: IntrinsicHeight(
+      child: Container(
+        decoration: BoxDecoration(
+          color: HexColor("#F7F9F9"),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            width: 0.5,
+            color: HexColor("#222831").withAlpha(60),
+          ),
+        ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 11,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: HexColor("#F7F9F9"),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                  border: Border.all(
-                    width: 0.5,
-                    color: HexColor("#222831").withAlpha(60),
-                  ),
-                ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       title,
                       style: styleBlack14Bold,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Kurum: $schoolName",
-                        style: styleBlack12Bold,
-                      ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Kurum: $schoolName",
+                      style: styleBlack12Bold,
                     ),
-                    if (teacherName.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "Eğitmen: $teacherName",
-                          style: styleBlack12Regular,
+                    const SizedBox(height: 8),
+                    Text(
+                      "Öğretmen: $teacherName",
+                      style: styleBlack12Regular,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Tarih: $timeString - $endTime",
+                      style: styleBlack12Regular,
+                    ),
+                    const SizedBox(height: 8),
+                    if (courseModel?.topics != null && courseModel!.topics!.isNotEmpty)
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Konular: ",
+                              style: styleBlack12Regular.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            TextSpan(
+                              text: courseModel!.topics!.map((e) => e.name).join(" - "),
+                              style: styleBlack12Regular,
+                            ),
+                          ],
                         ),
                       ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Tarih: ${timeString ?? ""} - $endTime",
-                        style: styleBlack12Regular,
-                      ),
-                    ),
-                    if (courseModel?.topics != null &&
-                        courseModel!.topics!.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Konular: ",
-                                style: styleBlack12Regular.copyWith(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: courseModel?.topics
-                                    ?.map((e) => e.name)
-                                    .join(" - ") ??
-                                    "",
-                                style: styleBlack12Regular,
-                              ),
-                            ],
-                          ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          price,
+                          style: styleGreen18Bold,
                         ),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            price,
-                            style: styleGreen18Bold,
-                          ),
-                          const Spacer(),
-                        ],
-                      ),
+                      ],
                     ),
+
                   ],
                 ),
               ),
             ),
             Container(
               width: 32,
+              height: double.infinity,
               decoration: BoxDecoration(
                 color: HexColor(
                   BranchesExtension.getColorForBranch(
-                    courseModel?.lesson?.name??
-                        DEFAULT_LESSON_COLOR,
+                    courseModel?.lesson?.name ?? DEFAULT_LESSON_COLOR,
                   ) ??
                       DEFAULT_LESSON_COLOR,
                 ),

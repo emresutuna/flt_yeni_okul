@@ -1,7 +1,7 @@
 import 'package:baykurs/ui/profile/bloc/EducationInformationState.dart';
 import 'package:bloc/bloc.dart';
-import '../../../repository/userRepository.dart';
-import '../../../service/HandleApiException.dart';
+import '../../../repository/user_repository.dart';
+import '../../../service/handle_api_exception.dart';
 import 'EducationInformationEvent.dart';
 
 class EducationInformationBloc

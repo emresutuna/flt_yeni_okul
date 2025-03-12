@@ -11,7 +11,6 @@ class AuthController extends GetxController {
     checkUserStatus();
   }
 
-  /// Kullanıcı durumunu kontrol eder
   Future<void> checkUserStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     isFirstTime.value = prefs.getBool('isFirstTime') ?? true;
@@ -19,15 +18,12 @@ class AuthController extends GetxController {
     isLoggedIn.value = userToken.isNotEmpty;
   }
 
-  /// İlk kez açıldığında ayarı günceller
   Future<void> completeOnboarding() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isFirstTime', false);
-    isFirstTime.value = false; // UI güncellenir
-    print("Onboarding tamamlandı, isFirstTime: ${isFirstTime.value}");
+    isFirstTime.value = false;
   }
 
-  /// Kullanıcıyı çıkış yaptırır
   Future<void> logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');

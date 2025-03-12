@@ -47,7 +47,7 @@ class _ForgotPasswordEmailPageState extends State<ForgotPasswordEmailPage> {
           } else if (state is ForgotPasswordError) {
             Get.snackbar(
               "Hata",
-              state.error ?? "Bir hata oluştu, lütfen tekrar deneyin.",
+              state.error,
               colorText: Colors.white,
               backgroundColor: Colors.red,
             );

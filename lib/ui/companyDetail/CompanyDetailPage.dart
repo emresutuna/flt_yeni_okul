@@ -10,8 +10,7 @@ import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/ErrorWidget.dart';
 import '../../widgets/ExpandedWidget.dart';
-import '../../widgets/TeacherListItem.dart';
-import 'bloc/SchoolDetailBloc.dart';
+import 'bloc/school_detail_bloc.dart';
 import 'bloc/SchoolDetailEvent.dart';
 import 'bloc/SchoolDetailState.dart';
 import 'model/SchoolDetailResponse.dart';
@@ -73,9 +72,8 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> key = GlobalKey();
     GoogleMapController _controller;
-    final CameraPosition _initalCameraPosition = CameraPosition(
+    final CameraPosition initialCameraPosition = CameraPosition(
       target: LatLng(_originLatitude, _originLongitude),
       zoom: 15,
     );
@@ -384,13 +382,13 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                               child: GoogleMap(
                                 myLocationButtonEnabled: true,
                                 mapType: MapType.normal,
-                                initialCameraPosition: _initalCameraPosition,
+                                initialCameraPosition: initialCameraPosition,
                                 tiltGesturesEnabled: true,
                                 compassEnabled: true,
                                 scrollGesturesEnabled: true,
                                 zoomGesturesEnabled: true,
                                 onMapCreated: (GoogleMapController controller) {
-                                  _controller = controller;
+                                 _controller = controller;
                                 },
                               ),
                             ),
@@ -405,13 +403,11 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
             ),
           );
         } else if (state is SchoolDetailError) {
-          return Container(
-            child: Center(child: BkErrorWidget(
-              onPress: () {
-                Navigator.pop(context);
-              },
-            )),
-          );
+          return Center(child: BkErrorWidget(
+            onPress: () {
+              Navigator.pop(context);
+            },
+          ));
         } else {
           return const Center(child: Text('No courses available'));
         }

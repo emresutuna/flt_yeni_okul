@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../util/HexColor.dart';
 import '../util/YOColors.dart';
-import 'YOText.dart';
 class CompanyListItem extends StatelessWidget {
   final String title;
   final String message;

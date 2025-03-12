@@ -4,14 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baykurs/ui/filter/FilterSchool.dart';
 import 'package:baykurs/util/FirebaseAnalyticsConstants.dart';
 import 'package:baykurs/util/FirebaseAnalyticsManager.dart';
-import 'package:baykurs/util/HexColor.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/SearchBar.dart';
 import '../../widgets/CompanyListItem.dart';
 import '../../widgets/WhiteAppBar.dart';
 import '../../widgets/infoWidget/InfoWidget.dart';
-
 import 'bloc/SchoolBloc.dart';
 import 'bloc/SchoolState.dart';
 import 'model/CompanyListManager.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../util/HexColor.dart';
 import '../../util/LessonExtension.dart';
 import '../../util/PriceFormatter.dart';
@@ -24,7 +23,6 @@ class CourseBundleItem extends StatelessWidget {
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String schoolName =
         courseModel!.school?.name ?? courseModel?.schoolName ?? "";
-    String teacherName = courseModel?.teacherFormatted ?? '';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),

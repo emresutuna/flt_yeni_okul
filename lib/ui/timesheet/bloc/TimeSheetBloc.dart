@@ -2,7 +2,7 @@ import 'package:baykurs/ui/timesheet/bloc/TimeSheetEvent.dart';
 import 'package:baykurs/ui/timesheet/bloc/TimeSheetState.dart';
 import 'package:bloc/bloc.dart';
 
-import '../../../repository/userRepository.dart';
+import '../../../repository/user_repository.dart';
 
 class TimeSheetBloc extends Bloc<TimeSheetEvent, TimeSheetState> {
   final UserRepository userRepository;

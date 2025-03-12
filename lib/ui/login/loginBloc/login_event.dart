@@ -1,5 +1,5 @@
 
-import '../model/LoginRequest.dart';
+import '../model/login_request.dart';
 
 abstract class LoginEvent {}
 

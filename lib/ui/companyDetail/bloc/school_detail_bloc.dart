@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
-
-import '../../../repository/SchoolRepository.dart';
+import '../../../repository/school_repository.dart';
 import 'SchoolDetailEvent.dart';
 import 'SchoolDetailState.dart';
 

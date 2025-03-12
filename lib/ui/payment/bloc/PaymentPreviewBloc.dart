@@ -1,4 +1,4 @@
-import 'package:baykurs/repository/paymentReposityory.dart';
+import 'package:baykurs/repository/payment_repository.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewEvent.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
 import 'package:bloc/bloc.dart';

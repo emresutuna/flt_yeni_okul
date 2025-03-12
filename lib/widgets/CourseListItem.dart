@@ -62,26 +62,57 @@ class CourseListItem extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Kurum: $schoolName",
-                        style: styleBlack12Bold,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Kurum: ",
+                              style: styleBlack12Regular,
+                            ),
+                            TextSpan(
+                              text: schoolName,
+                              style: styleBlack12Bold,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     if (teacherName.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text(
-                          "Eğitmen: $teacherName",
-                          style: styleBlack12Regular,
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Öğretmen: ",
+                                style: styleBlack12Regular,
+                              ),
+                              TextSpan(
+                                text: teacherName,
+                                style: styleBlack12Bold,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Tarih: ${courseModel?.formattedStartDate ?? ""} - $endTime",
-                        style: styleBlack12Regular,
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Tarih: ",
+                              style: styleBlack12Regular, // "Tarih:" kısmı bold olacak
+                            ),
+                            TextSpan(
+                              text: "${courseModel?.formattedStartDate ?? ""} - $endTime",
+                              style: styleBlack12Bold, // Tarih verileri normal olacak
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+
                     if (courseModel?.topics != null &&
                         courseModel!.topics!.isNotEmpty)
                       Padding(
@@ -91,15 +122,14 @@ class CourseListItem extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "Konular: ",
-                                style: styleBlack12Regular.copyWith(
-                                    fontWeight: FontWeight.bold),
+                                style: styleBlack12Regular,
                               ),
                               TextSpan(
                                 text: courseModel?.topics
                                         ?.map((e) => e.name)
                                         .join(" - ") ??
                                     "",
-                                style: styleBlack12Regular,
+                                style: styleBlack12Bold,
                               ),
                             ],
                           ),
@@ -240,7 +270,7 @@ class InterestedLessonWidget extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Tarih: ${dateString ?? ""}",
+                        "Tarih: $dateString",
                         style: styleBlack12Regular,
                       ),
                     ),

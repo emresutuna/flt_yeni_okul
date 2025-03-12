@@ -16,12 +16,12 @@ class SliderModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['title'] = this.title;
-    data['desc'] = this.desc;
-    data['clickable_part'] = this.clickablePart;
-    data['route'] = this.route;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['desc'] = desc;
+    data['clickable_part'] = clickablePart;
+    data['route'] = route;
     return data;
   }
 }

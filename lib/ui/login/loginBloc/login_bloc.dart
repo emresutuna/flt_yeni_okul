@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 
 
-import '../../../repository/userRepository.dart';
+import '../../../repository/user_repository.dart';
 import '../../../util/SharedPrefHelper.dart';
-import 'LoginEvent.dart';
-import 'LoginState.dart';
+import 'login_event.dart';
+import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final UserRepository userRepository;

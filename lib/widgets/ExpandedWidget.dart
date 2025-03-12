@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../util/YOColors.dart';
-import 'YOCardView.dart';
 
 class ExpandedWidget extends StatelessWidget {
   final Widget title;

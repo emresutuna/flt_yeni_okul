@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
 import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
@@ -12,14 +14,17 @@ import 'package:baykurs/widgets/PrimaryButton.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
+import '../../repository/payment_repository.dart';
+import '../../service/api_service.dart';
+import '../../service/result_response.dart';
 import '../../util/HexColor.dart';
 import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
+import '../course/model/CourseTypeEnum.dart';
 import 'PaymentResultPage.dart';
 import 'PaymentWebView.dart';
-import 'makePayment/paymentBill/PaymentBillList.dart';
 import 'makePayment/paymentBill/bloc/PaymentBillEvent.dart';
+import 'model/PaymentResponse.dart';
 
 class PaymentPreviewPage extends StatefulWidget {
   const PaymentPreviewPage({super.key});
@@ -33,6 +38,12 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
   List<BillList> paymentBillList = [];
   BillList? defaultBill;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<PaymentBillBloc>().add(FetchBills());
+
+  }
   @override
   void initState() {
     super.initState();
@@ -61,6 +72,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: WhiteAppBar("Ders Satın Al"),
       body: BlocConsumer<PaymentBillBloc, PaymentBillState>(
           listener: (context, state) {
         if (state is PaymentPreviewSuccess) {
@@ -87,13 +99,53 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
       }),
     );
   }
+  Future<ResultResponse<PaymentResponse>> postBuyCourse(
+      int courseId, CourseTypeEnum courseType) async {
+    try {
+      final response = await APIService.instance.request(
+        buyCourse(courseId, courseType),
+        DioMethod.post,
+        includeHeaders: true
+      );
+
+      Map<String, dynamic> body = response.data;
+
+      if (response.statusCode == HttpStatus.ok && body['status'] == true) {
+        PaymentResponse paymentResponse = PaymentResponse.fromJson(body);
+        return ResultResponse.success(paymentResponse);
+      } else {
+        String message = body['error'] ?? body['message'] ?? 'Bir hata oluştu.';
+        return ResultResponse.failure(message);
+      }
+    } catch (e) {
+      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Hata"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Tamam"),
+          )
+        ],
+      ),
+    );
+  }
+
 
   Widget _buildWidget(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            WhiteAppBar("Ders Satın Al"),
             Column(
               children: [
                 Padding(
@@ -205,29 +257,41 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                               SizedBox(
                                 height: 50,
                                 width: double.maxFinite,
-                                child: GreenPrimaryButton(
+                                child:GreenPrimaryButton(
                                   text: "Devam Et",
-                                  onPress: () {
-                                    if (defaultBill != null) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => PaymentWebView(
-                                              courseId:
-                                                  paymentPreview?.id ?? 0),
-                                        ),
-                                      );
-                                    } else {
-                                      Get.snackbar(
-                                        "Hata",
-                                        "Bir fatura ekle",
-                                        colorText: Colors.white,
-                                        backgroundColor: Colors.red,
-                                      );
-                                    }
+                                  onPress: () async {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (context) => const Center(child: CircularProgressIndicator()),
+                                    );
 
+                                    try {
+                                      final result = await postBuyCourse(
+                                        paymentPreview?.id ?? 0,
+                                        paymentPreview?.courseType ?? CourseTypeEnum.COURSE,
+                                      );
+
+                                      Navigator.pop(context);
+
+                                      if (result.data!=null) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => PaymentWebView(courseId: paymentPreview?.id ?? 0),
+                                          ),
+                                        );
+                                      } else {
+                                        // Hata mesajını API'den alıyoruz
+                                        _showErrorDialog(result.error ?? 'Bir hata oluştu.');
+                                      }
+                                    } catch (e) {
+                                      Navigator.pop(context);
+                                      _showErrorDialog("Beklenmeyen bir hata oluştu: $e");
+                                    }
                                   },
-                                ),
+                                )
+                                ,
                               ),
                               16.toHeight
                             ],
@@ -260,16 +324,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            final result = await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PaymentBillList(
-                                        paymentBillList: paymentBillList,
-                                      )),
-                            );
-                            if (result != null && result is BillList) {
-                              defaultBill = result;
-                            }
+                            Navigator.pushNamed(context, "/billList");
+
                           },
                           icon: Icon(Icons.edit_note, color: color5),
                         ),
@@ -277,7 +333,9 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                     ),
                     8.toHeight,
                     Text(
-                      defaultBill!= null ?"Yapacağınız işlemde varsayılan kayıtlı fatura adresiniz kullanılacaktır.":"Kayıtlı fatura adresin bulunmuyor. Lütfen bir fatura adresi ekle.",
+                      defaultBill != null
+                          ? "Yapacağınız işlemde varsayılan kayıtlı fatura adresiniz kullanılacaktır."
+                          : "Kayıtlı fatura adresin bulunmuyor. Lütfen bir fatura adresi ekle.",
                       style: styleBlack14Regular,
                     ),
                     8.toHeight,

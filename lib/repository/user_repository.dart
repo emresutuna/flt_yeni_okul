@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:baykurs/ui/dashboard/model/MobileHomeResponse.dart';
 import 'package:baykurs/ui/favoriteschool/model/FavoriteSchoolResponse.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordRequest.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/model/SingleBillResponse.dart';
 import 'package:baykurs/ui/profile/model/DeleteAccountResponse.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationRequest.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationResponse.dart';
@@ -17,13 +17,14 @@ import 'package:baykurs/ui/timesheet/model/TimeSheetResponse.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
 import 'package:dio/dio.dart';
 
-import '../service/APIService.dart';
-import '../service/HandleApiException.dart';
-import '../service/ResultResponse.dart';
-import '../service/apiUrls.dart';
+import '../service/api_service.dart';
+import '../service/handle_api_exception.dart';
+import '../service/result_response.dart';
+import '../service/api_urls.dart';
 import '../ui/favoriteschool/model/FavoriteToggleResponse.dart';
-import '../ui/login/model/LoginRequest.dart';
-import '../ui/login/model/LoginResponse.dart';
+import '../ui/login/model/login_request.dart';
+import '../ui/login/model/login_response.dart';
+import '../ui/payment/makePayment/paymentBill/model/BillResultResponse.dart';
 import '../ui/profile/model/ProfileResponse.dart';
 import '../ui/profile/model/UserUpdateRequest.dart';
 import '../ui/requestlesson/model/CourseRequestResponse.dart';
@@ -47,7 +48,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -72,14 +72,12 @@ class UserRepository {
       }
     } catch (e) {
       if (e is DioException) {
-        print('DioError: ${e.response?.data}');
         if (e.response != null && e.response!.data is Map<String, dynamic>) {
           String errorMessage =
               e.response!.data['message'] ?? 'Bir hata oluştu.';
           return ResultResponse.failure(errorMessage);
         }
       }
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -105,29 +103,25 @@ class UserRepository {
       }
     } catch (e) {
       if (e is DioException) {
-        print('DioError: ${e.response?.data}');
         if (e.response != null && e.response!.data is Map<String, dynamic>) {
           String errorMessage =
               e.response!.data['message'] ?? 'Bir hata oluştu.';
           return ResultResponse.failure(errorMessage);
         }
       }
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
 
   Future<ResultResponse<DeleteAccountResponse>> deleteAccount() async {
     try {
-      final response = await APIService.instance.request(
-          ApiUrls.deleteAccount,
-          DioMethod.post,
-          includeHeaders: true);
+      final response = await APIService.instance
+          .request(ApiUrls.deleteAccount, DioMethod.post, includeHeaders: true);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         DeleteAccountResponse deleteAccountResponse =
-        DeleteAccountResponse.fromJson(body);
+            DeleteAccountResponse.fromJson(body);
 
         return ResultResponse.success(deleteAccountResponse);
       } else {
@@ -136,14 +130,12 @@ class UserRepository {
       }
     } catch (e) {
       if (e is DioException) {
-        print('DioError: ${e.response?.data}');
         if (e.response != null && e.response!.data is Map<String, dynamic>) {
           String errorMessage =
               e.response!.data['message'] ?? 'Bir hata oluştu.';
           return ResultResponse.failure(errorMessage);
         }
       }
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -199,7 +191,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -207,7 +198,7 @@ class UserRepository {
   Future<ResultResponse<TimeSheetResponse>> getUserTimeSheet() async {
     try {
       final response = await APIService.instance
-          .request(ApiUrls.getTimeSheet, DioMethod.get);
+          .request("${ApiUrls.getTimeSheet}?end=2025-03-30", DioMethod.get,includeHeaders: true);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -219,7 +210,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -295,7 +285,60 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(int id) async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.singleBil(id), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        SingleBillResponse billResponse = SingleBillResponse.fromJson(body);
+
+        return ResultResponse.success(billResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
+  Future<ResultResponse<BillResultResponse>> removeBill(int id) async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.removeBillUrl(id), DioMethod.delete, includeHeaders: true);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        BillResultResponse logoutResponse = BillResultResponse.fromJson(body);
+        return ResultResponse.success(logoutResponse);
+      } else if (response.statusCode == HttpStatus.unauthorized) {
+        Map<String, dynamic> body = response.data;
+        BillResultResponse logoutResponse = BillResultResponse.fromJson(body);
+        return ResultResponse.success(logoutResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e is DioException) {
+        if (e.response != null && e.response!.data is Map<String, dynamic>) {
+          String errorMessage =
+              e.response!.data['message'] ?? 'Bir hata oluştu.';
+
+          if (e.response?.statusCode == HttpStatus.unauthorized) {
+            BillResultResponse logoutResponse =
+                BillResultResponse.fromJson(e.response!.data);
+            return ResultResponse.success(logoutResponse);
+          }
+
+          return ResultResponse.failure(errorMessage);
+        }
+      }
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -317,7 +360,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -338,7 +380,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -359,7 +400,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -383,7 +423,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -405,7 +444,6 @@ class UserRepository {
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
-      print(e.toString());
       return ResultResponse.failure('Exception: $e');
     }
   }

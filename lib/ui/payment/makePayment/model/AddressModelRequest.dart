@@ -20,15 +20,24 @@ class AddressModelRequest {
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      "title": title,
-      "district": district,
-      "street": street,
-      "apartment_no": apartmentNo,
-      "flat_no": flatNo,
-      "postal_code": postalCode,
-      "city_id": cityId,
-      "is_default": isDefault,
-    };
+    final Map<String, dynamic> data = {};
+
+    if (title.isNotEmpty) data["title"] = title;
+    if (district.isNotEmpty) data["district"] = district;
+    if (street.isNotEmpty) data["street"] = street;
+    if (apartmentNo.isNotEmpty) data["apartment_no"] = apartmentNo;
+    if (flatNo.isNotEmpty) data["flat_no"] = flatNo;
+    if (postalCode.isNotEmpty) data["postal_code"] = postalCode;
+
+    if (cityId != null && cityId != 0) {
+      data["city_id"] = cityId;
+    }
+
+    if (isDefault == true) {
+      data["is_default"] = isDefault;
+    }
+
+    return data;
   }
+
 }

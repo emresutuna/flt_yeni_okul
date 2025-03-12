@@ -1,4 +1,4 @@
-import 'package:baykurs/repository/userRepository.dart';
+import 'package:baykurs/repository/user_repository.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolEvent.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/FavoriteSchoolState.dart';
 import 'package:bloc/bloc.dart';

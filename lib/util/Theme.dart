@@ -2,15 +2,12 @@ import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// Renk Tanımlamaları
 const Color color1 = Color(0xFF222831); // Ana yazı rengi
 const Color color2 = Colors.grey; // Yardımcı gri tonu
 const Color color3 = Colors.green; // Vurgu yeşil tonu
 const Color colorLightGray = Color(0xFFF5F5F5); // Arkaplan gri tonu
 
-/// 🅰️ TextTheme Yapılandırması
 TextTheme customTextTheme = TextTheme(
-  // 🎓 Başlıklar (Display)
   displayLarge: GoogleFonts.poppins(
       fontSize: 22, fontWeight: FontWeight.bold, color: color1),
   displayMedium: GoogleFonts.poppins(
@@ -18,7 +15,6 @@ TextTheme customTextTheme = TextTheme(
   displaySmall: GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.bold, color: color1),
 
-  // 📰 Gövde Metinleri (Body)
   bodyLarge: GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.normal, color: color1),
   bodyMedium: GoogleFonts.poppins(
@@ -26,7 +22,6 @@ TextTheme customTextTheme = TextTheme(
   bodySmall: GoogleFonts.poppins(
       fontSize: 12, fontWeight: FontWeight.normal, color: color2),
 
-  // 📝 Alt Başlıklar (Title)
   titleLarge: GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.bold, color: color1),
   titleMedium: GoogleFonts.poppins(
@@ -34,7 +29,6 @@ TextTheme customTextTheme = TextTheme(
   titleSmall: GoogleFonts.poppins(
       fontSize: 12, fontWeight: FontWeight.normal, color: color1),
 
-  // 🔘 Butonlar (Label)
   labelLarge: GoogleFonts.poppins(
       fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
   labelMedium: GoogleFonts.poppins(
@@ -43,7 +37,6 @@ TextTheme customTextTheme = TextTheme(
       fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
 );
 
-/// Özel Yazı Tipleri (Override İçin)
 final TextStyle styleGreen18Bold = GoogleFonts.poppins(
     fontSize: 18, fontWeight: FontWeight.bold, color: color3);
 

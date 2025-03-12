@@ -32,7 +32,6 @@ class AuthService {
             companyCode: userRegisterModel.companyCode ?? 0);
       }
     } on FirebaseAuthException catch (e) {
-      print(e.toString());
     }
     return null;
   }

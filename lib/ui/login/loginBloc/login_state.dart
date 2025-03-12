@@ -1,5 +1,5 @@
 
-import '../model/LoginResponse.dart';
+import '../model/login_response.dart';
 
 abstract class LoginState {}
 

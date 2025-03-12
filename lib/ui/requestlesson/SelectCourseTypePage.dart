@@ -13,7 +13,7 @@ class SelectCourseTypePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Ders/Kurs Seç"),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Get.back(),
         ),
       ),

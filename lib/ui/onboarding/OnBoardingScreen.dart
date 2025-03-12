@@ -24,19 +24,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       'title': 'En İyisini Yakala!',
       'description':
-          'Sadece ders satın alarak hiçbir kuruma bağlı kalma, en iyi dersi sana en uygun kurumdan alarak başarıyı yakala!',
+          'Sadece ders/kurs satın alarak hiçbir kuruma bağlı kalma, en iyi dersi sana en uygun kurumdan alarak başarıyı yakala!',
       'imageAsset': 'assets/first_slide.jpg',
     },
     {
       'title': 'Yüz Yüze Eğitimin Özgün Modeli',
       'description':
-          'Başarıya ulaşmak için eksiklerini belirle ve sadece ihtiyacın olan derslerle sınava hazırlanarak yüz yüze eğitimin özgün modeliyle tanış!',
+          'Başarıya ulaşmak için eksiklerini belirle ve sadece ihtiyacın olan ders/kurslarla sınava hazırlanarak yüz yüze eğitimin özgün modeliyle tanış!',
       'imageAsset': 'assets/second_slide_alternative.jpg',
     },
     {
-      'title': 'İyi Eğitim İyi Hocayla Alınır',
+      'title': 'Başarı Yolculuğunda Doğru Mentora Ulaş!',
       'description':
-          'Dersini satın aldığın kurum ya da öğretmeni beğenmediysen sonraki dersi başka kurum ya da başka öğretmenden alarak sevimsiz eğitim yılı geçirmekten kurtul!',
+          'Eğitim hayatını şekillendirirken profesyonel eğitim koçlarından destek al, tüm kaynaklardan sınırsız yararlanarak başarı',
       'imageAsset': 'assets/third_slide.jpg',
     },
   ];

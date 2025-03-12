@@ -1,4 +1,4 @@
-import 'package:baykurs/repository/paymentReposityory.dart';
+import 'package:baykurs/repository/payment_repository.dart';
 import 'package:baykurs/ui/courseBundle/CourseBundle.dart';
 import 'package:baykurs/ui/courseBundleDetail/CourseBundleDetail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/CourseDetailBloc.dart';
@@ -8,6 +8,8 @@ import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
 import 'package:baykurs/ui/payment/makePayment/MakePaymentPage.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/PaymentBillList.dart';
+import 'package:baykurs/ui/payment/makePayment/paymentBill/billListBloc/BillListBloc.dart';
 import 'package:baykurs/ui/profile/UserEditSelection.dart';
 import 'package:baykurs/ui/profile/bloc/EducationInformationBloc.dart';
 import 'package:baykurs/ui/profile/bloc/PasswordUpdateBloc.dart';
@@ -24,22 +26,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../main.dart';
-import '../repository/SchoolRepository.dart';
-import '../repository/lectureRepository.dart';
-import '../repository/userRepository.dart';
+import '../repository/school_repository.dart';
+import '../repository/lecture_repository.dart';
+import '../repository/user_repository.dart';
 import '../ui/company/CompanyListPage.dart';
 import '../ui/company/bloc/SchoolBloc.dart';
 import '../ui/companyDetail/CompanyDetailPage.dart';
-import '../ui/companyDetail/bloc/SchoolDetailBloc.dart';
+import '../ui/companyDetail/bloc/school_detail_bloc.dart';
 import '../ui/course/CourseListPage.dart';
 import '../ui/course/bloc/LessonBloc.dart';
 import '../ui/coursedetail/CourseDetailPage.dart';
 import '../ui/favoriteschool/FavoriteSchoolPage.dart';
 import '../ui/forgotpassword/forgotPasswordEmail.dart';
-import '../ui/login/emailOtpPage.dart';
-import '../ui/login/loginBloc/LoginBloc.dart';
+import '../ui/login/loginBloc/login_bloc.dart';
 import '../ui/login/loginPage.dart';
-import '../ui/login/newPasswordPage.dart';
 import '../ui/notification/NotificationPage.dart';
 import '../ui/onboarding/OnBoardingScreen.dart';
 import '../ui/paymentHistory/PaymentHistoryPage.dart';
@@ -78,9 +78,7 @@ class AppRoutes {
                   EducationInformationBloc(userRepository: UserRepository()),
               child: const EducationInformationPage(),
             ),
-        '/emailOtp': (context) => const EmailOtpPage(),
         '/userEditSelection': (context) => const UserEditSelection(),
-        '/newPasswordPage': (context) => const NewPasswordPage(),
         '/companyDetail': (context) => BlocProvider(
               create: (context) =>
                   SchoolDetailBloc(schoolRepository: SchoolRepository()),
@@ -156,12 +154,19 @@ class AppRoutes {
             ),
         '/loginPage': (context) => BlocProvider(
               create: (context) => LoginBloc(userRepository: UserRepository()),
-              child:  const LoginPage(showClose: false,),
+              child: const LoginPage(
+                showClose: false,
+              ),
             ),
         '/registerPage': (context) => BlocProvider(
               create: (context) =>
                   RegisterBloc(userRepository: UserRepository()),
               child: const RegisterPage(),
+            ),
+        '/billList': (context) => BlocProvider(
+              create: (context) =>
+                  BillListBloc(userRepository: UserRepository()),
+              child: const PaymentBillList(),
             ),
       };
 }

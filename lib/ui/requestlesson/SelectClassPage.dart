@@ -14,7 +14,7 @@ class SelectClassPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Sınıf Seç"),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Get.back(),
         ),
       ),

@@ -1,6 +1,3 @@
-
-
-import 'package:baykurs/ui/courseBundle/model/CourseBundleResponse.dart';
 import 'package:baykurs/ui/courseBundleDetail/model/CourseBundleDetailResponse.dart';
 import 'package:baykurs/ui/coursedetail/model/CourseDetailResponseModel.dart';
 import 'package:baykurs/ui/teacherCoachDetail/model/CourseCoachDetailResponse.dart';

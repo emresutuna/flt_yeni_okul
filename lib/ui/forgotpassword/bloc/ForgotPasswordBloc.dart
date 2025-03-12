@@ -3,7 +3,7 @@ import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordState.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 
-import '../../../repository/userRepository.dart';
+import '../../../repository/user_repository.dart';
 
 class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   final UserRepository userRepository;

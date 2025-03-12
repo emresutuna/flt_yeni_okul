@@ -1,5 +1,4 @@
 import '../../../util/BaseCourseModel.dart';
-import '../../course/model/CourseModel.dart';
 
 class TimeSheetResponse {
   bool? status;

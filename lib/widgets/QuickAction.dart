@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import '../util/YOColors.dart';
-import 'YOText.dart';
 
 class QuickAction extends StatelessWidget {
   final String icon;

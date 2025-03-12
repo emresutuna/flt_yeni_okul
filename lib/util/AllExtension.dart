@@ -68,14 +68,14 @@ extension RegionDropdownExtension on List<Region> {
 }
 extension ProvinceDropdownExtension on List<Province> {
   List<DropdownMenuItem<Province>> toDropdownItems() {
-    return this.map<DropdownMenuItem<Province>>((Province province) {
+    return map<DropdownMenuItem<Province>>((Province province) {
       return province.toDropdownItem();
     }).toList();
   }
 }
 extension SchoolDropdownExtension on List<CourseRequestSchool> {
   List<DropdownMenuItem<CourseRequestSchool>> toDropdownItems() {
-    return this.map<DropdownMenuItem<CourseRequestSchool>>((CourseRequestSchool school) {
+    return map<DropdownMenuItem<CourseRequestSchool>>((CourseRequestSchool school) {
       return school.toDropdownItem();
     }).toList();
   }

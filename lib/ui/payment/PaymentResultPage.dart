@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../../main.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/PrimaryButton.dart';

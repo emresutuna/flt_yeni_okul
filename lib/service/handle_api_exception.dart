@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'ResultResponse.dart';
+import 'result_response.dart';
 
 ResultResponse<T> handleDioException<T>(DioException e) {
   if (e.response != null && e.response!.data is Map<String, dynamic>) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../util/YOColors.dart';
-import 'YoHexText.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;

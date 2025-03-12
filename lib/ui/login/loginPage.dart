@@ -9,12 +9,12 @@ import '../../util/YOColors.dart';
 import '../../widgets/PasswordField.dart';
 import '../../widgets/PrimaryButton.dart';
 import '../../widgets/PrimaryInputField.dart';
-import 'loginBloc/LoginBloc.dart';
-import 'loginBloc/LoginEvent.dart';
-import 'loginBloc/LoginState.dart';
-import 'model/LoginRequest.dart';
+import 'loginBloc/login_bloc.dart';
+import 'loginBloc/login_event.dart';
+import 'loginBloc/login_state.dart';
+import 'model/login_request.dart';
 import 'model/LoginValidation.dart';
-import 'model/UserLoginModel.dart';
+import 'model/user_login_model.dart';
 
 class LoginPage extends StatefulWidget {
   final bool showClose;

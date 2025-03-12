@@ -1,3 +1,4 @@
+import 'package:baykurs/service/api_urls.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -49,7 +50,7 @@ class _PaymentWebViewState extends State<PaymentWebView> {
 
       _controller.loadRequest(
         Uri.parse(
-            "https://api.bykurs.com.tr/api/v1/mobile/payment?course_id=${widget.courseId}"),
+            "${ApiUrls.mainUrl}/mobile/payment?course_id=${widget.courseId}"),
         headers: {"Authorization": "Bearer $_token"},
       );
     }

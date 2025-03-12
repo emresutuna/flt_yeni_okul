@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-import '../../../repository/lectureRepository.dart';
+import '../../../repository/lecture_repository.dart';
 import 'CourseDetailEvent.dart';
 import 'CourseDetailState.dart';
 

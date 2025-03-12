@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import '../../../util/BaseCourseModel.dart';
 
 class CourseDetailResponse {

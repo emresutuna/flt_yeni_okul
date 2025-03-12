@@ -54,6 +54,8 @@ TextStyle styleBlack12Bold = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.bold, color: color1);
 TextStyle styleGray12Bold = GoogleFonts.poppins(
     fontSize: 12, fontWeight: FontWeight.bold, color: color2);
+TextStyle styleGray12Regular = GoogleFonts.poppins(
+    fontSize: 12, fontWeight: FontWeight.normal, color: Colors.grey.shade600);
 TextStyle styleBlack14Bold = GoogleFonts.poppins(
     fontSize: 14, fontWeight: FontWeight.bold, color: color1);
 TextStyle styleBlack16Bold = GoogleFonts.poppins(
