@@ -9,6 +9,7 @@ import '../requestlesson/region.dart';
 class FilterProvince extends StatefulWidget {
   final int selectedCityId;
   final Province? initialSelectedProvince;
+
   const FilterProvince({
     super.key,
     required this.selectedCityId,
@@ -33,7 +34,9 @@ class _FilterProvinceState extends State<FilterProvince> {
 
   Future<void> fetchProvince(int cityId) async {
     try {
-      final response = await http.get(Uri.parse(ApiUrls.getAllDistricts(cityId)));
+      final response = await http.get(
+          Uri.parse(ApiUrls.getAllDistricts(cityId)),
+          headers: {"X-Requested-From": "baykursmobileapp"});
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -78,32 +81,35 @@ class _FilterProvinceState extends State<FilterProvince> {
         },
       ),
       body: isLoading
-          ?  Center(child: CircularProgressIndicator(color: color5,))
+          ? Center(
+              child: CircularProgressIndicator(
+              color: color5,
+            ))
           : Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: provinces.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final province = provinces[index];
-                return ListTile(
-                  title: Text(province.name),
-                  trailing: selectedProvince?.name == province.name
-                      ? Icon(Icons.check, color: greenButton)
-                      : null,
-                  onTap: () {
-                    selectProvince(province);
-                  },
-                );
-              },
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: provinces.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final province = provinces[index];
+                      return ListTile(
+                        title: Text(province.name),
+                        trailing: selectedProvince?.name == province.name
+                            ? Icon(Icons.check, color: greenButton)
+                            : null,
+                        onTap: () {
+                          selectProvince(province);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                _buildFilterButton(() {
+                  Navigator.of(context).pop(selectedProvince);
+                }),
+              ],
             ),
-          ),
-          _buildFilterButton(() {
-            Navigator.of(context).pop(selectedProvince);
-          }),
-        ],
-      ),
     );
   }
 

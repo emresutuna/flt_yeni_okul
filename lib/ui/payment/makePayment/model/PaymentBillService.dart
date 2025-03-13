@@ -14,8 +14,8 @@ import 'package:http/http.dart' as http;
 import '../paymentBill/model/SingleBillResponse.dart';
 
 class PaymentBillService {
-
-  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(int id) async {
+  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(
+      int id) async {
     try {
       final response = await APIService.instance
           .request(ApiUrls.singleBil(id), DioMethod.get);
@@ -35,7 +35,13 @@ class PaymentBillService {
   }
 
   Future<List<Region>> fetchRegions() async {
-    final response = await http.get(Uri.parse(ApiUrls.getProvinceAll));
+    final response = await http.get(
+      Uri.parse(ApiUrls.getProvinceAll),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-From": "baykursmobileapp"
+      },
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -49,8 +55,13 @@ class PaymentBillService {
   }
 
   Future<List<AllCities>> fetchProvinces(int regionId) async {
-    final response =
-        await http.get(Uri.parse(ApiUrls.getAllDistrictsAll(regionId)));
+    final response = await http.get(
+      Uri.parse(ApiUrls.getAllDistrictsAll(regionId)),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-From": "baykursmobileapp"
+      },
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -74,7 +85,6 @@ class PaymentBillService {
           message: "Kullanıcı oturum açmamış. Token bulunamadı.",
         );
       }
-
 
       final response = await http.post(
         Uri.parse("${ApiUrls.mainUrl}/mobile/address"),

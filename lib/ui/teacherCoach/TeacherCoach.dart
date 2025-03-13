@@ -147,14 +147,14 @@ class _TeacherCoachState extends State<TeacherCoach> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Bu hafta yayınlanan dersleri incele ve haftalık programını oluştur.",
+            "Çevreni profesyonellerle donat!",
             style: styleBlack12Bold,
             textAlign: TextAlign.start,
           ),
           const SizedBox(height: 8),
           const InfoCardWidget(
-            title: "Dersler",
-            description: "Dersin verildiği kurum ve ders hakkında detayları inceleyebilir, dersi satın alabilirsin.",
+            title: "Eğitim Koçu",
+            description: "Eğitim koçlarını inceleyerek en uygun profesyonelden 1 saatlik özel randevu alabilirsin.",
           ),
         ],
       ),

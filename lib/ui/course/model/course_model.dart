@@ -113,6 +113,7 @@ class CourseList extends BaseCourse {
     School? school,
     List<Topics>? topics,
     String? lessonName,
+    Teacher? teacher,
   }) : super(
             id: id,
             title: title,
@@ -123,6 +124,7 @@ class CourseList extends BaseCourse {
             quota: quota,
             schoolName: schoolName,
             school: school,
+            teacher: teacher,
             topics: topics,
             lessonName: lessonName);
 

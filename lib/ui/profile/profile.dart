@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: BlocListener<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is LogoutSuccess) {
-            clearSharedPreferences();
+            clearAllExceptIsFirstTime();
             refreshApp();
           } else if (state is LogoutError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -202,12 +202,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       .pushNamed("/favoriteSchool");
                                 }),
                                 profileItem("SSS", onTap: () {
-                                  openWebView('https://www.bykurs.com.tr',
+                                  openWebView('https://www.baykurs.com.tr/faq',
                                       'Sıkça Sorulan Sorular');
                                 }),
                                 profileItem("İletişim", onTap: () {
                                   openWebView(
-                                      'https://www.bykurs.com.tr', 'İletişim');
+                                      'https://www.baykurs.com.tr/contact', 'İletişim');
                                 }),
                                 profileItem("Hesabımı Sil", onTap: () {
                                   showDeleteAccountDialog(context);

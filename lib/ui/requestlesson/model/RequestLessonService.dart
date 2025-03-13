@@ -8,7 +8,13 @@ import '../region.dart';
 
 class RequestLessonService {
   Future<List<Region>> fetchRegions() async {
-    final response = await http.get(Uri.parse(ApiUrls.getProvince));
+    final response = await http.get(
+      Uri.parse(ApiUrls.getProvince),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-From": "baykursmobileapp"
+      },
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -22,8 +28,13 @@ class RequestLessonService {
   }
 
   Future<List<Province>> fetchProvinces(int regionId) async {
-    final response =
-        await http.get(Uri.parse(ApiUrls.getAllDistricts(regionId)));
+    final response = await http.get(
+      Uri.parse(ApiUrls.getAllDistricts(regionId)),
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-From": "baykursmobileapp"
+      },
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);

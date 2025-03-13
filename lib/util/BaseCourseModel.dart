@@ -138,14 +138,33 @@ class BaseCourse {
 
   /// Öğretmen adını formatlayan yardımcı fonksiyon
   String _getFormattedTeacherName() {
-    if (teacher != null && teacher!.user.name.isNotEmpty) {
-      return teacher!.user.name;
-    } else if (teacherName != null && teacherSurname != null) {
-      return "$teacherName $teacherSurname";
-    } else {
-      return "Öğretmen bilgisi mevcut değil";
+    print('Teacher: $teacher');
+    print('Teacher user: ${teacher?.user}');
+    print('Teacher user name: ${teacher?.user?.name}');
+    print('Teacher user surname: ${teacher?.user?.surname}');
+
+    final user = teacher?.user;
+
+    // 1. Öncelikli kontrol: user varsa ve name boş değilse
+    if (user != null && user.name != null && user.name!.isNotEmpty) {
+      final name = user.name!;
+      final surname = user.surname != null && user.surname!.isNotEmpty
+          ? user.surname!
+          : '';
+
+      return '$name $surname'.trim(); // Eğer surname boşsa boşluk olmaz
     }
+
+    // 2. İkinci kontrol: fallback teacherName ve teacherSurname
+    if (teacherName != null && teacherSurname != null) {
+      return "$teacherName $teacherSurname";
+    }
+
+    // 3. Hiçbiri yoksa default mesaj
+    return "Öğretmen bilgisi mevcut değil";
   }
+
+
 
   /// Ders bilgisini formatlayan yardımcı fonksiyon
   String _getFormattedLesson() {
@@ -160,14 +179,20 @@ class BaseCourse {
 
   /// Okul bilgisini formatlayan yardımcı fonksiyon
   String _getFormattedSchool() {
-    if (school != null && school!.name != null && school!.name!.isNotEmpty) {
-      return school!.name!;
+    final schoolNameFromModel = school?.name;
+    final schoolNameFromUser = school?.user?.name;
+
+    if (schoolNameFromModel != null && schoolNameFromModel.isNotEmpty) {
+      return schoolNameFromModel;
+    } else if (schoolNameFromUser != null && schoolNameFromUser.isNotEmpty) {
+      return schoolNameFromUser;
     } else if (schoolName != null && schoolName!.isNotEmpty) {
       return schoolName!;
     } else {
       return "Okul bilgisi mevcut değil";
     }
   }
+
 }
 
 class Topics {
@@ -197,16 +222,20 @@ class School {
   String? longitude;
   String? cityName;
   String? provinceName;
+  User? user;
 
-  School(
-      {this.id,
-      this.name,
-      this.address,
-      this.latitude,
-      this.longitude,
-      this.cityName,
-      this.provinceName});
+  School({
+    this.id,
+    this.name,
+    this.address,
+    this.latitude,
+    this.longitude,
+    this.cityName,
+    this.provinceName,
+    this.user,
+  });
 
+  // ✅ FROM JSON
   School.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -215,8 +244,14 @@ class School {
     longitude = json['longitude'];
     cityName = json['city_name'];
     provinceName = json['province_name'];
+
+    // ✅ user parse etme kısmı eklendi
+    if (json['user'] != null && json['user'] is Map<String, dynamic>) {
+      user = User.fromJson(json['user']);
+    }
   }
 
+  // ✅ TO JSON
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
@@ -226,6 +261,10 @@ class School {
     data['longitude'] = longitude;
     data['city_name'] = cityName;
     data['province_name'] = provinceName;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+
     return data;
   }
 }
@@ -279,15 +318,21 @@ class Teacher {
 }
 
 class User {
-  final int id;
-  final String name;
+  int? id;
+  String? name;
+  String? surname; // Opsiyonel çünkü JSON'da olmayabilir
 
-  User({required this.id, required this.name});
+  User({
+    this.id,
+    this.name,
+    this.surname,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
-      name: json['name'],
+      name: json['name'] ?? '',
+      surname: json['surname'] ?? '',
     );
   }
 
@@ -295,6 +340,7 @@ class User {
     return {
       'id': id,
       'name': name,
+      'surname': surname,
     };
   }
 }

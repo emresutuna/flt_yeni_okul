@@ -62,3 +62,11 @@ Future<void> clearSharedPreferences() async {
 void refreshApp() {
   Get.offAllNamed('/mainPage');
 }
+Future<void> clearAllExceptIsFirstTime() async {
+  final prefs = await SharedPreferences.getInstance();
+  bool? isFirstTime = prefs.getBool('isFirstTime');
+  await prefs.clear();
+  if (isFirstTime != null) {
+    await prefs.setBool('isFirstTime', isFirstTime);
+  }
+}

@@ -141,13 +141,13 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('İhtiyacın olan dersi talep et.',
+                        Text('İhtiyacın olan ders/kursu talep et.',
                             style: styleBlack12Bold),
                         const SizedBox(height: 16),
                         const InfoCardWidget(
                           title: 'Bilgi',
                           description:
-                              'Bir bölgedeki tüm kurumlardan ya da tek bir kurumdan ders talebinde bulunabilirsin.',
+                              'Bir bölgedeki tüm kurumlardan ya da tek bir kurumdan ders/kurs talebinde bulunabilirsin.',
                           icon: Icons.info_outline,
                         ),
                         const SizedBox(height: 16),

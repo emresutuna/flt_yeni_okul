@@ -11,7 +11,7 @@ class ApiUrls {
   static const String getSchoolWithLogin = "/mobile/school";
   static const String schoolDetail = "/school";
   static const String teacher = "/teacher";
-  static const String mainUrl = "https://api.bykurs.com.tr/api/v1";
+  static const String mainUrl = "https://api.baykurs.com.tr/api/v1";
   static const String gateway = "/api";
   static const String userProfile = "/me";
   static const String getCourses = "/mobile/course";

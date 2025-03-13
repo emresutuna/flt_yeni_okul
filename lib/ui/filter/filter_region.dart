@@ -9,6 +9,7 @@ import '../requestlesson/region.dart';
 
 class FilterRegion extends StatefulWidget {
   final Region? initialSelectedCity;
+
   const FilterRegion({super.key, this.initialSelectedCity});
 
   @override
@@ -29,7 +30,8 @@ class _FilterRegionState extends State<FilterRegion> {
 
   Future<void> fetchRegions() async {
     try {
-      final response = await http.get(Uri.parse(ApiUrls.getProvince));
+      final response = await http.get(Uri.parse(ApiUrls.getProvince),
+          headers: {"X-Requested-From": "baykursmobileapp"});
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -74,32 +76,35 @@ class _FilterRegionState extends State<FilterRegion> {
         },
       ),
       body: isLoading
-          ?  Center(child: CircularProgressIndicator(color: color5,))
+          ? Center(
+              child: CircularProgressIndicator(
+              color: color5,
+            ))
           : Column(
-        children: [
-          Expanded(
-            child: ListView.separated(
-              itemCount: regions.length,
-              separatorBuilder: (context, index) => const Divider(),
-              itemBuilder: (context, index) {
-                final city = regions[index].name;
-                return ListTile(
-                  title: Text(city),
-                  trailing: selectedCity?.name == city
-                      ? Icon(Icons.check, color: greenButton)
-                      : null,
-                  onTap: () {
-                    selectCity(regions[index]);
-                  },
-                );
-              },
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: regions.length,
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemBuilder: (context, index) {
+                      final city = regions[index].name;
+                      return ListTile(
+                        title: Text(city),
+                        trailing: selectedCity?.name == city
+                            ? Icon(Icons.check, color: greenButton)
+                            : null,
+                        onTap: () {
+                          selectCity(regions[index]);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                _buildFilterButton(() {
+                  Navigator.of(context).pop(selectedCity);
+                }),
+              ],
             ),
-          ),
-          _buildFilterButton(() {
-            Navigator.of(context).pop(selectedCity);
-          }),
-        ],
-      ),
     );
   }
 

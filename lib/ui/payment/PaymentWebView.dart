@@ -51,7 +51,10 @@ class _PaymentWebViewState extends State<PaymentWebView> {
       _controller.loadRequest(
         Uri.parse(
             "${ApiUrls.mainUrl}/mobile/payment?course_id=${widget.courseId}"),
-        headers: {"Authorization": "Bearer $_token"},
+        headers: {
+          "Authorization": "Bearer $_token",
+          "X-Requested-From": "baykursmobileapp"
+        },
       );
     }
   }

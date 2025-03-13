@@ -104,8 +104,8 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 mainAxisSpacing: 16,
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 24.0,
-                                childAspectRatio: 2 / 2.7,
+                                crossAxisSpacing: 16.0,
+                                childAspectRatio: 1 / 1.4,
                               ),
                               itemBuilder: (context, index) {
                                 return InkWell(
@@ -121,14 +121,12 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                                     name: schoolList[index].school!.user!.name!,
                                     isFavorite:
                                         schoolList[index].school!.isFav!,
-                                    province: schoolList[index]
-                                        .school!
-                                        .cityId!
-                                        .toString(),
-                                    city: schoolList[index]
-                                        .school!
-                                        .cityId!
-                                        .toString(),
+                                    province:
+                                        schoolList[index].school!.city?.name ??
+                                            "",
+                                    city:
+                                        schoolList[index].school!.city?.province?.name ??
+                                            "",
                                     onFavoriteClick: () {
                                       toggleFavorite(index, schoolList);
                                     },
@@ -140,7 +138,7 @@ class _FavoriteSchoolPageState extends State<FavoriteSchoolPage> {
                         ),
                       );
                     } else if (state is FavoriteSchoolLoading) {
-                      return  const GlobalFadeAnimation();
+                      return const GlobalFadeAnimation();
                     } else if (state is FavoriteSchoolError) {
                       return const BkErrorWidget(
                         title: "Hata",
