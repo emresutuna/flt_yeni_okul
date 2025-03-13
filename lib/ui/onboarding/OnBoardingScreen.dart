@@ -34,9 +34,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       'imageAsset': 'assets/second_slide_alternative.jpg',
     },
     {
-      'title': 'Başarı Yolculuğunda Doğru Mentora Ulaş!',
+      'title': 'Başarı Yolculuğunda Doğru Mentöre Ulaş!',
       'description':
-          'Eğitim hayatını şekillendirirken profesyonel eğitim koçlarından destek al, tüm kaynaklardan sınırsız yararlanarak başarı',
+          'Eğitim hayatını şekillendirirken profesyonel eğitim koçlarından destek al!',
       'imageAsset': 'assets/third_slide.jpg',
     },
   ];

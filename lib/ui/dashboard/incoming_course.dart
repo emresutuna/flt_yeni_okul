@@ -21,7 +21,8 @@ class IncomingCourse extends StatelessWidget {
         'Ders bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String schoolName = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
-    String teacherName = 'Öğretmen Bilgisi Bulunamadı';
+    String teacherName =
+    "${courseModel?.teacher?.user?.name ?? ''} ${courseModel?.teacher?.user?.surname ?? ''}".trim();
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
         : '-';

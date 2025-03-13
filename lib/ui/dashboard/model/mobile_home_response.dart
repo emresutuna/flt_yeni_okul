@@ -105,21 +105,24 @@ class IncomingLesson {
   School? school;
   User? lesson;
   List<Topics>? topics;
+  Teacher? teacher; // Eklenen alan
 
-  IncomingLesson(
-      {this.id,
-      this.title,
-      this.description,
-      this.schoolId,
-      this.lessonId,
-      this.startDate,
-      this.endDate,
-      this.price,
-      this.quota,
-      this.courseType,
-      this.school,
-      this.lesson,
-      this.topics});
+  IncomingLesson({
+    this.id,
+    this.title,
+    this.description,
+    this.schoolId,
+    this.lessonId,
+    this.startDate,
+    this.endDate,
+    this.price,
+    this.quota,
+    this.courseType,
+    this.school,
+    this.lesson,
+    this.topics,
+    this.teacher,
+  });
 
   IncomingLesson.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -134,12 +137,17 @@ class IncomingLesson {
     courseType = json['course_type'];
     school = json['school'] != null ? School.fromJson(json['school']) : null;
     lesson = json['lesson'] != null ? User.fromJson(json['lesson']) : null;
+
+    // topics
     if (json['topics'] != null) {
       topics = <Topics>[];
       json['topics'].forEach((v) {
         topics!.add(Topics.fromJson(v));
       });
     }
+
+    // teacher
+    teacher = json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -154,15 +162,23 @@ class IncomingLesson {
     data['price'] = price;
     data['quota'] = quota;
     data['course_type'] = courseType;
+
     if (school != null) {
       data['school'] = school!.toJson();
     }
+
     if (lesson != null) {
       data['lesson'] = lesson!.toJson();
     }
+
     if (topics != null) {
       data['topics'] = topics!.map((v) => v.toJson()).toList();
     }
+
+    if (teacher != null) {
+      data['teacher'] = teacher!.toJson();
+    }
+
     return data;
   }
 }
@@ -209,6 +225,52 @@ class User {
     return data;
   }
 }
+class Teacher {
+  int? id;
+  int? userId;
+  TeacherUser? user;
+
+  Teacher({this.id, this.userId, this.user});
+
+  Teacher.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    user = json['user'] != null ? TeacherUser.fromJson(json['user']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
+    return data;
+  }
+}
+
+class TeacherUser {
+  int? id;
+  String? name;
+  String? surname;
+
+  TeacherUser({this.id, this.name, this.surname});
+
+  TeacherUser.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    surname = json['surname'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'surname': surname,
+    };
+  }
+}
+
 
 class Topics {
   int? id;
