@@ -4,6 +4,7 @@ import 'package:baykurs/ui/courseBundleDetail/course_bundle_detail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_bloc.dart';
 import 'package:baykurs/ui/forgotpassword/bloc/ForgotPasswordBloc.dart';
+import 'package:baykurs/ui/notification/bloc/NotificationBloc.dart';
 import 'package:baykurs/ui/onboarding/GuestPage.dart';
 import 'package:baykurs/ui/payment/PaymentPreviewPage.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewBloc.dart';
@@ -55,7 +56,7 @@ class AppRoutes {
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(
               create: (context) =>
-                  FavoriteSchoolBloc(userRepository: UserRepository()),
+                  NotificationBloc(userRepository: UserRepository()),
               child: const NotificationPage(),
             ),
         '/favoriteSchool': (context) => BlocProvider(

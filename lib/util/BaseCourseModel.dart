@@ -136,37 +136,28 @@ class BaseCourse {
     'formatted_school': formattedSchool,
   };
 
-  /// Öğretmen adını formatlayan yardımcı fonksiyon
   String _getFormattedTeacherName() {
-    print('Teacher: $teacher');
-    print('Teacher user: ${teacher?.user}');
-    print('Teacher user name: ${teacher?.user?.name}');
-    print('Teacher user surname: ${teacher?.user?.surname}');
 
     final user = teacher?.user;
 
-    // 1. Öncelikli kontrol: user varsa ve name boş değilse
     if (user != null && user.name != null && user.name!.isNotEmpty) {
       final name = user.name!;
       final surname = user.surname != null && user.surname!.isNotEmpty
           ? user.surname!
           : '';
 
-      return '$name $surname'.trim(); // Eğer surname boşsa boşluk olmaz
+      return '$name $surname'.trim();
     }
 
-    // 2. İkinci kontrol: fallback teacherName ve teacherSurname
     if (teacherName != null && teacherSurname != null) {
       return "$teacherName $teacherSurname";
     }
 
-    // 3. Hiçbiri yoksa default mesaj
     return "Öğretmen bilgisi mevcut değil";
   }
 
 
 
-  /// Ders bilgisini formatlayan yardımcı fonksiyon
   String _getFormattedLesson() {
     if (lesson != null) {
       return "${lesson!.name} - ${lesson!.color}";
@@ -177,7 +168,6 @@ class BaseCourse {
     }
   }
 
-  /// Okul bilgisini formatlayan yardımcı fonksiyon
   String _getFormattedSchool() {
     final schoolNameFromModel = school?.name;
     final schoolNameFromUser = school?.user?.name;

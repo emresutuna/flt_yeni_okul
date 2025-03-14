@@ -3,6 +3,7 @@ import 'package:baykurs/ui/dashboard/model/mobile_home_response.dart';
 import 'package:baykurs/ui/favoriteschool/model/favorite_school_response.dart';
 import 'package:baykurs/ui/forgotpassword/forgot_password_request.dart';
 import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
+import 'package:baykurs/ui/notification/model/NotificationResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/SingleBillResponse.dart';
 import 'package:baykurs/ui/profile/model/DeleteAccountResponse.dart';
@@ -194,7 +195,42 @@ class UserRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+  Future<ResultResponse<NotificationResponse>> getNotifications() async {
+    try {
+      final response =
+      await APIService.instance.request(ApiUrls.userNotification, DioMethod.get);
 
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        NotificationResponse profileResponse = NotificationResponse.fromJson(body);
+
+        return ResultResponse.success(profileResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+  Future<ResultResponse<NotificationResponse>> updateNotificationSeen() async {
+    try {
+      final response =
+      await APIService.instance.request(ApiUrls.userNotificationSeen, DioMethod.post);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        NotificationResponse profileResponse = NotificationResponse.fromJson(body);
+
+        return ResultResponse.success(profileResponse);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
   Future<ResultResponse<TimeSheetResponse>> getUserTimeSheet() async {
     try {
       final response = await APIService.instance

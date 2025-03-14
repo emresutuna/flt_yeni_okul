@@ -14,6 +14,8 @@ class ApiUrls {
   static const String mainUrl = "https://api.baykurs.com.tr/api/v1";
   static const String gateway = "/api";
   static const String userProfile = "/me";
+  static const String userNotification = "/notification";
+  static const String userNotificationSeen = "/notification/seen";
   static const String getCourses = "/mobile/course";
   static const String getCourseCoaches = "/mobile/courseCoach";
   static const String getCourseBundle = "/mobile/courseBundle";

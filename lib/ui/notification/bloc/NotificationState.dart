@@ -1,4 +1,5 @@
-import 'package:baykurs/ui/notification/model/NotificationResponse.dart';
+
+import '../model/NotificationResponse.dart';
 
 abstract class NotificationState {}
 
