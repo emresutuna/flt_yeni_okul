@@ -23,6 +23,39 @@ class PhoneUpdateValidation extends GetxController {
     }
   }
 
+  String removeCountryCode(String phoneNumber) {
+    String rawPhone = phoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+
+    if (rawPhone.startsWith('90') && rawPhone.length >= 12) {
+      return rawPhone.substring(2);
+    }
+
+    if (rawPhone.startsWith('0') && rawPhone.length >= 11) {
+      return rawPhone.substring(1);
+    }
+
+    if (rawPhone.length == 10) {
+      return rawPhone;
+    }
+
+    throw const FormatException("Geçersiz telefon numarası formatı");
+  }
+  String formatAsMaskedPhone(String phoneNumber) {
+    String rawPhone = removeCountryCode(phoneNumber);
+
+    if (rawPhone.length != 10) {
+      throw const FormatException("Geçersiz telefon numarası uzunluğu");
+    }
+
+    // Parçaları ayır
+    String part1 = rawPhone.substring(0, 3); // İlk 3 hane
+    String part2 = rawPhone.substring(3, 6); // Sonraki 3 hane
+    String part3 = rawPhone.substring(6, 8); // Sonraki 2 hane
+    String part4 = rawPhone.substring(8, 10); // Son 2 hane
+
+    return '($part1)-$part2-$part3-$part4';
+  }
+
   bool updatePasswordValid() {
     bool isValid = true;
     String phone = phoneController.text.trim();

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baykurs/ui/profile/model/PasswordUpdateValidation.dart';
 import 'package:get/get.dart';
 import '../../../util/YOColors.dart';
+import '../../../widgets/PasswordField.dart';
 import '../../../widgets/PrimaryButton.dart';
 import '../../../widgets/PrimaryInputField.dart';
 
@@ -55,25 +56,25 @@ class _PasswordUpdatePageState extends State<PasswordUpdatePage> {
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: PrimaryInputField(
+                        child: PasswordField(
                           controller: updateValidation.oldPwdController,
-                          hintText: "Mevcut Şifre",
+                          hint: "Mevcut Şifre",
                         ),
                       ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: PrimaryInputField(
+                        child: PasswordField(
                           controller: updateValidation.newPwdController,
-                          hintText: "Yeni Şifre",
+                          hint: "Yeni Şifre",
                         ),
                       ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: PrimaryInputField(
-                          hintText: "Yeni Şifre Tekrar",
+                        child: PasswordField(
                           controller: updateValidation.rePwdController,
+                          hint: "Yeni Şifre Tekrar",
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -98,8 +99,10 @@ class _PasswordUpdatePageState extends State<PasswordUpdatePage> {
                 if (state is UserUpdateLoading)
                   Container(
                     color: Colors.grey.withOpacity(0.5),
-                    child:  Center(
-                      child: CircularProgressIndicator(color: color5,),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: color5,
+                      ),
                     ),
                   ),
               ],

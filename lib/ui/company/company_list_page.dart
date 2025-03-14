@@ -61,7 +61,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
       companyListManager.loadMoreSchools(schoolFilter);
     }
   }
@@ -105,7 +106,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
       companyListManager.schoolList.clear();
     });
 
-    companyListManager.fetchSchools(filter: schoolFilter, searchQuery: companyListManager.query);
+    companyListManager.fetchSchools(
+        filter: schoolFilter, searchQuery: companyListManager.query);
   }
 
   @override
@@ -125,7 +127,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
         child: BlocListener<SchoolBloc, SchoolState>(
           listener: (context, state) {
             if (state is SchoolSuccess) {
-              companyListManager.updateSchoolList(state.schoolResponse.data.schools);
+              companyListManager
+                  .updateSchoolList(state.schoolResponse.data.schools);
               notifier.setLoading(false);
             }
           },
@@ -154,7 +157,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
       child: InfoCardWidget(
         title: "Kurumlar",
-        description: "Kurumların profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin.",
+        description:
+            "Kurumların profilini ziyaret ederek bilgi alabilir, sana uygun kurumları keşfedebilirsin.",
       ),
     );
   }
@@ -172,7 +176,8 @@ class _CompanyListPageState extends State<CompanyListPage> {
         ),
         InkWell(
           onTap: () async {
-            FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.school_filter);
+            FirebaseAnalyticsManager.logEvent(
+                FirebaseAnalyticsConstants.school_filter);
 
             final filter = await Navigator.push(
               context,
@@ -197,13 +202,14 @@ class _CompanyListPageState extends State<CompanyListPage> {
               borderRadius: BorderRadius.circular(10),
               color: color5,
             ),
-            child: Image.asset("assets/ic_filter.png"),
+            child: Image.asset(
+              "assets/ic_filter.png",
+            ),
           ),
         ),
       ],
     );
   }
-
 
   Widget _buildCompanyGrid() {
     if (notifier.isPageLoading) {
@@ -224,21 +230,25 @@ class _CompanyListPageState extends State<CompanyListPage> {
           crossAxisCount: 2, // ✅ 2 columns per row
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 2 / 2.7, // ✅ Maintain aspect ratio
+          childAspectRatio: 1 / 1.4, // ✅ Maintain aspect ratio
         ),
-        itemCount: companyListManager.schoolList.length + (notifier.isPageLoading ? 1 : 0),
+        itemCount: companyListManager.schoolList.length +
+            (notifier.isPageLoading ? 1 : 0),
         itemBuilder: (context, index) {
           if (index == companyListManager.schoolList.length) {
-            return const Center(child: CircularProgressIndicator()); // ✅ Show loading
+            return const Center(
+                child: CircularProgressIndicator()); // ✅ Show loading
           }
 
           final school = companyListManager.schoolList[index];
           return InkWell(
             onTap: () {
-              FirebaseAnalyticsManager.logEvent(FirebaseAnalyticsConstants.school_detail_click, parameters: {
-                "schoolName": school.user.name,
-                "schoolId": school.user.id,
-              });
+              FirebaseAnalyticsManager.logEvent(
+                  FirebaseAnalyticsConstants.school_detail_click,
+                  parameters: {
+                    "schoolName": school.user.name,
+                    "schoolId": school.user.id,
+                  });
 
               Navigator.pushNamed(
                 context,
@@ -246,7 +256,9 @@ class _CompanyListPageState extends State<CompanyListPage> {
                 arguments: school.id,
               ).then((_) {
                 companyListManager.resetPagination();
-                companyListManager.fetchSchools(filter: schoolFilter, searchQuery: companyListManager.query);
+                companyListManager.fetchSchools(
+                    filter: schoolFilter,
+                    searchQuery: companyListManager.query);
               });
             },
             child: CompanyListItem(
@@ -255,12 +267,13 @@ class _CompanyListPageState extends State<CompanyListPage> {
               isFavorite: hasLogin ? school.isFav : null,
               province: school.city.province.name,
               city: school.city.name,
-              onFavoriteClick: hasLogin ? () => companyListManager.toggleFavorite(index) : () {},
+              onFavoriteClick: hasLogin
+                  ? () => companyListManager.toggleFavorite(index)
+                  : () {},
             ),
           );
         },
       ),
     );
   }
-
 }

@@ -1,6 +1,7 @@
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_event.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
+import 'package:baykurs/util/AllExtension.dart';
 import 'package:baykurs/widgets/BkMapWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';
@@ -181,7 +182,26 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 courseDetail?.description ?? "",
                                 style: styleBlack12Regular,
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
+                              Divider(
+                                height: 1,
+                                color: Colors.black38.withAlpha(40),
+                              ),
+                              const SizedBox(height: 8),
+
+                              if (courseDetail?.topics != null &&
+                                  courseDetail!.topics!.isNotEmpty)
+                                Text(
+                                  'Konular',
+                                  style: styleBlack14Bold,
+                                ),
+                              8.toHeight,
+                              Text(
+                                courseDetail!.topics!
+                                    .map((e) => e.name)
+                                    .join(" - "),
+                                style: styleBlack12Regular,
+                              ),
                               const SizedBox(height: 8),
                               Divider(
                                 height: 1,

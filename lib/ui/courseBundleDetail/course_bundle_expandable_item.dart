@@ -95,9 +95,10 @@ class _ExpandableCourseDetailItemState
                     if (widget.date.isNotEmpty) const SizedBox(height: 4),
                     if (widget.time.isNotEmpty)
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Konu: ", style: styleBlack14Regular),
-                          Text(widget.time, style: styleBlack14Bold),
+                          Flexible(child: Text(widget.time, style: styleBlack14Bold)),
                         ],
                       ),
                     if (widget.time.isNotEmpty) const SizedBox(height: 4),
@@ -112,6 +113,7 @@ class _ExpandableCourseDetailItemState
                     if (widget.price.isNotEmpty) const SizedBox(height: 8),
                     if (widget.description.isNotEmpty)
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Açıklama: ", style: styleBlack14Regular),
                           Flexible(

@@ -152,7 +152,7 @@ class _CompanyDetailPageState extends State<CompanyDetailPage> {
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           width: 0.5,
                           color: color2,

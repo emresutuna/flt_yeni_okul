@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../util/HexColor.dart';
 import '../../util/SharedPrefHelper.dart';
@@ -65,7 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
             }
 
             if (state is ProfileSuccess) {
-              lastProfileState = state; // Store last successful profile state
+              lastProfileState = state;
+              lastProfileState = state;
+
+              final userPhone = lastProfileState!.profileResponse.user?.phone ?? "";
+              setPhoneNumberIfChanged(userPhone);
             }
 
             if (lastProfileState != null) {
@@ -243,6 +248,19 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+  Future<void> setPhoneNumberIfChanged(String? newPhone) async {
+    if (newPhone == null || newPhone.isEmpty) return;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String currentPhone = prefs.getString('user_phone') ?? "";
+
+    if (currentPhone != newPhone) {
+      await prefs.setString('user_phone', newPhone);
+    } else {
+
+    }
+  }
+
   void showDeleteAccountDialog(BuildContext context) {
     showDialog(
       context: context,

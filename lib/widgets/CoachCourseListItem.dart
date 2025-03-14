@@ -17,7 +17,8 @@ class CoachCourseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String lessonName = courseModel?.lesson ?? 'Eğitim Koçu';
-    String desc = courseModel?.description ?? 'Ders açıklama bilgisi bulunamadı';
+    String desc =
+        courseModel?.description ?? 'Ders açıklama bilgisi bulunamadı';
     String title = courseModel?.title ?? 'Ders Başlığı bulunamadı';
     String classroom = courseModel?.schoolName ?? 'Kurum bilgisi yok';
 
@@ -38,7 +39,8 @@ class CoachCourseListItem extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0), // Added padding for better layout
+            padding: const EdgeInsets.all(16.0),
+            // Added padding for better layout
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -59,8 +61,7 @@ class CoachCourseListItem extends StatelessWidget {
                           horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: HexColor(
-                            BranchesExtension.getColorForBranch(
-                                lessonName) ??
+                            BranchesExtension.getColorForBranch(lessonName) ??
                                 DEFAULT_LESSON_COLOR),
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -93,7 +94,7 @@ class CoachCourseListItem extends StatelessWidget {
 
                 // Action Button
                 Align(
-                  alignment: Alignment.centerLeft, // Ensures alignment
+                  alignment: Alignment.centerRight, // Ensures alignment
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: color5,
@@ -111,7 +112,7 @@ class CoachCourseListItem extends StatelessWidget {
                     },
                     child: Text(
                       "Detayı Gör",
-                      style: styleWhite14Bold,
+                      style: styleWhite12Bold,
                     ),
                   ),
                 ),

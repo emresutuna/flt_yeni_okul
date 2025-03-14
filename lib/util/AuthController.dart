@@ -30,4 +30,8 @@ class AuthController extends GetxController {
     isLoggedIn.value = false;
     Get.offAllNamed('/mainPage');
   }
+  Future<void> setPhoneNumber(String number) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('user_phone', number);
+  }
 }

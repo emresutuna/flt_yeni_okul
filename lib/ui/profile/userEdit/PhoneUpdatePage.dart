@@ -81,7 +81,7 @@ class _PhoneUpdatePageState extends State<PhoneUpdatePage> {
                         padding: const EdgeInsets.all(8.0),
                         child: PrimaryInputField(
                           controller: mailUpdateValidation.phoneController,
-                          hintText: "$phoneNumber",
+                          hintText: mailUpdateValidation.formatAsMaskedPhone(phoneNumber ?? ""),
                         ),
                       ),
                       const SizedBox(height: 32),
