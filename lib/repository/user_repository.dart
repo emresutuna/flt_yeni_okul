@@ -59,28 +59,80 @@ class UserRepository {
       RegisterRequest request) async {
     try {
       final response = await APIService.instance.request(
-          ApiUrls.register,
-          param: request.toJson(),
-          DioMethod.post,
-          includeHeaders: false);
-
+        ApiUrls.register,
+        param: request.toJson(),
+        DioMethod.post,
+        includeHeaders: false,
+      );
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         RegisterResponse registerResponse = RegisterResponse.fromJson(body);
 
         return ResultResponse.success(registerResponse);
       } else {
-        return ResultResponse.failure(
-            'API call failed with status code ${response.statusCode}');
+        final responseData = response.data as Map<String, dynamic>;
+
+        String errorMessage = "";
+
+        if (responseData['errors'] != null) {
+          final errors = responseData['errors'] as Map<String, dynamic>;
+
+          final Map<String, String> fieldNames = {
+            'email': 'E-Posta',
+            'phone': 'Telefon',
+            'password': 'Şifre',
+            'name': 'Ad',
+            'surname': 'Soyad',
+          };
+
+          errorMessage = errors.entries.map((entry) {
+            String fieldKey = entry.key;
+            String fieldName = fieldNames[fieldKey] ?? fieldKey;
+            String messages = (entry.value as List).join(", ");
+            return "$fieldName: $messages";
+          }).join("\n");
+        } else if (responseData['message'] != null) {
+          errorMessage = responseData['message'];
+        } else {
+          errorMessage =
+              'API call failed with status code ${response.statusCode}';
+        }
+
+        return ResultResponse.failure(errorMessage);
       }
     } catch (e) {
       if (e is DioException) {
         if (e.response != null && e.response!.data is Map<String, dynamic>) {
-          String errorMessage =
-              e.response!.data['message'] ?? 'Bir hata oluştu.';
+          final responseData = e.response!.data as Map<String, dynamic>;
+
+          String errorMessage = "";
+
+          if (responseData['errors'] != null) {
+            final errors = responseData['errors'] as Map<String, dynamic>;
+
+            final Map<String, String> fieldNames = {
+              'email': 'E-Posta',
+              'phone': 'Telefon',
+              'password': 'Şifre',
+              'name': 'Ad',
+              'surname': 'Soyad',
+            };
+
+            errorMessage = errors.entries.map((entry) {
+              String fieldKey = entry.key;
+              String fieldName = fieldNames[fieldKey] ?? fieldKey;
+              String messages = (entry.value as List).join(", ");
+              return "$fieldName: $messages";
+            }).join("\n");
+          } else if (responseData['message'] != null) {
+            errorMessage = responseData['message'];
+          } else {
+            errorMessage = "Bir hata oluştu";
+          }
           return ResultResponse.failure(errorMessage);
         }
       }
+
       return ResultResponse.failure('Exception: $e');
     }
   }
@@ -208,7 +260,6 @@ class UserRepository {
       return ResultResponse.failure(GenericFailure());
     }
   }
-
 
   Future<ResultResponse<NotificationResponse>> getNotifications() async {
     try {
@@ -522,8 +573,10 @@ class UserRepository {
 
 const mailNotVerifiedFailure = "MailNotVerifiedFailure";
 const genericErrorException = "Bir Hata Oluştu";
+
 abstract class AppFailure {
   final String message;
+
   AppFailure(this.message);
 }
 

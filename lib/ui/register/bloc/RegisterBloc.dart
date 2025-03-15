@@ -2,7 +2,6 @@ import 'package:baykurs/ui/register/bloc/RegisterEvent.dart';
 import 'package:baykurs/ui/register/bloc/RegisterState.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-
 import '../../../repository/user_repository.dart';
 import '../../../util/SharedPrefHelper.dart';
 
@@ -23,16 +22,23 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           emit(RegisterSuccess(result.data!));
         }
       } catch (e) {
-        String errorMessage;
-        if (e is DioException && e.response?.data != null) {
-          errorMessage = e.response?.data['message'] ?? "Bir hata oluştu";
-        } else {
-          errorMessage = "Bir hata oluştu";
-        }
+        String errorMessage = "Bir hata oluştu";
 
+        if (e is DioException && e.response?.data != null) {
+          final responseData = e.response?.data;
+
+          if (responseData['errors'] != null) {
+            errorMessage = responseData['errors']
+                .entries
+                .map((entry) =>
+                    "${entry.key}: ${(entry.value as List).join(", ")}")
+                .join("\n");
+          } else if (responseData['message'] != null) {
+            errorMessage = responseData['message'];
+          }
+        }
         emit(RegisterError(errorMessage));
       }
     });
   }
-
 }
