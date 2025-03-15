@@ -1,7 +1,7 @@
 import 'package:baykurs/ui/payment/makePayment/SingleBillPage.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/billListBloc/BillListBloc.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/billListBloc/BillListState.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
@@ -59,8 +59,7 @@ class _PaymentBillListState extends State<PaymentBillList> {
         child: BlocBuilder<BillListBloc, BillListState>(
           builder: (context, state) {
             if (state is BillListStateLoading) {
-              // Listeyi göstermeye devam ediyoruz, sadece loading animasyonu ekleyebiliriz.
-              return GlobalFadeAnimation();
+              return const GlobalFadeAnimation();
             }
 
             if (state is PaymentBillStateSuccess) {

@@ -1,5 +1,5 @@
 import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

@@ -1,12 +1,9 @@
 import 'package:baykurs/util/all_extension.dart';
-import 'package:baykurs/widgets/SecondaryButton.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/YOColors.dart';
-import '../../widgets/PrimaryButton.dart';
-
-class UnLoginPage extends StatelessWidget {
-  const UnLoginPage({super.key});
+class MailNotVerifiedPage extends StatelessWidget {
+  const MailNotVerifiedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,26 +25,12 @@ class UnLoginPage extends StatelessWidget {
                   ),
                   16.toHeight,
                   Text(
-                    "Henüz giriş yapmadınız. Giriş veya Kayıt işlemi yaparak Profil bilgilerinize ulaşabilirsiniz.",
+                    "Özgün Eğitime İlk Adımını Atmak İçin Mail Adresini Onaylamalısın",
                     textAlign: TextAlign.center,
                     style: styleBlack14Regular,
                   ),
                   24.toHeight,
-                  PrimaryButton(
-                    text: "Giriş Yap",
-                    onPress: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushNamed("/loginPage");
-                    },
-                  ),
-                  16.toHeight,
-                  SecondaryButton(
-                    text: 'Kayıt Ol',
-                    onPress: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushNamed("/registerPage");
-                    },
-                  )
+
                 ],
               ),
             ),

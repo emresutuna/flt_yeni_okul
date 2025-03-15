@@ -1,7 +1,7 @@
 import 'package:baykurs/ui/payment/makePayment/model/AddressController.dart';
 import 'package:baykurs/ui/payment/makePayment/model/PaymentBillService.dart';
 import 'package:baykurs/ui/requestlesson/SelectAllCitiesPage.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';

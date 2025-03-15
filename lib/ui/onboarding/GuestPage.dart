@@ -1,4 +1,4 @@
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/widgets/SecondaryButton.dart';
 import 'package:flutter/material.dart';
 

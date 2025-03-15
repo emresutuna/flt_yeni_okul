@@ -1,3 +1,4 @@
+import 'package:baykurs/repository/user_repository.dart';
 import 'package:baykurs/ui/login/UnLoginPage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import '../../util/SharedPrefHelper.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/YOText.dart';
 import '../dashboard/model/mobile_home_response.dart';
+import '../login/mail_not_verified_page.dart';
 import '../webViewPage/WebViewPage.dart';
 import 'bloc/ProfileBloc.dart';
 import 'bloc/ProfileEvent.dart';
@@ -69,7 +71,8 @@ class _ProfilePageState extends State<ProfilePage> {
               lastProfileState = state;
               lastProfileState = state;
 
-              final userPhone = lastProfileState!.profileResponse.user?.phone ?? "";
+              final userPhone =
+                  lastProfileState!.profileResponse.user?.phone ?? "";
               setPhoneNumberIfChanged(userPhone);
             }
 
@@ -92,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Profil",
@@ -101,12 +104,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                   IconButton(
                                       onPressed: () {
                                         Navigator.of(context,
-                                            rootNavigator: true)
+                                                rootNavigator: true)
                                             .pushNamed("/notificationPage");
                                       },
                                       icon: Icon(
                                         (notifications != null &&
-                                            (notifications?.count ?? 0) > 0)
+                                                (notifications?.count ?? 0) > 0)
                                             ? Icons.notifications_active
                                             : Icons.notifications,
                                         size: 22,
@@ -126,15 +129,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     child: Center(
                                         child: Text(
-                                          "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}",
-                                          style: styleBlack16Bold,
-                                        )),
+                                      "${userData?.name?.characters.first.capitalize ?? ""}${userData?.name?.characters.first.capitalize ?? ""}",
+                                      style: styleBlack16Bold,
+                                    )),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 16.0),
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           userData?.name ?? "",
@@ -156,7 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     child: InkWell(
                                       onTap: () {
                                         Navigator.of(context,
-                                            rootNavigator: true)
+                                                rootNavigator: true)
                                             .pushNamed("/userEditSelection");
                                       },
                                       child: const Icon(
@@ -212,7 +215,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }),
                                 profileItem("İletişim", onTap: () {
                                   openWebView(
-                                      'https://www.baykurs.com.tr/contact', 'İletişim');
+                                      'https://www.baykurs.com.tr/contact',
+                                      'İletişim');
                                 }),
                                 profileItem("Hesabımı Sil", onTap: () {
                                   showDeleteAccountDialog(context);
@@ -237,17 +241,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               );
             }
-
             if (state is ProfileError) {
-              return const UnLoginPage();
+              if (state.type == ProfileErrorType.mailNotVerified) {
+                return const MailNotVerifiedPage();
+              } else {
+                return const UnLoginPage();
+              }
             }
-
-            return const Center(); // Default state if nothing is available
+            return const Center();
           },
         ),
       ),
     );
   }
+
   Future<void> setPhoneNumberIfChanged(String? newPhone) async {
     if (newPhone == null || newPhone.isEmpty) return;
 
@@ -256,9 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (currentPhone != newPhone) {
       await prefs.setString('user_phone', newPhone);
-    } else {
-
-    }
+    } else {}
   }
 
   void showDeleteAccountDialog(BuildContext context) {
@@ -294,7 +299,6 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context);
                 context.read<ProfileBloc>().add(DeleteAccount());
-
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: color5,
@@ -417,7 +421,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Column(
                     children:
-                    List.generate(8, (index) => profileItemSkeleton()),
+                        List.generate(8, (index) => profileItemSkeleton()),
                   ),
                 ),
               ),
@@ -445,8 +449,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget profileItem(String title,
       {Color color = const Color(0xFF222831),
-        bool isLastItem = false,
-        VoidCallback? onTap}) {
+      bool isLastItem = false,
+      VoidCallback? onTap}) {
     return InkWell(
       onTap: onTap ?? () {},
       child: Padding(
@@ -476,9 +480,9 @@ class _ProfilePageState extends State<ProfilePage> {
             isLastItem
                 ? const SizedBox.shrink()
                 : Divider(
-              height: 1,
-              color: color.withAlpha(50),
-            ),
+                    height: 1,
+                    color: color.withAlpha(50),
+                  ),
           ],
         ),
       ),
@@ -486,7 +490,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget profileCircleWithTitle(
-      String title, IconData icons, HexColor bgColor) =>
+          String title, IconData icons, HexColor bgColor) =>
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,

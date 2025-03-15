@@ -3,7 +3,7 @@ import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_bloc.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_event.dart';
 import 'package:baykurs/ui/favoriteschool/bloc/favorite_school_state.dart';
 import 'package:baykurs/ui/favoriteschool/model/favorite_school_response.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

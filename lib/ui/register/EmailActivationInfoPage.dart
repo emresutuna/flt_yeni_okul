@@ -1,4 +1,4 @@
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:flutter/material.dart';
 
 import '../../util/YOColors.dart';

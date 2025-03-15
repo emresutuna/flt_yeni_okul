@@ -160,7 +160,7 @@ class _CourseListPageState extends State<CourseListPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Yayılanan dersleri incele ve ders programını oluştur.",
+            "Yayınlanan dersleri incele ve ders programını oluştur.",
             style: styleBlack12Bold,
             textAlign: TextAlign.start,
           ),

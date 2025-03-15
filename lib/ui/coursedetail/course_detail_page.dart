@@ -1,7 +1,7 @@
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_event.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/widgets/BkMapWidget.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/material.dart';

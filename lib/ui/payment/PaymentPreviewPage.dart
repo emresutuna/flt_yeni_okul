@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:baykurs/repository/user_repository.dart';
 import 'package:baykurs/ui/payment/bloc/PaymentPreviewState.dart';
 import 'package:baykurs/ui/payment/makePayment/PaymentBillPage.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillBloc.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/bloc/PaymentBillState.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
 import 'package:baykurs/ui/payment/model/PaymentPreview.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:baykurs/util/LessonExtension.dart';
 import 'package:baykurs/widgets/GreenPrimaryButton.dart';
@@ -37,13 +38,14 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
   PaymentPreview? paymentPreview;
   List<BillList> paymentBillList = [];
   BillList? defaultBill;
+  bool _isDialogShowing = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     context.read<PaymentBillBloc>().add(FetchBills());
-
   }
+
   @override
   void initState() {
     super.initState();
@@ -71,42 +73,95 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: WhiteAppBar("Ders Satın Al"),
-      body: BlocConsumer<PaymentBillBloc, PaymentBillState>(
+        backgroundColor: Colors.white,
+        appBar: WhiteAppBar("Ders Satın Al"),
+        body: BlocConsumer<PaymentBillBloc, PaymentBillState>(
           listener: (context, state) {
-        if (state is PaymentPreviewSuccess) {
-          _navigateToPaymentResult(context, true);
-        } else if (state is PaymentPreviewError) {
-          _navigateToPaymentResult(context, false);
-        }
-      }, builder: (context, state) {
-        if (state is PaymentBillStateLoading) {
-          return Stack(
-            children: [_buildWidget(context), const GlobalFadeAnimation()],
-          );
-        }
-        if (state is PaymentBillStateSuccess) {
-          paymentBillList = state.response.data ?? [];
-          if (paymentBillList.isNotEmpty) {
-            defaultBill = paymentBillList.firstWhere(
-              (bill) => bill.isDefault == true,
-              orElse: () => BillList(),
-            );
-          }
-        }
-        return _buildWidget(context);
-      }),
-    );
+            if (state is PaymentPreviewSuccess) {
+              _navigateToPaymentResult(context, true);
+            } else if (state is PaymentPreviewError) {
+              _navigateToPaymentResult(context, false);
+            }
+            if (state is PaymentBillStateError) {
+              if (state.error == mailNotVerifiedFailure && !_isDialogShowing) {
+                _isDialogShowing = true;
+
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Mail Adresini Onaylamadın"),
+                    content: const Text(
+                        "Özgün eğitim modeline ilk adımını atmak için mail adresini onaylamalısın."),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _isDialogShowing = false;
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          "Tamam",
+                          style: TextStyle(
+                              color: color5, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              } else if (!_isDialogShowing) {
+                _isDialogShowing = true;
+
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Hata"),
+                    content: Text(state.error.toString()),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _isDialogShowing = false;
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Tamam"),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            }
+          },
+          builder: (context, state) {
+            if (state is PaymentBillStateLoading) {
+              return Stack(
+                children: [
+                  _buildWidget(context),
+                  const GlobalFadeAnimation(),
+                ],
+              );
+            }
+
+            if (state is PaymentBillStateSuccess) {
+              paymentBillList = state.response.data ?? [];
+
+              if (paymentBillList.isNotEmpty) {
+                defaultBill = paymentBillList.firstWhere(
+                  (bill) => bill.isDefault == true,
+                  orElse: () => BillList(),
+                );
+              }
+            }
+
+            return _buildWidget(context);
+          },
+        ));
   }
+
   Future<ResultResponse<PaymentResponse>> postBuyCourse(
       int courseId, CourseTypeEnum courseType) async {
     try {
       final response = await APIService.instance.request(
-        buyCourse(courseId, courseType),
-        DioMethod.post,
-        includeHeaders: true
-      );
+          buyCourse(courseId, courseType), DioMethod.post,
+          includeHeaders: true);
 
       Map<String, dynamic> body = response.data;
 
@@ -123,7 +178,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
     }
   }
 
-
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -139,7 +193,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
       ),
     );
   }
-
 
   Widget _buildWidget(BuildContext context) {
     return SafeArea(
@@ -257,41 +310,48 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                               SizedBox(
                                 height: 50,
                                 width: double.maxFinite,
-                                child:GreenPrimaryButton(
+                                child: GreenPrimaryButton(
                                   text: "Devam Et",
                                   onPress: () async {
                                     showDialog(
                                       context: context,
                                       barrierDismissible: false,
-                                      builder: (context) => const Center(child: CircularProgressIndicator()),
+                                      builder: (context) => const Center(
+                                          child: CircularProgressIndicator()),
                                     );
 
                                     try {
                                       final result = await postBuyCourse(
                                         paymentPreview?.id ?? 0,
-                                        paymentPreview?.courseType ?? CourseTypeEnum.course,
+                                        paymentPreview?.courseType ??
+                                            CourseTypeEnum.course,
                                       );
 
                                       Navigator.pop(context);
 
-                                      if (result.data!=null) {
+                                      if (result.data != null) {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => PaymentWebView(courseId: paymentPreview?.id ?? 0),
+                                            builder: (context) =>
+                                                PaymentWebView(
+                                                    courseId:
+                                                        paymentPreview?.id ??
+                                                            0),
                                           ),
                                         );
                                       } else {
                                         // Hata mesajını API'den alıyoruz
-                                        _showErrorDialog(result.error ?? 'Bir hata oluştu.');
+                                        _showErrorDialog(
+                                            result.error ?? 'Bir hata oluştu.');
                                       }
                                     } catch (e) {
                                       Navigator.pop(context);
-                                      _showErrorDialog("Beklenmeyen bir hata oluştu: $e");
+                                      _showErrorDialog(
+                                          "Beklenmeyen bir hata oluştu: $e");
                                     }
                                   },
-                                )
-                                ,
+                                ),
                               ),
                               16.toHeight
                             ],
@@ -325,7 +385,6 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                         IconButton(
                           onPressed: () async {
                             Navigator.pushNamed(context, "/billList");
-
                           },
                           icon: Icon(Icons.edit_note, color: color5),
                         ),

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:baykurs/ui/filter/filter_school.dart';

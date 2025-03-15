@@ -1,5 +1,5 @@
 import 'package:baykurs/ui/register/model/RegisterValidation.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/widgets/PrimaryInputField.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
 import 'package:flutter/gestures.dart';

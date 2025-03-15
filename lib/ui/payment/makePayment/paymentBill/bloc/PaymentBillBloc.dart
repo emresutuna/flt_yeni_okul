@@ -6,18 +6,19 @@ import 'package:bloc/bloc.dart';
 class PaymentBillBloc extends Bloc<PaymentBillEvent, PaymentBillState> {
   final UserRepository userRepository;
 
-  PaymentBillBloc({required this.userRepository}) : super(PaymentBillStateLoading()) {
-    // Registering event handler for FetchLesson event
+  PaymentBillBloc({required this.userRepository})
+      : super(PaymentBillStateLoading()) {
     on<FetchBills>((event, emit) async {
       emit(PaymentBillStateLoading());
 
-      try {
-        final result = await userRepository.getPaymentBills();
+      final result = await userRepository.getPaymentBills();
+      print('Result: isSuccess: ${result.isSuccess}, data: ${result.data}, error: ${result.error}');
+
+      if (result.isSuccess) {
         emit(PaymentBillStateSuccess(result.data!));
-      } catch (e) {
-        emit(PaymentBillStateError('Failed to fetch PaymentBill'));
+      } else {
+        emit(PaymentBillStateError(result.error.toString()));
       }
     });
-
   }
 }

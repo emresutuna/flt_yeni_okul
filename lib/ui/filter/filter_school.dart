@@ -1,5 +1,5 @@
 import 'package:baykurs/ui/filter/filter_province.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import '../../util/FirebaseAnalyticsConstants.dart';

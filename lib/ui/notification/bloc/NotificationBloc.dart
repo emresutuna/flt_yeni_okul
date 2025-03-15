@@ -21,7 +21,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       emit(NotificationStateLoading());
       try {
         final result = await userRepository.updateNotificationSeen();
-        emit(NotificationStateSuccess((result.data!)));
+        emit(NotificationStateUpdated());
       } catch (e) {
         emit(NotificationStateError('Failed to update NotificationSeen'));
       }

@@ -3,6 +3,8 @@ import 'package:baykurs/ui/requestlesson/SelectProvincePage.dart';
 import 'package:baykurs/ui/requestlesson/SelectRegionPage.dart';
 import 'package:baykurs/ui/requestlesson/SelectSchoolPage.dart';
 import 'package:baykurs/util/GlobalLoading.dart';
+import 'package:baykurs/util/ListExtension.dart';
+import 'package:baykurs/util/mail_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -45,6 +47,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
   final ValueNotifier<List<Region>> regions = ValueNotifier([]);
   final ValueNotifier<List<Province>> provinces = ValueNotifier([]);
   final ValueNotifier<List<CourseRequestSchool>> schools = ValueNotifier([]);
+  bool hasError = false;
 
   @override
   void initState() {
@@ -65,10 +68,19 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
   }
 
   Future<void> _fetchSchools() async {
-    schools.value = await _service.fetchSchools(
-      selectedRegion?.id ?? 0,
-      selectedProvince?.id ?? 0,
-    );
+    hasError = false;
+
+    try {
+      schools.value = await _service.fetchSchools(
+        context,
+        selectedRegion?.id ?? 0,
+        selectedProvince?.id ?? 0,
+      );
+    } catch (e) {
+      hasError = true;
+    }
+
+    setState(() {});
   }
 
   void _onBranchSelected(Branches branch) {
@@ -194,17 +206,19 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           onTap: selectedClassLevel == null
                               ? () {}
                               : () async {
-                            final availableBranches =
-                            getBranchesForClassType(selectedClassLevel!);
-                            final branch = await Get.to(
-                                    () => SelectBranchPage(branches: availableBranches));
-                            if (branch != null) {
-                              setState(() {
-                                selectedBranch = branch;
-                                _onBranchSelected(branch);
-                              });
-                            }
-                          },
+                                  final availableBranches =
+                                      getBranchesForClassType(
+                                          selectedClassLevel!);
+                                  final branch = await Get.to(() =>
+                                      SelectBranchPage(
+                                          branches: availableBranches));
+                                  if (branch != null) {
+                                    setState(() {
+                                      selectedBranch = branch;
+                                      _onBranchSelected(branch);
+                                    });
+                                  }
+                                },
                         ),
 
                         ValueListenableBuilder<List<BranchTopic>>(
@@ -240,6 +254,12 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                           onTap: selectedProvince == null
                               ? () {}
                               : () async {
+                                  if (hasError) {
+                                    showMailDialog(context: context);
+
+                                    return;
+                                  }
+
                                   final school = await Get.to(() =>
                                       SelectSchoolPage(schools: schools.value));
                                   if (school != null) _onSchoolSelected(school);

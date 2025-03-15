@@ -2,7 +2,7 @@ import 'package:baykurs/ui/notification/bloc/NotificationBloc.dart';
 import 'package:baykurs/ui/notification/bloc/NotificationEvent.dart';
 import 'package:baykurs/ui/notification/bloc/NotificationState.dart';
 import 'package:baykurs/ui/notification/model/NotificationResponse.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/GlobalLoading.dart';
 import 'package:baykurs/util/ListExtension.dart';
 import 'package:baykurs/widgets/WhiteAppBar.dart';
@@ -28,63 +28,93 @@ class _NotificationsPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: WhiteAppBar("Bildirimler", onTap: () {
-        Navigator.pop(context);
-      }),
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        scrolledUnderElevation: 0.0,
+        centerTitle: false,
+        elevation: 10,
+        title: Text("Filtrele", style: styleBlack16Bold),
+        leading: InkWell(
+          child: const Icon(Icons.arrow_back_ios),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              context.read<NotificationBloc>().add(UpdateNotificationSeen());
+            },
+            child: Text(
+              "Tümünü Gör",
+              style: styleBlack14Bold.copyWith(
+                color: color5,
+                decoration: TextDecoration.underline,
+                decorationColor: color5,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Tüm bildirimlerini buradan takip edebilirsin.',
-              style: TextStyle(fontSize: 14),
-            ),
+            Text('Tüm bildirimlerini buradan takip edebilirsin.',
+                style: styleBlack14Regular),
             16.toHeight,
-            Expanded(
-              child: BlocConsumer<NotificationBloc, NotificationState>(
-                listener: (context, state) {
-                  if (state is NotificationStateError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Bir hata oluştu: ${state.error}'),
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  if (state is NotificationStateLoading) {
-                    return const GlobalFadeAnimation();
-                  }
+            BlocListener<NotificationBloc, NotificationState>(
+              listener: (BuildContext context, NotificationState state) {
+                if (state is NotificationStateUpdated) {
+                  context.read<NotificationBloc>().add(FetchNotifications());
+                }
+              },
+              child: Expanded(
+                child: BlocConsumer<NotificationBloc, NotificationState>(
+                  listener: (context, state) {
+                    if (state is NotificationStateError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Bir hata oluştu: ${state.error}'),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is NotificationStateLoading) {
+                      return const GlobalFadeAnimation();
+                    }
 
-                  if (state is NotificationStateSuccess) {
-                    final notifications = state.notificationResponse.data;
+                    if (state is NotificationStateSuccess) {
+                      final notifications = state.notificationResponse.data;
 
-                    if (notifications.isNullOrEmpty) {
+                      if (notifications.isNullOrEmpty) {
+                        return _emptyState();
+                      }
+
+                      return ListView.builder(
+                        itemCount: notifications?.length,
+                        itemBuilder: (context, index) {
+                          final notification = notifications![index];
+
+                          return NotificationCard(
+                            title: notification.title ?? '',
+                            description: notification.description ?? '',
+                            date: notification.formattedDate,
+                            isSeen: notification.isSeen ?? false,
+                          );
+                        },
+                      );
+                    }
+
+                    if (state is NotificationStateError) {
                       return _emptyState();
                     }
 
-                    return ListView.builder(
-                      itemCount: notifications?.length,
-                      itemBuilder: (context, index) {
-                        final notification = notifications![index];
-
-                        return NotificationCard(
-                          title: notification.title ?? '',
-                          description: notification.description ?? '',
-                          date: notification.formattedDate, // Formatlanmış tarih
-                          onDelete: () => _removeNotification(index, notifications!),
-                        );
-                      },
-                    );
-                  }
-
-                  if (state is NotificationStateError) {
-                    return _emptyState(); // Hata durumunda empty state gösteriliyor
-                  }
-
-                  return _emptyState(); // Default fallback
-                },
+                    return _emptyState();
+                  },
+                ),
               ),
             ),
           ],
@@ -98,7 +128,8 @@ class _NotificationsPageState extends State<NotificationPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.notifications_off_outlined, size: 64, color: Colors.grey.shade400),
+          Icon(Icons.notifications_off_outlined,
+              size: 64, color: Colors.grey.shade400),
           12.toHeight,
           Text(
             'Bildirim bulunmuyor',
@@ -108,30 +139,20 @@ class _NotificationsPageState extends State<NotificationPage> {
       ),
     );
   }
-
-  void _removeNotification(int index, List notifications) {
-    final currentState = context.read<NotificationBloc>().state;
-
-    if (currentState is NotificationStateSuccess) {
-      final updatedList = List.from(currentState.notificationResponse.data!);
-      updatedList.removeAt(index);
-
-      context.read<NotificationBloc>().emit(NotificationStateSuccess(updatedList as NotificationResponse));
-    }
-  }
 }
+
 class NotificationCard extends StatelessWidget {
   final String title;
   final String description;
   final String date;
-  final VoidCallback onDelete;
+  final bool isSeen;
 
   const NotificationCard({
     Key? key,
     required this.title,
     required this.description,
     required this.date,
-    required this.onDelete,
+    required this.isSeen,
   }) : super(key: key);
 
   @override
@@ -155,10 +176,6 @@ class NotificationCard extends StatelessWidget {
                   style: styleBlack16Bold,
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline, size: 20),
-                onPressed: onDelete,
-              ),
             ],
           ),
           4.toHeight,
@@ -169,12 +186,43 @@ class NotificationCard extends StatelessWidget {
           8.toHeight,
           Align(
             alignment: Alignment.bottomRight,
-            child: Text(
-              date,
-              style: styleBlack12Regular.copyWith(color: Colors.grey.shade600),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  date,
+                  style:
+                      styleBlack12Regular.copyWith(color: Colors.grey.shade600),
+                ),
+                const SizedBox(width: 8),
+                SeenIndicator(isSeen: isSeen),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SeenIndicator extends StatelessWidget {
+  final bool isSeen;
+
+  const SeenIndicator({Key? key, required this.isSeen}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Visibility(
+      visible: !isSeen,
+      child: Container(
+        width: 14,
+        height: 14,
+        decoration: BoxDecoration(
+          color: Colors.red[200],
+          shape: BoxShape.circle,
+        ),
       ),
     );
   }

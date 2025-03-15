@@ -5,7 +5,7 @@ import 'package:baykurs/ui/filter/filter_region.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/filter/bloc/FilterEvent.dart';
 import 'package:baykurs/ui/filter/bloc/FilterState.dart';
-import 'package:baykurs/util/AllExtension.dart';
+import 'package:baykurs/util/all_extension.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

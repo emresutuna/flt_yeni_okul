@@ -27,10 +27,19 @@ class DeleteAccountSuccess extends ProfileState {
 }
 
 class ProfileError extends ProfileState {
-  final String error;
+  final String message;
+  final ProfileErrorType type;
 
-  ProfileError(this.error);
+  ProfileError(this.message, {this.type = ProfileErrorType.general});
 }
+
+
+enum ProfileErrorType {
+  mailNotVerified,
+  unAuthorized,
+  general,
+}
+
 class LogoutError extends ProfileState {
   final String error;
 

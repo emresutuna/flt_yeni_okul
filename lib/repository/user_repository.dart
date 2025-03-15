@@ -6,6 +6,7 @@ import 'package:baykurs/ui/forgotpassword/ForgotPasswordResponse.dart';
 import 'package:baykurs/ui/notification/model/NotificationResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/PaymentBillResponse.dart';
 import 'package:baykurs/ui/payment/makePayment/paymentBill/model/SingleBillResponse.dart';
+import 'package:baykurs/ui/profile/bloc/ProfileBloc.dart';
 import 'package:baykurs/ui/profile/model/DeleteAccountResponse.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationRequest.dart';
 import 'package:baykurs/ui/profile/model/EducationInformationResponse.dart';
@@ -16,6 +17,7 @@ import 'package:baykurs/ui/register/model/RegisterResponse.dart';
 import 'package:baykurs/ui/requestlesson/model/CourseRequest.dart';
 import 'package:baykurs/ui/timesheet/model/TimeSheetResponse.dart';
 import 'package:baykurs/util/SharedPrefHelper.dart';
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 
 import '../service/api_service.dart';
@@ -179,30 +181,44 @@ class UserRepository {
 
   Future<ResultResponse<ProfileResponse>> getUserProfile() async {
     try {
-      final response =
-          await APIService.instance.request(ApiUrls.userProfile, DioMethod.get);
+      final response = await APIService.instance.request(
+        ApiUrls.userProfile,
+        DioMethod.get,
+      );
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         ProfileResponse profileResponse = ProfileResponse.fromJson(body);
-
         return ResultResponse.success(profileResponse);
+      } else if (response.statusCode == HttpStatus.forbidden) {
+        return ResultResponse.failure(MailNotVerifiedFailure());
       } else {
-        return ResultResponse.failure(
-            'API call failed with status code ${response.statusCode}');
+        return ResultResponse.failure(GenericFailure());
       }
     } catch (e) {
-      return ResultResponse.failure('Exception: $e');
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+
+        if (statusCode == HttpStatus.forbidden) {
+          return ResultResponse.failure(MailNotVerifiedFailure());
+        }
+        return ResultResponse.failure(GenericFailure());
+      }
+
+      return ResultResponse.failure(GenericFailure());
     }
   }
+
+
   Future<ResultResponse<NotificationResponse>> getNotifications() async {
     try {
-      final response =
-      await APIService.instance.request(ApiUrls.userNotification, DioMethod.get);
+      final response = await APIService.instance
+          .request(ApiUrls.userNotification, DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        NotificationResponse profileResponse = NotificationResponse.fromJson(body);
+        NotificationResponse profileResponse =
+            NotificationResponse.fromJson(body);
 
         return ResultResponse.success(profileResponse);
       } else {
@@ -213,14 +229,16 @@ class UserRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
   Future<ResultResponse<NotificationResponse>> updateNotificationSeen() async {
     try {
-      final response =
-      await APIService.instance.request(ApiUrls.userNotificationSeen, DioMethod.post);
+      final response = await APIService.instance
+          .request(ApiUrls.userNotificationSeen, DioMethod.post);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        NotificationResponse profileResponse = NotificationResponse.fromJson(body);
+        NotificationResponse profileResponse =
+            NotificationResponse.fromJson(body);
 
         return ResultResponse.success(profileResponse);
       } else {
@@ -231,10 +249,12 @@ class UserRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
   Future<ResultResponse<TimeSheetResponse>> getUserTimeSheet() async {
     try {
-      final response = await APIService.instance
-          .request("${ApiUrls.getTimeSheet}?end=2025-03-30", DioMethod.get,includeHeaders: true);
+      final response = await APIService.instance.request(
+          "${ApiUrls.getTimeSheet}?end=2025-03-30", DioMethod.get,
+          includeHeaders: true);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -310,21 +330,35 @@ class UserRepository {
     try {
       final response = await APIService.instance
           .request(ApiUrls.getBillAddress, DioMethod.get);
-
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         PaymentBillResponse billResponse = PaymentBillResponse.fromJson(body);
 
         return ResultResponse.success(billResponse);
+      } else if (response.statusCode == HttpStatus.forbidden) {
+        return ResultResponse.failure(mailNotVerifiedFailure);
       } else {
         return ResultResponse.failure(
             'API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
+      if (e is DioException) {
+        final statusCode = e.response?.statusCode;
+
+        if (statusCode == HttpStatus.forbidden) {
+          return ResultResponse.failure(mailNotVerifiedFailure);
+        }
+
+        return ResultResponse.failure(
+            'DioException: ${e.message} (status: $statusCode)');
+      }
+
       return ResultResponse.failure('Exception: $e');
     }
   }
-  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(int id) async {
+
+  Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(
+      int id) async {
     try {
       final response = await APIService.instance
           .request(ApiUrls.singleBil(id), DioMethod.get);
@@ -345,8 +379,9 @@ class UserRepository {
 
   Future<ResultResponse<BillResultResponse>> removeBill(int id) async {
     try {
-      final response = await APIService.instance
-          .request(ApiUrls.removeBillUrl(id), DioMethod.delete, includeHeaders: true);
+      final response = await APIService.instance.request(
+          ApiUrls.removeBillUrl(id), DioMethod.delete,
+          includeHeaders: true);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
@@ -483,4 +518,19 @@ class UserRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+}
+
+const mailNotVerifiedFailure = "MailNotVerifiedFailure";
+const genericErrorException = "Bir Hata Oluştu";
+abstract class AppFailure {
+  final String message;
+  AppFailure(this.message);
+}
+
+class MailNotVerifiedFailure extends AppFailure {
+  MailNotVerifiedFailure() : super('Mail adresiniz onaylanmadı');
+}
+
+class GenericFailure extends AppFailure {
+  GenericFailure() : super('Bilinmeyen bir hata oluştu');
 }
