@@ -12,7 +12,6 @@ class PaymentBillBloc extends Bloc<PaymentBillEvent, PaymentBillState> {
       emit(PaymentBillStateLoading());
 
       final result = await userRepository.getPaymentBills();
-      print('Result: isSuccess: ${result.isSuccess}, data: ${result.data}, error: ${result.error}');
 
       if (result.isSuccess) {
         emit(PaymentBillStateSuccess(result.data!));

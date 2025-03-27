@@ -183,8 +183,7 @@ class IncomingLessonsWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight:
-              MediaQuery.of(context).size.height / 3.5,
+          maxHeight: MediaQuery.of(context).size.height / 4.2,
         ),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
@@ -198,11 +197,26 @@ class IncomingLessonsWidget extends StatelessWidget {
                 ),
                 child: InkWell(
                   onTap: () {
+                    final course = lessons[index];
                     FirebaseAnalyticsManager.logEvent(
-                        FirebaseAnalyticsConstants.incoming_course_click);
+                      FirebaseAnalyticsConstants.interested_course_click,
+                    );
+
+                    String routeName = '/courseDetail';
+                    dynamic argument = course.id;
+
+                    if (course.courseBundleId != null && course.courseBundleId != 0) {
+                      routeName = '/courseBundleDetail';
+                      argument = course.courseBundleId;
+                    } else if (course.courseCoachId != null && course.courseCoachId != 0) {
+                      routeName = '/coachDetail';
+                      argument = course.courseCoachId;
+                    }
+
                     Navigator.of(context, rootNavigator: true).pushNamed(
-                        '/courseDetail',
-                        arguments: lessons[index].id);
+                      routeName,
+                      arguments: argument,
+                    );
                   },
                   child: IncomingCourse(
                     courseModel: lessons[index],
@@ -228,7 +242,7 @@ class InterestedLessonsWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height / 4.4,
+        height: MediaQuery.of(context).size.height / 3.8,
         child: ListView.builder(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,

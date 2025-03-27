@@ -103,6 +103,12 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.name,
             ),
             PrimaryInputField(
+              controller: registerValidation.birthYearController,
+              hintText: 'Doğum Yılı',
+              keyboardType: TextInputType.number,
+              maxLength: 4,
+            ),
+            PrimaryInputField(
               controller: registerValidation.emailController,
               hintText: 'E-Posta',
               keyboardType: TextInputType.emailAddress,
@@ -144,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               color: color5),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              openWebView('https://www.bykurs.com.tr/privacy',
+                              openWebView('https://www.baykurs.com.tr/privacy',
                                   'Gizlilik Politikası');
                             },
                           children: [
@@ -185,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               openWebView(
-                                  'https://www.bykurs.com.tr/personal-data',
+                                  'https://www.baykurs.com.tr/personal-data',
                                   'Kişisel Veriler');
                             },
                           children: [
@@ -211,6 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           request: RegisterRequest(
                             name: registerValidation.nameController.text,
                             surname: registerValidation.surnameController.text,
+                            birth_year: registerValidation.birthYearController.text,
                             email: registerValidation.emailController.text,
                             phone: registerValidation.formatPhoneNumber(
                                 registerValidation.phoneController.text),

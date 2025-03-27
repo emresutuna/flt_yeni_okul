@@ -10,6 +10,7 @@ class PrimaryInputField extends StatelessWidget {
   final TextInputType keyboardType;
   final Function(String)? onChanged;
   final EdgeInsetsGeometry padding;
+  final int? maxLength;
 
   const PrimaryInputField({
     Key? key,
@@ -21,6 +22,7 @@ class PrimaryInputField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onChanged,
     this.padding = const EdgeInsets.all(8.0),
+    this.maxLength
   }) : super(key: key);
 
   @override
@@ -34,7 +36,10 @@ class PrimaryInputField extends StatelessWidget {
         keyboardType: keyboardType,
         cursorColor: Colors.black,
         onChanged: onChanged,
+        maxLength: maxLength,
+
         decoration: InputDecoration(
+          counterText: '',
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           hintText: hintText,

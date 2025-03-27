@@ -7,11 +7,13 @@ class RegisterValidation extends GetxController {
   TextEditingController surnameController = TextEditingController();
   TextEditingController tcknController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController birthYearController = TextEditingController();
   TextEditingController phoneController =
       MaskedTextController(mask: '(000)-000-00-00');
   TextEditingController passwordController = TextEditingController();
 
   RxBool isEmailValid = true.obs;
+  RxBool isBirthYear = true.obs;
   RxBool isPasswordValid = true.obs;
   RxBool isPhoneValid = true.obs;
   RxBool isNameValid = true.obs;
@@ -22,6 +24,7 @@ class RegisterValidation extends GetxController {
 
   void clearAllFields() {
     emailController.clear();
+    birthYearController.clear();
     surnameController.clear();
     tcknController.clear();
     nameController.clear();
@@ -63,6 +66,7 @@ class RegisterValidation extends GetxController {
 
   bool registerValid() {
     String email = emailController.text.trim();
+    String birthYear = birthYearController.text.trim();
     String surname = surnameController.text.trim();
     String password = passwordController.text.trim();
     String name = nameController.text.trim();
@@ -72,6 +76,7 @@ class RegisterValidation extends GetxController {
     String errorMessage = '';
 
     if (email.isEmpty &&
+        birthYear.isEmpty&&
         surname.isEmpty &&
         password.isEmpty &&
         name.isEmpty &&
@@ -91,6 +96,13 @@ class RegisterValidation extends GetxController {
       errorMessage += 'Geçersiz e-posta. ';
     } else {
       isEmailValid.value = true;
+    }
+    if(birthYear.isEmpty || birthYear.length!=4){
+      isBirthYear.value = false;
+      errorMessage += 'Geçersiz doğum tarihi ';
+    }else{
+      isBirthYear.value = true;
+
     }
 
     if (password.isEmpty || password.length < 8) {

@@ -1,3 +1,4 @@
+import 'package:baykurs/ui/course/model/course_type_enum.dart';
 import 'package:baykurs/ui/requestlesson/SelectBranchPage.dart';
 import 'package:baykurs/ui/requestlesson/SelectProvincePage.dart';
 import 'package:baykurs/ui/requestlesson/SelectRegionPage.dart';
@@ -34,7 +35,7 @@ class RequestLessonPage extends StatefulWidget {
 class _RequestLessonPageState extends State<RequestLessonPage> {
   final RequestLessonService _service = RequestLessonService();
 
-  String? selectedCourseType;
+  CourseTypeEnum? selectedCourseType;
   ClassTypes? selectedClassLevel;
 
   Branches? selectedBranch;
@@ -167,7 +168,7 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                         /// **Ders/Kurs Seçim**
                         _buildSelectionTile(
                           title: "Ders/Kurs Seç",
-                          value: selectedCourseType ?? "Seç",
+                          value: selectedCourseType?.label ?? "Seç",
                           onTap: () async {
                             final courseType =
                                 await Get.to(() => SelectCourseTypePage());
@@ -249,8 +250,8 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                         ),
 
                         _buildSelectionTile(
-                          title: "Kurum Seç",
-                          value: selectedSchool?.userName ?? "Seç",
+                          title: "Kurum Seç ",
+                          value: selectedSchool?.userName ?? "Opsiyonel",
                           onTap: selectedProvince == null
                               ? () {}
                               : () async {
@@ -273,15 +274,16 @@ class _RequestLessonPageState extends State<RequestLessonPage> {
                             text: "Ders/Kurs Talep Et",
                             onPress: () {
                               if (selectedBranch != null &&
-                                  selectedTopic != null &&
-                                  selectedSchool != null) {
+                                  selectedTopic != null) {
                                 context
                                     .read<RequestLessonBloc>()
                                     .add(RequestLesson(
                                       request: CourseRequest(
+                                        courseType:
+                                            selectedCourseType?.typeId ?? 0,
                                         topicId: selectedTopic!.id,
                                         cityId: selectedProvince!.id,
-                                        schoolId: selectedSchool!.id.toInt(),
+                                        schoolId: selectedSchool?.id.toInt(),
                                         subject: selectedTopic!.name,
                                       ),
                                     ));

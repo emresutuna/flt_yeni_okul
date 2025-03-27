@@ -16,6 +16,8 @@ class BaseCourse {
   Lesson? lesson;
   List<Topics>? topics;
   int? courseType;
+  String? attendanceUrl;
+  bool? isAttendanceCompleted;
 
   /// Öğretmen bilgisi
   Teacher? teacher;
@@ -58,6 +60,8 @@ class BaseCourse {
     this.teacher,
     this.teacherName,
     this.teacherSurname,
+    this.isAttendanceCompleted,
+    this.attendanceUrl
   }) {
     teacherFormatted = _getFormattedTeacherName();
     formattedLesson = _getFormattedLesson();
@@ -75,6 +79,8 @@ class BaseCourse {
     quota = json['quota'];
     courseType = json['course_type'];
     classroom = json['classroom'];
+    attendanceUrl = json['attendance_url'];
+    isAttendanceCompleted = json['is_attendance_completed'];
 
     if (json['school'] != null) {
       if (json['school'] is Map<String, dynamic>) {
@@ -134,6 +140,8 @@ class BaseCourse {
     'teacher_formatted': teacherFormatted,
     'formatted_lesson': formattedLesson,
     'formatted_school': formattedSchool,
+    'attendance_url': attendanceUrl,
+    'is_attendance_completed': isAttendanceCompleted,
   };
 
   String _getFormattedTeacherName() {

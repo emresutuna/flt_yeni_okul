@@ -1,4 +1,5 @@
 import 'package:baykurs/repository/payment_repository.dart';
+import 'package:baykurs/ui/attendanceScreen/attendance_page.dart';
 import 'package:baykurs/ui/courseBundle/course_bundle.dart';
 import 'package:baykurs/ui/courseBundleDetail/course_bundle_detail.dart';
 import 'package:baykurs/ui/coursedetail/bloc/course_detail_bloc.dart';
@@ -52,6 +53,7 @@ import '../ui/timesheet/TimeSheetPage.dart';
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
         '/onboardingPage': (context) => const OnboardingScreen(),
+        '/attendancePage': (context) => const AttendancePage(),
         '/paymentHistoryPage': (context) => const PaymentHistoryPage(),
         '/teacherCoach': (context) => const TeacherCoach(),
         '/notificationPage': (context) => BlocProvider(

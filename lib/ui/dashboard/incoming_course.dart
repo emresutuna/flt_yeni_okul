@@ -10,7 +10,6 @@ class IncomingCourse extends StatelessWidget {
   final IncomingLesson? courseModel;
   final Color colors;
 
-
   const IncomingCourse(
       {super.key, required this.courseModel, required this.colors});
 
@@ -22,10 +21,16 @@ class IncomingCourse extends StatelessWidget {
     String title = courseModel?.title ?? 'Ders bilgisi bulunamadı';
     String schoolName = courseModel?.school?.user?.name ?? 'Kurum bilgisi yok';
     String teacherName =
-    "${courseModel?.teacher?.user?.name ?? ''} ${courseModel?.teacher?.user?.surname ?? ''}".trim();
+        "${courseModel?.teacher?.user?.name ?? ''} ${courseModel?.teacher?.user?.surname ?? ''}"
+            .trim();
     String timeString = courseModel?.startDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.startDate!))
         : '-';
+    String formatStartDate(DateTime startDate) {
+      String formattedDate = DateFormat('dd.MM.yyyy').format(startDate);
+      String formattedTime = DateFormat('HH:mm').format(startDate);
+      return '$formattedDate | Saat: $formattedTime';
+    }
 
     String endTime = courseModel?.endDate != null
         ? DateFormat('HH:mm').format(DateTime.parse(courseModel!.endDate!))
@@ -41,6 +46,21 @@ class IncomingCourse extends StatelessWidget {
         ? startDate.difference(now).inMinutes <= 60 && startDate.isAfter(now)
         : false;
 
+    String formatCourseDateRange(DateTime startDate, DateTime endDate) {
+      final formattedDate = DateFormat('dd.MM.yyyy').format(startDate);
+      final formattedStartTime = DateFormat('HH:mm').format(startDate);
+      final formattedEndTime = DateFormat('HH:mm').format(endDate);
+
+      return '$formattedDate / $formattedStartTime - $formattedEndTime';
+    }
+
+    String dateRangeText =
+        (courseModel?.startDate != null && courseModel?.endDate != null)
+            ? formatCourseDateRange(
+                DateTime.parse(courseModel!.startDate!),
+                DateTime.parse(courseModel!.endDate!),
+              )
+            : '-';
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -66,47 +86,55 @@ class IncomingCourse extends StatelessWidget {
                       style: styleBlack14Bold,
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      "Kurum: $schoolName",
-                      style: styleBlack12Bold,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Kurum: ", style: styleBlack12Bold),
+                          TextSpan(
+                              text: schoolName, style: styleBlack12Regular),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      "Öğretmen: $teacherName",
-                      style: styleBlack12Regular,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Öğretmen: ", style: styleBlack12Bold),
+                          TextSpan(
+                              text: teacherName, style: styleBlack12Regular),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      "Tarih: $timeString - $endTime",
-                      style: styleBlack12Regular,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: "Tarih: ", style: styleBlack12Bold),
+                          TextSpan(
+                              text: dateRangeText, style: styleBlack12Regular),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 8),
-                    if (courseModel?.topics != null && courseModel!.topics!.isNotEmpty)
+                    if (courseModel?.topics != null &&
+                        courseModel!.topics!.isNotEmpty)
                       RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(
                               text: "Konular: ",
-                              style: styleBlack12Regular.copyWith(fontWeight: FontWeight.bold),
+                              style: styleBlack12Bold,
                             ),
                             TextSpan(
-                              text: courseModel!.topics!.map((e) => e.name).join(" - "),
+                              text: courseModel!.topics!
+                                  .map((e) => e.name)
+                                  .join(" - "),
                               style: styleBlack12Regular,
                             ),
                           ],
                         ),
                       ),
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          price,
-                          style: styleGreen18Bold,
-                        ),
-                      ],
-                    ),
-
                   ],
                 ),
               ),
@@ -117,8 +145,8 @@ class IncomingCourse extends StatelessWidget {
               decoration: BoxDecoration(
                 color: HexColor(
                   BranchesExtension.getColorForBranch(
-                    courseModel?.lesson?.name ?? DEFAULT_LESSON_COLOR,
-                  ) ??
+                        courseModel?.lesson?.name ?? DEFAULT_LESSON_COLOR,
+                      ) ??
                       DEFAULT_LESSON_COLOR,
                 ),
                 borderRadius: const BorderRadius.only(

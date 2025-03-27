@@ -47,6 +47,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   state.mobileHomeResponse.interestedLesson ?? [];
               saveNotification(state.mobileHomeResponse.notifications!);
             }
+
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +56,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ? HomeCarouselWidget(
                           sliderData: sliderData, controller: controller)
                       : const SizedBox(),
+                  _buildInfoCardIfNeeded(),
                   const SectionTitle(title: "Kolay İşlemler"),
                   const QuickActionGrid(),
                   incomingLessons.isNotEmpty
@@ -76,5 +78,66 @@ class _DashboardPageState extends State<DashboardPage> {
         ),
       ),
     );
+  }
+
+  Widget _buildInfoCardIfNeeded() {
+    if (incomingLessons.isEmpty) return const SizedBox();
+
+    final nextLesson = incomingLessons.first;
+    final now = DateTime.now();
+    final startTime = DateTime.parse(nextLesson.startDate!);
+    final duration = startTime.difference(now);
+
+    final bool isWithinOneHourWindow = duration.inMinutes.abs() <= 60;
+
+    if (isWithinOneHourWindow && !nextLesson.isAttendanceCompleted!) {
+      String routeName = '/courseDetail';
+      dynamic argument = nextLesson.id;
+
+      if (nextLesson.courseBundleId != null && nextLesson.courseBundleId != 0) {
+        routeName = '/courseBundleDetail';
+        argument = nextLesson.courseBundleId;
+      } else if (nextLesson.courseCoachId != null &&
+          nextLesson.courseCoachId != 0) {
+        routeName = '/coachDetail';
+        argument = nextLesson.courseCoachId;
+      }
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              routeName,
+              arguments: argument,
+            );
+          },
+          child: Card(
+            elevation: 3,
+            color: Colors.yellow.shade100,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.orange),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "📚 ${nextLesson.lesson?.name ?? 'Ders'} ${nextLesson.courseType == 0 ? 'dersin' : 'kursun'} başlamak üzere! Yoklama almayı unutma.",
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return const SizedBox();
   }
 }

@@ -267,26 +267,45 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: SizedBox(
+                  child: (courseDetail?.isAttendanceCompleted == true)
+                      ? const SizedBox.shrink() // 👈 Hiçbir şey gösterme
+                      : SizedBox(
                     height: 60,
-                    width: double.maxFinite,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: color3,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
+                    width: double.infinity,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 400),
+                      child: ElevatedButton(
+                        key: const ValueKey('attendance'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: color5,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                            ),
                           ),
                         ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/paymentPreview',
-                            arguments: PaymentPreview.fromObject(courseDetail));
-                      },
-                      child: Text(
-                        "Satın Al",
-                        style: styleWhite16Bold,
+                        onPressed: () async {
+                          final result = await Navigator.pushNamed(
+                            context,
+                            '/attendancePage',
+                            arguments: courseDetail,
+                          );
+
+                          if (result == true) {
+                            setState(() {
+                              courseDetail?.isAttendanceCompleted = true;
+                            });
+                          }
+                        },
+                        child: const SizedBox.expand(
+                          child: Center(
+                            child: Text(
+                              "Yoklama Al",
+                              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

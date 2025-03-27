@@ -12,6 +12,7 @@ Color colorGray = HexColor("#9295A3");
 Color greenButton = HexColor("#05A95C");
 Color colorWhite = HexColor("#FFFFFF");
 Color colorLightGray = HexColor("#F4F6FF");
+Color colorLightGray2 = HexColor("#F4F6FF");
 
 Color color1 = HexColor("#222831");
 Color color2 = HexColor("#393E46");

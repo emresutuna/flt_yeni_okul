@@ -381,7 +381,14 @@ class UserRepository {
     try {
       final response = await APIService.instance
           .request(ApiUrls.getBillAddress, DioMethod.get);
+
       if (response.statusCode == HttpStatus.ok) {
+        if (response.data is! Map<String, dynamic>) {
+          return ResultResponse.failure(
+            'İşleminizi şu anda gerçekleştiremedik, lütfen daha sonra tekrar deneyin.',
+          );
+        }
+
         Map<String, dynamic> body = response.data;
         PaymentBillResponse billResponse = PaymentBillResponse.fromJson(body);
 
@@ -390,7 +397,8 @@ class UserRepository {
         return ResultResponse.failure(mailNotVerifiedFailure);
       } else {
         return ResultResponse.failure(
-            'API call failed with status code ${response.statusCode}');
+          'API call failed with status code ${response.statusCode}',
+        );
       }
     } catch (e) {
       if (e is DioException) {
@@ -401,12 +409,16 @@ class UserRepository {
         }
 
         return ResultResponse.failure(
-            'DioException: ${e.message} (status: $statusCode)');
+          'DioException: ${e.message} (status: $statusCode)',
+        );
       }
 
-      return ResultResponse.failure('Exception: $e');
+      return ResultResponse.failure(
+        'İşleminizi şu anda gerçekleştiremedik, lütfen daha sonra tekrar deneyin.',
+      );
     }
   }
+
 
   Future<ResultResponse<SingleBillResponse>> getSinglePaymentBill(
       int id) async {
@@ -530,24 +542,23 @@ class UserRepository {
     try {
       final token = await getToken();
       final response = await APIService.instance.request(
-          token != null ? ApiUrls.getHomePageWithLogin : ApiUrls.getHomePage,
-          DioMethod.get,
-          includeHeaders: token != null ? true : false);
-
+        token != null ? ApiUrls.getHomePageWithLogin : ApiUrls.getHomePage,
+        DioMethod.get,
+        includeHeaders: token != null ? true : false,
+      );
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        MobileHomeResponse mobileHomeResponse =
-            MobileHomeResponse.fromJson(body);
+        MobileHomeResponse mobileHomeResponse = MobileHomeResponse.fromJson(body);
 
         return ResultResponse.success(mobileHomeResponse);
       } else {
-        return ResultResponse.failure(
-            'API call failed with status code ${response.statusCode}');
+        return ResultResponse.failure('API call failed with status code ${response.statusCode}');
       }
     } catch (e) {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
 
   Future<ResultResponse<RequestCourseResponseModel>> courseRequest(
       CourseRequest request) async {

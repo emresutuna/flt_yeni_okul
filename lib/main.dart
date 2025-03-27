@@ -8,6 +8,7 @@ import 'package:baykurs/ui/course/course_list_page.dart';
 import 'package:baykurs/ui/course/bloc/lesson_bloc.dart';
 import 'package:baykurs/ui/course/bloc/lesson_event.dart';
 import 'package:baykurs/ui/dashboard/bloc/dashboard_bloc.dart';
+import 'package:baykurs/ui/dashboard/bloc/dashboard_event.dart';
 import 'package:baykurs/ui/dashboard/dashboard.dart';
 import 'package:baykurs/ui/filter/bloc/FilterBloc.dart';
 import 'package:baykurs/ui/login/loginBloc/login_bloc.dart';
@@ -200,6 +201,9 @@ class _MyHomePageState extends State<MyHomePage> {
       FirebaseAnalyticsManager.logEvent(
           FirebaseAnalyticsConstants.find_course_click);
       context.read<LessonBloc>().add(FetchLesson());
+    }
+    if (_controller.index == 0) {
+      context.read<DashboardBloc>().add(FetchDashboard());
     }
   }
 

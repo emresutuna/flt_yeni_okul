@@ -99,13 +99,17 @@ class IncomingLesson {
   int? lessonId;
   String? startDate;
   String? endDate;
-  int? price;
+  num? price;
   int? quota;
   int? courseType;
   School? school;
   User? lesson;
   List<Topics>? topics;
-  Teacher? teacher; // Eklenen alan
+  Teacher? teacher;
+  String? attendanceUrl;
+  bool? isAttendanceCompleted;
+  int? courseBundleId;
+  int? courseCoachId;
 
   IncomingLesson({
     this.id,
@@ -122,6 +126,10 @@ class IncomingLesson {
     this.lesson,
     this.topics,
     this.teacher,
+    this.attendanceUrl,
+    this.isAttendanceCompleted,
+    this.courseBundleId,
+    this.courseCoachId
   });
 
   IncomingLesson.fromJson(Map<String, dynamic> json) {
@@ -131,10 +139,14 @@ class IncomingLesson {
     schoolId = json['school_id'];
     lessonId = json['lesson_id'];
     startDate = json['start_date'];
+    attendanceUrl = json['attendance_url'];
+    isAttendanceCompleted = json['is_attendance_completed'];
     endDate = json['end_date'];
     price = json['price'];
     quota = json['quota'];
     courseType = json['course_type'];
+    courseBundleId = json['course_bundle_id'];
+    courseCoachId = json['course_coach_id'];
     school = json['school'] != null ? School.fromJson(json['school']) : null;
     lesson = json['lesson'] != null ? User.fromJson(json['lesson']) : null;
 
@@ -158,10 +170,14 @@ class IncomingLesson {
     data['school_id'] = schoolId;
     data['lesson_id'] = lessonId;
     data['start_date'] = startDate;
+    data['attendance_url'] = attendanceUrl;
+    data['is_attendance_completed'] = isAttendanceCompleted;
     data['end_date'] = endDate;
     data['price'] = price;
     data['quota'] = quota;
     data['course_type'] = courseType;
+    data['course_bundle_id'] = courseBundleId;
+    data['course_coach_id'] = courseCoachId;
 
     if (school != null) {
       data['school'] = school!.toJson();

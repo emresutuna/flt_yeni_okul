@@ -74,7 +74,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: WhiteAppBar("Ders Satın Al"),
+        appBar: WhiteAppBar("Hizmet Satın Al"),
         body: BlocConsumer<PaymentBillBloc, PaymentBillState>(
           listener: (context, state) {
             if (state is PaymentPreviewSuccess) {
@@ -148,6 +148,9 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                   (bill) => bill.isDefault == true,
                   orElse: () => BillList(),
                 );
+              } else {
+
+                defaultBill = null;
               }
             }
 
@@ -160,8 +163,15 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
       int courseId, CourseTypeEnum courseType) async {
     try {
       final response = await APIService.instance.request(
-          buyCourse(courseId, courseType), DioMethod.post,
-          includeHeaders: true);
+        buyCourse(courseId, courseType),
+        DioMethod.post,
+        includeHeaders: true,
+      );
+
+      if (response.data is! Map<String, dynamic>) {
+        return ResultResponse.failure(
+            'İşleminizi şu anda gerçekleştiremedik, lütfen daha sonra tekrar deneyin.');
+      }
 
       Map<String, dynamic> body = response.data;
 
@@ -173,8 +183,8 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
         return ResultResponse.failure(message);
       }
     } catch (e) {
-      print(e.toString());
-      return ResultResponse.failure('Exception: $e');
+      return ResultResponse.failure(
+          'İşleminizi şu anda gerçekleştiremedik, lütfen daha sonra tekrar deneyin.');
     }
   }
 
@@ -187,7 +197,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text("Tamam"),
+            child: Text("Tamam", style: TextStyle(color: color5)),
           )
         ],
       ),
@@ -206,9 +216,12 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Satın alma işlemini tamamla ve yüz yüze eğitimin özgün modelinde yerini al.',
-                        style: styleBlack14Regular,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        child: Text(
+                          'Satın alma işlemini tamamla ve yüz yüze eğitimin özgün modelinde yerini al.',
+                          style: styleBlack14Regular,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       const SizedBox(height: 20),
@@ -228,7 +241,7 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                             children: [
                               8.toHeight,
                               Text(
-                                'Satın Alınan Ders',
+                                'Satın Alınan ${paymentPreview?.courseType?.label ?? ""}',
                                 style: styleBlack16Bold,
                               ),
                               const SizedBox(height: 8),
@@ -313,42 +326,40 @@ class _PaymentPreviewPageState extends State<PaymentPreviewPage> {
                                 child: GreenPrimaryButton(
                                   text: "Devam Et",
                                   onPress: () async {
-                                    showDialog(
-                                      context: context,
-                                      barrierDismissible: false,
-                                      builder: (context) => const Center(
-                                          child: CircularProgressIndicator()),
-                                    );
-
-                                    try {
-                                      final result = await postBuyCourse(
-                                        paymentPreview?.id ?? 0,
-                                        paymentPreview?.courseType ??
-                                            CourseTypeEnum.course,
-                                      );
-
-                                      Navigator.pop(context);
-
-                                      if (result.data != null) {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                PaymentWebView(
-                                                    courseId:
-                                                        paymentPreview?.id ??
-                                                            0),
-                                          ),
+                                    if (defaultBill != null) {
+                                      try {
+                                        final result = await postBuyCourse(
+                                          paymentPreview?.id ?? 0,
+                                          paymentPreview?.courseType ??
+                                              CourseTypeEnum.course,
                                         );
-                                      } else {
-                                        // Hata mesajını API'den alıyoruz
+
+                                        Navigator.pop(context);
+
+                                        if (result.data != null) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PaymentWebView(
+                                                      courseId:
+                                                          paymentPreview?.id ??
+                                                              0),
+                                            ),
+                                          );
+                                        } else {
+                                          // Hata mesajını API'den alıyoruz
+                                          _showErrorDialog(result.error ??
+                                              'Bir hata oluştu.');
+                                        }
+                                      } catch (e) {
+                                        Navigator.pop(context);
                                         _showErrorDialog(
-                                            result.error ?? 'Bir hata oluştu.');
+                                            "Beklenmeyen bir hata oluştu: $e");
                                       }
-                                    } catch (e) {
-                                      Navigator.pop(context);
+                                    } else {
                                       _showErrorDialog(
-                                          "Beklenmeyen bir hata oluştu: $e");
+                                          "Fatura adresi eklemeden satın alma yapamazsın!");
                                     }
                                   },
                                 ),
