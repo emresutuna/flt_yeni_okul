@@ -11,8 +11,12 @@ class CourseDetailBloc extends Bloc<CourseDetailEvent, CourseDetailState> {
       : super(CourseDetailStateLoading()) {
     on<FetchCourseById>((event, emit) async {
       emit(CourseDetailStateLoading());
+
       try {
-        final result = await lectureRepository.getCourseById(event.id);
+        final result = (event.isIncomingLesson ?? false)
+            ? await lectureRepository.getIncomingCourseById(event.id)
+            : await lectureRepository.getCourseById(event.id);
+
         emit(CourseDetailStateSuccess(result.data!));
       } catch (e) {
         emit(CourseDetailStateError('Failed to fetch courseDetail'));

@@ -27,6 +27,7 @@ import 'package:baykurs/util/Theme.dart';
 import 'package:baykurs/util/YOColors.dart';
 import 'package:baykurs/util/app_routes.dart';
 import 'package:baykurs/util/constants.dart';
+import 'package:baykurs/util/force_update_service.dart';
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -173,6 +174,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ForceUpdateService().checkForUpdate(context);
+    });
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(_handleTabChange);
   }

@@ -2,11 +2,14 @@ abstract class CourseDetailEvent {}
 
 class FetchCourseById extends CourseDetailEvent {
   final int id;
+  final bool? isIncomingLesson;
 
   FetchCourseById({
     required this.id,
+    this.isIncomingLesson,
   });
 }
+
 
 class FetchCourseBundleById extends CourseDetailEvent {
   final int id;

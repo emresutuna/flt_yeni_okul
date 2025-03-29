@@ -5,6 +5,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../util/YOColors.dart';
 import '../../widgets/ErrorWidget.dart';
+import '../coursedetail/model/course_detail_args.dart';
 import 'model/TimeSheetResponse.dart';
 
 class TimeSheetCalendarPage extends StatefulWidget {
@@ -69,7 +70,7 @@ class _TimeSheetCalendarPageState extends State<TimeSheetCalendarPage> {
                     Navigator.pushNamed(
                       context,
                       '/courseDetail',
-                      arguments: meeting.courseId,
+                      arguments: CourseDetailArgs(courseId: meeting.courseId, isIncomingLesson: false),
                     );
                   }
                 },

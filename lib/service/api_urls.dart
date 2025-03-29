@@ -32,6 +32,7 @@ class ApiUrls {
 
   static String courseCoachDetail(int id) => "/mobile/courseCoach/$id";
   static String getCoursesById(int id) => "/mobile/course/$id";
+  static String getIncomingCoursesById(int id) => "/mobile/course/$id?attendance";
   static String getCourseBundleById(int id) => "/mobile/courseBundle/$id";
   static const String getFavorites = "/mobile/favorites";
   static const String getHomePage = "/mobile/homepage";

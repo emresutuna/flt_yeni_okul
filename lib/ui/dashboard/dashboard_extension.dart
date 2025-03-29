@@ -8,6 +8,7 @@ import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/QuickAction.dart';
+import '../coursedetail/model/course_detail_args.dart';
 import '../login/loginPage.dart';
 import 'model/mobile_home_response.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
@@ -203,20 +204,10 @@ class IncomingLessonsWidget extends StatelessWidget {
                     );
 
                     String routeName = '/courseDetail';
-                    dynamic argument = course.id;
-
-                    if (course.courseBundleId != null && course.courseBundleId != 0) {
-                      routeName = '/courseBundleDetail';
-                      argument = course.courseBundleId;
-                    } else if (course.courseCoachId != null && course.courseCoachId != 0) {
-                      routeName = '/coachDetail';
-                      argument = course.courseCoachId;
-                    }
-
                     Navigator.of(context, rootNavigator: true).pushNamed(
-                      routeName,
-                      arguments: argument,
-                    );
+                        routeName,
+                        arguments: CourseDetailArgs(
+                            courseId: course.id ?? 0, isIncomingLesson: true));
                   },
                   child: IncomingCourse(
                     courseModel: lessons[index],
@@ -254,8 +245,11 @@ class InterestedLessonsWidget extends StatelessWidget {
                 onTap: () {
                   FirebaseAnalyticsManager.logEvent(
                       FirebaseAnalyticsConstants.interested_course_click);
-                  Navigator.of(context, rootNavigator: true)
-                      .pushNamed('/courseDetail', arguments: lessons[index].id);
+                  Navigator.of(context, rootNavigator: true).pushNamed(
+                      '/courseDetail',
+                      arguments: CourseDetailArgs(
+                          courseId: lessons[index].id ?? 0,
+                          isIncomingLesson: false));
                 },
                 child: InterestedLessonWidget(
                   courseModel: lessons[index],

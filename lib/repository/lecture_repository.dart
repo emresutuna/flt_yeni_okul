@@ -108,6 +108,7 @@ class LectureRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
   Future<ResultResponse<CourseBundleResponse>> getCourseBundleWithFilter(
       CourseFilter filter) async {
     try {
@@ -117,7 +118,7 @@ class LectureRepository {
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
         CourseBundleResponse courseCoachResponse =
-        CourseBundleResponse.fromJson(body);
+            CourseBundleResponse.fromJson(body);
 
         return ResultResponse.success(courseCoachResponse);
       } else if (response.statusCode == HttpStatus.unauthorized) {
@@ -202,16 +203,16 @@ class LectureRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
-  Future<ResultResponse<CourseBundleDetailResponse>> getCourseBundleById(
+  Future<ResultResponse<CourseDetailResponse>> getIncomingCourseById(
       int courseId) async {
     try {
       final response = await APIService.instance
-          .request(ApiUrls.getCourseBundleById(courseId), DioMethod.get);
+          .request(ApiUrls.getIncomingCoursesById(courseId), DioMethod.get);
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        CourseBundleDetailResponse courseResponseModel =
-        CourseBundleDetailResponse.fromJson(body);
+        CourseDetailResponse courseResponseModel =
+        CourseDetailResponse.fromJson(body);
 
         return ResultResponse.success(courseResponseModel);
       } else {
@@ -222,6 +223,28 @@ class LectureRepository {
       return ResultResponse.failure('Exception: $e');
     }
   }
+
+  Future<ResultResponse<CourseBundleDetailResponse>> getCourseBundleById(
+      int courseId) async {
+    try {
+      final response = await APIService.instance
+          .request(ApiUrls.getCourseBundleById(courseId), DioMethod.get);
+
+      if (response.statusCode == HttpStatus.ok) {
+        Map<String, dynamic> body = response.data;
+        CourseBundleDetailResponse courseResponseModel =
+            CourseBundleDetailResponse.fromJson(body);
+
+        return ResultResponse.success(courseResponseModel);
+      } else {
+        return ResultResponse.failure(
+            'API call failed with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      return ResultResponse.failure('Exception: $e');
+    }
+  }
+
   Future<ResultResponse<PriceModel>> getMaxPrice(
       CourseTypeEnum courseType) async {
     try {
@@ -230,8 +253,7 @@ class LectureRepository {
 
       if (response.statusCode == HttpStatus.ok) {
         Map<String, dynamic> body = response.data;
-        PriceModel priceModel =
-        PriceModel.fromJson(body);
+        PriceModel priceModel = PriceModel.fromJson(body);
 
         return ResultResponse.success(priceModel);
       } else {

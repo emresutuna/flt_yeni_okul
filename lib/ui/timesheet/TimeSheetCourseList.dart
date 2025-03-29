@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../util/HexColor.dart';
 import '../../widgets/CourseListItem.dart';
 import '../course/model/course_model.dart';
+import '../coursedetail/model/course_detail_args.dart';
 import 'model/TimeSheetResponse.dart';
 
 class TimeSheetCourseList extends StatefulWidget {
@@ -38,7 +39,7 @@ class _TimeSheetCourseListState extends State<TimeSheetCourseList> {
                     return InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, '/courseDetail',
-                            arguments: courseList[index].id);
+                            arguments: CourseDetailArgs(courseId: courseList[index].id??0, isIncomingLesson: false));
                       },
                       child: CourseListItem(
                         courseModel: courseList[index],

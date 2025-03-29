@@ -14,6 +14,7 @@ import '../../util/LessonExtension.dart';
 import '../../util/PriceFormatter.dart';
 import '../../util/YOColors.dart';
 import 'bloc/course_detail_state.dart';
+import 'model/course_detail_args.dart';
 import 'model/course_detail_response_model.dart';
 
 class CourseDetailPage extends StatefulWidget {
@@ -31,11 +32,24 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ModalRoute.of(context) != null) {
-        courseId = ModalRoute.of(context)!.settings.arguments as int;
-        context.read<CourseDetailBloc>().add(FetchCourseById(id: courseId));
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (ModalRoute.of(context) != null) {
+          final args = ModalRoute.of(context)!.settings.arguments as CourseDetailArgs;
+
+          final courseId = args.courseId;
+          final isIncomingLesson = args.isIncomingLesson;
+
+          context.read<CourseDetailBloc>().add(
+            FetchCourseById(
+              id: courseId,
+              isIncomingLesson: isIncomingLesson,
+            ),
+          );
+        }
+      });
+
     });
+
   }
 
   @override

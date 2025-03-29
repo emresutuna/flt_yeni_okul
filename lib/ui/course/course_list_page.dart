@@ -13,6 +13,7 @@ import '../../util/HexColor.dart';
 import '../../util/YOColors.dart';
 import '../../widgets/CourseListItem.dart';
 import '../../widgets/SearchBar.dart';
+import '../coursedetail/model/course_detail_args.dart';
 import 'model/course_list_manager.dart';
 import 'model/course_list_notifier.dart';
 import 'bloc/lesson_bloc.dart';
@@ -74,7 +75,6 @@ class _CourseListPageState extends State<CourseListPage> {
     }
     courseListManager.fetchLessons(filter: courseFilter, searchQuery: "");
   }
-
 
   void _onScroll() {
     if (_scrollController.position.pixels >=
@@ -150,7 +150,8 @@ class _CourseListPageState extends State<CourseListPage> {
       courseListManager.courseList.clear();
     });
 
-    courseListManager.fetchLessons(filter: courseFilter, searchQuery: courseListManager.query);
+    courseListManager.fetchLessons(
+        filter: courseFilter, searchQuery: courseListManager.query);
   }
 
   Widget _buildHeader() {
@@ -246,7 +247,9 @@ class _CourseListPageState extends State<CourseListPage> {
               },
             );
             Navigator.of(context, rootNavigator: !widget.hasShowBackButton)
-                .pushNamed('/courseDetail', arguments: course.id);
+                .pushNamed('/courseDetail',
+                    arguments: CourseDetailArgs(
+                        courseId: course.id ?? 0, isIncomingLesson: false));
           },
           child:
               CourseListItem(courseModel: course, colors: HexColor("#4A90E2")),
