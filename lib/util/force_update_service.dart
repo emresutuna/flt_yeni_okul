@@ -44,8 +44,8 @@ class ForceUpdateService {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        title: Text('Güncelleme Gerekli',style: styleBlack16Bold,),
-        content: Text('Uygulamanın yeni sürümünü yüklemen gerekiyor.',style: styleBlack14Regular,),
+        title: Text('Güncellemelerimiz Var',style: styleBlack16Bold,),
+        content: Text('Yüz yüze eğitimin özgün modelini en iyi haliyle kullanabilmen için uygulamayı güncellemen gerekiyor.',style: styleBlack14Regular,),
         actions: [
           TextButton(
             onPressed: () {
