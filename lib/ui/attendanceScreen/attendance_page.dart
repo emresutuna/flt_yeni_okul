@@ -7,8 +7,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:get/get.dart';
 
-
-
 class AttendancePage extends StatefulWidget {
   const AttendancePage({Key? key}) : super(key: key);
 
@@ -107,7 +105,7 @@ class _AttendancePageState extends State<AttendancePage>
       if (response.statusCode == 200) {
         Get.snackbar(
           "Başarılı",
-         "Yoklama alındı!",
+          "Yoklama alındı!",
           colorText: Colors.white,
           backgroundColor: Colors.green,
         );
@@ -221,31 +219,12 @@ class _AttendancePageState extends State<AttendancePage>
                                     color: Colors.white, fontSize: 16),
                               ),
                               const SizedBox(height: 16),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (_) => AlertDialog(
-                                      title: const Text('Sorun bildir'),
-                                      content: const Text(
-                                          'Lütfen destek ekibimize ulaşın.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('Kapat'),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  'Sorun mu yaşıyorsun? Tıkla',
-                                  style: styleBlack16Bold.copyWith(
-                                    decorationColor: color5,
-                                    color: color5,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                              Text(
+                                'Kamera izni vermek istemiyorsan , yoklama kağıdına imza at.',
+                                style: styleBlack16Bold.copyWith(
+                                  decorationColor: color5,
+                                  color: color5,
+                                  decoration: TextDecoration.underline,
                                 ),
                               ),
                             ],
@@ -284,15 +263,9 @@ class _AttendancePageState extends State<AttendancePage>
                             ),
                             const SizedBox(height: 12),
                             TextButton(
-                              onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content:
-                                          Text("Manuel yoklama alınıyor...")),
-                                );
-                              },
+                              onPressed: () {},
                               child: Text(
-                                'Manuel Yoklama Al',
+                                'Kamera izni vermek istemiyorsan , yoklama kağıdına imza at.',
                                 style: styleBlack14Bold.copyWith(
                                   color: color5,
                                   decoration: TextDecoration.underline,

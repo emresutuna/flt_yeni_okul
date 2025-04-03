@@ -47,8 +47,8 @@ android {
         applicationId "com.app.baykurs"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 101
+        versionName "1.0.1"
         multiDexEnabled true
     }
 
