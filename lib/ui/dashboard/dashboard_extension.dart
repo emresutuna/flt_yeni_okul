@@ -13,6 +13,11 @@ import '../login/loginPage.dart';
 import 'model/mobile_home_response.dart';
 import 'package:carousel_slider/carousel_slider.dart' as carousel_slider;
 
+class ResponsiveHelper {
+  static bool isTablet(BuildContext context) =>
+      MediaQuery.of(context).size.width > 600;
+}
+
 class HomeCarouselWidget extends StatelessWidget {
   final List<SliderData> sliderData;
   final carousel_slider.CarouselSliderController controller;
@@ -25,10 +30,11 @@ class HomeCarouselWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveHelper.isTablet(context);
     return carousel_slider.CarouselSlider(
       carouselController: controller,
       options: carousel_slider.CarouselOptions(
-        height: 220.0,
+        height: isTablet ? 320.0 : 220.0,
         viewportFraction: 1,
         initialPage: 0,
         enableInfiniteScroll: true,
@@ -57,14 +63,8 @@ class HomeCarouselWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "",
-                      style: styleBlack18Bold,
-                    ),
-                    Text(
-                      "",
-                      style: styleBlack14Regular,
-                    ),
+                    Text("", style: styleBlack18Bold),
+                    Text("", style: styleBlack14Regular),
                   ],
                 ),
               ),
@@ -155,8 +155,8 @@ class QuickActionGrid extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: quickActionList.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: ResponsiveHelper.isTablet(context) ? 5 : 3,
         childAspectRatio: 0.98,
       ),
       itemBuilder: (context, index) {
@@ -180,6 +180,11 @@ class IncomingLessonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveHelper.isTablet(context);
+    final cardWidth = isTablet
+        ? MediaQuery.of(context).size.width / 2.5
+        : MediaQuery.of(context).size.width * 0.96;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: ConstrainedBox(
@@ -193,21 +198,20 @@ class IncomingLessonsWidget extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.96,
-                ),
+                constraints: BoxConstraints(maxWidth: cardWidth),
                 child: InkWell(
                   onTap: () {
                     final course = lessons[index];
                     FirebaseAnalyticsManager.logEvent(
                       FirebaseAnalyticsConstants.interested_course_click,
                     );
-
-                    String routeName = '/courseDetail';
                     Navigator.of(context, rootNavigator: true).pushNamed(
-                        routeName,
-                        arguments: CourseDetailArgs(
-                            courseId: course.id ?? 0, isIncomingLesson: true));
+                      '/courseDetail',
+                      arguments: CourseDetailArgs(
+                        courseId: course.id ?? 0,
+                        isIncomingLesson: true,
+                      ),
+                    );
                   },
                   child: IncomingCourse(
                     courseModel: lessons[index],
@@ -230,6 +234,11 @@ class InterestedLessonsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveHelper.isTablet(context);
+    final cardWidth = isTablet
+        ? MediaQuery.of(context).size.width / 2.5
+        : MediaQuery.of(context).size.width * 0.96;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -240,16 +249,18 @@ class InterestedLessonsWidget extends StatelessWidget {
           itemCount: lessons.length,
           itemBuilder: (BuildContext context, int index) {
             return SizedBox(
-              width: MediaQuery.of(context).size.width * 0.96,
+              width: cardWidth,
               child: InkWell(
                 onTap: () {
                   FirebaseAnalyticsManager.logEvent(
                       FirebaseAnalyticsConstants.interested_course_click);
                   Navigator.of(context, rootNavigator: true).pushNamed(
-                      '/courseDetail',
-                      arguments: CourseDetailArgs(
-                          courseId: lessons[index].id ?? 0,
-                          isIncomingLesson: false));
+                    '/courseDetail',
+                    arguments: CourseDetailArgs(
+                      courseId: lessons[index].id ?? 0,
+                      isIncomingLesson: false,
+                    ),
+                  );
                 },
                 child: InterestedLessonWidget(
                   courseModel: lessons[index],
@@ -271,11 +282,12 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet = ResponsiveHelper.isTablet(context);
     return Padding(
       padding: const EdgeInsets.only(top: 16.0, left: 16),
       child: Text(
         title,
-        style: styleBlack16Bold,
+        style: isTablet ? styleBlack20Bold : styleBlack16Bold,
       ),
     );
   }

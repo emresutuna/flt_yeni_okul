@@ -28,19 +28,42 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<!-- 📲 Push ve background bildirim izinleri -->
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 		<string>fetch</string>
 	</array>
+
+	<!-- 🔐 Kullanıcı izin açıklamaları -->
 	<key>NSUserTrackingUsageDescription</key>
-	<string>We need this permission to show personalized notifications.</string>
+	<string>Kişiselleştirilmiş içerik ve bildirimler sunabilmek için izniniz gereklidir.</string>
 	<key>NSCameraUsageDescription</key>
-    <string>QR kod taramak için kamera erişimine izin verin.</string>
+	<string>QR kod taramak için kamera erişimine ihtiyaç vardır.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Harita üzerinde konum gösterebilmek için konum izni gereklidir.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Arka planda konum bilgisi gerekiyorsa izniniz gereklidir.</string>
+
+	<!-- 🔁 Firebase manuel yönetim için -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+
+	<!-- 🌐 Geliştirme/test için güvenli olmayan bağlantılara izin -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+
+	<!-- 🎬 Launch ekran -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+	<!-- 🔄 Ekran yönlendirme ayarları -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -54,20 +77,22 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- 🔗 Deep Linking -->
 	<key>CFBundleURLTypes</key>
-    <array>
-        <dict>
-            <key>CFBundleTypeRole</key>
-            <string>Editor</string>
-            <key>CFBundleURLName</key>
-            <string>com.app.baykurs</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>app</string>
-            </array>
-        </dict>
-    </array>
-    <key>FlutterDeepLinkingEnabled</key>
-    <true/>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.app.baykurs</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app</string>
+			</array>
+		</dict>
+	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 </dict>
 </plist>
