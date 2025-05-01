@@ -94,12 +94,12 @@ class _RegisterPageState extends State<RegisterPage> {
             16.toHeight,
             PrimaryInputField(
               controller: registerValidation.nameController,
-              hintText: 'Ad',
+              hintText: 'Ad*',
               keyboardType: TextInputType.name,
             ),
             PrimaryInputField(
               controller: registerValidation.surnameController,
-              hintText: 'Soyad',
+              hintText: 'Soyad*',
               keyboardType: TextInputType.name,
             ),
             PrimaryInputField(
@@ -110,7 +110,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             PrimaryInputField(
               controller: registerValidation.emailController,
-              hintText: 'E-Posta',
+              hintText: 'E-Posta*',
               keyboardType: TextInputType.emailAddress,
             ),
             PrimaryInputField(
@@ -122,7 +122,7 @@ class _RegisterPageState extends State<RegisterPage> {
               padding: const EdgeInsets.all(8.0),
               child: PasswordField(
                 controller: registerValidation.passwordController,
-                hint: "Şifre",
+                hint: "Şifre*",
               ),
             ),
             const SizedBox(height: 16),
@@ -220,7 +220,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             birth_year: registerValidation.birthYearController.text,
                             email: registerValidation.emailController.text,
                             phone: registerValidation.formatPhoneNumber(
-                                registerValidation.phoneController.text),
+                                registerValidation.phoneController.text) ?? "",
                             password:
                                 registerValidation.passwordController.text,
                           ),

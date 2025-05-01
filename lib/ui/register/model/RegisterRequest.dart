@@ -6,7 +6,6 @@ class RegisterRequest {
   String password;
   String birth_year;
 
-
   RegisterRequest({
     required this.name,
     required this.surname,
@@ -17,24 +16,26 @@ class RegisterRequest {
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'surname': surname,
-      'email': email,
-      'phone': phone,
-      'password': password,
-      'birth_year': birth_year,
-    };
+    final Map<String, dynamic> data = {};
+
+    if (name.isNotEmpty) data['name'] = name;
+    if (surname.isNotEmpty) data['surname'] = surname;
+    if (email.isNotEmpty) data['email'] = email;
+    if (phone.isNotEmpty) data['phone'] = phone;
+    if (password.isNotEmpty) data['password'] = password;
+    if (birth_year.isNotEmpty) data['birth_year'] = birth_year;
+
+    return data;
   }
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) {
     return RegisterRequest(
-      name: json['name'],
-      surname: json['surname'],
-      email: json['email'],
-      phone: json['phone'],
-      password: json['password'],
-      birth_year: json['birth_year'],
+      name: json['name'] ?? '',
+      surname: json['surname'] ?? '',
+      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
+      password: json['password'] ?? '',
+      birth_year: json['birth_year'] ?? '',
     );
   }
 }

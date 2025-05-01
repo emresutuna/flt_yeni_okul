@@ -40,14 +40,20 @@ class RegisterValidation extends GetxController {
     isPolicyAccepted.value = false;
   }
 
-  String formatPhoneNumber(String maskedPhoneNumber) {
+  String? formatPhoneNumber(String maskedPhoneNumber) {
     String rawPhone = maskedPhoneNumber.replaceAll(RegExp(r'[^\d]'), '');
+
+    if (rawPhone.isEmpty) {
+      return null; // opsiyonel olduğundan null olabilir
+    }
+
     if (rawPhone.length == 10) {
       return '+90$rawPhone';
-    } else {
-      throw FormatException("Geçersiz telefon numarası formatı");
     }
+
+    return null; // geçersizse yine null dön
   }
+
 
   bool isValidTCKN(String tckn) {
     if (tckn.length != 11 || !RegExp(r'^[0-9]+$').hasMatch(tckn)) {
@@ -76,15 +82,13 @@ class RegisterValidation extends GetxController {
     String errorMessage = '';
 
     if (email.isEmpty &&
-        birthYear.isEmpty&&
         surname.isEmpty &&
         password.isEmpty &&
         name.isEmpty &&
-        tckn.isEmpty &&
-        phone.isEmpty) {
+        tckn.isEmpty) {
       Get.snackbar(
         "Hata",
-        "Lütfen tüm alanları doldurunuz.",
+        "Lütfen zorunlu alanları doldurunuz.",
         colorText: Colors.white,
         backgroundColor: Colors.red,
       );
@@ -97,12 +101,13 @@ class RegisterValidation extends GetxController {
     } else {
       isEmailValid.value = true;
     }
-    if(birthYear.isEmpty || birthYear.length!=4){
-      isBirthYear.value = false;
-      errorMessage += 'Geçersiz doğum tarihi ';
-    }else{
-      isBirthYear.value = true;
 
+    // Doğum yılı artık zorunlu değil
+    if (birthYear.isNotEmpty && birthYear.length != 4) {
+      isBirthYear.value = false;
+      errorMessage += 'Geçersiz doğum yılı. ';
+    } else {
+      isBirthYear.value = true;
     }
 
     if (password.isEmpty || password.length < 8) {
@@ -126,14 +131,14 @@ class RegisterValidation extends GetxController {
       isSurnameValid.value = true;
     }
 
+    // Telefon numarası da artık opsiyonel
     String cleanedPhone = phone.replaceAll(RegExp(r'\D'), '');
-    if (cleanedPhone.isEmpty || cleanedPhone.length != 10) {
+    if (phone.isNotEmpty && cleanedPhone.length != 10) {
       isPhoneValid.value = false;
       errorMessage += 'Geçersiz telefon numarası. ';
     } else {
       isPhoneValid.value = true;
     }
-
 
     if (!isPrivacyPolicyAccepted.value) {
       errorMessage += 'Gizlilik politikası kabul edilmelidir. ';
