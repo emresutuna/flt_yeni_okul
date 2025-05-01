@@ -36,6 +36,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 SharedPreferences? sharedPreferences;
 
@@ -117,11 +118,26 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _checkOnboardingAndToken();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (GetPlatform.isIOS) {
+        await requestATT();
+      }
       deeplinkHandler = AppDeeplinkHandler(context);
       deeplinkHandler.startListening();
       await NotificationPermissionHelper.instance
-          .handleNotificationPermissions();
+          .handleNotificationPermissions(context);
     });
+  }
+
+  Future<void> requestATT() async {
+    final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+
+    if (status == TrackingStatus.notDetermined) {
+      final result =
+          await AppTrackingTransparency.requestTrackingAuthorization();
+      debugPrint('ATT result: $result');
+    } else {
+      debugPrint('ATT already determined: $status');
+    }
   }
 
   @override
@@ -137,15 +153,20 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           theme: appTheme,
           debugShowCheckedModeBanner: false,
-          home: Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(
-                color: color5,
-              ),
-            ),
+          home: const MyHomePage(
+            title: "",
           ),
         );
       }
+
+      // ATT ve Bildirim iznini buraya taşı
+      Future.microtask(() async {
+        if (GetPlatform.isIOS) {
+          await requestATT();
+        }
+        await NotificationPermissionHelper.instance
+            .handleNotificationPermissions(Get.context!);
+      });
 
       return GetMaterialApp(
         navigatorObservers: [ChuckerFlutter.navigatorObserver],
@@ -175,7 +196,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ForceUpdateService().checkForUpdate(context);
+      if (mounted) {
+        ForceUpdateService().checkForUpdate(context);
+      }
     });
     _controller = PersistentTabController(initialIndex: 0);
     _controller.addListener(_handleTabChange);
